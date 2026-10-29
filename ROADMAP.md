@@ -254,9 +254,9 @@ terrain, vegetation and cave walls. Autonomous cave travel is not yet claimed.
 Sensor stream fixed (2026-10-29): readings fresh at their stamps (were 98 ms old for the LiDAR, 48 ms
 for the camera, 2 ms for the IMU; the first scan all zeros), LiDAR hits only at the scan's instant
 (were infinite misses and a fake 100 ms sweep), no orientation on `/imu/data` (was truth), ground
-truth off the ROS graph (`truth.bin`). Still to fix: the recorder can lose the last ~0.6 s of a
-high-rate topic (3 of 20 recorded runs). Then realism: the sensors' datasheet behaviour (Mid-360
-sweep, IMU noise and bias, ArduPilot's IMU and barometer).
+truth off the ROS graph (`truth.bin`), and bags complete (the recorder had lost a high-rate topic's
+last ~0.6 s in 3 of 20 runs). Next: realism, the sensors' datasheet behaviour (Mid-360 sweep, IMU
+noise and bias, ArduPilot's IMU and barometer).
 
 Evaluate LiDAR-inertial odometry on the recordings. Feed pose, velocity,
 uncertainty and health to ArduPilot's external-navigation input. Hover and make
