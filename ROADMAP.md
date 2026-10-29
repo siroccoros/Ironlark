@@ -163,8 +163,9 @@ and carries a Mid-360-class LiDAR, an IMU and a front camera. `./ironlark check 
 - records a complete rosbag2 (every message the controller sent, on Webots time, stamps strictly
   increasing; `check-recording` checks each topic's period over the whole flight) and adds sensing's cost to `result.json`: real time in the empty world
   (with real-time pacing), 0.47× in the forest; Webots time slows, nothing is dropped;
-- `check-recording`: the calibration wall reads at 5.897 m (face at 5.9 m), its normal within 0.6°,
-  and 99.9% of its LiDAR returns land on its red in the camera frame of the same instant;
+- `check-recording`: the calibration wall reads at 5.898 m (face at 5.9 m), its normal within 0.8°,
+  and 99.1–99.9% of its LiDAR returns land on its red in the camera frame of the same instant (the
+  rest on its edges' pixels);
 - `check-replay`: replayed, every topic keeps its messages, byte for byte, in order.
 
 Found on the way: Webots misplaces a 360° Lidar's returns when `tiltAngle` is set (the multi-camera
@@ -249,6 +250,13 @@ terrain, vegetation and cave walls. Autonomous cave travel is not yet claimed.
 ## Next: autonomy
 
 ### GPS-free flight
+
+Sensor stream fixed (2026-10-29): readings fresh at their stamps (were 98 ms old for the LiDAR, 48 ms
+for the camera, 2 ms for the IMU; the first scan all zeros), LiDAR hits only at the scan's instant
+(were infinite misses and a fake 100 ms sweep), no orientation on `/imu/data` (was truth), ground
+truth off the ROS graph (`truth.bin`). Still to fix: the recorder can lose the last ~0.6 s of a
+high-rate topic (3 of 20 recorded runs). Then realism: the sensors' datasheet behaviour (Mid-360
+sweep, IMU noise and bias, ArduPilot's IMU and barometer).
 
 Evaluate LiDAR-inertial odometry on the recordings. Feed pose, velocity,
 uncertainty and health to ArduPilot's external-navigation input. Hover and make
