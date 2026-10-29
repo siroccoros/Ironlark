@@ -3,7 +3,9 @@
 Listens on config/sensors.json's stream address for sensing/protocol.py messages and publishes
 /clock, /imu/data, /lidar/points, /camera/image_raw, /camera/camera_info and static transforms
 from base_link to each sensor. Ground truth never reaches it (the controller writes truth.bin). Frames
-follow REP-103 (sensing/frames.py): Webots' world and bodies are ENU and FLU.
+follow REP-103 (sensing/frames.py): Webots' world and bodies are ENU and FLU. When the controller
+finishes, it writes how many messages it published to published.json in the run folder (argument 1),
+before acknowledging: the launcher stops the recorder once the bag holds them all.
 """
 import array
 import json
@@ -52,6 +54,7 @@ class Bridge(Node):
                              durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.static_tf = self.create_publisher(TFMessage, "/tf_static", latched)
         self.static_published = False
+        self.published = 0  # messages published, the static transforms included
 
         imu = config["imu"]
         noise = (imu["accelerometer_noise"] ** 2, imu["gyro_noise"] ** 2)
@@ -64,6 +67,10 @@ class Bridge(Node):
             PointField(name="ring", offset=12, datatype=PointField.INT32, count=1),
             PointField(name="time", offset=16, datatype=PointField.FLOAT32, count=1),
         ]
+
+    def publish(self, publisher, msg):
+        publisher.publish(msg)
+        self.published += 1
 
     def publish_static(self, time_ns):
         transforms = []
@@ -83,7 +90,7 @@ class Bridge(Node):
                 frames.axis_angle_to_quaternion(sensor["rotation"]))
         camera = self.config["camera"]
         add(camera["frame_id"], camera["optical_frame_id"], (0.0, 0.0, 0.0), frames.CAMERA_LINK_TO_OPTICAL)
-        self.static_tf.publish(TFMessage(transforms=transforms))
+        self.publish(self.static_tf, TFMessage(transforms=transforms))
         self.static_published = True
 
     def on_message(self, kind, time_ns, payload):
@@ -91,7 +98,7 @@ class Bridge(Node):
             self.publish_static(time_ns)
         header_stamp = stamp(time_ns)
         if kind == protocol.CLOCK:
-            self.clock.publish(Clock(clock=header_stamp))
+            self.publish(self.clock, Clock(clock=header_stamp))
         elif kind == protocol.IMU:
             gx, gy, gz, ax, ay, az = protocol.VECTOR6.unpack(payload)
             msg = Imu()
@@ -101,7 +108,7 @@ class Bridge(Node):
             msg.angular_velocity_covariance = self.gyro_covariance
             msg.linear_acceleration_covariance = self.accel_covariance
             msg.orientation_covariance[0] = -1.0  # no orientation: the IMU measures rates and acceleration (REP-145)
-            self.imu.publish(msg)
+            self.publish(self.imu, msg)
         elif kind == protocol.LIDAR:
             (count,) = protocol.COUNT.unpack_from(payload)
             msg = PointCloud2()
@@ -113,7 +120,7 @@ class Bridge(Node):
             msg.row_step = count * protocol.LIDAR_POINT_BYTES
             # array('B'): rclpy copies it; assigning bytes checks each byte in Python.
             msg.data = array.array("B", payload[protocol.COUNT.size:])
-            self.points.publish(msg)
+            self.publish(self.points, msg)
         elif kind == protocol.IMAGE:
             width, height = protocol.SIZE.unpack_from(payload)
             camera = self.config["camera"]
@@ -121,7 +128,7 @@ class Bridge(Node):
             msg.header.stamp, msg.header.frame_id = header_stamp, camera["optical_frame_id"]
             msg.height, msg.width, msg.encoding, msg.step = height, width, "bgra8", 4 * width
             msg.data = array.array("B", payload[protocol.SIZE.size:])
-            self.image.publish(msg)
+            self.publish(self.image, msg)
             info = CameraInfo()
             info.header = msg.header
             info.width, info.height, info.distortion_model = width, height, "plumb_bob"
@@ -131,9 +138,9 @@ class Bridge(Node):
             info.d = [0.0] * 5
             info.r = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
             info.p = [focal, 0.0, cx, 0.0, 0.0, focal, cy, 0.0, 0.0, 0.0, 1.0, 0.0]
-            self.camera_info.publish(info)
+            self.publish(self.camera_info, info)
 
-def serve(node, address):
+def serve(node, address, run):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind(address)
@@ -152,7 +159,10 @@ def serve(node, address):
                     node.get_logger().info(f"{received} messages, {rate:.0f} per second")
         except EOFError:
             # The controller finished (protocol.finish): every message it sent was read and published.
-            node.get_logger().info(f"controller finished: {received} messages")
+            node.get_logger().info(f"controller finished: {received} messages, {node.published} published")
+            temporary = run / "published.json.tmp"
+            temporary.write_text(json.dumps({"published": node.published}) + "\n")
+            temporary.replace(run / "published.json")
             try:
                 connection.sendall(protocol.ACK.pack(received))
             except OSError:
@@ -167,7 +177,8 @@ def main():
     rclpy.init()
     node = Bridge(config)
     stream = config["stream"]
-    threading.Thread(target=serve, args=(node, (stream["host"], stream["port"])), daemon=True).start()
+    threading.Thread(target=serve, args=(node, (stream["host"], stream["port"]), Path(sys.argv[1])),
+                     daemon=True).start()
     rclpy.spin(node)
 
 

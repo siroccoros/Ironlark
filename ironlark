@@ -23,13 +23,16 @@ sys.path.insert(0, str(ROOT / "tools"))
 from renderer_support import select_webots, renderer_problem, renderer_preflight, preflight_report
 from receipts import packages, world_problems
 from run_resources import Sampler
+from bag_reader import messages_written, wait_for_messages
 CACHE = ROOT / ".cache"
 IMAGE = "ironlark-sitl:copter-4.7.1"
 ROS_IMAGE = "ironlark-ros:humble"
 # Recorded by name, so the recorder subscribes to each before the first message (-a discovers late).
 ROS_TOPICS = "/clock /imu/data /lidar/points /camera/image_raw /camera/camera_info /tf_static"
 # Each message compressed (zstd, lossless) by two threads, queued deep enough that none is dropped.
-ROS_BAG_OPTIONS = "--compression-mode message --compression-format zstd --compression-threads 2 --compression-queue-size 20000"
+# No cache: each message reaches the bag's database as it arrives, so the launcher can count them (end_sensing).
+ROS_BAG_OPTIONS = ("--compression-mode message --compression-format zstd --compression-threads 2 "
+                   "--compression-queue-size 20000 --max-cache-size 0")
 COMMIT = "dbe792162d06cab66c3475fd5556bf7a120f119e"
 UPSTREAM = "/opt/ardupilot/libraries/SITL/examples/Webots_Python"
 
@@ -301,7 +304,8 @@ def sensing_losses(report):
 
 def end_sensing(run, processes):
     """End the stream after the flight: it stops sampling, sends what it queued and has the bridge
-    acknowledge every message. Its account, once nothing was lost."""
+    acknowledge every message; then the recorder writes every message the bridge published, before
+    it is stopped (rosbag2 drops what it has not yet taken). Its account, once nothing was lost."""
     (run / "sensing-end").touch()
     deadline = time.monotonic() + 60
     while (report := sensing_report(run)) is None:
@@ -314,7 +318,12 @@ def end_sensing(run, processes):
     if losses := sensing_losses(report):
         raise RuntimeError(f"The recording is incomplete: {'; '.join(losses)}. Inspect {run / 'webots.log'} "
                            f"and {run / 'ros.log'}.")
-    return report
+    published = json.loads((run / "published.json").read_text())["published"]
+    behind = published - messages_written(run / "bag")  # what stopping the recorder now would have lost
+    if (written := wait_for_messages(run / "bag", published)) != published:
+        raise RuntimeError(f"The recording is incomplete: the bag holds {written} of the {published} messages "
+                           f"the ROS bridge published. Inspect {run / 'ros.log'}.")
+    return {**report, "published": published, "recorder_behind": behind}
 
 
 def ros_image_ready():
@@ -523,7 +532,7 @@ def flight(headless, editor=False, world="forest", record=False):
                         ros_container(
                             ros_name,
                             run,
-                            "python3 /project/ros/ironlark_bridge.py & bridge=$!; "
+                            "python3 /project/ros/ironlark_bridge.py /run/ironlark & bridge=$!; "
                             f"ros2 bag record -o bag --qos-profile-overrides-path /project/ros/record_qos.yaml {ROS_BAG_OPTIONS} {ROS_TOPICS} & recorder=$!; "
                             "trap 'kill -INT $recorder; wait $recorder; kill $bridge' INT TERM; wait",
                         ),
@@ -645,7 +654,7 @@ def flight(headless, editor=False, world="forest", record=False):
                 if record:
                     stream = end_sensing(run, (webots, sitl, ros))
                     report["sensing"] = {**stream, **(cost := sensing_cost(run))}
-                    print(f"Sensing: {stream['sent']} messages, all acknowledged by the ROS bridge"
+                    print(f"Sensing: {stream['sent']} messages, all acknowledged by the ROS bridge and recorded"
                           + (f"; {cost['realtime_factor']}x real time (+{cost['added_wall_time']:.0%} wall time)"
                              if cost else ""))
                 resources.stop()

@@ -20,7 +20,7 @@ class Workflows(unittest.TestCase):
         make_project(self.root)
         shutil.copyfile(ROOT / "ironlark", self.root / "ironlark")
         (self.root / "tools").mkdir()
-        for tool in ("renderer_support.py", "receipts.py", "run_resources.py"):  # what the launcher imports
+        for tool in ("renderer_support.py", "receipts.py", "run_resources.py", "bag_reader.py"):  # what the launcher imports
             shutil.copyfile(ROOT / "tools" / tool, self.root / "tools" / tool)
 
     def refused(self, expected):
