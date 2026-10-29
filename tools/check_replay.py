@@ -18,6 +18,8 @@ import sys
 import time
 from pathlib import Path
 
+from bag_reader import messages_written, wait_for_messages
+
 TOPICS = ["/clock", "/imu/data", "/lidar/points", "/camera/image_raw", "/camera/camera_info", "/tf_static"]
 
 
@@ -56,14 +58,15 @@ def main():
     shutil.rmtree(replay, ignore_errors=True)
     qos = "/project/ros/record_qos.yaml"  # reliable, deep: the check measures the bag, not a lagging recorder
     recorder = subprocess.Popen(["ros2", "bag", "record", "-o", str(replay), "--qos-profile-overrides-path", qos,
-                                 *TOPICS],
+                                 "--max-cache-size", "0", *TOPICS],
                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     time.sleep(3)  # the recorder subscribes before the player starts
     # The delay lets the recorder match every topic before the first message goes out.
     subprocess.run(["ros2", "bag", "play", str(run / "bag"), "--delay", "3", "--qos-profile-overrides-path", qos,
                     "--topics", *TOPICS], check=True,
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    time.sleep(2)
+    # Stopped only once it holds every message played: rosbag2 drops what it has not yet taken.
+    wait_for_messages(replay, messages_written(run / "bag"))
     recorder.send_signal(signal.SIGINT)
     recorder.wait(timeout=30)
 
