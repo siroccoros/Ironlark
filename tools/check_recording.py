@@ -6,10 +6,11 @@ Runs in the ROS 2 container on a run folder holding a bag (./ironlark check --re
 
 First, completeness: every topic is in the bag, each periodic one with a message every period
 (config/sensors.json; /clock every physics step) and none missing between its first and last,
-starting and ending within one period of the clock, over a flight that leaves the ground, climbs
-past 2.5 m and lands. Then the IMU while the drone stands still before takeoff (ground truth speed
-under 1 cm/s, from 1 s on): it reads gravity, pointing up in the world by its own orientation, no
-rotation and a level attitude, with the rig's configured noise. In the empty world, the sensors against the calibration wall: for LiDAR scans
+starting and ending within one period of the clock, and so is ground truth (truth.bin beside the bag,
+every step, as many records as the stream's account wrote), over a flight that leaves the ground, climbs past 2.5 m and lands. Then the IMU
+while the drone stands still before takeoff (ground truth speed under 1 cm/s, from 1 s on): it reads
+gravity, pointing up in the world by ground truth's attitude, no rotation and a level attitude, with
+the rig's configured noise. In the empty world, the sensors against the calibration wall: for LiDAR scans
 taken while hovering it places the returns in the world (ground truth pose and the static
 transforms), fits the wall (face at x = 5.9 m, normal -x) and checks their distance, orientation
 and scatter (the rig's range noise), then projects them into the camera frame taken at the same
@@ -24,21 +25,24 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from sensing import frames, protocol  # noqa: E402
+
 WALL_X = 5.9  # the calibration wall's face (worlds/flight_foundation.wbt)
 WALL = {"x": (5.0, 7.0), "y": (-2.2, 2.2), "z": (0.05, 3.0)}
 LIMITS = {"distance_error_m": 0.05, "normal_error_deg": 2.0, "camera_agreement": 0.95, "background_red": 0.05}
 NOISE_BAND = (0.5, 1.5)  # measured spread over the rig's configured noise (config/sensors.json)
 GRAVITY = 9.81
-TOPICS = ["/clock", "/imu/data", "/lidar/points", "/camera/image_raw", "/camera/camera_info", "/tf_static",
-          "/ground_truth/pose", "/ground_truth/velocity"]
+TOPICS = ["/clock", "/imu/data", "/lidar/points", "/camera/image_raw", "/camera/camera_info", "/tf_static"]
+TRUTH = "truth.bin"  # not a topic: ground truth stays off the ROS graph
 GROUND_M, CLIMB_M = 0.2, 2.5  # on the ground; past it, the flight climbed (tests/flight_smoke.py's bounds)
 
 
 def periods(step_ms, config):
-    """Each periodic topic's period in nanoseconds: the clock every physics step, ground truth with
-    the IMU (controllers/flight_bridge/sensor_stream.py)."""
-    ms = {"/clock": step_ms}
-    for topics, sensor in ((("/imu/data", "/ground_truth/pose", "/ground_truth/velocity"), "imu"),
+    """Each periodic topic's period in nanoseconds: the clock and ground truth every physics step
+    (controllers/flight_bridge/sensor_stream.py)."""
+    ms = {"/clock": step_ms, TRUTH: step_ms}
+    for topics, sensor in ((("/imu/data",), "imu"),
                            (("/lidar/points",), "lidar"), (("/camera/image_raw", "/camera/camera_info"), "camera")):
         for topic in topics:
             ms[topic] = round(1000 / config[sensor]["rate_hz"])
@@ -49,7 +53,7 @@ def completeness(stamps, periods, heights):
     """Problems with the recording's completeness, none if it is complete: stamps holds each topic's
     message stamps (ns) in bag order, heights the ground truth heights in order."""
     problems = []
-    for topic in TOPICS:
+    for topic in dict.fromkeys([*TOPICS, *periods]):
         if not stamps.get(topic):
             problems.append(f"{topic}: no messages")
     clock = stamps.get("/clock")
@@ -72,9 +76,9 @@ def completeness(stamps, periods, heights):
 
 
 def imu_problems(samples, config):
-    """Problems with the IMU at rest, none if it reads gravity where its orientation puts it, no rotation, level, and
+    """Problems with the IMU at rest, none if it reads gravity where its attitude puts it, no rotation, level, and
     the configured noise: samples are (acceleration, angular velocity, orientation) while the drone stood still, the
-    orientation the IMU frame's in the world (ENU), a quaternion (x, y, z, w)."""
+    orientation ground truth's for the IMU frame in the world (ENU), a quaternion (x, y, z, w)."""
     if len(samples) < 250:
         return [f"the IMU at rest: {len(samples)} samples, fewer than a second's"]
     imu, problems = config["imu"], []
@@ -95,7 +99,7 @@ def imu_problems(samples, config):
     cosine = sum(r * u for r, u in zip(read, up)) / (math.sqrt(sum(r * r for r in read) * sum(u * u for u in up)) or 1)
     off = math.degrees(math.acos(max(-1.0, min(1.0, cosine))))
     if off > 0.5:
-        problems.append(f"the IMU at rest reads gravity {off:.1f} deg from where its orientation puts it")
+        problems.append(f"the IMU at rest reads gravity {off:.1f} deg from where its attitude puts it")
     rotation = [mean([gyro[k] for _, gyro, _ in samples]) for k in range(3)]
     if max(map(abs, rotation)) > 0.001:
         problems.append(f"the IMU at rest turns at {max(map(abs, rotation)):.4f} rad/s")
@@ -198,10 +202,16 @@ def main():
     config = json.loads((ROOT / "config/sensors.json").read_text())
     expected = periods(step_ms, config)
     calibration_wall = json.loads((run / "manifest.json").read_text())["world"] == "empty"
+    truth = protocol.read_truth(run / TRUTH) if (run / TRUTH).exists() else []
+    poses = {t: (position, orientation, math.sqrt(sum(v * v for v in velocity)))
+             for t, position, orientation, velocity in truth}
+    heights = [position[2] for _, position, _, _ in truth]
+    # Takeoff: the first instant the drone leaves the ground. The IMU at rest is read before it.
+    takeoff = next((t for t, position, _, _ in truth if position[2] > GROUND_M), math.inf)
     reader = open_bag(run / "bag")
     types = {t.name: t.type for t in reader.get_all_topics_and_types()}
-    static, pose, speed, info = {}, None, 1e9, None
-    scans, images, stamps, heights, at_rest, airborne = [], {}, {}, [], [], False
+    static, info = {}, None
+    scans, images, stamps, at_rest = [], {}, {TRUTH: [t for t, _, _, _ in truth]}, []
 
     def ns(stamp):
         return stamp.sec * 1_000_000_000 + stamp.nanosec
@@ -215,7 +225,9 @@ def main():
             sec, nanosec = struct.unpack_from("<iI", data, 4)
             stamps.setdefault(topic, []).append(sec * 1_000_000_000 + nanosec)
         # Stamps only, but for the IMU while the drone stands still before takeoff and images at a scan's instant.
-        if topic == "/clock" or (topic == "/imu/data" and (airborne or speed >= 0.01 or stamps[topic][-1] < 1e9)) or (
+        pose = poses.get(stamps[topic][-1]) if topic != "/tf_static" else None
+        if topic == "/clock" or (topic == "/imu/data" and not (
+                pose and 1e9 <= stamps[topic][-1] < takeoff and pose[2] < 0.01)) or (
                 topic == "/camera/image_raw" and stamps[topic][-1] not in {s[0] for s in scans}):
             continue
         msg = deserialize_message(data, get_message(types[topic]))
@@ -223,24 +235,23 @@ def main():
             for t in msg.transforms:
                 r, tr = t.transform.rotation, t.transform.translation
                 static[t.child_frame_id] = ((tr.x, tr.y, tr.z), (r.x, r.y, r.z, r.w))
-        elif topic == "/ground_truth/pose":
-            p, o = msg.pose.position, msg.pose.orientation
-            pose = ((p.x, p.y, p.z), (o.x, o.y, o.z, o.w))
-            heights.append(p.z)
-            airborne = airborne or p.z > GROUND_M
-        elif topic == "/ground_truth/velocity":
-            speed = math.sqrt(msg.vector.x ** 2 + msg.vector.y ** 2 + msg.vector.z ** 2)
         elif topic == "/camera/camera_info":
             info = msg
         elif topic == "/imu/data":
-            a, g, o = msg.linear_acceleration, msg.angular_velocity, msg.orientation
-            at_rest.append(((a.x, a.y, a.z), (g.x, g.y, g.z), (o.x, o.y, o.z, o.w)))
-        elif topic == "/lidar/points" and pose and pose[0][2] > 2.0 and speed < 0.3 and len(scans) < 20:
-            scans.append((ns(msg.header.stamp), pose, msg))
+            a, g = msg.linear_acceleration, msg.angular_velocity
+            at_rest.append(((a.x, a.y, a.z), (g.x, g.y, g.z), pose[1]))  # the body's attitude: the mount follows
+        elif topic == "/lidar/points" and pose and pose[0][2] > 2.0 and pose[2] < 0.3 and len(scans) < 20:
+            scans.append((ns(msg.header.stamp), pose[:2], msg))
         elif topic == "/camera/image_raw":
             images[ns(msg.header.stamp)] = msg
 
+    # The IMU frame's attitude: the body's, turned by the mount the bag publishes.
+    imu_mount = static.get("imu_link", (None, (0.0, 0.0, 0.0, 1.0)))[1]
+    at_rest = [(a, g, frames.quaternion_multiply(q, imu_mount)) for a, g, q in at_rest]
+    written = json.loads((run / "sensing.json").read_text()).get("truth_records")
     problems = completeness(stamps, expected, heights) or imu_problems(at_rest, config)
+    if written != len(truth):
+        problems.insert(0, f"{TRUTH}: {len(truth)} records, the stream wrote {written}")
     if problems or not calibration_wall:  # the forest has no calibration wall
         report = {"complete": not completeness(stamps, expected, heights), "imu_samples_at_rest": len(at_rest),
                   "problems": problems, "passed": not problems}
@@ -302,7 +313,7 @@ def main():
 
     report = {
         "complete": True,
-        "messages": {topic: len(stamps.get(topic, ())) for topic in TOPICS},
+        "messages": {topic: len(stamps.get(topic, ())) for topic in [*TOPICS, TRUTH]},
         "imu_samples_at_rest": len(at_rest),
         "hovering_scans": len(scans),
         "wall_returns": len(wall),

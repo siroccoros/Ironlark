@@ -77,7 +77,7 @@ class Recording(unittest.TestCase):
 
     def test_periods_come_from_the_rig_and_the_physics_step(self):
         ms = {topic: period // 1_000_000 for topic, period in self.PERIODS.items()}
-        self.assertEqual(ms, {"/clock": 2, "/imu/data": 4, "/ground_truth/pose": 4, "/ground_truth/velocity": 4,
+        self.assertEqual(ms, {"/clock": 2, "/imu/data": 4, "truth.bin": 2,
                               "/lidar/points": 100, "/camera/image_raw": 50, "/camera/camera_info": 50})
 
     def test_a_complete_flight_passes(self):
@@ -135,7 +135,7 @@ class Sensors(unittest.TestCase):
 
     def test_an_imu_that_misreads_rest_fails(self):
         for change, words in (({"gravity": 9.6}, "gravity"), ({"turning": 0.01}, "turns"), ({"tilt": 5.0}, "tilted"),
-                              ({"up": (-1.0, 0.0, 0.0)}, "deg from where its orientation puts it"),
+                              ({"up": (-1.0, 0.0, 0.0)}, "deg from where its attitude puts it"),
                               ({"up": (0.0, 0.0, -1.0)}, "180.0 deg from"),
                               ({"noise": 3.0}, "spreads 3.0"), ({"noise": 0.0}, "spreads 0.00"),
                               ({"count": 100}, "fewer than a second")):

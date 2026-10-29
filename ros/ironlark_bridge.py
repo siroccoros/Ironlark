@@ -2,8 +2,8 @@
 
 Listens on config/sensors.json's stream address for sensing/protocol.py messages and publishes
 /clock, /imu/data, /lidar/points, /camera/image_raw, /camera/camera_info and static transforms
-from base_link to each sensor. Ground truth goes to /ground_truth/* only: autonomy topics never
-carry it. Frames follow REP-103 (sensing/frames.py): Webots' world and bodies are ENU and FLU.
+from base_link to each sensor. Ground truth never reaches it (the controller writes truth.bin). Frames
+follow REP-103 (sensing/frames.py): Webots' world and bodies are ENU and FLU.
 """
 import array
 import json
@@ -17,7 +17,7 @@ from pathlib import Path
 
 import rclpy
 from builtin_interfaces.msg import Time
-from geometry_msgs.msg import PoseStamped, TransformStamped, Vector3Stamped
+from geometry_msgs.msg import TransformStamped
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 from rosgraph_msgs.msg import Clock
@@ -48,8 +48,6 @@ class Bridge(Node):
         self.points = self.create_publisher(PointCloud2, "/lidar/points", reliable(200))
         self.image = self.create_publisher(Image, "/camera/image_raw", reliable(200))
         self.camera_info = self.create_publisher(CameraInfo, "/camera/camera_info", reliable(200))
-        self.truth_pose = self.create_publisher(PoseStamped, "/ground_truth/pose", reliable(10000))
-        self.truth_velocity = self.create_publisher(Vector3Stamped, "/ground_truth/velocity", reliable(10000))
         latched = QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE,
                              durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.static_tf = self.create_publisher(TFMessage, "/tf_static", latched)
@@ -95,15 +93,14 @@ class Bridge(Node):
         if kind == protocol.CLOCK:
             self.clock.publish(Clock(clock=header_stamp))
         elif kind == protocol.IMU:
-            qx, qy, qz, qw, gx, gy, gz, ax, ay, az = protocol.VECTOR10.unpack(payload)
+            gx, gy, gz, ax, ay, az = protocol.VECTOR6.unpack(payload)
             msg = Imu()
             msg.header.stamp, msg.header.frame_id = header_stamp, self.config["imu"]["frame_id"]
-            msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w = qx, qy, qz, qw
             msg.angular_velocity.x, msg.angular_velocity.y, msg.angular_velocity.z = gx, gy, gz
             msg.linear_acceleration.x, msg.linear_acceleration.y, msg.linear_acceleration.z = ax, ay, az
             msg.angular_velocity_covariance = self.gyro_covariance
             msg.linear_acceleration_covariance = self.accel_covariance
-            msg.orientation_covariance[0] = -1.0  # orientation from the IMU's attitude filter: unknown accuracy
+            msg.orientation_covariance[0] = -1.0  # no orientation: the IMU measures rates and acceleration (REP-145)
             self.imu.publish(msg)
         elif kind == protocol.LIDAR:
             (count,) = protocol.COUNT.unpack_from(payload)
@@ -111,7 +108,7 @@ class Bridge(Node):
             msg.header.stamp, msg.header.frame_id = header_stamp, self.config["lidar"]["frame_id"]
             msg.height, msg.width = 1, count
             msg.fields = self.point_fields
-            msg.is_bigendian, msg.is_dense = False, False  # returns past the range are infinite
+            msg.is_bigendian, msg.is_dense = False, True  # hits only: rays that hit nothing are left out
             msg.point_step = protocol.LIDAR_POINT_BYTES
             msg.row_step = count * protocol.LIDAR_POINT_BYTES
             # array('B'): rclpy copies it; assigning bytes checks each byte in Python.
@@ -135,19 +132,6 @@ class Bridge(Node):
             info.r = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
             info.p = [focal, 0.0, cx, 0.0, 0.0, focal, cy, 0.0, 0.0, 0.0, 1.0, 0.0]
             self.camera_info.publish(info)
-        elif kind == protocol.TRUTH:
-            px, py, pz, qx, qy, qz, qw, vx, vy, vz = protocol.VECTOR10.unpack(payload)
-            pose = PoseStamped()
-            pose.header.stamp, pose.header.frame_id = header_stamp, "map"
-            pose.pose.position.x, pose.pose.position.y, pose.pose.position.z = px, py, pz
-            (pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z,
-             pose.pose.orientation.w) = qx, qy, qz, qw
-            self.truth_pose.publish(pose)
-            velocity = Vector3Stamped()
-            velocity.header = pose.header
-            velocity.vector.x, velocity.vector.y, velocity.vector.z = vx, vy, vz
-            self.truth_velocity.publish(velocity)
-
 
 def serve(node, address):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

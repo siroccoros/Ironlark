@@ -108,14 +108,16 @@ propeller constants, mass, inertia, collision box, and the noiseless IMU and GPS
 and carries the rig of `config/sensors.json`: a Mid-360-class LiDAR (360° × 59°, −7° to +52°,
 0.1–40 m, 10 Hz, 32 × 900 returns), an IMU (250 Hz, seeded white noise) and a front camera
 (640 × 480, 90°, 20 Hz, with the scattering fog). With `--record`, the flight
-controller samples them after each 2 ms physics step, on Webots time, and streams them over local
+controller enables them before the first 2 ms physics step, so each refreshes on its period's
+multiples, reads them there, on Webots time, and streams them over local
 TCP ([`sensing/protocol.py`](sensing/protocol.py)); a full queue drops and counts, never stalling
-physics, and pausing stops the clock. After the flight the stream ends: the bridge acknowledges
+physics, and pausing stops the clock. A reading older than its stamp fails the stream: the LiDAR by
+Webots' own scan time, the IMU's gyro against the Iris's. After the flight the stream ends: the bridge acknowledges
 every message, and a run whose stream dropped, failed or left a message unsent fails, naming the loss
 (`sensing.json` in the run folder). A ROS 2 Humble container ([`ros/`](ros)) publishes `/clock`,
-`/imu/data`, `/lidar/points` (x, y, z, ring, time), `/camera/image_raw` (bgra8),
-`/camera/camera_info` and `/tf_static`, ground truth only on `/ground_truth/pose` and
-`/ground_truth/velocity`, and records all of it with rosbag2 (reliable, deep queues: `ros/record_qos.yaml`; each message compressed with zstd, losslessly: a forest flight's minute is 1.2 GB, the empty world's 0.16 GB). A recorded check adds sensing's cost to `result.json` (real-time factor, messages sent); every flight adds what it cost the machine: peak RAM and CPU time of Webots with its controllers, SITL and ROS, and GPU memory, Webots' own and the card's, each named when it could not be measured. Frames are REP-103: Webots' world is
+`/imu/data` (angular velocity and acceleration; an IMU measures no orientation), `/lidar/points`
+(x, y, z, ring, time: hits only; Webots renders a scan in one step, so every return's time is 0 after
+the stamp), `/camera/image_raw` (bgra8), `/camera/camera_info` and `/tf_static`, and records all of it with rosbag2 (reliable, deep queues: `ros/record_qos.yaml`; each message compressed with zstd, losslessly: a forest flight's minute is 1.1 GB, the empty world's 0.15 GB). Ground truth never enters ROS: the controller writes it to `truth.bin` in the run folder (position, attitude, velocity at the IMU's rate; `sensing/protocol.py`), for checks only. A recorded check adds sensing's cost to `result.json` (real-time factor, messages sent); every flight adds what it cost the machine: peak RAM and CPU time of Webots with its controllers, SITL and ROS, and GPU memory, Webots' own and the card's, each named when it could not be measured. Frames are REP-103: Webots' world is
 ENU and bodies FLU; [`sensing/frames.py`](sensing/frames.py) is the one place for ENU/FLU ↔ NED/FRD.
 
 ## Webots patches
