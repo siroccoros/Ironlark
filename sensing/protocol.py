@@ -9,6 +9,7 @@ Ground truth never enters the stream: the controller writes it to truth.bin in t
 records), for checks and evaluation only.
 """
 import socket
+from pathlib import Path
 import struct
 
 MAGIC = b"IRLK"
@@ -59,7 +60,7 @@ def finish(stream):
 
 def read_truth(path):
     """truth.bin's records: (time_ns, position, orientation, velocity) tuples, in time order."""
-    data = open(path, "rb").read()
+    data = Path(path).read_bytes()
     if len(data) % TRUTH.size:
         raise ValueError(f"{path} ends inside a record: cut short")
     return [(r[0], r[1:4], r[4:8], r[8:11]) for r in TRUTH.iter_unpack(data)]
