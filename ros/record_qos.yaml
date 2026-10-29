@@ -2,8 +2,6 @@
 # recorder falling behind a 500 Hz clock beside megabyte images loses nothing.
 /clock: {history: keep_last, depth: 20000, reliability: reliable, durability: volatile}
 /imu/data: {history: keep_last, depth: 10000, reliability: reliable, durability: volatile}
-/ground_truth/pose: {history: keep_last, depth: 10000, reliability: reliable, durability: volatile}
-/ground_truth/velocity: {history: keep_last, depth: 10000, reliability: reliable, durability: volatile}
 /lidar/points: {history: keep_last, depth: 200, reliability: reliable, durability: volatile}
 /camera/image_raw: {history: keep_last, depth: 200, reliability: reliable, durability: volatile}
 /camera/camera_info: {history: keep_last, depth: 200, reliability: reliable, durability: volatile}

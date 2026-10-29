@@ -148,9 +148,6 @@ PROTO IronlarkDrone [
           Gyro {{
             name "{imu['name']} gyro"
           }}
-          InertialUnit {{
-            name "{imu['name']} inertial unit"
-          }}
         ]
       }}
       Lidar {{

@@ -51,6 +51,19 @@ class Frames(unittest.TestCase):
 
 
 class Protocol(unittest.TestCase):
+    def test_truth_reads_back_and_a_cut_record_fails(self):
+        import tempfile
+        records = [protocol.TRUTH.pack(2_000_000 * i, *range(10)) for i in range(1, 4)]
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "truth.bin"
+            path.write_bytes(b"".join(records))
+            truth = protocol.read_truth(path)
+            self.assertEqual([t for t, *_ in truth], [2_000_000, 4_000_000, 6_000_000])
+            self.assertEqual(truth[0][1:], ((0, 1, 2), (3, 4, 5, 6), (7, 8, 9)))
+            path.write_bytes(b"".join(records)[:-1])
+            with self.assertRaisesRegex(ValueError, "cut short"):
+                protocol.read_truth(path)
+
     def test_round_trip(self):
         a, b = socket.socketpair()
         payload = protocol.COUNT.pack(2) + struct.pack("<fffif", 1, 2, 3, 4, 0) * 2

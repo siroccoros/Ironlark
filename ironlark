@@ -27,8 +27,7 @@ CACHE = ROOT / ".cache"
 IMAGE = "ironlark-sitl:copter-4.7.1"
 ROS_IMAGE = "ironlark-ros:humble"
 # Recorded by name, so the recorder subscribes to each before the first message (-a discovers late).
-ROS_TOPICS = ("/clock /imu/data /lidar/points /camera/image_raw /camera/camera_info /tf_static "
-              "/ground_truth/pose /ground_truth/velocity")
+ROS_TOPICS = "/clock /imu/data /lidar/points /camera/image_raw /camera/camera_info /tf_static"
 # Each message compressed (zstd, lossless) by two threads, queued deep enough that none is dropped.
 ROS_BAG_OPTIONS = "--compression-mode message --compression-format zstd --compression-threads 2 --compression-queue-size 20000"
 COMMIT = "dbe792162d06cab66c3475fd5556bf7a120f119e"

@@ -18,8 +18,7 @@ import sys
 import time
 from pathlib import Path
 
-TOPICS = ["/clock", "/imu/data", "/lidar/points", "/camera/image_raw", "/camera/camera_info", "/tf_static",
-          "/ground_truth/pose", "/ground_truth/velocity"]
+TOPICS = ["/clock", "/imu/data", "/lidar/points", "/camera/image_raw", "/camera/camera_info", "/tf_static"]
 
 
 def digests(bag):

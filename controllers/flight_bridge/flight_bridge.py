@@ -21,12 +21,10 @@ import sensor_stream
 
 
 class IrisBridge(WebotsArduVehicle):
-    _sensors = None
+    _sensors = False
 
     def _after_step(self):
         """Sensing (IRONLARK_SENSING=1): sampled on the step just taken, in Webots time."""
-        if self._sensors is None:
-            self._sensors = sensor_stream.SensorStream(self.robot) if sensor_stream.enabled() else False
         if self._sensors:
             self._sensors.after_step()
 
@@ -47,6 +45,8 @@ class IrisBridge(WebotsArduVehicle):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind(("0.0.0.0", port))
+        # Before the first step: sensors enabled at 0 s refresh on their periods' multiples (sensor_stream.py).
+        self._sensors = sensor_stream.enabled() and sensor_stream.SensorStream(self.robot)
         print(f"Listening for ardupilot SITL (I{self._instance}) at 127.0.0.1:{port}")
         while not select.select([s], [], [], 0)[0]:
             if self.robot.step(self._timestep) == -1:
@@ -83,8 +83,6 @@ class IrisBridge(WebotsArduVehicle):
 
     def _lockstep_in_c(self, s, sitl_address, port, library):
         """The loop above, in C (lockstep.c): the same packets, controls and steps, with sensing after each step."""
-        if self._sensors is None:
-            self._sensors = sensor_stream.SensorStream(self.robot) if sensor_stream.enabled() else False
         after_step_type = ctypes.CFUNCTYPE(None)
         after_step = after_step_type(self._sensors.after_step) if self._sensors else after_step_type()
         motors = (ctypes.c_int * len(self._motors))(*[motor._tag for motor in self._motors])
