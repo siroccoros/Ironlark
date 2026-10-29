@@ -3,10 +3,11 @@
   "imu": {
     "name": "imu",
     "frame_id": "imu_link",
+    "model": "TDK ICM-40609-D, inside the Mid-360: (11.0, 23.29, -44.12) mm in its point-cloud frame",
     "translation": [
-      0.0,
-      0.0,
-      0.012
+      0.011,
+      0.02329,
+      0.03888
     ],
     "rotation": [
       0,
@@ -15,10 +16,20 @@
       0
     ],
     "rate_hz": 250,
-    "accelerometer_noise": 0.03,
-    "gyro_noise": 0.002,
+    "gyro": {
+      "noise": 0.0007854,
+      "bias": 0.017453,
+      "scale": 0.005,
+      "cross_axis": 0.01
+    },
+    "accelerometer": {
+      "noise": 0.009807,
+      "bias": 0.39227,
+      "scale": 0.005,
+      "cross_axis": 0.01
+    },
     "seed": 0,
-    "note": "noise: absolute standard deviation per sample (m/s^2, rad/s), added by the controller's stream from the seed. ArduPilot keeps the Iris's own noiseless accelerometer, gyro, inertial unit and GPS."
+    "note": "ICM-40609-D datasheet (TDK DS-000330): white noise is its total RMS noise over 100 Hz (0.045 deg/s, 1.0 mg; rad/s, m/s^2 per sample); bias, scale and cross-axis are its initial tolerances (+-1 deg/s, +-40 mg, +-0.5%, +-1%), each drawn once from the seed, uniformly within them: one unit, the same every run. Not modelled: temperature drift (constant temperature), bias random walk (not specified). The Mid-360 publishes 200 Hz; 250 Hz is the nearest rate a 2 ms physics step can sample. ArduPilot keeps the Iris's own noiseless accelerometer, gyro, inertial unit and GPS (truth), adding its own noise in SITL."
   },
   "lidar": {
     "name": "lidar",

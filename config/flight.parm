@@ -28,3 +28,7 @@ SIM_GPS1_ENABLE 1
 FS_THR_ENABLE 0
 FS_GCS_ENABLE 0
 LOG_DISARMED 1
+
+# The barometer reads as an MS5611 at the OSR 1024 ArduPilot's driver uses: 0.027 mbar RMS (datasheet),
+# 0.24 m at the home's 750 m. SITL's noise is uniform: +-0.42 m has that RMS. copter.parm sets it 0.
+SIM_BARO_RND 0.42

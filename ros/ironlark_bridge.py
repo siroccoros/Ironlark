@@ -57,7 +57,7 @@ class Bridge(Node):
         self.published = 0  # messages published, the static transforms included
 
         imu = config["imu"]
-        noise = (imu["accelerometer_noise"] ** 2, imu["gyro_noise"] ** 2)
+        noise = (imu["accelerometer"]["noise"] ** 2, imu["gyro"]["noise"] ** 2)
         self.accel_covariance = [noise[0], 0.0, 0.0, 0.0, noise[0], 0.0, 0.0, 0.0, noise[0]]
         self.gyro_covariance = [noise[1], 0.0, 0.0, 0.0, noise[1], 0.0, 0.0, 0.0, noise[1]]
         self.point_fields = [

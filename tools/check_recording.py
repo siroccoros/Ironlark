@@ -9,8 +9,8 @@ First, completeness: every topic is in the bag, each periodic one with a message
 starting and ending within one period of the clock, and so is ground truth (truth.bin beside the bag,
 every step, as many records as the stream's account wrote), over a flight that leaves the ground, climbs past 2.5 m and lands. Then the IMU
 while the drone stands still before takeoff (ground truth speed under 1 cm/s, from 1 s on): it reads
-gravity, pointing up in the world by ground truth's attitude, no rotation and a level attitude, with
-the rig's configured noise. In the empty world, the sensors against the calibration wall: for LiDAR scans
+gravity's push, up in the world by ground truth's attitude, and no rotation, each within its part's
+tolerances (config/sensors.json), with its noise, and a level attitude. In the empty world, the sensors against the calibration wall: for LiDAR scans
 taken while hovering it places the returns in the world (ground truth pose and the static
 transforms), fits the wall (face at x = 5.9 m, normal -x) and checks their distance, orientation
 and scatter (the rig's range noise), then projects them into the camera frame taken at the same
@@ -76,8 +76,9 @@ def completeness(stamps, periods, heights):
 
 
 def imu_problems(samples, config):
-    """Problems with the IMU at rest, none if it reads gravity where its attitude puts it, no rotation, level, and
-    the configured noise: samples are (acceleration, angular velocity, orientation) while the drone stood still, the
+    """Problems with the IMU at rest, none if it reads as its part may (config/sensors.json): gravity's push and no
+    rotation, each off by no more than the part's bias, scale and cross-axis tolerances allow, spread by its noise,
+    and the drone level. Samples are (acceleration, angular velocity, orientation) while the drone stood still, the
     orientation ground truth's for the IMU frame in the world (ENU), a quaternion (x, y, z, w)."""
     if len(samples) < 250:
         return [f"the IMU at rest: {len(samples)} samples, fewer than a second's"]
@@ -90,28 +91,25 @@ def imu_problems(samples, config):
         centre = mean(values)
         return math.sqrt(sum((v - centre) ** 2 for v in values) / len(values))
 
-    gravity = mean([math.sqrt(sum(c * c for c in accel)) for accel, _, _ in samples])
-    if abs(gravity - GRAVITY) > 0.05:
-        problems.append(f"the IMU at rest reads {gravity:.3f} m/s^2 of gravity")
-    # At rest an accelerometer reads the ground's push, up in the world: (0, 0, g) in the IMU frame when level.
-    read = [mean([accel[k] for accel, _, _ in samples]) for k in range(3)]
-    up = [mean([rotate(inverse(q), (0.0, 0.0, 1.0))[k] for _, _, q in samples]) for k in range(3)]
-    cosine = sum(r * u for r, u in zip(read, up)) / (math.sqrt(sum(r * r for r in read) * sum(u * u for u in up)) or 1)
-    off = math.degrees(math.acos(max(-1.0, min(1.0, cosine))))
-    if off > 0.5:
-        problems.append(f"the IMU at rest reads gravity {off:.1f} deg from where its attitude puts it")
-    rotation = [mean([gyro[k] for _, gyro, _ in samples]) for k in range(3)]
-    if max(map(abs, rotation)) > 0.001:
-        problems.append(f"the IMU at rest turns at {max(map(abs, rotation)):.4f} rad/s")
+    # At rest an accelerometer reads the ground's push, up in the world, and a gyro nothing.
+    ideal = {"acceleration": [mean([rotate(inverse(q), (0.0, 0.0, GRAVITY))[k] for _, _, q in samples]) for k in range(3)],
+             "angular velocity": [0.0, 0.0, 0.0]}
+    for name, index, part, unit in (("acceleration", 0, imu["accelerometer"], "m/s^2"),
+                                    ("angular velocity", 1, imu["gyro"], "rad/s")):
+        for k, axis in enumerate("xyz"):
+            values = [sample[index][k] for sample in samples]
+            truth = ideal[name]
+            allowed = (part["bias"] + part["scale"] * abs(truth[k])
+                       + part["cross_axis"] * sum(abs(v) for j, v in enumerate(truth) if j != k)
+                       + 4 * part["noise"] / math.sqrt(len(values)))
+            if abs(off := mean(values) - truth[k]) > allowed:
+                problems.append(f"the IMU's {name} {axis} at rest is {off:+.4f} {unit} off, beyond the part's "
+                                f"{allowed:.4f}")
+            if not NOISE_BAND[0] <= (ratio := spread(values) / part["noise"]) <= NOISE_BAND[1]:
+                problems.append(f"the IMU's {name} {axis} at rest spreads {ratio:.2f}x its configured noise")
     tilt = max(math.degrees(math.acos(max(-1.0, min(1.0, 1 - 2 * (q[0] ** 2 + q[1] ** 2))))) for _, _, q in samples)
     if tilt > 2.0:
         problems.append(f"the IMU at rest is tilted {tilt:.1f} deg")
-    for name, index, noise in (("acceleration", 0, imu["accelerometer_noise"]),
-                               ("angular velocity", 1, imu["gyro_noise"])):
-        for k, axis in enumerate("xyz"):
-            ratio = spread([sample[index][k] for sample in samples]) / noise
-            if not NOISE_BAND[0] <= ratio <= NOISE_BAND[1]:
-                problems.append(f"the IMU's {name} {axis} at rest spreads {ratio:.2f}x its configured noise")
     return problems
 
 

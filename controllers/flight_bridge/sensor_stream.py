@@ -8,6 +8,9 @@ stream never stalls physics, and pausing Webots stops its clock. A reading older
 fails the stream: the LiDAR by the time Webots labels its scan with, the IMU's gyro against the
 Iris's, which refreshes every step.
 
+The IMU reads as its part does (config/sensors.json): each axis turned by a scale and cross-axis error
+and offset by a bias, drawn once from the seed within the datasheet's tolerances, plus white noise.
+
 The LiDAR's returns are rendered in one step, so each is stamped with the scan's time (offset 0);
 rays that hit nothing within the range (or something closer than its minimum) are left out. Ground
 truth (the Iris's noiseless GPS and inertial unit) goes to truth.bin in the run folder every step,
@@ -67,9 +70,9 @@ class SensorStream:
             return ms
 
         imu, lidar, camera = self.config["imu"], self.config["lidar"], self.config["camera"]
-        # IMU noise: absolute, white, from a fixed seed so a run's sensor data repeats.
-        self.noise = random.Random(imu.get("seed", 0))
-        self.accel_noise, self.gyro_noise = imu["accelerometer_noise"], imu["gyro_noise"]
+        # The IMU's part: its errors drawn once from the seed, so every run reads as the same unit; then its noise.
+        self.noise = random.Random(imu["seed"])
+        self.gyro_model, self.accel_model = (self._part(imu[key]) for key in ("gyro", "accelerometer"))
         self.imu_period = period(imu["rate_hz"])
         self.accelerometer = robot.getDevice(f"{imu['name']} accelerometer")
         self.gyro = robot.getDevice(f"{imu['name']} gyro")
@@ -93,6 +96,17 @@ class SensorStream:
         self.address = (stream["host"], stream["port"])
         self.queue = queue.Queue(maxsize=stream["queue"])
         threading.Thread(target=self._send, daemon=True).start()
+
+    def _part(self, spec):
+        """(matrix, bias, noise) of one triad: scale errors on the diagonal, cross-axis errors off it."""
+        draw = self.noise.uniform
+        matrix = [[1.0 + draw(-spec["scale"], spec["scale"]) if i == j else draw(-spec["cross_axis"], spec["cross_axis"])
+                   for j in range(3)] for i in range(3)]
+        return matrix, [draw(-spec["bias"], spec["bias"]) for _ in range(3)], spec["noise"]
+
+    def _measure(self, model, true):
+        matrix, bias, noise = model
+        return [sum(m * v for m, v in zip(row, true)) + b + self.noise.gauss(0.0, noise) for row, b in zip(matrix, bias)]
 
     def _put(self, message):
         with self.lock:
@@ -180,8 +194,8 @@ class SensorStream:
             # Both gyros sit on one rigid body: equal rates, whatever the mount, unless this one was read stale.
             if abs(math.hypot(*gyro) - math.hypot(*self.iris_gyro.getValues())) > 1e-9:
                 raise RuntimeError("the IMU's gyro is older than its stamp")
-            gyro = [v + self.noise.gauss(0.0, self.gyro_noise) for v in gyro]
-            accel = [v + self.noise.gauss(0.0, self.accel_noise) for v in self.accelerometer.getValues()]
+            gyro = self._measure(self.gyro_model, gyro)
+            accel = self._measure(self.accel_model, self.accelerometer.getValues())
             self._put(protocol.pack(protocol.IMU, stamp, protocol.VECTOR6.pack(*gyro, *accel)))
         if now_ms % self.lidar_period == 0:
             # Layer-major points, top layer first: the configured layers are the first ones.
