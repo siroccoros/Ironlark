@@ -115,28 +115,32 @@ class Sensors(unittest.TestCase):
     """check_recording judges what the sensors measured, not only when."""
     CONFIG = json.loads((ROOT / "config/sensors.json").read_text())
 
-    def at_rest(self, count=2500, gravity=9.81, turning=0.0, tilt=0.0, noise=1.0, up=None):
+    def at_rest(self, count=2500, gravity=9.81, turning=0.0, tilt=0.0, noise=1.0, up=None, offset=0.0):
         """IMU samples of a drone standing still, tilted tilt degrees about x, with the rig's configured noise times
-        noise; up: where in the IMU frame its accelerometer reads gravity instead of up in the world."""
+        noise; up: where in the IMU frame its accelerometer reads gravity instead of up in the world; offset: each
+        axis's bias, as a share of the part's tolerance."""
         import math
         import random
 
         rng, imu = random.Random(0), self.CONFIG["imu"]
-        a, g = imu["accelerometer_noise"] * noise, imu["gyro_noise"] * noise
+        a, g = imu["accelerometer"]["noise"] * noise, imu["gyro"]["noise"] * noise
+        ab, gb = imu["accelerometer"]["bias"] * offset, imu["gyro"]["bias"] * offset
         angle = math.radians(tilt)
         orientation = (math.sin(angle / 2), 0.0, 0.0, math.cos(angle / 2))
         up = up or (0.0, math.sin(angle), math.cos(angle))  # the world's z in a frame turned by angle about x
-        return [(tuple(gravity * u + rng.gauss(0, a) for u in up),
-                 (rng.gauss(0, g), rng.gauss(0, g), turning + rng.gauss(0, g)), orientation) for _ in range(count)]
+        return [(tuple(gravity * u + ab + rng.gauss(0, a) for u in up),
+                 (gb + rng.gauss(0, g), gb + rng.gauss(0, g), turning + gb + rng.gauss(0, g)), orientation)
+                for _ in range(count)]
 
     def test_an_imu_at_rest_passes(self):
-        self.assertEqual(check_recording.imu_problems(self.at_rest(), self.CONFIG), [])
-        self.assertEqual(check_recording.imu_problems(self.at_rest(tilt=1.5), self.CONFIG), [])
+        for change in ({}, {"tilt": 1.5}, {"offset": 0.99}, {"offset": -0.99}):
+            self.assertEqual(check_recording.imu_problems(self.at_rest(**change), self.CONFIG), [], change)
 
     def test_an_imu_that_misreads_rest_fails(self):
-        for change, words in (({"gravity": 9.6}, "gravity"), ({"turning": 0.01}, "turns"), ({"tilt": 5.0}, "tilted"),
-                              ({"up": (-1.0, 0.0, 0.0)}, "deg from where its attitude puts it"),
-                              ({"up": (0.0, 0.0, -1.0)}, "180.0 deg from"),
+        for change, words in (({"gravity": 9.0}, "acceleration z at rest is -0.8"), ({"turning": 0.05}, "angular velocity z"),
+                              ({"offset": 1.5}, "beyond the part's"), ({"tilt": 5.0}, "tilted"),
+                              ({"up": (-1.0, 0.0, 0.0)}, "acceleration x at rest is -9.8"),
+                              ({"up": (0.0, 0.0, -1.0)}, "acceleration z at rest is -19.6"),
                               ({"noise": 3.0}, "spreads 3.0"), ({"noise": 0.0}, "spreads 0.00"),
                               ({"count": 100}, "fewer than a second")):
             problems = check_recording.imu_problems(self.at_rest(**change), self.CONFIG)

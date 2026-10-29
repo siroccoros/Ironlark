@@ -104,9 +104,9 @@ recovery policy.
 ## Sensors and ROS 2
 
 The drone ([`tools/build_drone.py`](tools/build_drone.py)) keeps the Iris flight model (motors,
-propeller constants, mass, inertia, collision box, and the noiseless IMU and GPS ArduPilot reads)
+propeller constants, mass, inertia, collision box, and the noiseless IMU and GPS ArduPilot reads, which are also ground truth; SITL adds its own noise, the barometer an MS5611's: `config/flight.parm`)
 and carries the rig of `config/sensors.json`: a Mid-360-class LiDAR (360° × 59°, −7° to +52°,
-0.1–40 m, 10 Hz, 32 × 900 returns), an IMU (250 Hz, seeded white noise) and a front camera
+0.1–40 m, 10 Hz, 32 × 900 returns), the Mid-360's own IMU (an ICM-40609-D 4.4 cm under the LiDAR's origin, at 250 Hz: datasheet noise, and bias, scale and cross-axis errors drawn once from a seed within its tolerances) and a front camera
 (640 × 480, 90°, 20 Hz, with the scattering fog). With `--record`, the flight
 controller enables them before the first 2 ms physics step, so each refreshes on its period's
 multiples, reads them there, on Webots time, and streams them over local
