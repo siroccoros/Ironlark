@@ -4,6 +4,8 @@ import argparse
 import json
 import math
 from pathlib import Path
+import statistics
+import struct
 import sys
 import time
 
@@ -49,6 +51,48 @@ def judge(truth, autopilot_seconds):
         raise RuntimeError(f"Excessive horizontal drift: {drift:.2f} m")
     return {"peak_height_m": peak, "hover_s": round(hover, 1), "final_height_m": heights[-1],
             "max_horizontal_drift_m": drift, "clock_difference_s": clock_difference}
+
+
+# SITL's record of each IMU's every sample (SIM_GYR_FILE_RW, SIM_ACC_FILE_RW: x, y, z as float32), with the
+# parameters of config/flight.parm that give its datasheet's noise density and the gyro's offset.
+IMUS = {"gyro0": ("SIM_GYR1_NSD", "SIM_GYR1_BIAS", "INS_GYROFFS"),
+        "gyro1": ("SIM_GYR2_NSD", "SIM_GYR2_BIAS", "INS_GYR2OFFS"),
+        "accel0": ("SIM_ACC1_NSD", None, None), "accel1": ("SIM_ACC2_NSD", None, None)}
+DENSITY_TOLERANCE = 0.05  # over ~35 s on the pad a density reads within 2%; SITL's uniform floor, without
+                          # docker/sitl-imu-noise.patch, 4 to 20 times lower
+OFFSET_TOLERANCE_DPS = 0.1  # the boot calibration's own bound (AP_InertialSensor's GYRO_INIT_MAX_DIFF_DPS)
+
+
+def flight_parameters(path):
+    values = {}
+    for line in Path(path).read_text().splitlines():
+        fields = line.split("#")[0].split()
+        if len(fields) == 2:
+            values[fields[0]] = float(fields[1])
+    return values
+
+
+def judge_imus(samples, seconds, parameters, offsets):
+    """The IMUs as the drone waited on its pad, seconds of simulated time: samples, each sensor's rows (x, y, z),
+    every sample it made. White noise of density d, sampled n times over T, has a standard deviation of
+    d * sqrt(n / 2T): each sensor's against its datasheet's (parameters, config/flight.parm). The offsets the boot
+    calibration measured (INS_GYROFFS_X ...: offsets) against those SITL adds."""
+    measured = {}
+    for sensor, (density, bias, offset) in IMUS.items():
+        rows = samples[sensor]
+        if len(rows) < 5000:  # fewer give no density to 2%
+            raise RuntimeError(f"{sensor}: {len(rows)} samples over {seconds:.1f} s on the pad")
+        spread = [statistics.pstdev(axis) * math.sqrt(2 * seconds / len(rows)) / parameters[density]
+                  for axis in zip(*rows)]
+        if any(abs(ratio - 1) > DENSITY_TOLERANCE for ratio in spread):
+            raise RuntimeError(f"{sensor}: noise density {', '.join(f'{r:.3f}' for r in spread)} times its datasheet's")
+        measured[sensor] = {"density_over_datasheet": [round(r, 3) for r in spread]}
+        if bias:
+            error = max(abs(math.degrees(offsets[f"{offset}_{axis}"] - parameters[f"{bias}_{axis}"])) for axis in "XYZ")
+            if error > OFFSET_TOLERANCE_DPS:
+                raise RuntimeError(f"{sensor}: the boot calibration's offset is {error:.3f} deg/s off SITL's")
+            measured[sensor]["offset_error_dps"] = round(error, 4)
+    return {"rest_s": round(seconds, 1), **measured}
 
 
 class Flight:
@@ -120,6 +164,25 @@ class Flight:
             detail = f": {status.text}" if status else ""
             raise RuntimeError(f"Command {command} rejected with result {ack.result}{detail}")
 
+    def parameter(self, name, value=None):
+        """A parameter's value, set first to value if given."""
+        if value is None:
+            self.connection.mav.param_request_read_send(self.connection.target_system,
+                self.connection.target_component, name.encode(), -1)
+        else:
+            self.connection.mav.param_set_send(self.connection.target_system, self.connection.target_component,
+                name.encode(), value, mavutil.mavlink.MAV_PARAM_TYPE_REAL32)
+        return self.wait(f"parameter {name}", lambda m: m.get_type() == "PARAM_VALUE" and m.param_id == name
+                         and (value is None or m.param_value == value)).param_value
+
+    def record_imus(self, on):
+        """SITL's record of the IMUs' samples (judge_imus), from the time on until off."""
+        for name in ("SIM_GYR_FILE_RW", "SIM_ACC_FILE_RW"):
+            self.parameter(name, 2 if on else 0)  # 2: write each sample to /tmp/<sensor><instance>.dat
+        # The autopilot's clock just after: as late at the start as at the end.
+        self.wait("autopilot clock", lambda m: getattr(m, "time_boot_ms", None) is not None)
+        return self.sim_time
+
     def mode(self, value):
         self.command(mavutil.mavlink.MAV_CMD_DO_SET_MODE,
                      mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED, value)
@@ -152,6 +215,7 @@ class Flight:
 
     def execute(self):
         self.connect()
+        resting = self.record_imus(True)
         self.event("WAITING_FOR_POSITION")
         self.wait("GPS fix", lambda m: m.get_type() == "GPS_RAW_INT" and m.fix_type >= 3, 60)
         # Require the EKF to have an absolute horizontal position estimate.
@@ -159,6 +223,7 @@ class Flight:
                   and m.flags & 16 and not m.flags & 128, 60)
         self.wait("local position", lambda m: m.get_type() == "LOCAL_POSITION_NED")
         self.mode(4)  # GUIDED
+        rest = self.record_imus(False) - resting
         self.event("ARMING")
         self.command(mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 1)
         self.wait("armed", lambda m: m.get_type() == "HEARTBEAT"
@@ -204,6 +269,10 @@ class Flight:
         if autopilot_time is None:
             raise RuntimeError("No autopilot clock was recorded")
         measurements = judge(truth, autopilot_time.time_boot_ms / 1000)
+        samples = {sensor: list(struct.iter_unpack("<3f", Path(f"/tmp/{sensor}.dat").read_bytes())) for sensor in IMUS}
+        offsets = {f"{name}_{axis}": self.parameter(f"{name}_{axis}")
+                   for name in ("INS_GYROFFS", "INS_GYR2OFFS") for axis in "XYZ"}
+        measurements["imus"] = judge_imus(samples, rest, flight_parameters("/project/config/flight.parm"), offsets)
         self.event("COMPLETED")
         return measurements
 

@@ -77,7 +77,9 @@ the bridge UDP 9002–9003. Occupied ports and concurrent runs are refused.
 Pass requires EKF3, GPS fix, a valid position estimate, accepted commands,
 sustained hover and disarm after landing. A separate supervisor records ground
 truth, read only after landing: peak height 2.5–4 m, final ≤ 0.2 m, drift
-≤ 1.5 m, autopilot and Webots clocks within 1 s.
+≤ 1.5 m, autopilot and Webots clocks within 1 s. On the pad until arming, SITL
+records each IMU's every sample: each noise density within 5% of its datasheet's,
+each gyro offset the boot calibration found within 0.1°/s of SITL's.
 
 Parameters load as: Copter SITL defaults, the Iris example, then
 `flight.parm`, which enables EKF3 and tunes gains for 4.7 at 500 Hz. Pre-arm
