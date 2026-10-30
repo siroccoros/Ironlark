@@ -266,8 +266,11 @@ hovering and turning; placed at the frame's start instead, 3.2–3.4×. It costs
 draw nothing past the sensor's reach (37.3 → 27.7 ms of GPU a panorama, exact; the forest 0.24 →
 0.3× real time); culling hidden instances there saved under 1 ms for 20 ms more CPU, dropped. The
 forest's returns against the meshes the world draws: 4.6% lay off every surface, ranges blended
-across depth edges (Webots' panorama merge, the sweep's planes), now none. Next: ArduPilot's IMU
-(SITL's fixed floor noise) and compass (noiseless). Later, for cost: each render only the band of
+across depth edges (Webots' panorama merge, the sweep's planes), now none. ArduPilot's IMUs and
+compass (2026-10-30): the Iris's Pixhawk 1's, each IMU's noise at its datasheet's density (was one
+uniform floor for both, 4–20× lower), gyro offsets within the datasheets' measured at boot (were none,
+with a made-up drift), the compass 2 mG (was noiseless); the flight check measures them on the pad.
+Next: odometry on the recordings. Later, for cost: each render only the band of
 elevations its slots reach (≈ 60% fewer triangles; needs a per-render band from the controller), and
 the camera (68 ms of GPU a frame, now the larger share).
 
