@@ -3,6 +3,7 @@ import contextlib
 import importlib.util
 import io
 import json
+import math
 import os
 import subprocess
 import sys
@@ -504,6 +505,40 @@ class Flight(unittest.TestCase):
         truth = self.trajectory()
         with self.assertRaisesRegex(RuntimeError, "clock mismatch"):
             flight_smoke.judge(truth, truth[-1]["time"] + 2.0)
+
+    PARAMETERS = flight_smoke.flight_parameters(ROOT / "config/flight.parm")
+
+    def pad(self, seconds=30.0, uniform=False, offset_error=0.0):
+        """The IMUs' samples on the pad, as SITL records them: white noise at the datasheets' densities (or SITL's
+        uniform floor: +-0.04 deg/s, +-0.01 m/s/s), every 2 ms step (IMU 1 in 8 and 4 sub-samples) about each
+        gyro's offset; and the offsets as the boot calibration measured them."""
+        import random
+        rng = random.Random(3)
+        samples, offsets = {}, {}
+        for sensor, (density, bias, offset) in flight_smoke.IMUS.items():
+            n = round(seconds * 500 * {"gyro0": 8, "accel0": 4}.get(sensor, 1))
+            sigma = self.PARAMETERS[density] * math.sqrt(n / (2 * seconds))
+            floor = math.radians(0.04) if sensor.startswith("gyro") else 0.01
+            centre = [self.PARAMETERS[f"{bias}_{axis}"] if bias else 0.0 for axis in "XYZ"]
+            samples[sensor] = [tuple(c + (rng.uniform(-floor, floor) if uniform else rng.gauss(0, sigma))
+                                     for c in centre) for _ in range(n)]
+            if bias:
+                offsets.update({f"{offset}_{axis}": c + math.radians(offset_error) for axis, c in zip("XYZ", centre)})
+        return samples, seconds, self.PARAMETERS, offsets
+
+    def test_imus_at_their_datasheets_pass(self):
+        result = flight_smoke.judge_imus(*self.pad())
+        for sensor in flight_smoke.IMUS:
+            for ratio in result[sensor]["density_over_datasheet"]:
+                self.assertAlmostEqual(ratio, 1.0, delta=0.02)
+
+    def test_sitls_uniform_floor_fails(self):
+        with self.assertRaisesRegex(RuntimeError, "gyro0: noise density 0.10"):
+            flight_smoke.judge_imus(*self.pad(uniform=True))
+
+    def test_an_offset_the_calibration_missed_fails(self):
+        with self.assertRaisesRegex(RuntimeError, "gyro0: the boot calibration's offset is 0.200 deg/s off"):
+            flight_smoke.judge_imus(*self.pad(offset_error=0.2))
 
 
 

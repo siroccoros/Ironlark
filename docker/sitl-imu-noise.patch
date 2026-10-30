@@ -1,0 +1,140 @@
+--- a/libraries/AP_InertialSensor/AP_InertialSensor_SITL.cpp
++++ b/libraries/AP_InertialSensor/AP_InertialSensor_SITL.cpp
+@@ -40,6 +40,27 @@
+     return true;
+ }
+ 
++// a standard normal deviate (Box-Muller)
++static float gaussian(void) {
++    const float u1 = 0.5f * (1.0f - rand_float());  // (0, 1]
++    const float u2 = 0.5f * (1.0f + rand_float());
++    return sqrtf(-2.0f * logf(u1)) * cosf(2.0f * M_PI * u2);
++}
++
++// a sensor's white noise of density nsd for samples at rate_hz (bandwidth rate_hz / 2), each axis
++static Vector3f white_noise(float nsd, float rate_hz) {
++    return Vector3f{gaussian(), gaussian(), gaussian()} * (nsd * sqrtf(0.5f * rate_hz));
++}
++
++// the rate of nsamples sub-samples over the time since the last sample (a driver averages its FIFO over that):
++// the simulation steps when it does, not at the sensor's rate
++static float sub_sample_rate(uint64_t &last_us, uint16_t sample_hz, uint8_t nsamples) {
++    const uint64_t now = AP_HAL::micros64();
++    const float interval = last_us != 0 && now > last_us ? (now - last_us) * 1.0e-6f : 1.0f / sample_hz;
++    last_us = now;
++    return nsamples / interval;
++}
++
+ // calculate a noisy noise component
+ static float calculate_noise(float noise, float noise_variation) {
+     return noise * (1.0f + noise_variation * rand_float());
+@@ -74,6 +95,7 @@
+ {
+     Vector3f accel_accum;
+     uint8_t nsamples = enable_fast_sampling(accel_instance) ? 4 : 1;
++    const float accel_rate = sub_sample_rate(last_accel_us, accel_sample_hz, nsamples);
+ 
+     for (uint8_t j = 0; j < nsamples; j++) {
+ 
+@@ -114,7 +136,12 @@
+         float freq_variation = 0.12f;
+ 
+         // add in sensor noise
+-        accel += Vector3f{rand_float(), rand_float(), rand_float()} * accel_noise;
++        const float accel_nsd = accel_instance < 3 ? sitl->accel_nsd[accel_instance].get() : -1;
++        if (accel_nsd >= 0) {
++            accel += white_noise(accel_nsd, accel_rate);
++        } else {
++            accel += Vector3f{rand_float(), rand_float(), rand_float()} * accel_noise;
++        }
+ 
+         bool motors_on = sitl->throttle > sitl->ins_noise_throttle_min;
+ 
+@@ -211,6 +238,7 @@
+ {
+     Vector3f gyro_accum;
+     uint8_t nsamples = enable_fast_sampling(gyro_instance) ? 8 : 1;
++    const float gyro_rate = sub_sample_rate(last_gyro_us, gyro_sample_hz, nsamples);
+ 
+     const float _gyro_drift = gyro_drift();
+     for (uint8_t j = 0; j < nsamples; j++) {
+@@ -224,9 +252,17 @@
+         // this smears the individual motor peaks somewhat emulating physical motors
+         constexpr float freq_variation = 0.12f;
+         // add in sensor noise
+-        p += gyro_noise * rand_float();
+-        q += gyro_noise * rand_float();
+-        r += gyro_noise * rand_float();
++        const float gyro_nsd = gyro_instance < 3 ? sitl->gyro_nsd[gyro_instance].get() : -1;
++        if (gyro_nsd >= 0) {
++            const Vector3f noise = white_noise(gyro_nsd, gyro_rate);
++            p += noise.x;
++            q += noise.y;
++            r += noise.z;
++        } else {
++            p += gyro_noise * rand_float();
++            q += gyro_noise * rand_float();
++            r += gyro_noise * rand_float();
++        }
+ 
+         bool motors_on = sitl->throttle > sitl->ins_noise_throttle_min;
+         // on a real 180mm copter gyro noise varies between 0.2-0.4 rad/s for throttle 0.2-0.8
+--- a/libraries/AP_InertialSensor/AP_InertialSensor_SITL.h
++++ b/libraries/AP_InertialSensor/AP_InertialSensor_SITL.h
+@@ -48,6 +48,8 @@
+ 
+     uint64_t next_gyro_sample;
+     uint64_t next_accel_sample;
++    uint64_t last_gyro_us;  // the last samples' instants, which their white noise spans
++    uint64_t last_accel_us;
+     uint64_t flightaxis_imu_frame_num;
+     float gyro_time;
+     float accel_time;
+--- a/libraries/SITL/SITL.cpp
++++ b/libraries/SITL/SITL.cpp
+@@ -1299,6 +1299,34 @@
+     // @Description: If non-zero the vehicle will be clamped in position until the value on this servo channel passes 1800PWM
+     AP_GROUPINFO("CLAMP_CH",     49, SIM, clamp_ch, 0),
+ 
++    // @Param: ACC1_NSD
++    // @DisplayName: Accel 1 noise density
++    // @Description: The first accelerometer's white noise density (its datasheet's), in m/s/s per root hertz, Gaussian over each sample's bandwidth. Negative: the fixed 0.01 m/s/s floor.
++    // @User: Advanced
++    AP_GROUPINFO("ACC1_NSD",     50, SIM, accel_nsd[0], -1),
++
++    // @Param: ACC2_NSD
++    // @CopyFieldsFrom: SIM_ACC1_NSD
++    AP_GROUPINFO("ACC2_NSD",     51, SIM, accel_nsd[1], -1),
++
++    // @Param: ACC3_NSD
++    // @CopyFieldsFrom: SIM_ACC1_NSD
++    AP_GROUPINFO("ACC3_NSD",     52, SIM, accel_nsd[2], -1),
++
++    // @Param: GYR1_NSD
++    // @DisplayName: Gyro 1 noise density
++    // @Description: The first gyro's white noise density (its datasheet's), in rad/s per root hertz, Gaussian over each sample's bandwidth. Negative: the fixed 0.04 deg/s floor.
++    // @User: Advanced
++    AP_GROUPINFO("GYR1_NSD",     53, SIM, gyro_nsd[0], -1),
++
++    // @Param: GYR2_NSD
++    // @CopyFieldsFrom: SIM_GYR1_NSD
++    AP_GROUPINFO("GYR2_NSD",     54, SIM, gyro_nsd[1], -1),
++
++    // @Param: GYR3_NSD
++    // @CopyFieldsFrom: SIM_GYR1_NSD
++    AP_GROUPINFO("GYR3_NSD",     55, SIM, gyro_nsd[2], -1),
++
+     // the IMUT parameters must be last due to the enable parameters
+ #if HAL_INS_TEMPERATURE_CAL_ENABLE
+ 
+--- a/libraries/SITL/SITL.h
++++ b/libraries/SITL/SITL.h
+@@ -601,6 +601,8 @@
+ 
+     // IMU control parameters
+     AP_Float gyro_noise[INS_MAX_INSTANCES];  // in degrees/second
++    AP_Float gyro_nsd[3];  // white noise density, rad/s/sqrt(Hz); negative: the fixed floor
++    AP_Float accel_nsd[3];  // white noise density, m/s/s/sqrt(Hz); negative: the fixed floor
+     AP_Vector3f gyro_scale[INS_MAX_INSTANCES];  // percentage
+     AP_Vector3f gyro_bias[INS_MAX_INSTANCES]; // in rad/s
+     AP_Float accel_noise[INS_MAX_INSTANCES]; // in m/s/s

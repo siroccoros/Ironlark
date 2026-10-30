@@ -32,3 +32,30 @@ LOG_DISARMED 1
 # The barometer reads as an MS5611 at the OSR 1024 ArduPilot's driver uses: 0.027 mbar RMS (datasheet),
 # 0.24 m at the home's 750 m. SITL's noise is uniform: +-0.42 m has that RMS. copter.parm sets it 0.
 SIM_BARO_RND 0.42
+
+# The IMUs read as the Iris's Pixhawk 1's (docker/sitl-imu-noise.patch: white noise at each datasheet's density
+# in place of SITL's one uniform floor): IMU 1 an MPU-6000, 400 ug/rtHz and 0.005 deg/s/rtHz; IMU 2 an LSM303D
+# accelerometer, 150 ug/rtHz, and an L3GD20 gyro, 0.03 deg/s/rtHz.
+SIM_ACC1_NSD 0.003923
+SIM_GYR1_NSD 0.00008727
+SIM_ACC2_NSD 0.001471
+SIM_GYR2_NSD 0.0005236
+# Each gyro's zero-rate offset, drawn once (numpy default_rng(0), uniform) within its datasheet's: MPU-6000
+# +-20 deg/s, L3GD20 +-75 deg/s at 2000 deg/s full scale. The board measures them at boot, as a real one does
+# (iris.parm turns that off).
+SIM_GYR1_BIAS_X 0.09562
+SIM_GYR1_BIAS_Y -0.16072
+SIM_GYR1_BIAS_Z -0.32046
+SIM_GYR2_BIAS_X -1.26573
+SIM_GYR2_BIAS_Y 0.82014
+SIM_GYR2_BIAS_Z 1.08059
+INS_GYR_CAL 1
+# The MPU-6000's sensitivity, within its +-3% (drawn alike), which no calibration measures. The L3GD20's datasheet
+# gives no tolerance. Accelerometer offsets and scales count as calibrated.
+SIM_GYR1_SCALE_X 0.64
+SIM_GYR1_SCALE_Y 1.377
+SIM_GYR1_SCALE_Z 0.262
+# No datasheet gives either gyro's drift in flight: SITL's made-up ramp (0.05 deg/s a minute) goes.
+SIM_DRIFT_SPEED 0
+# The compass reads as the Iris's GPS module's HMC5883L, 2 mG RMS: uniform +-3.46 mG has that.
+SIM_MAG_RND 3.46
