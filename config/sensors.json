@@ -34,7 +34,7 @@
   "lidar": {
     "name": "lidar",
     "frame_id": "lidar_link",
-    "model": "Livox Mid-360 class: 360 x 59 degrees (-7 to +52), 0.1 to 40 m",
+    "model": "Livox Mid-360: 200,000 points/s on 4 lines, 360 degrees, 0.1 to 40 m at 10% reflectivity, range precision 2 cm, angular precision 0.15 deg",
     "translation": [
       0.0,
       0.0,
@@ -47,16 +47,44 @@
       0
     ],
     "rate_hz": 10,
-    "horizontal_resolution": 900,
-    "layers": 32,
+    "render_hz": 50,
+    "horizontal_resolution": 3600,
+    "render_layers": 1047,
     "field_of_view": 6.283185,
-    "vertical_field_of_view": 1.826966,
-    "tilt_angle": 0.0,
+    "vertical_field_of_view": 1.825614,
     "min_range": 0.1,
     "max_range": 40.0,
     "noise": 0.02,
-    "render_layers": 56,
-    "note": "Webots renders a 360-degree Lidar from several cameras and misplaces returns when tiltAngle is set (checked on a recorded flight): it renders render_layers over a symmetric field instead, and the stream keeps the top 'layers' (+52.3 to -6.7 degrees)."
+    "angular_noise": 0.002618,
+    "reflectivity": 0.3,
+    "seed": 0,
+    "pattern": {
+      "slot_ns": 4947,
+      "lines": 4,
+      "spin_hz": 184.717,
+      "nod_period_s": 0.10131,
+      "nod_deg": [
+        20.3027,
+        25.0125,
+        -0.0,
+        0.8522,
+        0.0019,
+        0.3189,
+        -0.0222,
+        -0.04,
+        -0.0125
+      ],
+      "fan_elevation_deg": [
+        0.0777,
+        -1.7041,
+        -0.0329
+      ],
+      "fan_azimuth_deg": [
+        1.7976,
+        -0.0479
+      ]
+    },
+    "note": "pattern: fitted by tools/fit_mid360_pattern.py to a real Mid-360's recording (outdoor_kidnap_a, Hard Point Cloud Localization Dataset, Zenodo 10122133, CC BY 4.0): over 203 s, residuals 1.8 deg (elevation, median) and 1.7 deg (the fan's azimuth, RMS); it covers -7.0 to 51.9 deg. The render: 0.1 deg pixels over +-52.3 deg, rows as many as Webots' image (so none is skipped). reflectivity: every surface's, forest at 905 nm (foliage 0.4-0.5, bark and soil 0.2-0.3). Not modelled: beam footprint (edges are sharp, no mixed returns), range accuracy (+-3 cm) beyond precision, returns past the render's 40 m (the datasheet's 70 m at 80%)."
   },
   "camera": {
     "name": "camera",

@@ -63,7 +63,8 @@ class Replay(unittest.TestCase):
 
 
 class Recording(unittest.TestCase):
-    PERIODS = check_recording.periods(2, json.loads((ROOT / "config/sensors.json").read_text()))
+    CONFIG = json.loads((ROOT / "config/sensors.json").read_text())
+    PERIODS = check_recording.periods(2, CONFIG)
 
     def stamps(self, seconds=2.0):
         """A complete recording: each topic every period, from the first clock tick to the last."""
@@ -73,7 +74,7 @@ class Recording(unittest.TestCase):
         return out
 
     def problems(self, stamps, heights=(0.05, 3.0, 0.05)):
-        return check_recording.completeness(stamps, self.PERIODS, list(heights))
+        return check_recording.completeness(stamps, self.PERIODS, list(heights), check_recording.lags(self.CONFIG))
 
     def test_periods_come_from_the_rig_and_the_physics_step(self):
         ms = {topic: period // 1_000_000 for topic, period in self.PERIODS.items()}
@@ -105,6 +106,24 @@ class Recording(unittest.TestCase):
         problems = self.problems(stamps)
         self.assertTrue(any(p.startswith("/lidar/points: covers 0.300") for p in problems), problems)
         self.assertTrue(any(p.startswith("/camera/image_raw: covers") for p in problems), problems)
+
+    def test_the_lidar_may_end_a_frame_and_half_a_render_before_the_clock(self):
+        stamps = self.stamps()
+        stamps["/lidar/points"] = stamps["/lidar/points"][:-1]  # its last frame was not whole when the clock stopped
+        self.assertEqual(self.problems(stamps), [])
+        stamps["/lidar/points"] = stamps["/lidar/points"][:-2]
+        self.assertTrue(any(p.startswith("/lidar/points: covers") for p in self.problems(stamps)))
+
+    def test_lidar_frames_hold_the_patterns_times_and_lines(self):
+        import numpy as np
+        from sensing import mid360
+        points = np.zeros(4, mid360.POINT)
+        points["layer"], points["time"] = [0, 1, 2, 3], [0.0, 0.01, 0.05, 0.0999]
+        self.assertEqual(check_recording.frame_problems(points, self.CONFIG), [])
+        points["time"][2] = 0.1
+        self.assertIn("beyond the frame", check_recording.frame_problems(points, self.CONFIG)[0])
+        points["time"][2], points["layer"][2] = 0.05, 4
+        self.assertIn("lines [0, 1, 3, 4]", check_recording.frame_problems(points, self.CONFIG)[0])
 
     def test_a_recording_without_the_whole_flight_fails(self):
         for heights in ((0.05, 1.0, 0.05), (3.0, 3.0, 0.05), (0.05, 3.0, 2.0)):
@@ -155,7 +174,8 @@ class Sensors(unittest.TestCase):
         distance, angle, residual = check_recording.fit_wall(points)
         return {"distance_error_m": abs(distance - 5.9), "normal_error_deg": angle,
                 "residual_over_noise": residual / self.CONFIG["lidar"]["noise"], "camera_points": 400,
-                "camera_agreement": 0.99, "ground_points": 3000, "background_red": 0.0}
+                "camera_agreement": 0.99, "ground_points": 3000, "background_red": 0.0,
+                "turning": {"frames": 10, "residual_over_noise": 1.1, "at_frame_start_over_noise": 40.0}}
 
     def test_a_wall_seen_with_the_rig_noise_passes(self):
         self.assertEqual(check_recording.wall_problems(self.wall(lambda rng: rng.gauss(0, 0.02))), [])
@@ -164,6 +184,13 @@ class Sensors(unittest.TestCase):
         report = self.wall(lambda rng: rng.uniform(-0.9, 0.9))
         self.assertLess(report["distance_error_m"], 0.05)  # the fit alone cannot tell
         self.assertTrue(any("scatter" in p for p in check_recording.wall_problems(report)))
+
+    def test_turning_frames_must_place_each_point_at_its_own_instant(self):
+        report = self.wall(lambda rng: rng.gauss(0, 0.02))
+        for turning, words in (({"frames": 1}, "fewer than 3"), ({"residual_over_noise": 4.0}, "turning, the wall's"),
+                               ({"at_frame_start_over_noise": 1.2}, "not theirs")):
+            problems = check_recording.wall_problems(report | {"turning": report["turning"] | turning})
+            self.assertTrue(any(words in p for p in problems), (turning, problems))
 
     def test_a_camera_that_sees_everything_red_fails(self):
         report = self.wall(lambda rng: rng.gauss(0, 0.02)) | {"background_red": 1.0, "camera_agreement": 1.0}

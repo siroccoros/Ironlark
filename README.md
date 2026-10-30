@@ -5,7 +5,7 @@ flies. Missions will span departure, outdoor travel, GPS-denied exploration,
 inspection and return. Everything is simulated. Named for the holding
 pattern: sit back and watch autonomy fly.
 
-Today: a reproducible Webots–ArduPilot flight (take off, hover, land on EKF3
+Today: a reproducible Webots–ArduPilot flight (take off, hover, half turn, land on EKF3
 with simulated GPS) over a Poly Haven pine forest, on a hilltop above a
 valley. What comes next is in
 [ROADMAP.md](ROADMAP.md).
@@ -37,7 +37,7 @@ compiles and links against each to list what's missing.
 | `render-reference` | Cycles renders of the source scene at the preview cameras, into `runs/reference/`: the ground truth for looks. Needs more than ~26 GB RAM (15 GB + zram was not enough); needs no built world. |
 | `run` | Flies over the forest in a fullscreen window, then exits. Until the autopilot can arm (EKF3 learning its gyro biases, ~40 s of simulated time) the simulation runs as fast as it can, the view at 10 fps; takeoff comes ~16 s after launch. `--world empty` for the bare test area; `--editor` for Webots' UI; `--record` streams the sensors to ROS 2 and records a rosbag2 of the flight in the run folder (in real time throughout). |
 | `replay RUN` | Plays a recorded run's bag in the ROS 2 container; its `/clock` topic carries Webots time. |
-| `check-recording RUN` | Checks a recorded flight: the bag is complete (every topic, a message every period, over the whole flight), and the IMU at rest reads gravity, no rotation and the rig's noise. In the empty world, then the calibration wall: LiDAR distance, orientation and scatter against the rig's range noise, camera ↔ LiDAR agreement, and the ground in front of the wall not red. |
+| `check-recording RUN` | Checks a recorded flight: the bag is complete (every topic, a message every period, over the whole flight), and the IMU at rest reads gravity, no rotation and the rig's noise. Every LiDAR frame's times and lines. In the empty world, then the calibration wall: LiDAR distance, orientation and scatter against the rig's noise, each point placed at its own instant; turning, the same scatter, and much more with every point at its frame's start; camera ↔ LiDAR agreement, and the ground in front of the wall not red. |
 | `check-replay RUN` | Replays a recorded flight while recording it again and compares: every topic present, the same messages byte for byte, in order. |
 | `check` | The same flight on a virtual display, empty world by default. Exits nonzero on failure. |
 
@@ -105,20 +105,31 @@ recovery policy.
 
 The drone ([`tools/build_drone.py`](tools/build_drone.py)) keeps the Iris flight model (motors,
 propeller constants, mass, inertia, collision box, and the noiseless IMU and GPS ArduPilot reads, which are also ground truth; SITL adds its own noise, the barometer an MS5611's: `config/flight.parm`)
-and carries the rig of `config/sensors.json`: a Mid-360-class LiDAR (360° × 59°, −7° to +52°,
-0.1–40 m, 10 Hz, 32 × 900 returns), the Mid-360's own IMU (an ICM-40609-D 4.4 cm under the LiDAR's origin, at 250 Hz: datasheet noise, and bias, scale and cross-axis errors drawn once from a seed within its tolerances) and a front camera
+and carries the rig of `config/sensors.json`: a Livox Mid-360 (below), the Mid-360's own IMU (an ICM-40609-D 4.4 cm under the LiDAR's origin, at 250 Hz: datasheet noise, and bias, scale and cross-axis errors drawn once from a seed within its tolerances) and a front camera
 (640 × 480, 90°, 20 Hz, with the scattering fog). With `--record`, the flight
 controller enables them before the first 2 ms physics step, so each refreshes on its period's
 multiples, reads them there, on Webots time, and streams them over local
 TCP ([`sensing/protocol.py`](sensing/protocol.py)); a full queue drops and counts, never stalling
-physics, and pausing stops the clock. A reading older than its stamp fails the stream: the LiDAR by
-Webots' own scan time, the IMU's gyro against the Iris's. After the flight the stream ends: the bridge acknowledges
+physics, and pausing stops the clock. A reading older than its stamp fails the stream: the IMU's gyro against the Iris's; the LiDAR's render if it changed before use. After the flight the stream ends: the bridge acknowledges
 every message, and a run whose stream dropped, failed or left a message unsent fails, naming the loss
 (`sensing.json` in the run folder). A ROS 2 Humble container ([`ros/`](ros)) publishes `/clock`,
 `/imu/data` (angular velocity and acceleration; an IMU measures no orientation), `/lidar/points`
-(x, y, z, ring, time: hits only; Webots renders a scan in one step, so every return's time is 0 after
-the stamp), `/camera/image_raw` (bgra8), `/camera/camera_info` and `/tf_static`, and records all of it with rosbag2 (reliable, deep queues: `ros/record_qos.yaml`; each message compressed with zstd, losslessly: a forest flight's minute is 1.1 GB, the empty world's 0.15 GB). The recorder writes each message as it arrives and is stopped only once the bag holds every message the bridge published (`published.json`): rosbag2 drops what it has not yet taken, and lagged up to 0.6 s at the end of a flight. Ground truth never enters ROS: the controller writes it to `truth.bin` in the run folder (position, attitude, velocity every step; `sensing/protocol.py`), for checks only. A recorded check adds sensing's cost to `result.json` (real-time factor, messages sent); every flight adds what it cost the machine: peak RAM and CPU time of Webots with its controllers, SITL and ROS, and GPU memory, Webots' own and the card's, each named when it could not be measured. Frames are REP-103: Webots' world is
+(x, y, z, ring, time: returns only, each in the sensor frame at its own instant, time in seconds after the frame's stamp), `/camera/image_raw` (bgra8), `/camera/camera_info` and `/tf_static`, and records all of it with rosbag2 (reliable, deep queues: `ros/record_qos.yaml`; each message compressed with zstd, losslessly: a forest flight's minute is 1.1 GB, the empty world's 0.15 GB). The recorder writes each message as it arrives and is stopped only once the bag holds every message the bridge published (`published.json`): rosbag2 drops what it has not yet taken, and lagged up to 0.6 s at the end of a flight. Ground truth never enters ROS: the controller writes it to `truth.bin` in the run folder (position, attitude, velocity every step; `sensing/protocol.py`), for checks only. A recorded check adds sensing's cost to `result.json` (real-time factor, messages sent); every flight adds what it cost the machine: peak RAM and CPU time of Webots with its controllers, SITL and ROS, and GPU memory, Webots' own and the card's, each named when it could not be measured. Frames are REP-103: Webots' world is
 ENU and bodies FLU; [`sensing/frames.py`](sensing/frames.py) is the one place for ENU/FLU ↔ NED/FRD.
+
+The LiDAR sweeps as a Mid-360 ([`sensing/mid360.py`](sensing/mid360.py)): a slot every 4.947 µs
+(200,000/s) on 4 lines, a head spinning 185 times a second, the beams nodding between −7° and +52°
+every 101 ms; spin and nod share no period, so the pattern never repeats. Fitted by
+[`tools/fit_mid360_pattern.py`](tools/fit_mid360_pattern.py) to a real unit's recording
+(outdoor_kidnap_a of the Hard Point Cloud Localization Dataset, Zenodo
+[10122133](https://zenodo.org/records/10122133), CC BY 4.0): residuals 1.8° elevation, 1.7° the
+beams' fan. Webots renders a 360° range panorama (0.1° pixels) every 20 ms; each slot is cast into
+the render nearest its instant from where ground truth puts the sensor then, and meets the plane
+the render saw there (exact on flat surfaces; across depth edges, the rendered point). A return needs
+enough light back, every surface Lambertian at 30% reflectivity (forest at 905 nm) against the
+datasheet's 40 m at 10%; then range noise 2 cm and angular noise 0.15° (datasheet). Frames of
+100 ms go out once whole, 10 ms after they end. Not modelled: the beam's footprint (sharp edges, no
+mixed returns), range accuracy beyond precision, returns past 40 m (the render's far plane).
 
 ## Webots patches
 
