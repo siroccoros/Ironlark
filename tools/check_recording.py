@@ -1,4 +1,5 @@
-"""Check a recorded flight's sensors: the bag complete, the IMU at rest, and in the empty world the calibration wall.
+"""Check a recorded flight's sensors: the bag complete, the IMU at rest, the calibration wall in the empty world and the
+surfaces in the forest.
 
 Runs in the ROS 2 container on a run folder holding a bag (./ironlark check --record):
 
@@ -18,8 +19,9 @@ scatter (the rig's range noise, and its angular noise along the ray), then proje
 taken at the frame's start: wall returns fall on the wall's red, and pixels seeing the ground in front of it are
 not red. Frames taken while turning (the flight's half turn) scatter about the wall's face as little placed
 point by point, and at least TIMING times as much placed all at the frame's start: the points' times are their
-own. Writes
-sensor_check.json beside the bag; exits nonzero on failure.
+own. In the forest, the returns of those frames, placed alike, against the surfaces the flown world draws (its meshes at
+every instance, tools/scene_surfaces.py): next to none lie farther from them than OFF_SURFACE times the rig's spread.
+Writes sensor_check.json beside the bag; exits nonzero on failure.
 """
 import json
 import math
@@ -36,7 +38,12 @@ import numpy as np  # noqa: E402
 
 WALL_X = 5.9  # the calibration wall's face (worlds/flight_foundation.wbt)
 WALL = {"x": (5.0, 7.0), "y": (-2.2, 2.2), "z": (0.05, 3.0)}
-LIMITS = {"distance_error_m": 0.05, "normal_error_deg": 2.0, "camera_agreement": 0.95, "background_red": 0.05}
+LIMITS = {"distance_error_m": 0.05, "normal_error_deg": 2.0, "camera_agreement": 0.95, "background_red": 0.05,
+          "off_surfaces": 0.001}
+# The forest: returns sampled, and a return's distance from the nearest surface past which it lies off them, over the
+# rig's spread. Edges blended into points between two surfaces put 4.6% past it
+# (runs/20261030-040600-731000), none since (runs/20261030-044454-742139).
+FOREST_SAMPLE, OFF_SURFACE = 20_000, 4.0
 NOISE_BAND = (0.5, 1.5)  # measured spread over the rig's configured noise (config/sensors.json)
 TIMING = 2.0  # turning at the Iris's 1.3 rad/s: 2.7 measured (runs/20261030-025342-691544)
 TURNING_RAD_S, STILL_RAD_S = 1.0, 0.05
@@ -152,6 +159,40 @@ def frame_problems(points, config):
     if len(points) and not set(points["layer"].tolist()) <= set(range(lidar["pattern"]["lines"])):
         return [f"/lidar/points: lines {sorted(set(points['layer'].tolist()))}"]
     return []
+
+
+def forest_report(run, config, poses, frames_, place):
+    """FOREST_SAMPLE returns of the frames (drawn alike every run), placed at their instants, against the surfaces
+    the flown world draws (tools/scene_surfaces.py): their distances to the nearest, and those over the spread the
+    rig's noise gives a return (its range noise, and its angular noise across the ray)."""
+    import scene_surfaces
+
+    lidar = config["lidar"]
+    worlds = run / "worlds"
+    wbt = next(worlds.glob("*.wbt"))
+    folder = worlds if (worlds / "meshes").exists() else ROOT / "worlds" / wbt.stem  # its link may lead off the container
+    world = np.concatenate([place(start, points)[0] for start, points in frames_])
+    ranges = np.concatenate([np.sqrt(p["x"].astype(float) ** 2 + p["y"] ** 2 + p["z"] ** 2) for _, p in frames_])
+    pick = np.random.default_rng(0).permutation(len(world))[:FOREST_SAMPLE]
+    surfaces = scene_surfaces.Surfaces(wbt, [poses[start][0] for start, _ in frames_], lidar["max_range"], folder)
+    distance = surfaces.distance(world[pick])
+    over = distance / np.hypot(lidar["noise"], lidar["angular_noise"] * ranges[pick])
+    return {"frames": len(frames_), "returns": len(world), "sampled": len(pick),
+            "distance_m": {f"p{q}": round(float(np.percentile(distance, q)), 4) for q in (50, 90, 99, 99.9)},
+            "over_spread": {f"p{q}": round(float(np.percentile(over, q)), 3) for q in (50, 90, 99, 99.9)},
+            "off_surfaces": round(float(np.mean(over > OFF_SURFACE)), 5),
+            "off_every_surface": round(float(np.mean(distance >= scene_surfaces.RADIUS)), 5)}
+
+
+def forest_problems(report):
+    """Problems with the forest's returns, none if they lie on the surfaces the world draws, within the rig's noise."""
+    problems = []
+    if report["frames"] < 10 or report["sampled"] < FOREST_SAMPLE:
+        problems.append(f"{report['frames']} LiDAR frames hovering or turning, {report['sampled']} returns sampled: too few")
+    elif report["off_surfaces"] > LIMITS["off_surfaces"]:
+        problems.append(f"{report['off_surfaces']:.2%} of the LiDAR's returns lie off the forest's surfaces "
+                        f"(beyond {OFF_SURFACE} times the rig's spread)")
+    return problems
 
 
 def wall_problems(report):
@@ -309,12 +350,12 @@ def main():
                 + sorted(set(frame_issues))[:5])
     if written != len(truth):
         problems.insert(0, f"{TRUTH}: {len(truth)} records, the stream wrote {written}")
-    if problems or not calibration_wall:  # the forest has no calibration wall
+    if problems:
         report = {"complete": not completeness(stamps, expected, heights, lags(config)),
-                  "imu_samples_at_rest": len(at_rest), "problems": problems, "passed": not problems}
+                  "imu_samples_at_rest": len(at_rest), "problems": problems, "passed": False}
         (run / "sensor_check.json").write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report, indent=2))
-        sys.exit(1 if problems else 0)
+        sys.exit(1)
     lidar_t, lidar_q = static["lidar_link"]
     camera_t, camera_q = static["camera_link"]
     optical_q = static["camera_optical_frame"][1]
@@ -340,6 +381,17 @@ def main():
         world = origin + np.einsum("nij,nj->ni", body, sensor)
         rays = np.einsum("nij,nj->ni", body, local @ mount_r.T)
         return world, rays / np.linalg.norm(rays, axis=1, keepdims=True)
+
+    if not calibration_wall:  # the forest: its returns against the surfaces the world draws
+        report = {"complete": True,
+                  "messages": {topic: len(stamps.get(topic, ())) for topic in [*TOPICS, TRUTH]},
+                  "imu_samples_at_rest": len(at_rest),
+                  "forest": forest_report(run, config, poses, [*scans["hovering"], *scans["turning"]], place)}
+        report["problems"] = forest_problems(report["forest"])
+        report["passed"] = not report["problems"]
+        (run / "sensor_check.json").write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report, indent=2))
+        sys.exit(0 if report["passed"] else 1)
 
     def on_wall(world):
         return np.all([(world[:, k] >= lo) & (world[:, k] <= hi)
