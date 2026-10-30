@@ -262,9 +262,14 @@ unit's recording, each return cast at its own instant into a 50 Hz range panoram
 motion between them corrected on surfaces (was one instant's 32 × 900 render, its times faked).
 The calibration wall: 0.4 mm and 0.1° off (its normal was 0.6–1.3°), scatter 1.0× the expected noise
 hovering and turning; placed at the frame's start instead, 3.2–3.4×. It costs: the forest runs at
-0.26× real time (was 0.77×). Next: cut the panorama's cost
-(render only the band the beams reach; depth only; one geometry pass for the six views), then
-ArduPilot's IMU (SITL's fixed floor noise) and compass (noiseless).
+0.26× real time (was 0.77×). The panorama's cost and the forest's returns (2026-10-30): range views
+draw nothing past the sensor's reach (37.3 → 27.7 ms of GPU a panorama, exact; the forest 0.24 →
+0.3× real time); culling hidden instances there saved under 1 ms for 20 ms more CPU, dropped. The
+forest's returns against the meshes the world draws: 4.6% lay off every surface, ranges blended
+across depth edges (Webots' panorama merge, the sweep's planes), now none. Next: ArduPilot's IMU
+(SITL's fixed floor noise) and compass (noiseless). Later, for cost: each render only the band of
+elevations its slots reach (≈ 60% fewer triangles; needs a per-render band from the controller), and
+the camera (68 ms of GPU a frame, now the larger share).
 
 Evaluate LiDAR-inertial odometry on the recordings. Feed pose, velocity,
 uncertainty and health to ArduPilot's external-navigation input. Hover and make
