@@ -198,6 +198,50 @@ class Sensors(unittest.TestCase):
 
 
 
+class Surfaces(unittest.TestCase):
+    """The forest check's oracle: distances to the meshes a world draws, at every instance, impostors left out."""
+
+    def test_distances_to_instanced_meshes(self):
+        import numpy as np
+        import scene_surfaces
+
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            (folder / "square.obj").write_text("v 0 0 0\nv 1 0 0\nv 1 1 0\nv 0 1 0\nf 1/1 2/2 3/3\nf 1/1 3/3 4/4\n")
+            # Twice: at x = 10, and stood up (z up from y) at x = 20, three times as large.
+            rows = np.array([[[1, 0, 0, 10], [0, 1, 0, 0], [0, 0, 1, 0]],
+                             [[3, 0, 0, 20], [0, 0, -3, 0], [0, 3, 0, 0]]], "<f4")
+            rows.tofile(folder / "squares.bin")
+            np.array([[[1, 0, 0, 30], [0, 1, 0, 0], [0, 0, 1, 0]]], "<f4").tofile(folder / "impostors.bin")
+            (folder / "world.wbt").write_text(
+                'Shape { geometry Mesh { url "square.obj" } instancesUrl [ "squares.bin" ] }\n'
+                'Shape { geometry Mesh { url "square.obj" } instancesUrl [ "impostors.bin" ] impostor TRUE }\n')
+            surfaces = scene_surfaces.Surfaces(folder / "world.wbt", [[15, 0, 0]], 40)
+            points = [[10.5, 0.5, 0.1], [11.2, 0.5, 0.0], [21.5, 0.2, 2.0], [21.5, 1.0, 1.0], [30.5, 0.5, 0.0],
+                      [0.0, 0.5, 0.002]]
+            distance = surfaces.distance(points)
+        # The flat square, beside it, the large one stood up, before it, an impostor's, the home pad.
+        np.testing.assert_allclose(distance, [0.1, 0.2, 0.2, scene_surfaces.RADIUS, scene_surfaces.RADIUS, 0.0],
+                                   atol=1e-6)
+
+
+class Forest(unittest.TestCase):
+    """check_recording judges the forest's returns by the surfaces the world draws."""
+    REPORT = {"frames": 40, "returns": 540_000, "sampled": check_recording.FOREST_SAMPLE, "off_surfaces": 0.0}
+
+    def test_returns_on_the_surfaces_pass(self):
+        self.assertEqual(check_recording.forest_problems(self.REPORT), [])
+
+    def test_returns_between_surfaces_fail(self):
+        problems = check_recording.forest_problems(self.REPORT | {"off_surfaces": 0.0462})
+        self.assertEqual(problems, ["4.62% of the LiDAR's returns lie off the forest's surfaces (beyond 4.0 times the "
+                                    "rig's spread)"])
+
+    def test_too_few_returns_fail(self):
+        for change in ({"frames": 3}, {"sampled": 500}):
+            self.assertTrue(any("too few" in p for p in check_recording.forest_problems(self.REPORT | change)), change)
+
+
 class Stream(unittest.TestCase):
     """The launcher's reading of the sensor stream's account (sensing.json)."""
 
