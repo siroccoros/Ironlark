@@ -257,9 +257,14 @@ for the camera, 2 ms for the IMU; the first scan all zeros), LiDAR hits only at 
 truth off the ROS graph (`truth.bin`), and bags complete (the recorder had lost a high-rate topic's
 last ~0.6 s in 3 of 20 runs). Inertial realism (2026-10-30): the rig's IMU reads as the Mid-360's
 ICM-40609-D (datasheet noise; bias, scale, cross-axis within its tolerances), ArduPilot's barometer as
-an MS5611 (0.24 m RMS, was 0.001). Next: the Mid-360's sweep (its returns gathered over 100 ms by a
-head turning ~160 times a second; Webots' rotating LiDAR turns one camera a step, too slow at that
-speed), then ArduPilot's IMU (SITL's fixed floor noise) and compass (noiseless).
+an MS5611 (0.24 m RMS, was 0.001). The Mid-360's sweep (2026-10-30): its pattern fitted to a real
+unit's recording, each return cast at its own instant into a 50 Hz range panorama, the sensor's
+motion between them corrected on surfaces (was one instant's 32 × 900 render, its times faked).
+The calibration wall: 0.4 mm and 0.1° off (its normal was 0.6–1.3°), scatter 1.0× the expected noise
+hovering and turning; placed at the frame's start instead, 3.2–3.4×. It costs: the forest runs at
+0.26× real time (was 0.77×). Next: cut the panorama's cost
+(render only the band the beams reach; depth only; one geometry pass for the six views), then
+ArduPilot's IMU (SITL's fixed floor noise) and compass (noiseless).
 
 Evaluate LiDAR-inertial odometry on the recordings. Feed pose, velocity,
 uncertainty and health to ArduPilot's external-navigation input. Hover and make
