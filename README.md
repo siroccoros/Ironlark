@@ -87,6 +87,10 @@ checks stay on. Every run starts with fresh autopilot storage.
 bridge: after a packet delay it could reset its timestamp against a stale
 wall clock, repeatedly adding elapsed time to the autopilot. The patch keeps the
 timestamp across delays and rebases only when Webots time goes backwards.
+[`docker/sitl-imu-noise.patch`](docker/sitl-imu-noise.patch) gives each simulated
+IMU its own white noise (`SIM_ACCn_NSD`, `SIM_GYRn_NSD`: a datasheet's density,
+Gaussian over the time each sample spans, as a driver averages its FIFO; SITL steps
+every 2 ms, not at a sensor's rate) in place of one uniform floor for all.
 
 **Localization boundary.** The Iris example uses simulator truth
 (`AHRS_EKF_TYPE=10`); Ironlark sets EKF3 (`3`), and the check rejects truth mode.
@@ -104,7 +108,7 @@ recovery policy.
 ## Sensors and ROS 2
 
 The drone ([`tools/build_drone.py`](tools/build_drone.py)) keeps the Iris flight model (motors,
-propeller constants, mass, inertia, collision box, and the noiseless IMU and GPS ArduPilot reads, which are also ground truth; SITL adds its own noise, the barometer an MS5611's: `config/flight.parm`)
+propeller constants, mass, inertia, collision box, and the noiseless IMU and GPS ArduPilot reads, which are also ground truth; SITL adds the Iris's Pixhawk 1's noise: an MPU-6000 and an L3GD20 with an LSM303D at their datasheets' densities, each gyro's offset drawn once within its datasheet's and measured at boot, the MPU-6000's scale error, an HMC5883L compass, an MS5611 barometer: `config/flight.parm`)
 and carries the rig of `config/sensors.json`: a Livox Mid-360 (below), the Mid-360's own IMU (an ICM-40609-D 4.4 cm under the LiDAR's origin, at 250 Hz: datasheet noise, and bias, scale and cross-axis errors drawn once from a seed within its tolerances) and a front camera
 (640 × 480, 90°, 20 Hz, with the scattering fog). With `--record`, the flight
 controller enables them before the first 2 ms physics step, so each refreshes on its period's

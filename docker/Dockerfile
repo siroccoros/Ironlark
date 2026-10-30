@@ -31,6 +31,13 @@ RUN git apply --check /tmp/webots-clock.patch \
     && git apply /tmp/webots-clock.patch \
     && ./waf copter -j2
 
+# Each simulated IMU's own white noise (SIM_ACCn_NSD, SIM_GYRn_NSD: its datasheet's density) in place of one fixed
+# floor for all (config/flight.parm sets the Pixhawk 1's).
+COPY sitl-imu-noise.patch /tmp/sitl-imu-noise.patch
+RUN git apply --check /tmp/sitl-imu-noise.patch \
+    && git apply /tmp/sitl-imu-noise.patch \
+    && ./waf copter -j2
+
 # What runs: the SITL binary, its default parameters, the upstream Webots example (setup copies it
 # out) and the license, with Python and pymavlink for the flight check. Not the source tree or the
 # compilers (2.46 GB -> about 0.2 GB).
