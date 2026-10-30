@@ -14,7 +14,7 @@ than EDGE of the range away) there is no plane: the range is the point's along t
 """
 import numpy as np
 
-EDGE = 0.1
+EDGE = 0.02  # neighbours on one plane at up to 85 degrees of incidence: tan(85 deg) x a pixel (0.0017 rad) = 0.02
 
 
 def slots(pattern, start_ns, end_ns):

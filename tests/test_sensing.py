@@ -149,6 +149,23 @@ class Mid360(unittest.TestCase):
         nothing, _ = mid360.cast(self.wall(), self.LIDAR["vertical_field_of_view"], origins[:1], -rays[:1])
         self.assertTrue(np.isnan(nothing[0]))
 
+    def test_a_ray_by_a_depth_edge_meets_one_surface_not_a_plane_across_both(self):
+        import numpy as np
+        from sensing import mid360
+        # A pole's face 28 m ahead, 1 degree wide, before a wall at 30 m: neighbours across its edges lie 7% apart.
+        image = self.wall(30.0)
+        columns = self.LIDAR["horizontal_resolution"]
+        azimuth = math.pi - (np.arange(columns) + 0.5) * 2 * math.pi / columns
+        pole = np.abs(azimuth) < math.radians(0.5)
+        image[:, pole] = self.wall(28.0)[:, pole]
+        rng = np.random.default_rng(2)
+        rays = mid360.unit(rng.uniform(-0.012, 0.012, 2000), rng.uniform(-0.3, 0.3, 2000))
+        origins = rng.uniform(-0.02, 0.02, (2000, 3))
+        distance, _ = mid360.cast(image, self.LIDAR["vertical_field_of_view"], origins, rays)
+        x = origins[:, 0] + distance * rays[:, 0]
+        on_one = (np.abs(x - 28.0) < 0.05) | (np.abs(x - 30.0) < 0.05)
+        self.assertTrue(np.all(on_one), np.sort(x[~on_one])[:5])
+
     def test_frames_come_whole_with_each_point_at_its_instant(self):
         import numpy as np
         from sensing import mid360

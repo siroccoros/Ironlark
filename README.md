@@ -125,7 +125,8 @@ every 101 ms; spin and nod share no period, so the pattern never repeats. Fitted
 [10122133](https://zenodo.org/records/10122133), CC BY 4.0): residuals 1.8° elevation, 1.7° the
 beams' fan. Webots renders a 360° range panorama (0.1° pixels) every 20 ms; each slot is cast into
 the render nearest its instant from where ground truth puts the sensor then, and meets the plane
-the render saw there (exact on flat surfaces; across depth edges, the rendered point). A return needs
+the render saw there (exact on flat surfaces; across depth edges, the rendered point: Webots' panorama
+blends ranges only across a surface, patch 0024). A return needs
 enough light back, every surface Lambertian at 30% reflectivity (forest at 905 nm) against the
 datasheet's 40 m at 10%; then range noise 2 cm and angular noise 0.15° (datasheet). Frames of
 100 ms go out once whole, 10 ms after they end. Not modelled: the beam's footprint (sharp edges, no
@@ -175,6 +176,7 @@ Measured with `tools/profile_forest.py` (GTX 1060 3 GB, i5-4670):
 | **0021-Outer-light-occlusion** | `Background.lightOcclusionOuter*`: light layers over a larger rectangle at the ground as it lies, used past the first by surfaces and the fog; past both, open land in full light. | — |
 | **0022-Water-depth-colour-and-wind-ripples** | `PBRAppearance.attenuationColor`/`attenuationDistance` (glTF volume attenuation, along the path to what lies behind, from the scene's depth copy), `scatterColor` (deep water's own colour) and `waves` (wind ripples 3 m to 0.1 m drifting downwind in gusts, finer ones as roughness). Drawn by a `WATER` variant of the material's program (the pen twin generalized), so other materials' shaders are unchanged. The valley's lake and river use it. | GPU +0.3 ms with the lake filling the view (15.4 → 15.7 ms), other valley views within noise; forest views bit-identical |
 | **0023-Range-views-draw-nothing-past-their-reach** | Panoramas (spherical, cylindrical) discard fragments past their range, measured from the camera, and skip instances wholly past it: their flat far planes reached 1.7× as far. Exact: a forest flight's `/lidar/points` byte-identical with the cull off (`IRONLARK_RANGE_REACH=0`). | Mid-360 panorama 37.3 → 27.7 ms GPU, 98.2 → 77.6 M triangles; forest flight 0.24 → 0.3× real time |
+| **0024-Range-images-blend-only-across-a-surface** | A panorama's range blends the four sub-camera texels around a sample only within 2% of the nearest one's range (a plane at 85° incidence); across a depth edge (trunks, needle cards, the drone's propellers) it takes the nearest, not a point in the air between. Colour unchanged. | forest returns off every surface (beyond 4× the rig's spread) 4.62% → 0.035% |
 
 After a build, `.cache/webots-source/` is a git checkout on branch `ironlark`,
 where `git log`, `git blame` and `git rebase -i` work on the series. A new
