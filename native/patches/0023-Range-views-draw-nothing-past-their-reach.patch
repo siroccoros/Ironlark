@@ -1,0 +1,278 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Zaid <283011337+nottzaid@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 04:22:19 +0300
+Subject: [PATCH] Range views draw nothing past their reach
+
+A panorama's pixels read its range as a distance from the camera
+(merge_spherical.frag), and what lies past it reads nothing; its side
+cameras' frusta end at a flat far plane, so their corners reached 1.7
+times as far. Panoramas (Lidar, RangeFinder: spherical or cylindrical)
+now discard fragments past their range (encode_depth.frag) and skip
+instances, and cells of them, wholly past it from the eye
+(wr_camera_set_reach). The discarded fragments leave the background a
+culled instance would, so the cull is exact: a forest flight's
+/lidar/points are byte-identical with it off (IRONLARK_RANGE_REACH=0)
+and on, over the whole of its deterministic stretch (430 frames). Flat
+range images are unchanged: their depth is along the view axis.
+
+Measured (forest flight, frame log, GTX 1060, the Mid-360's 3600 x
+1047 panorama at 50 Hz, 1146 x 444 sub-cameras), against the previous
+renderer: GPU per panorama 37.3 -> 33.6 ms by the discard, -> 27.7 ms
+with the cull; 98.2 -> 77.6 M triangles and 43.5 k -> 33.8 k instances
+per panorama; CPU 11.0 -> 9.5 ms; the flight 0.243x -> 0.315x real
+time.
+---
+ include/wren/camera.h                    |  2 ++
+ resources/wren/shaders/encode_depth.frag |  7 +++++++
+ resources/wren/shaders/encode_depth.vert |  2 ++
+ src/webots/wren/WbWrenCamera.cpp         | 13 +++++++++++++
+ src/webots/wren/WbWrenShaders.cpp        |  3 +++
+ src/wren/Camera.cpp                      |  4 ++++
+ src/wren/Camera.hpp                      |  6 ++++++
+ src/wren/Renderable.cpp                  | 15 +++++++++------
+ src/wren/Renderable.hpp                  |  7 +++++--
+ 9 files changed, 51 insertions(+), 8 deletions(-)
+
+diff --git a/include/wren/camera.h b/include/wren/camera.h
+index 33fa93d07104be6d0f9131efaa36a975cd2c643e..832fee3451647ecc7170982abf83c4735c7dc867 100644
+--- a/include/wren/camera.h
++++ b/include/wren/camera.h
+@@ -21,6 +21,8 @@ void wr_camera_set_projection_mode(WrCamera *camera, WrCameraProjectionMode mode
+ void wr_camera_set_aspect_ratio(WrCamera *camera, float ratio);
+ void wr_camera_set_near(WrCamera *camera, float near_distance);
+ void wr_camera_set_far(WrCamera *camera, float far_distance);
++/* A range view's reach: what lies wholly farther from the camera is not drawn (0: none). */
++void wr_camera_set_reach(WrCamera *camera, float reach);
+ void wr_camera_set_fovy(WrCamera *camera, float fovy);
+ void wr_camera_set_height(WrCamera *camera, float height);
+ void wr_camera_set_position(WrCamera *camera, float *position);
+diff --git a/resources/wren/shaders/encode_depth.frag b/resources/wren/shaders/encode_depth.frag
+index c7d4f638edefe57ce956f1f45b6b5b87dd51a2fb..eb3ef5a247cd09257f8129bf8317ece15b84c907 100644
+--- a/resources/wren/shaders/encode_depth.frag
++++ b/resources/wren/shaders/encode_depth.frag
+@@ -9,8 +9,12 @@ layout(location = 1) out float outputDepth;
+ 
+ uniform float minRange;
+ uniform float maxRange;
++// A panorama's reach (0: none): its range, as a distance from the camera (merge_spherical.frag), so a fragment past it
++// shows nothing; it is left undrawn, as the instances wholly past it are (Renderable::collectVisibleInstances).
++uniform float reach;
+ 
+ in float distToCamera;
++in vec3 viewCoord;
+ in vec2 texUv;
+ 
+ // Alpha-masked materials (PBR alphaCutoff) cut the same texels out of range images as out of the
+@@ -33,6 +37,9 @@ layout(std140) uniform PbrMaterial {
+ material;
+ 
+ void main() {
++  if (reach > 0.0 && dot(viewCoord, viewCoord) >= reach * reach)
++    discard;
++
+   if (alphaMasked && material.alphaCutoff.x > 0.0 && material.baseColorRoughnessMetalnessOcclusionMapFlags.x > 0.0) {
+     vec2 texel = texUv * vec2(textureSize(inputTextures[0], 0));
+     float mip = max(0.0, 0.5 * log2(max(dot(dFdx(texel), dFdx(texel)), dot(dFdy(texel), dFdy(texel)))));
+diff --git a/resources/wren/shaders/encode_depth.vert b/resources/wren/shaders/encode_depth.vert
+index 35ef9deb5f515d91c29f61a999243c48c37e0a26..2223e6ca4826e4f3312621df6ebf868abb64a063 100644
+--- a/resources/wren/shaders/encode_depth.vert
++++ b/resources/wren/shaders/encode_depth.vert
+@@ -7,6 +7,7 @@ layout(location = 0) in vec3 vCoord;
+ layout(location = 2) in vec2 vTexCoord;
+ 
+ out float distToCamera;
++out vec3 viewCoord;  // for the reach, a distance from the camera
+ out vec2 texUv;
+ 
+ #ifdef INSTANCED
+@@ -36,6 +37,7 @@ void main() {
+ #endif
+ 
+   distToCamera = -vCoordTransformed.z;
++  viewCoord = vCoordTransformed.xyz;
+   texUv = vTexCoord;
+ 
+   gl_Position = cameraTransforms.projection * vCoordTransformed;
+diff --git a/src/webots/wren/WbWrenCamera.cpp b/src/webots/wren/WbWrenCamera.cpp
+index 89d2c394fee49ea8d6120ef0783f49309900b348..3846d2c6af12f3c25605242eaf3c6f11a8e002d6 100644
+--- a/src/webots/wren/WbWrenCamera.cpp
++++ b/src/webots/wren/WbWrenCamera.cpp
+@@ -53,6 +53,9 @@
+ #include <QtCore/QTime>
+ #include <QtGui/QImageReader>
+ 
++#include <cstdlib>
++#include <cstring>
++
+ #define DOF_FAR_BLUR_CUTOFF 1.5f
+ #define DOF_BLUR_TEXTURE_RESOLUTION 320.0f
+ 
+@@ -436,6 +439,16 @@ void WbWrenCamera::render() {
+                                                  reinterpret_cast<const char *>(&mMinRange));
+       wr_shader_program_set_custom_uniform_value(program, "maxRange", WR_SHADER_PROGRAM_UNIFORM_TYPE_FLOAT,
+                                                  reinterpret_cast<const char *>(&mMaxRange));
++      // A panorama's pixels read its range as a distance from the camera (merge_spherical.frag): past that reach
++      // nothing shows, so nothing past it is drawn. IRONLARK_RANGE_REACH=0 draws the instances anyway (comparisons).
++      const float reach = isPlanarProjection() ? 0.0f : mMaxRange;
++      wr_shader_program_set_custom_uniform_value(program, "reach", WR_SHADER_PROGRAM_UNIFORM_TYPE_FLOAT,
++                                                 reinterpret_cast<const char *>(&reach));
++    }
++    static const bool cullPastReach = !getenv("IRONLARK_RANGE_REACH") || strcmp(getenv("IRONLARK_RANGE_REACH"), "0");
++    for (int i = 0; i < CAMERA_ORIENTATION_COUNT; ++i) {
++      if (mIsCameraActive[i])
++        wr_camera_set_reach(mCamera[i], cullPastReach && !isPlanarProjection() ? mMaxRange : 0.0f);
+     }
+   }
+ 
+diff --git a/src/webots/wren/WbWrenShaders.cpp b/src/webots/wren/WbWrenShaders.cpp
+index 8ef0d957637448dd3cd0bfd4726f6bac0b446249..727695d33cba43e37648f2a8b1372c91eaeb5c8f 100644
+--- a/src/webots/wren/WbWrenShaders.cpp
++++ b/src/webots/wren/WbWrenShaders.cpp
+@@ -333,11 +333,14 @@ static WrShaderProgram *encodeDepthProgram(int index, const char *defines) {
+ 
+     float minRange = 0.0f;
+     float maxRange = 1.0f;
++    float reach = 0.0f;
+     const bool masked = false;
+     wr_shader_program_create_custom_uniform(program, "minRange", WR_SHADER_PROGRAM_UNIFORM_TYPE_FLOAT,
+                                             reinterpret_cast<const char *>(&minRange));
+     wr_shader_program_create_custom_uniform(program, "maxRange", WR_SHADER_PROGRAM_UNIFORM_TYPE_FLOAT,
+                                             reinterpret_cast<const char *>(&maxRange));
++    wr_shader_program_create_custom_uniform(program, "reach", WR_SHADER_PROGRAM_UNIFORM_TYPE_FLOAT,
++                                            reinterpret_cast<const char *>(&reach));
+     wr_shader_program_create_custom_uniform(program, "alphaMasked", WR_SHADER_PROGRAM_UNIFORM_TYPE_BOOL,
+                                             reinterpret_cast<const char *>(&masked));
+ 
+diff --git a/src/wren/Camera.cpp b/src/wren/Camera.cpp
+index fc7223d063acda8d7e7666d2a93fdd39d151904d..65655782726decd3fc1d758935d1f834a45b272b 100644
+--- a/src/wren/Camera.cpp
++++ b/src/wren/Camera.cpp
+@@ -177,6 +177,10 @@ void wr_camera_set_far(WrCamera *camera, float far_distance) {
+   reinterpret_cast<wren::Camera *>(camera)->setFar(far_distance);
+ }
+ 
++void wr_camera_set_reach(WrCamera *camera, float reach) {
++  reinterpret_cast<wren::Camera *>(camera)->setReach(reach);
++}
++
+ void wr_camera_set_fovy(WrCamera *camera, float fovy) {
+   reinterpret_cast<wren::Camera *>(camera)->setFovy(fovy);
+ }
+diff --git a/src/wren/Camera.hpp b/src/wren/Camera.hpp
+index 37b3efb7dd1e0562c4c3fc34504f2f2e90b8c95d..1dd595269da859b4d2a58da42dc1a5352917981d 100644
+--- a/src/wren/Camera.hpp
++++ b/src/wren/Camera.hpp
+@@ -23,6 +23,8 @@
+ 
+ #include <wren/camera.h>
+ 
++#include <cmath>
++
+ namespace wren {
+ 
+   // Represents a virtual camera, and is used by the Viewport class for rendering.
+@@ -107,6 +109,9 @@ namespace wren {
+     float aspectRatio() const { return mAspectRatio; }
+     float nearDistance() const { return mNear; }
+     float farDistance() const { return mFar; }
++    // A range view's reach (INFINITY: none): what lies wholly farther is not drawn (Renderable::collectVisibleInstances).
++    void setReach(float reach) { mReach = reach > 0.0f ? reach : INFINITY; }
++    float reach() const { return mReach; }
+     float fovy() const { return mFovy; }
+     float height() const { return 2.0f * mHalfHeight; }
+     bool flipY() const { return mFlipY; }
+@@ -188,6 +193,7 @@ namespace wren {
+     float mAspectRatio;
+     float mNear;
+     float mFar;
++    float mReach = INFINITY;
+     float mFovy;        // only used in perpective projection mode
+     float mHalfHeight;  // only used in orthographic projection mode
+ 
+diff --git a/src/wren/Renderable.cpp b/src/wren/Renderable.cpp
+index 21743cfdcb98306ae8899a0f3a36e7e570640705..d502e5c05aef9071947dd9587e78c93c20dd0000 100644
+--- a/src/wren/Renderable.cpp
++++ b/src/wren/Renderable.cpp
+@@ -111,7 +111,7 @@ namespace wren {
+     // Instances are collected before the material binds: nothing visible, nothing bound.
+     if (isInstanced() && !program) {
+       const Camera *camera = Scene::instance()->currentViewport()->camera();
+-      if (!collectVisibleInstances(glm::vec3(glm::inverse(camera->view())[3]), camera->frustum()))
++      if (!collectVisibleInstances(glm::vec3(glm::inverse(camera->view())[3]), camera->frustum(), camera->reach()))
+         return;
+       mInstancesCollected = true;
+     }
+@@ -334,8 +334,9 @@ namespace wren {
+     return distance >= mVisibilityRange.x && (mVisibilityRange.y <= 0.0f || distance < mVisibilityRange.y);
+   }
+ 
+-  int Renderable::uploadVisibleInstances(const ShaderProgram *program, const glm::vec3 &eye, const Frustum &frustum) {
+-    const int count = collectVisibleInstances(eye, frustum);
++  int Renderable::uploadVisibleInstances(const ShaderProgram *program, const glm::vec3 &eye, const Frustum &frustum,
++                                          float reach) {
++    const int count = collectVisibleInstances(eye, frustum, reach);
+     if (count)
+       uploadInstances();
+     return count;
+@@ -351,7 +352,7 @@ namespace wren {
+     return true;
+   }
+ 
+-  int Renderable::collectVisibleInstances(const glm::vec3 &eye, const Frustum &frustum) {
++  int Renderable::collectVisibleInstances(const glm::vec3 &eye, const Frustum &frustum, float range) {
+     if (mInstanceBoundsMesh != mMesh) {
+       mInstanceBounds = mMesh->recomputeBoundingSphere(gVec3Ones);
+       mInstanceBoundsMesh = mMesh;
+@@ -402,7 +403,7 @@ namespace wren {
+         return false;
+       const primitive::Sphere bounds(0.5f * (cell.low + cell.high),
+                                      0.5f * glm::length(cell.high - cell.low) + reach * cell.scale);
+-      if (!frustum.isInside(bounds))
++      if (!frustum.isInside(bounds) || glm::distance(bounds.mCenter, eye) - bounds.mRadius >= range)
+         return false;
+       if (occlusion && occlusion->isOccluded(bounds.mCenter, bounds.mRadius)) {
+         if (seen)
+@@ -432,6 +433,8 @@ namespace wren {
+         const glm::vec4 &sphere = mInstanceSpheres[i];
+         if (!inView && !isSphereInside(frustum, sphere))
+           continue;
++        if (glm::distance(glm::vec3(sphere), eye) - sphere.w >= range)
++          continue;
+         if (occlusion && seen) {
+           const bool drawn = seen[i];
+           seen[i] = !occlusion->isOccluded(glm::vec3(sphere), sphere.w);
+@@ -531,7 +534,7 @@ namespace wren {
+         uploadInstances();
+         mInstancesCollected = false;
+       } else
+-        count = uploadVisibleInstances(program, glm::vec3(glm::inverse(camera->view())[3]), camera->frustum());
++        count = uploadVisibleInstances(program, glm::vec3(glm::inverse(camera->view())[3]), camera->frustum(), camera->reach());
+       const int unmirrored = count - mVisibleMirroredInstances;
+       const GLint offset = program->drawUniformLocation(ShaderProgram::DRAW_UNIFORM_INSTANCE_OFFSET);
+       if (offset != -1)
+diff --git a/src/wren/Renderable.hpp b/src/wren/Renderable.hpp
+index 7e0ed93b4390434951f5777cfb381e60dd972e76..64f6a3de37ed53380206615a22012716cdeb9fbb 100644
+--- a/src/wren/Renderable.hpp
++++ b/src/wren/Renderable.hpp
+@@ -20,6 +20,7 @@
+ #include "Node.hpp"
+ #include "Primitive.hpp"
+ 
++#include <cmath>
+ #include <string>
+ #include <vector>
+ #include <unordered_map>
+@@ -159,9 +160,11 @@ namespace wren {
+     glm::vec2 mVisibilityRange;
+ 
+     // The instances to draw (culled by distance band, frustum and occlusion), then their upload for the program.
+-    int collectVisibleInstances(const glm::vec3 &eye, const Frustum &frustum);
++    // range: a range view's reach (Camera::reach): instances wholly farther from the eye are not drawn.
++    int collectVisibleInstances(const glm::vec3 &eye, const Frustum &frustum, float range = INFINITY);
+     void uploadInstances();  // the sampler's unit is fixed when programs link (ShaderProgram)
+-    int uploadVisibleInstances(const ShaderProgram *program, const glm::vec3 &eye, const Frustum &frustum);
++    int uploadVisibleInstances(const ShaderProgram *program, const glm::vec3 &eye, const Frustum &frustum,
++                               float reach = INFINITY);
+     bool mInstancesCollected;  // render() collected them for the current viewport
+     bool mInViewSpace;
+     bool mZSortedRendering;
