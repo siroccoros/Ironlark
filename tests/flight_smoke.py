@@ -187,6 +187,12 @@ class Flight:
                 break
         if not hovered:
             raise RuntimeError("Could not sustain a 5-second hover within 0.5 m of target altitude")
+        # A half turn in place: the LiDAR's points, each at its own instant, are checked turning too.
+        self.event("TURNING")
+        self.command(mavutil.mavlink.MAV_CMD_CONDITION_YAW, 180, 120, 1, 1)
+        start = self.wait("attitude", lambda m: m.get_type() == "ATTITUDE").yaw
+        self.wait("half turn", lambda m: m.get_type() == "ATTITUDE"
+                  and abs(math.remainder(m.yaw - start, 2 * math.pi)) > math.radians(175), 20)
         self.event("LANDING")
         self.mode(9)  # LAND
         self.wait("landed and disarmed", lambda m: m.get_type() == "HEARTBEAT"

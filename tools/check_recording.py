@@ -10,11 +10,15 @@ starting and ending within one period of the clock, and so is ground truth (trut
 every step, as many records as the stream's account wrote), over a flight that leaves the ground, climbs past 2.5 m and lands. Then the IMU
 while the drone stands still before takeoff (ground truth speed under 1 cm/s, from 1 s on): it reads
 gravity's push, up in the world by ground truth's attitude, and no rotation, each within its part's
-tolerances (config/sensors.json), with its noise, and a level attitude. In the empty world, the sensors against the calibration wall: for LiDAR scans
-taken while hovering it places the returns in the world (ground truth pose and the static
-transforms), fits the wall (face at x = 5.9 m, normal -x) and checks their distance, orientation
-and scatter (the rig's range noise), then projects them into the camera frame taken at the same
-instant: wall returns fall on the wall's red, and pixels seeing the ground in front of it are not red. Writes
+tolerances (config/sensors.json), with its noise, and a level attitude. Every LiDAR frame: its points' times
+within it and their lines the pattern's. In the empty world, the sensors against the calibration wall: for LiDAR
+frames taken while hovering it places the returns in the world (ground truth pose at each point's instant and
+the static transforms), fits the wall (face at x = 5.9 m, normal -x) and checks their distance, orientation and
+scatter (the rig's range noise, and its angular noise along the ray), then projects them into the camera frame
+taken at the frame's start: wall returns fall on the wall's red, and pixels seeing the ground in front of it are
+not red. Frames taken while turning (the flight's half turn) scatter about the wall's face as little placed
+point by point, and at least TIMING times as much placed all at the frame's start: the points' times are their
+own. Writes
 sensor_check.json beside the bag; exits nonzero on failure.
 """
 import json
@@ -26,12 +30,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from sensing import frames, protocol  # noqa: E402
+from sensing import frames, mid360, protocol  # noqa: E402
+
+import numpy as np  # noqa: E402
 
 WALL_X = 5.9  # the calibration wall's face (worlds/flight_foundation.wbt)
 WALL = {"x": (5.0, 7.0), "y": (-2.2, 2.2), "z": (0.05, 3.0)}
 LIMITS = {"distance_error_m": 0.05, "normal_error_deg": 2.0, "camera_agreement": 0.95, "background_red": 0.05}
 NOISE_BAND = (0.5, 1.5)  # measured spread over the rig's configured noise (config/sensors.json)
+TIMING = 2.0  # turning at the Iris's 1.3 rad/s: 2.7 measured (runs/20261030-025342-691544)
+TURNING_RAD_S, STILL_RAD_S = 1.0, 0.05
 GRAVITY = 9.81
 TOPICS = ["/clock", "/imu/data", "/lidar/points", "/camera/image_raw", "/camera/camera_info", "/tf_static"]
 TRUTH = "truth.bin"  # not a topic: ground truth stays off the ROS graph
@@ -49,9 +57,10 @@ def periods(step_ms, config):
     return {topic: value * 1_000_000 for topic, value in ms.items()}
 
 
-def completeness(stamps, periods, heights):
+def completeness(stamps, periods, heights, lags=None):
     """Problems with the recording's completeness, none if it is complete: stamps holds each topic's
-    message stamps (ns) in bag order, heights the ground truth heights in order."""
+    message stamps (ns) in bag order, heights the ground truth heights in order, lags how long after its stamp a
+    topic's message can first be sent (ns; a LiDAR frame once whole)."""
     problems = []
     for topic in dict.fromkeys([*TOPICS, *periods]):
         if not stamps.get(topic):
@@ -66,7 +75,8 @@ def completeness(stamps, periods, heights):
             missing = sum(step // period - 1 for step in steps if step > period)
             problems.append(f"{topic}: {missing} missing and {sum(step < period for step in steps)} "
                             f"out of order or repeated, at {period // 1_000_000} ms")
-        if not 0 <= series[0] - clock[0] < period or not 0 <= clock[-1] - series[-1] < period:
+        lag = (lags or {}).get(topic, 0)
+        if not 0 <= series[0] - clock[0] < period or not 0 <= clock[-1] - series[-1] < period + lag:
             problems.append(f"{topic}: covers {series[0] / 1e9:.3f}-{series[-1] / 1e9:.3f} s, "
                             f"the clock {clock[0] / 1e9:.3f}-{clock[-1] / 1e9:.3f} s")
     if heights and not (heights[0] <= GROUND_M and max(heights) >= CLIMB_M and heights[-1] <= GROUND_M):
@@ -128,6 +138,22 @@ def fit_wall(points):
     return distance, angle, residual
 
 
+def lags(config):
+    """A LiDAR frame goes out once whole, half a render period after its end (sensing/mid360.py)."""
+    lidar = config["lidar"]
+    return {"/lidar/points": round(1000 / lidar["rate_hz"] + 500 / lidar["render_hz"]) * 1_000_000}
+
+
+def frame_problems(points, config):
+    """Problems with one LiDAR frame's points (structured: layer, time), none if they are the pattern's."""
+    lidar = config["lidar"]
+    if len(points) and not (0 <= points["time"].min() and points["time"].max() < 1 / lidar["rate_hz"]):
+        return [f"/lidar/points: times {points['time'].min():.4f}-{points['time'].max():.4f} s, beyond the frame"]
+    if len(points) and not set(points["layer"].tolist()) <= set(range(lidar["pattern"]["lines"])):
+        return [f"/lidar/points: lines {sorted(set(points['layer'].tolist()))}"]
+    return []
+
+
 def wall_problems(report):
     """Problems with the sensors against the calibration wall, none if the LiDAR places it where it stands with the
     rig's range noise, and the camera sees its red where the LiDAR does, and the ground in front of it not red."""
@@ -137,7 +163,15 @@ def wall_problems(report):
     if report["normal_error_deg"] > LIMITS["normal_error_deg"]:
         problems.append(f"the LiDAR turns the wall {report['normal_error_deg']} deg")
     if not NOISE_BAND[0] <= report["residual_over_noise"] <= NOISE_BAND[1]:
-        problems.append(f"the wall's returns scatter {report['residual_over_noise']}x the configured range noise")
+        problems.append(f"the wall's returns scatter {report['residual_over_noise']}x the configured noise")
+    turning = report["turning"]
+    if turning["frames"] < 3:
+        problems.append(f"{turning['frames']} LiDAR frames taken turning, fewer than 3")
+    elif not NOISE_BAND[0] <= turning["residual_over_noise"] <= NOISE_BAND[1]:
+        problems.append(f"turning, the wall's returns scatter {turning['residual_over_noise']}x the configured noise")
+    elif turning["at_frame_start_over_noise"] < TIMING * turning["residual_over_noise"]:
+        problems.append(f"turning, the wall's returns placed at their frame's start scatter only "
+                        f"{turning['at_frame_start_over_noise']}x the configured noise: the points' times are not theirs")
     if report["camera_points"] < 100:
         problems.append(f"{report['camera_points']} wall returns in the camera's view, fewer than 100")
     elif report["camera_agreement"] < LIMITS["camera_agreement"]:
@@ -209,11 +243,27 @@ def main():
     reader = open_bag(run / "bag")
     types = {t.name: t.type for t in reader.get_all_topics_and_types()}
     static, info = {}, None
-    scans, images, stamps, at_rest = [], {}, {TRUTH: [t for t, _, _, _ in truth]}, []
+    images, stamps, at_rest = {}, {TRUTH: [t for t, _, _, _ in truth]}, []
 
     def ns(stamp):
         return stamp.sec * 1_000_000_000 + stamp.nanosec
 
+    def yaw(q):
+        x, y, z, w = q
+        return math.atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z))
+
+    def motion(stamp):
+        """At a LiDAR frame's start: 'hovering' (above 2 m, still), 'turning' (above 2 m) or None."""
+        here, later = poses.get(stamp), poses.get(stamp + FRAME_NS)
+        if not (here and later) or here[0][2] <= 2.0:
+            return None
+        rate = abs(math.remainder(yaw(later[1]) - yaw(here[1]), 2 * math.pi)) / (FRAME_NS * 1e-9)
+        if rate > TURNING_RAD_S:
+            return "turning"
+        return "hovering" if here[2] < 0.3 and rate < STILL_RAD_S else None
+
+    FRAME_NS = round(1000 / config["lidar"]["rate_hz"]) * 1_000_000
+    scans, frame_issues, hovering_stamps = {"hovering": [], "turning": []}, [], set()
     while reader.has_next():
         topic, data, _ = reader.read_next()
         if topic == "/tf_static":
@@ -222,11 +272,15 @@ def main():
             # Every other message starts with its stamp: a CDR header (4 bytes), then seconds and nanoseconds.
             sec, nanosec = struct.unpack_from("<iI", data, 4)
             stamps.setdefault(topic, []).append(sec * 1_000_000_000 + nanosec)
-        # Stamps only, but for the IMU while the drone stands still before takeoff and images at a scan's instant.
-        pose = poses.get(stamps[topic][-1]) if topic != "/tf_static" else None
+        stamp = stamps[topic][-1]
+        pose = poses.get(stamp) if topic != "/tf_static" else None
+        # Stamps only, but for the IMU while the drone stands still before takeoff, LiDAR frames and images at the
+        # first hovering frames' instants.
         if topic == "/clock" or (topic == "/imu/data" and not (
-                pose and 1e9 <= stamps[topic][-1] < takeoff and pose[2] < 0.01)) or (
-                topic == "/camera/image_raw" and stamps[topic][-1] not in {s[0] for s in scans}):
+                pose and 1e9 <= stamp < takeoff and pose[2] < 0.01)) or (
+                topic == "/camera/camera_info" and info is not None) or (
+                topic == "/camera/image_raw" and not (
+                    stamp % FRAME_NS == 0 and motion(stamp) == "hovering" and len(images) < 20)):
             continue
         msg = deserialize_message(data, get_message(types[topic]))
         if topic == "/tf_static":
@@ -238,8 +292,12 @@ def main():
         elif topic == "/imu/data":
             a, g = msg.linear_acceleration, msg.angular_velocity
             at_rest.append(((a.x, a.y, a.z), (g.x, g.y, g.z), pose[1]))  # the body's attitude: the mount follows
-        elif topic == "/lidar/points" and pose and pose[0][2] > 2.0 and pose[2] < 0.3 and len(scans) < 20:
-            scans.append((ns(msg.header.stamp), pose[:2], msg))
+        elif topic == "/lidar/points":
+            points = np.frombuffer(bytes(msg.data), mid360.POINT)
+            frame_issues += frame_problems(points, config)
+            kind = motion(ns(msg.header.stamp))
+            if kind and len(scans[kind]) < 20:
+                scans[kind].append((ns(msg.header.stamp), points))
         elif topic == "/camera/image_raw":
             images[ns(msg.header.stamp)] = msg
 
@@ -247,12 +305,13 @@ def main():
     imu_mount = static.get("imu_link", (None, (0.0, 0.0, 0.0, 1.0)))[1]
     at_rest = [(a, g, frames.quaternion_multiply(q, imu_mount)) for a, g, q in at_rest]
     written = json.loads((run / "sensing.json").read_text()).get("truth_records")
-    problems = completeness(stamps, expected, heights) or imu_problems(at_rest, config)
+    problems = (completeness(stamps, expected, heights, lags(config)) or imu_problems(at_rest, config)
+                + sorted(set(frame_issues))[:5])
     if written != len(truth):
         problems.insert(0, f"{TRUTH}: {len(truth)} records, the stream wrote {written}")
     if problems or not calibration_wall:  # the forest has no calibration wall
-        report = {"complete": not completeness(stamps, expected, heights), "imu_samples_at_rest": len(at_rest),
-                  "problems": problems, "passed": not problems}
+        report = {"complete": not completeness(stamps, expected, heights, lags(config)),
+                  "imu_samples_at_rest": len(at_rest), "problems": problems, "passed": not problems}
         (run / "sensor_check.json").write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report, indent=2))
         sys.exit(1 if problems else 0)
@@ -260,6 +319,57 @@ def main():
     camera_t, camera_q = static["camera_link"]
     optical_q = static["camera_optical_frame"][1]
     fx, cx, fy, cy = info.k[0], info.k[2], info.k[4], info.k[5]
+    truth_ns = np.array([t for t, _, _, _ in truth])
+    truth_p = np.array([p for _, p, _, _ in truth])
+    truth_q = np.array([q for _, _, q, _ in truth])
+    mount_r = mid360.rotations(np.array([lidar_q]))[0]
+
+    def place(start, points, own_instant=True):
+        """Points in the world (rows x, y, z) and their rays' directions, with the body's pose at each point's
+        instant (or all at the frame's start)."""
+        t = start + np.round(points["time"].astype(float) * 1e9 * own_instant).astype(np.int64)
+        i = np.clip(np.searchsorted(truth_ns, t, side="right") - 1, 0, len(truth_ns) - 2)
+        f = ((t - truth_ns[i]) / (truth_ns[i + 1] - truth_ns[i]))[:, None]
+        a, b = truth_q[i], truth_q[i + 1]
+        b = np.where(np.sum(a * b, axis=1, keepdims=True) < 0, -b, b)
+        q = a * (1 - f) + b * f
+        body = mid360.rotations(q / np.linalg.norm(q, axis=1, keepdims=True))
+        local = np.column_stack([points["x"], points["y"], points["z"]]).astype(float)
+        sensor = local @ mount_r.T + np.array(lidar_t)
+        origin = truth_p[i] * (1 - f) + truth_p[i + 1] * f
+        world = origin + np.einsum("nij,nj->ni", body, sensor)
+        rays = np.einsum("nij,nj->ni", body, local @ mount_r.T)
+        return world, rays / np.linalg.norm(rays, axis=1, keepdims=True)
+
+    def on_wall(world):
+        return np.all([(world[:, k] >= lo) & (world[:, k] <= hi)
+                       for k, (lo, hi) in enumerate((WALL["x"], WALL["y"], WALL["z"]))], axis=0)
+
+    def scatter(frames_):
+        """Wall returns (placed at their instants), their fit and scatter about it over the scatter the rig's noise
+        gives them, and over that noise their scatter about the wall's face itself, placed at their instants and all
+        at their frame's start (a frame sees the wall within a few milliseconds of its nod: a turn then tilts the
+        returns of one frame together, which a fitted plane would take up)."""
+        lidar = config["lidar"]
+        walls, starts, expected = [], [], []
+        for start, points in frames_:
+            world, rays = place(start, points)
+            keep = on_wall(world)
+            ranges = np.sqrt(points["x"].astype(float) ** 2 + points["y"] ** 2 + points["z"] ** 2)[keep]
+            # Normal to the wall, range noise along the ray; angular noise moves the hit along the ray by r tan(i).
+            facing = np.abs(rays[keep, 0])
+            expected.append((lidar["noise"] * facing) ** 2
+                            + (lidar["angular_noise"] * ranges * np.sqrt(1 - facing ** 2)) ** 2)
+            walls.append(world[keep])
+            starts.append(place(start, points[keep], own_instant=False)[0])
+        wall = np.concatenate(walls) if walls else np.empty((0, 3))
+        if len(wall) < 100:
+            return wall, None, None, None, None
+        noise = math.sqrt(np.mean(np.concatenate(expected)))
+        fit = fit_wall(wall.tolist())
+        about_face = [round(math.sqrt(np.mean((w[:, 0] - WALL_X) ** 2)) / noise, 3) for w in (wall, np.concatenate(starts))]
+        return wall, fit, round(fit[2] / noise, 3), *about_face
+
     def red(world, base_t, base_q, image):
         """Whether the camera saw red where a world point lies, or None outside its view."""
         # World to base, to camera_link, to the optical frame (x right, y down, z forward).
@@ -288,24 +398,23 @@ def main():
                     colours.append(r > 60 and r > 1.6 * g and r > 1.6 * b)
         return colours
 
-    wall, seen = [], {"wall": [], "ground": []}
-    for time_ns, (base_t, base_q), msg in scans:
-        image = images.get(time_ns)
-        if image is not None:
-            seen["ground"] += ground(base_t, base_q, image)
-        for i in range(msg.width):
-            x, y, z, _, _ = struct.unpack_from("<fffif", msg.data, i * msg.point_step)
-            if not all(math.isfinite(c) for c in (x, y, z)):
-                continue
-            world = add(rotate(base_q, add(rotate(lidar_q, (x, y, z)), lidar_t)), base_t)
-            if not all(lo <= c <= hi for c, (lo, hi) in zip(world, (WALL["x"], WALL["y"], WALL["z"]))):
-                continue
-            wall.append(world)
-            if image is not None and (colour := red(world, base_t, base_q, image)) is not None:
+    wall, fit, over_noise, _, _ = scatter(scans["hovering"])
+    if fit is None:
+        raise SystemExit(f"Too few wall returns ({len(wall)}) in {len(scans['hovering'])} hovering frames.")
+    distance, angle, residual = fit
+    seen = {"wall": [], "ground": []}
+    for start, points in scans["hovering"]:
+        image = images.get(start)
+        if image is None:
+            continue
+        base_t, base_q = poses[start][:2]
+        seen["ground"] += ground(base_t, base_q, image)
+        world, _ = place(start, points)
+        for point in world[on_wall(world)].tolist():
+            if (colour := red(tuple(point), base_t, base_q, image)) is not None:
                 seen["wall"].append(colour)
-    if len(wall) < 100:
-        raise SystemExit(f"Too few wall returns ({len(wall)}) in {len(scans)} hovering scans.")
-    distance, angle, residual = fit_wall(wall)
+    _, _, _, turning, at_start = scatter(scans["turning"])
+
     def share(colours):
         return round(sum(colours) / len(colours), 4) if colours else None
 
@@ -313,13 +422,15 @@ def main():
         "complete": True,
         "messages": {topic: len(stamps.get(topic, ())) for topic in [*TOPICS, TRUTH]},
         "imu_samples_at_rest": len(at_rest),
-        "hovering_scans": len(scans),
+        "hovering_frames": len(scans["hovering"]),
         "wall_returns": len(wall),
         "wall_distance_m": round(distance, 4),
         "distance_error_m": round(abs(distance - WALL_X), 4),
         "normal_error_deg": round(angle, 3),
         "plane_residual_m": round(residual, 4),
-        "residual_over_noise": round(residual / config["lidar"]["noise"], 3),
+        "residual_over_noise": over_noise,
+        "turning": {"frames": len(scans["turning"]), "residual_over_noise": turning or 0.0,
+                    "at_frame_start_over_noise": at_start or 0.0},
         "camera_points": len(seen["wall"]),
         "camera_agreement": share(seen["wall"]),
         "ground_points": len(seen["ground"]),

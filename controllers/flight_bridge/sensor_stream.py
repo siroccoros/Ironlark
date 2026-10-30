@@ -5,14 +5,15 @@ after enabling it, so each one then refreshes at the steps its period divides (c
 where it is read, stamped with that step's Webots time, and queued; a sender thread writes the queue
 to the bridge over TCP (sensing/protocol.py). A full queue drops messages and counts them: the
 stream never stalls physics, and pausing Webots stops its clock. A reading older than its stamp
-fails the stream: the LiDAR by the time Webots labels its scan with, the IMU's gyro against the
-Iris's, which refreshes every step.
+fails the stream: the IMU's gyro against the Iris's, which refreshes every step; the LiDAR's render
+if it changed before it was used.
 
 The IMU reads as its part does (config/sensors.json): each axis turned by a scale and cross-axis error
 and offset by a bias, drawn once from the seed within the datasheet's tolerances, plus white noise.
 
-The LiDAR's returns are rendered in one step, so each is stamped with the scan's time (offset 0);
-rays that hit nothing within the range (or something closer than its minimum) are left out. Ground
+The LiDAR is a Livox Mid-360 (sensing/mid360.py): Webots renders a range panorama every render
+period, and each of the Mid-360's slots is cast into the render nearest its instant, from the sensor's
+ground truth pose then; frames (every frame period, stamped with their start) go out once whole. Ground
 truth (the Iris's noiseless GPS and inertial unit) goes to truth.bin in the run folder every step,
 never to the bridge; the account counts its records.
 
@@ -23,7 +24,6 @@ acknowledge every message (protocol.finish) and writes its account, sensing.json
 messages queued, sent, acknowledged and dropped, and the failure. A failure is written at once. The
 launcher fails a run that lost any message.
 """
-import ctypes
 import json
 import math
 import random
@@ -39,11 +39,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from sensing import protocol  # noqa: E402
+from sensing import mid360, protocol  # noqa: E402
 
 import numpy as np  # noqa: E402
-
-LIDAR_POINT = np.dtype([("x", "<f4"), ("y", "<f4"), ("z", "<f4"), ("layer", "<i4"), ("time", "<f4")])
 
 
 class SensorStream:
@@ -78,10 +76,11 @@ class SensorStream:
         self.gyro = robot.getDevice(f"{imu['name']} gyro")
         for device in (self.accelerometer, self.gyro):
             device.enable(self.imu_period)
-        self.lidar_period = period(lidar["rate_hz"])
+        self.render_period = period(lidar["render_hz"])
         self.lidar = robot.getDevice(lidar["name"])
-        self.lidar.enable(self.lidar_period)
-        self.lidar.enablePointCloud()
+        self.lidar.enable(self.render_period)
+        self.sweep = mid360.Sweep(lidar, self.step_ms)
+        self.render_sample = None
         self.camera_period = period(camera["rate_hz"])
         self.camera = robot.getDevice(camera["name"])
         self.camera.enable(self.camera_period)
@@ -185,6 +184,7 @@ class SensorStream:
                   f"at {now_ms / 1000:.0f} s, wall {time.monotonic():.3f}", flush=True)
         self._put(protocol.pack(protocol.CLOCK, stamp))
         truth = (*self.gps.getValues(), *self.truth_attitude.getQuaternion(), *self.gps.getSpeedVector())
+        self.sweep.pose(stamp, truth[:3], truth[3:7])
         with self.lock:
             if not self.ended:
                 self.truth.write(protocol.TRUTH.pack(stamp, *truth))
@@ -197,21 +197,20 @@ class SensorStream:
             gyro = self._measure(self.gyro_model, gyro)
             accel = self._measure(self.accel_model, self.accelerometer.getValues())
             self._put(protocol.pack(protocol.IMU, stamp, protocol.VECTOR6.pack(*gyro, *accel)))
-        if now_ms % self.lidar_period == 0:
-            # Layer-major points, top layer first: the configured layers are the first ones.
-            count = min(self.lidar.getNumberOfPoints(),
-                        self.config["lidar"]["layers"] * self.lidar.getHorizontalResolution())
-            pointer = self._wb.wb_lidar_get_point_cloud(self.lidar._tag)
-            if not (count and pointer):
-                raise RuntimeError("the LiDAR returned no points")
-            points = np.frombuffer(ctypes.string_at(pointer, count * protocol.LIDAR_POINT_BYTES), LIDAR_POINT)
-            # Webots labels the scan from the time it rendered it, backwards over a sweep it did not make.
-            age_ms = now_ms - 1000.0 * float(points["time"].max())
-            if abs(age_ms) > 0.5:
-                raise RuntimeError(f"the LiDAR's scan is {age_ms:.1f} ms older than its stamp")
-            hits = points[np.isfinite(points["x"]) & np.isfinite(points["y"]) & np.isfinite(points["z"])]
-            hits["time"] = 0.0
-            self._put(protocol.pack(protocol.LIDAR, stamp, protocol.COUNT.pack(len(hits)) + hits.tobytes()))
+        phase = now_ms % self.render_period
+        if phase == 0 or (phase == self.render_period // 2 and self.render_sample is not None):
+            lidar = self.config["lidar"]
+            image = np.ctypeslib.as_array(self._wb.wb_lidar_get_range_image(self.lidar._tag),
+                                          (lidar["render_layers"], lidar["horizontal_resolution"]))
+            sample = image[::97, ::89].copy()
+            if phase == 0:
+                self.render_sample = sample
+            else:
+                # Served half a period after it was taken, once every slot's pose is known: the same render.
+                if not np.array_equal(sample, self.render_sample, equal_nan=True):
+                    raise RuntimeError("the LiDAR's render changed before it was used")
+                for start_ns, points in self.sweep.render(stamp - self.render_period // 2 * 1_000_000, image):
+                    self._put(protocol.pack(protocol.LIDAR, start_ns, protocol.COUNT.pack(len(points)) + points.tobytes()))
         if now_ms % self.camera_period == 0:
             image = self.camera.getImage()  # raises without an image
             size = protocol.SIZE.pack(self.camera.getWidth(), self.camera.getHeight())

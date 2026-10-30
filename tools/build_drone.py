@@ -156,12 +156,11 @@ PROTO IronlarkDrone [
         horizontalResolution {lidar['horizontal_resolution']}
         fieldOfView {lidar['field_of_view']}
         verticalFieldOfView {lidar['vertical_field_of_view']}
-        tiltAngle {lidar['tilt_angle']}
         numberOfLayers {lidar['render_layers']}
         near 0.05
         minRange {lidar['min_range']}
         maxRange {lidar['max_range']}
-        noise {lidar['noise']}
+        noise 0  # the sweep adds the range noise after casting: sensing/mid360.py
         projection "cylindrical"
         type "fixed"
       }}
