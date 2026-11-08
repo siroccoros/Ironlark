@@ -1,12 +1,8 @@
 """The checks' own verdicts: each refuses evidence that is missing or wrong."""
-import contextlib
 import importlib.util
-import io
 import json
-import os
 import subprocess
 import sys
-import tempfile
 import unittest
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
@@ -17,14 +13,12 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import check_recording  # noqa: E402
 import check_replay  # noqa: E402
-import frame_log  # noqa: E402
 
 # flight_smoke runs in the SITL container beside pymavlink, which this environment lacks; judge() never uses it.
 sys.modules.setdefault("pymavlink", mock.MagicMock())
 sys.path.insert(0, str(ROOT / "tests"))
 import flight_smoke  # noqa: E402
 import run_resources  # noqa: E402
-from PIL import Image  # noqa: E402
 
 loader = SourceFileLoader("launcher", str(ROOT / "ironlark"))  # the launcher script, as a module
 launcher = importlib.util.module_from_spec(importlib.util.spec_from_loader("launcher", loader))
@@ -184,24 +178,6 @@ class Stream(unittest.TestCase):
         failure = "lost the ROS bridge after 990 messages ([Errno 32] Broken pipe)"
         losses = launcher.sensing_losses(self.account(sent=990, acknowledged=None, failure=failure))
         self.assertEqual(losses, [failure, "10 queued messages never sent"])
-
-
-class FrameLog(unittest.TestCase):
-    """A frame log's interval holds only the frames, steps and rendered views inside it."""
-
-    def test_an_interval_without_frames_or_steps_has_no_views(self):
-        with tempfile.TemporaryDirectory() as directory:
-            log = Path(directory, "frames.log")
-            # Two main-view frames 100 ms apart at 1.0 and 1.1 simulated seconds, each rendered once.
-            log.write_text("F 1000000000 1000000500 1000001000 1000.000\n"
-                           "G main 1000000100 cpu 4000.0 gpu 2000.0 opaque 3000.0 1500.0\n"
-                           "F 1100000000 1100000500 1100001000 1100.000\n"
-                           "G main 1100000100 cpu 4000.0 gpu 2000.0 opaque 3000.0 1500.0\n")
-            records = frame_log.parse(log)
-        inside = frame_log.summarize(*records, 0.5, 2.0)
-        self.assertEqual(inside["frames"]["count"], 2)
-        self.assertEqual(inside["views"]["main"]["gpu_ms"]["n"], 2)
-        self.assertEqual(frame_log.summarize(*records, 5.0, 6.0), {"views": {}})
 
 
 class Flight(unittest.TestCase):

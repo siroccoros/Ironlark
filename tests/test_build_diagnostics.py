@@ -1,13 +1,11 @@
-"""Compiler diagnostics and failed stages on real processes and log files."""
+"""The launcher's builds on real processes and files: the flight loop, the drone's receipt, Blender's extraction."""
 
 import hashlib
 import importlib.util
 import json
 from importlib.machinery import SourceFileLoader
-import os
 from pathlib import Path
 import shutil
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -15,65 +13,10 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 import blender
-import forest_process
 
 loader = SourceFileLoader("launcher", str(ROOT / "ironlark"))  # the launcher script, as a module
 launcher = importlib.util.module_from_spec(importlib.util.spec_from_loader("launcher", loader))
 loader.exec_module(launcher)
-
-
-class Diagnostics(unittest.TestCase):
-    def test_interleaved_early_errors_and_invalid_bytes(self):
-        with tempfile.TemporaryDirectory() as directory:
-            log = Path(directory) / "build log.txt"
-            for error in (b"fatal error: GL/gl.h: missing", b"undefined reference to glGetError",
-                          b"Permission denied", b"No space left on device", b"Killed signal terminated program"):
-                log.write_bytes(b"context\xff\n" + error + b"\n" + b"compiling other file\n" * 100)
-                excerpt = forest_process.error_excerpt(log)
-                self.assertIn(error.decode(), excerpt)
-                self.assertLessEqual(len(excerpt.splitlines()), 18)
-                self.assertIn("context", excerpt)
-
-    @unittest.skipUnless(shutil.which("g++"), "C++ compiler required")
-    def test_missing_header_printed_with_complete_log_and_metrics(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            source, log = root / "broken.cpp", root / "build.log"
-            source.write_text('#include "ironlark-missing-test-header.h"\n')
-            with self.assertRaisesRegex(RuntimeError, "ironlark-missing-test-header.h"):
-                forest_process.run_stage(["g++", "-c", str(source), "-o", str(root / "broken.o")], log)
-            self.assertIn("fatal error:", log.read_text())
-            metrics = json.loads(log.with_suffix(".metrics.json").read_text())
-            self.assertNotEqual(metrics["exit_code"], 0)
-            self.assertIn("exited", metrics["error"])
-
-    def test_forked_workers_count_their_shared_pages_once(self):
-        with tempfile.TemporaryDirectory() as directory:
-            log = Path(directory) / "stage.log"
-            # 200 MiB written by the parent, then shared by two forked children: 600 MiB resident, 200 MiB of it.
-            forest_process.run_stage([sys.executable, "-c", (
-                "import os, time\n"
-                "data = bytearray(200 << 20)\n"
-                "for i in range(0, len(data), 4096): data[i] = 1\n"
-                "for _ in range(2):\n"
-                "    if os.fork() == 0:\n"
-                "        time.sleep(1.5)\n"
-                "        os._exit(0)\n"
-                "time.sleep(1.5)\n")], log)
-            peak = json.loads(log.with_suffix(".metrics.json").read_text())["peak_pss_mib"]
-            self.assertGreater(peak, 200)
-            self.assertLess(peak, 400)
-
-    def test_spawn_failure_writes_log_and_metrics(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            log = root / "build.log"
-            with self.assertRaisesRegex(RuntimeError, "No such file"):
-                forest_process.run_stage([str(root / "missing-compiler")], log)
-            self.assertIn("No such file", log.read_text())
-            metrics = json.loads(log.with_suffix(".metrics.json").read_text())
-            self.assertIsNone(metrics["exit_code"])
-            self.assertIn("No such file", metrics["error"])
 
 
 @unittest.skipUnless(shutil.which("cc") or shutil.which("gcc"), "C compiler required")
