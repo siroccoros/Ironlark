@@ -275,5 +275,20 @@ class Downloads(unittest.TestCase):
             self.assertEqual(archive.read_bytes(), b"previous")
 
 
+class Install(unittest.TestCase):
+    def test_a_running_executable_is_replaced_not_overwritten(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            target, built = Path(scratch, "webots-bin"), Path(scratch, "built")
+            shutil.copy2(shutil.which("sleep"), target)
+            built.write_bytes(b"the new build")
+            running = subprocess.Popen(["sleep", "30"], executable=str(target))  # a flight's Webots
+            self.addCleanup(running.wait)
+            self.addCleanup(running.kill)
+            builder.install(built, target)  # copied in place, this fails: Text file busy
+            self.assertIsNone(running.poll())
+            self.assertEqual(target.read_bytes(), b"the new build")
+            self.assertFalse(target.with_name("webots-bin.part").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

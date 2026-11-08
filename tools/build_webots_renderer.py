@@ -64,6 +64,14 @@ def link(path, target):
         path.symlink_to(target, target_is_directory=target.is_dir())
 
 
+def install(source, target):
+    """target replaced by a copy of source in one step. A Webots running from the runtime keeps the file it started:
+    copying over a running executable in place fails (Text file busy) after the whole build."""
+    partial = target.with_name(target.name + ".part")
+    shutil.copy2(source, partial)
+    partial.replace(target)
+
+
 def overlay_resources(runtime, installed, source, base=COMMIT):
     """Mirror stock resources as symlinks, serving files the series changed
     (shaders, node definitions) from the patched source."""
@@ -263,8 +271,8 @@ def build_renderer():
     for path in (installed / "bin").iterdir():
         if path.name != "webots-bin":
             link(runtime / "bin" / path.name, path)
-    shutil.copy2(source / "bin/webots-bin", runtime / "bin/webots-bin")
-    shutil.copy2(installed / "webots", runtime / "webots")
+    install(source / "bin/webots-bin", runtime / "bin/webots-bin")
+    install(installed / "webots", runtime / "webots")
     manifest = {**identity, "series_commit": tip}
     (runtime / "ironlark-renderer.json").write_text(json.dumps(manifest, indent=2))
     print(f"Patched Webots ready: {CACHE / 'webots-renderer'}", flush=True)
