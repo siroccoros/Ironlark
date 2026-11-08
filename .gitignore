@@ -1,26 +1,17 @@
-# Python caches, local configuration and atlas dependencies.
+# Python caches and local configuration.
 __pycache__/
 *.py[cod]
 .DS_Store
 .env
 .env.*
 !.env.example
-node_modules/
-
-# Local research sources and generated atlas previews.
-/research/evidence/
-/research/DESIGN.md
-/research/*.py
-!/research/build_html.py
-/research/browser-checks.json
-/research/drone-autonomy-atlas.html
-/research/preview-*.png
 
 # Downloaded tools, assets, build products and diagnostics.
 /.cache/
 /.venv/
 /webots/
 /runs/
+# The forest main builds into the same checkout (1.4 GB), kept out of this branch.
 /worlds/pine_forest/
 /worlds/.pine_forest.*/
 /protos/
