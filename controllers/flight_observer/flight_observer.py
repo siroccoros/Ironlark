@@ -36,7 +36,7 @@ if fast_start:
                       if children.getMFNode(i).getTypeName() == "WorldInfo")
     fps = world_info.getField("FPS")
     world_fps = fps.getSFFloat()
-    fps.setSFFloat(10)
+    fps.setSFFloat(10.0)  # a float: Webots' Python setter ignores an int, printing "wrong type or length"
     robot.simulationSetMode(Supervisor.SIMULATION_MODE_FAST)
 
 with (Path(destination) / "ground_truth.jsonl").open("w", buffering=1) as stream:
