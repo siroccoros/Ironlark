@@ -1,4 +1,4 @@
-"""Record evaluation truth and render the player's map; never control flight.
+"""Record evaluation truth; never control flight.
 
 With IRONLARK_FAST_START=1, the simulation runs as fast as it can until the flight check starts arming:
 the drone waits on its pad while EKF3 learns its gyro biases (about 40 s of simulated time), and the
@@ -18,12 +18,6 @@ drone = robot.getFromDef("IRONLARK_DRONE")
 destination = os.environ.get("IRONLARK_RUN_DIR")
 if destination is None:
     raise SystemExit("Start this world through ./ironlark so its evaluation output has a destination.")
-
-scene_path = os.environ.get("IRONLARK_SCENE")
-world_view = None
-if scene_path:
-    from minimap import WorldView
-    world_view = WorldView(robot, scene_path, destination)
 
 # Controllers start once the world has loaded; the launcher waits for this.
 (Path(destination) / "world-ready").touch()
@@ -50,5 +44,3 @@ with (Path(destination) / "ground_truth.jsonl").open("w", buffering=1) as stream
         position = drone.getPosition()
         stream.write(json.dumps({"time": robot.getTime(), "position": position,
                                  "velocity": drone.getVelocity()}) + "\n")
-        if world_view:
-            world_view.update(position, drone.getOrientation())

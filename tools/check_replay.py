@@ -24,7 +24,7 @@ TOPICS = ["/clock", "/imu/data", "/lidar/points", "/camera/image_raw", "/camera/
 
 def digests(bag):
     """Per topic: a digest of each message as stored (serialized), in order. Digests, not the
-    messages: a forest flight's images alone are gigabytes once decompressed."""
+    messages: a flight's images alone are gigabytes once decompressed."""
     import rosbag2_py
     from bag_reader import open_bag
 

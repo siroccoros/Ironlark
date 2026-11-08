@@ -241,7 +241,7 @@ def main():
             images[ns(msg.header.stamp)] = msg
 
     problems = completeness(stamps, expected, heights) or imu_problems(at_rest, config)
-    if problems or not calibration_wall:  # the forest has no calibration wall
+    if problems or not calibration_wall:  # a world without the calibration wall
         report = {"complete": not completeness(stamps, expected, heights), "imu_samples_at_rest": len(at_rest),
                   "problems": problems, "passed": not problems}
         (run / "sensor_check.json").write_text(json.dumps(report, indent=2) + "\n")

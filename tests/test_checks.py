@@ -17,14 +17,12 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import check_recording  # noqa: E402
 import check_replay  # noqa: E402
-import compare_views  # noqa: E402
 import frame_log  # noqa: E402
 
 # flight_smoke runs in the SITL container beside pymavlink, which this environment lacks; judge() never uses it.
 sys.modules.setdefault("pymavlink", mock.MagicMock())
 sys.path.insert(0, str(ROOT / "tests"))
 import flight_smoke  # noqa: E402
-import profile_forest  # noqa: E402
 import run_resources  # noqa: E402
 from PIL import Image  # noqa: E402
 
@@ -166,7 +164,6 @@ class Sensors(unittest.TestCase):
         self.assertEqual(check_recording.wall_problems(report), ["100.0% of the ground in front of the wall looks red"])
 
 
-
 class Stream(unittest.TestCase):
     """The launcher's reading of the sensor stream's account (sensing.json)."""
 
@@ -189,65 +186,6 @@ class Stream(unittest.TestCase):
         self.assertEqual(losses, [failure, "10 queued messages never sent"])
 
 
-
-class Views(unittest.TestCase):
-    """compare_views scores every reference view, or refuses."""
-
-    def setUp(self):
-        scratch = tempfile.TemporaryDirectory()
-        self.addCleanup(scratch.cleanup)
-        self.reference, self.webots = Path(scratch.name, "reference"), Path(scratch.name, "webots")
-        self.reference.mkdir(), self.webots.mkdir()
-        for name, shade in (("forest", 90), ("drone", 160)):
-            Image.new("RGB", (32, 24), (shade, shade, shade)).save(self.reference / f"{name}.png")
-            Image.new("RGB", (32, 24), (shade, shade + 20, shade)).save(self.webots / f"{name}.png")
-
-    def test_every_view_is_scored(self):
-        with contextlib.redirect_stdout(io.StringIO()):
-            compare_views.main([str(self.reference), str(self.webots)])
-        report = json.loads((self.webots / "compare.json").read_text())
-        self.assertEqual(sorted(report), ["drone", "forest"])
-        self.assertGreater(report["forest"]["channel_ratio"][1], 1.0)
-
-    def test_a_view_without_a_webots_render_fails(self):
-        (self.webots / "drone.png").unlink()
-        with self.assertRaisesRegex(SystemExit, "No Webots render of drone"):
-            compare_views.main([str(self.reference), str(self.webots)])
-
-    def tiles(self, change):
-        """Changed tiles between a 240 x 120 capture and a copy changed by change(pixels)."""
-        import numpy as np
-
-        pixels = np.full((120, 240, 3), 90, dtype=np.uint8)
-        Image.fromarray(pixels).save(self.reference / "forest.png")
-        Image.fromarray(change(pixels.copy())).save(self.webots / "forest.png")
-        (self.reference / "drone.png").unlink(missing_ok=True), (self.webots / "drone.png").unlink(missing_ok=True)
-        with contextlib.redirect_stdout(io.StringIO()):
-            compare_views.main([str(self.reference), str(self.webots), "--tiles"])
-        return json.loads((self.webots / "compare.json").read_text())["forest"]["changed_tiles"]
-
-    def test_repeatable_captures_list_the_tiles_that_changed(self):
-        def missing_object(pixels):  # 12 x 12 px: 4% of one 60 px tile
-            pixels[70:82, 130:142] = 20
-            return pixels
-
-        self.assertEqual(self.tiles(lambda pixels: pixels), [])
-        self.assertEqual(self.tiles(missing_object), [[1, 2]])
-        self.assertEqual(len(self.tiles(lambda pixels: pixels + 1)), 8)  # 1/255 brighter: every tile
-
-    def test_captures_of_different_sizes_are_refused(self):
-        Image.new("RGB", (64, 48), (90, 90, 90)).save(self.webots / "forest.png")
-        with self.assertRaisesRegex(SystemExit, "forest: the reference is \\(32, 24\\), Webots \\(64, 48\\)"):
-            compare_views.main([str(self.reference), str(self.webots), "--tiles"])
-
-    def test_no_references_fails(self):
-        for path in self.reference.iterdir():
-            path.unlink()
-        with self.assertRaisesRegex(SystemExit, "No reference renders"):
-            compare_views.main([str(self.reference), str(self.webots)])
-
-
-
 class FrameLog(unittest.TestCase):
     """A frame log's interval holds only the frames, steps and rendered views inside it."""
 
@@ -264,128 +202,6 @@ class FrameLog(unittest.TestCase):
         self.assertEqual(inside["frames"]["count"], 2)
         self.assertEqual(inside["views"]["main"]["gpu_ms"]["n"], 2)
         self.assertEqual(frame_log.summarize(*records, 5.0, 6.0), {"views": {}})
-
-
-
-# Stands in for Webots and the display it needs: writes what the profile's controller and frame log would.
-# FAKE_WEBOTS: complete; complete, then exit 3; no frame log (stock Webots); frame log cut short; exits at once.
-FAKE_WEBOTS = """#!/usr/bin/env python3
-import json, os, sys, time
-mode = os.environ["FAKE_WEBOTS"]
-scene = json.load(open(os.environ["IRONLARK_SCENE"]))
-seconds = float(os.environ["IRONLARK_SECONDS"])
-lines = ["F 1 2 3 0.000", "F 4 5 6 0.000"]  # frames shown while the world loads, at simulated time 0
-views = []
-for k, name in enumerate([*scene["cameras"], "moving"]):
-    start = k * seconds
-    views.append({"view": name, "sim_start": start, "sim_seconds": seconds, "wall_seconds": seconds,
-                  "real_time_factor": 1.0})
-    for step in range(int(seconds * 500)):  # a 2 ms physics step; a main-view frame every 50 steps, rendered
-        sim = start + step / 500
-        ns = int(sim * 1e9) + 1
-        lines.append(f"S {ns} {ns + 100} {sim * 1000:.3f}")
-        if step % 50 == 0:
-            lines += [f"F {ns + 200} {ns + 300} {ns + 400} {sim * 1000:.3f}",
-                      f"G main {ns + 250} cpu 4000.0 gpu 2000.0 opaque 3000.0 1500.0"]
-if mode == "frame log cut short":
-    lines = lines[:-200]
-if mode != "no frame log":
-    open(os.environ["IRONLARK_FRAME_LOG"], "w").write("\\n".join(lines[:2] if mode == "exits at once" else lines) + "\\n")
-if mode != "exits at once":
-    json.dump({"first_step_wall": time.time(), "step_ms": 2, "views": views}, open(os.environ["IRONLARK_REPORT"], "w"))
-if mode == "complete":
-    time.sleep(0.1)  # alive through the profile's first resource sample
-sys.exit(3 if mode.endswith("exit 3") else 0)
-"""
-
-
-# Stands in for the GPU: the card's memory, and 100 MiB of framebuffer for every process (the sampler counts Webots').
-FAKE_NVIDIA_SMI = """#!/usr/bin/env python3
-import os, sys
-if "pmon" in sys.argv:
-    print("# gpu        pid   type     fb   ccpm    command")
-    for pid in filter(str.isdigit, os.listdir("/proc")):
-        print(f"    0 {pid:>10}     G    100      0    process")
-else:
-    print(800)
-"""
-
-
-class Profile(unittest.TestCase):
-    """profile_forest reports every view, measured whole from its frame log, or fails."""
-
-    def setUp(self):
-        scratch = tempfile.TemporaryDirectory()
-        self.addCleanup(scratch.cleanup)
-        root = Path(scratch.name)
-        (root / "bin").mkdir()
-        (root / "bin/nvidia-smi").write_text(FAKE_NVIDIA_SMI)
-        (root / "bin/nvidia-smi").chmod(0o755)
-        path = mock.patch.dict(os.environ, {"PATH": f"{root / 'bin'}:{os.environ['PATH']}"})
-        path.start()
-        self.addCleanup(path.stop)
-        world = root / "worlds/pine_forest"
-        (world / "meshes").mkdir(parents=True)
-        (world / "pine_forest.wbt").write_text('Robot { controller "flight_observer" }\n')
-        (world / "scene.json").write_text(json.dumps({"cameras": {"forest": {}, "backlit": {}}}))
-        self.home, self.out = root / "webots", root / "profile"
-        self.home.mkdir()
-        (self.home / "webots").write_text(FAKE_WEBOTS)
-        (self.home / "webots").chmod(0o755)
-        patch = mock.patch.object(profile_forest, "ROOT", root)
-        patch.start()
-        self.addCleanup(patch.stop)
-
-    def profile(self, webots):
-        with mock.patch.dict(os.environ, {"FAKE_WEBOTS": webots}), contextlib.redirect_stdout(io.StringIO()):
-            profile_forest.main(["--out", str(self.out), "--webots-home", str(self.home), "--seconds", "2"])
-        return json.loads((self.out / "profile.json").read_text())
-
-    def test_a_complete_profile_passes(self):
-        report = self.profile("complete")
-        self.assertEqual([view["view"] for view in report["views"]], ["forest", "backlit", "moving"])
-        self.assertTrue(all((view["frames"]["count"], view["steps"]) == (10, 500) for view in report["views"]))
-
-    def test_an_earlier_profile_never_counts_for_this_one(self):
-        self.profile("complete")
-        with self.assertRaisesRegex(RuntimeError, "Incomplete profile: no load time; forest not measured"):
-            self.profile("exits at once")
-        self.profile("complete")
-        with self.assertRaisesRegex(RuntimeError, "Incomplete profile: forest has no frames"):
-            self.profile("no frame log")
-
-    def test_a_frame_log_cut_short_fails(self):
-        with self.assertRaisesRegex(RuntimeError, "Incomplete profile: the frame log holds 306 of moving's 500"):
-            self.profile("frame log cut short")
-
-    def test_a_view_of_one_second_or_less_is_refused(self):  # its first second is left out
-        with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
-            profile_forest.main(["--out", str(self.out), "--seconds", "1"])
-
-    def test_a_profile_without_its_resources_measured_fails(self):
-        with mock.patch.dict(os.environ, {"PATH": "/usr/bin:/bin"}):  # no nvidia-smi on the path: no GPU
-            with self.assertRaisesRegex(RuntimeError, "no measure of Webots' GPU memory"):
-                self.profile("complete")
-
-    def test_webots_failing_after_a_complete_profile_fails(self):
-        with self.assertRaisesRegex(RuntimeError, "Webots exited with 3"):
-            self.profile("complete, then exit 3")
-
-    def test_each_gap_is_named(self):
-        def view(name, seconds=2.0, frames=10, passes=True, steps=500, renders=10):
-            return {"view": name, "sim_seconds": seconds, "frames": {"count": frames} if frames else None,
-                    "main_passes_ms": {"opaque": {}} if passes else None, "steps": steps,
-                    "main_gpu_ms": {"n": renders}}
-
-        report = {"load_seconds": 5.0, "step_ms": 2, "resources": {"missing": []},
-                  "views": [view("forest", 1.5), view("high", frames=None), view("moving", passes=False),
-                            view("drone", steps=499), view("dusk", renders=8)]}
-        self.assertEqual(profile_forest.incomplete(report, ["forest", "backlit", "high", "moving", "drone", "dusk"], 2.0),
-                         ["forest ran 1.5 of 2.0 simulated seconds", "backlit not measured",
-                          "high has no frames or render passes in the frame log",
-                          "moving has no frames or render passes in the frame log",
-                          "the frame log holds 499 of drone's 500 physics steps",
-                          "dusk has render passes for 8 of its 10 frames"])
 
 
 class Flight(unittest.TestCase):
@@ -429,7 +245,6 @@ class Flight(unittest.TestCase):
         truth = self.trajectory()
         with self.assertRaisesRegex(RuntimeError, "clock mismatch"):
             flight_smoke.judge(truth, truth[-1]["time"] + 2.0)
-
 
 
 class Resources(unittest.TestCase):
