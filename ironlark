@@ -20,7 +20,7 @@ import fcntl
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "tools"))
-from renderer_support import select_webots, renderer_problem, renderer_preflight, preflight_report
+from renderer_support import select_webots
 from receipts import packages, world_problems
 from run_resources import Sampler
 CACHE = ROOT / ".cache"
@@ -147,21 +147,7 @@ def doctor(overview=True, home=None, record=False):
         runtime_ready = False
     if overview:
         print(f"{'OK     ' if runtime_ready else 'MISSING'} General runtime readiness (./ironlark setup)")
-        print(preflight_report(renderer_preflight()))
-        selected = Path(os.environ["WEBOTS_HOME"]).resolve() if os.environ.get("WEBOTS_HOME") else CACHE / "webots-renderer"
-        problem = renderer_problem(selected, ROOT)
-        print(f"{'MISSING' if problem else 'OK     '} Patched renderer: {problem or str(selected)}")
-        try:
-            webots_home("forest")
-            forest_renderer = True
-        except RuntimeError as error:
-            forest_renderer = False
-            print(str(error))
-        forest_world = (ROOT / "worlds/pine_forest/pine_forest.wbt").is_file() and not world_problems(
-            ROOT, ROOT / "worlds/pine_forest")
-        print(f"{'OK     ' if runtime_ready and forest_renderer and forest_world else 'MISSING'} "
-              "Forest readiness (setup, build-renderer, build-world)")
-        print(f"{'OK     ' if runtime_ready else 'MISSING'} Empty-world readiness (stock Webots supported)")
+        print(f"{'OK     ' if runtime_ready else 'MISSING'} Empty-world readiness (stock Webots R2025a)")
         print(f"{'OK     ' if shutil.which('xvfb-run') else 'MISSING'} Headless check: xvfb-run")
         print(f"{'OK     ' if os.environ.get('DISPLAY') else 'MISSING'} "
               "Graphical run: X11/XWayland DISPLAY (GPU/context checked by Webots at startup)")
