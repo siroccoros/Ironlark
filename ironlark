@@ -201,6 +201,10 @@ def stop_process(proc):
     proc.wait()
 
 
+def interrupt(number, frame):
+    raise KeyboardInterrupt
+
+
 def stage_world(run):
     """Copy the empty world into the run dir; return its path."""
     target = run / "worlds/flight_foundation.wbt"
@@ -461,6 +465,11 @@ def flight(headless, editor=False, record=False):
         name = f"ironlark-sitl-{os.getpid()}"
         ros_name = f"ironlark-ros-{os.getpid()}"
         webots = sitl = mission = ros = resources = None
+        # A closed terminal (SIGHUP) or kill (SIGTERM) tears the flight down as Ctrl+C does: the simulator processes
+        # run in sessions of their own and the containers outlive their clients, so only this process can stop them.
+        handlers = {number: signal.getsignal(number) for number in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)}
+        signal.signal(signal.SIGTERM, interrupt)
+        signal.signal(signal.SIGHUP, interrupt)
         with (
             (run / "webots.log").open("w") as webots_log,
             (run / "sitl.log").open("w") as sitl_log,
@@ -614,6 +623,10 @@ def flight(headless, editor=False, record=False):
                     )
                     webots.wait()
             finally:
+                # Each step below is bounded (the recorder 20 s, the container 3 s, a process 5 s): a second Ctrl+C
+                # or a closed terminal must not cut it short and leave the autopilot's container and Webots running.
+                for number in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+                    signal.signal(number, signal.SIG_IGN)
                 if resources is not None:
                     resources.done.set()
                 if ros is not None:
@@ -631,6 +644,8 @@ def flight(headless, editor=False, record=False):
                 )
                 stop_process(sitl)
                 stop_process(webots)
+                for number, handler in handlers.items():
+                    signal.signal(number, handler)
 
 
 COMMANDS = ("setup", "doctor", "run", "check", "build-drone", "replay", "check-recording", "check-replay")
