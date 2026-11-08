@@ -305,17 +305,6 @@ class Receipts(unittest.TestCase):
         forest_pipeline.finish_build(first, building, recipe["full"])
         self.assertEqual((first / "pine_forest.wbt").read_text(), "the first world")
 
-    def test_a_build_compiles_the_code_it_hashes(self):
-        import receipts as imported  # compiled into tools/__pycache__ by this test run, if not already
-        cache = Path(imported.__cached__).parent
-        self.assertTrue(cache.is_dir())
-        ran = []
-        run_tool = launcher.run_tool
-        self.addCleanup(setattr, launcher, "run_tool", run_tool)
-        launcher.run_tool = lambda name, *args: ran.append((name, cache.exists()))  # Blender and the hour it takes
-        launcher.build_world(skip_export=True)
-        self.assertEqual(ran, [("forest_pipeline.py", False)])
-
     def test_skip_export_needs_bakes_today_s_pipeline_finished(self):
         build = self.root / "forest-build"
         today = {"export": "export today", "full": "today"}

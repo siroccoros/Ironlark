@@ -1,6 +1,5 @@
 """Drive launcher refusal through its CLI, without creating run artifacts."""
 
-import json
 import os
 from pathlib import Path
 import shutil
@@ -9,7 +8,7 @@ import sys
 import tempfile
 import unittest
 
-from tests.test_renderer import ROOT, make_project, write_manifest
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class Workflows(unittest.TestCase):
@@ -17,41 +16,36 @@ class Workflows(unittest.TestCase):
         self.scratch = tempfile.TemporaryDirectory(prefix="ironlark workflow ")
         self.addCleanup(self.scratch.cleanup)
         self.root = Path(self.scratch.name)
-        make_project(self.root)
         shutil.copyfile(ROOT / "ironlark", self.root / "ironlark")
         (self.root / "tools").mkdir()
-        for tool in ("renderer_support.py", "receipts.py", "run_resources.py"):  # what the launcher imports
+        for tool in ("receipts.py", "run_resources.py"):  # what the launcher imports
             shutil.copyfile(ROOT / "tools" / tool, self.root / "tools" / tool)
 
-    def refused(self, expected):
+    def refused(self, expected, *args, webots_home=None):
         env = os.environ.copy()
         env.pop("WEBOTS_HOME", None)
-        result = subprocess.run([sys.executable, str(self.root / "ironlark"), "run"],
+        if webots_home:
+            env["WEBOTS_HOME"] = webots_home
+        result = subprocess.run([sys.executable, str(self.root / "ironlark"), *args],
                                 capture_output=True, text=True, env=env)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn(expected, result.stderr)
         self.assertFalse((self.root / "runs").exists())
         self.assertFalse((self.root / ".cache/flight.lock").exists())
 
-    def test_missing_manifest_refused_before_run_artifacts(self):
-        self.refused("build-renderer")
+    def test_forest_world_refused_naming_main(self):
+        self.refused("only the empty world (the forest lives on the main branch)", "run", "--world", "forest")
 
-    def test_old_manifest_refused_before_run_artifacts(self):
-        manifest = write_manifest(self.root)
-        recorded = json.loads(manifest.read_text())
-        del recorded["schema"]
-        manifest.write_text(json.dumps(recorded))
-        self.refused("schema")
+    def test_forest_and_renderer_commands_refused_naming_main(self):
+        for command in ("build-world", "build-renderer", "render-reference"):
+            self.refused("live on the main branch", command)
 
-    def test_changed_patch_refused_before_run_artifacts(self):
-        write_manifest(self.root)
-        (self.root / "native/patches/0001.patch").write_text("changed patch")
-        self.refused("series_sha256")
+    def test_invalid_webots_home_refused_before_run_artifacts(self):
+        self.refused("WEBOTS_HOME points to an invalid installation", "check",
+                     webots_home=str(self.root / "no webots here"))
 
-    def test_working_tree_edit_refused_before_run_artifacts(self):
-        write_manifest(self.root)
-        (self.root / ".cache/webots-source/src/renderer.cpp").write_text("int value = 2;\n")
-        self.refused("checkout_diff_sha256")
+    def test_missing_webots_refused_before_run_artifacts(self):
+        self.refused("Complete setup first", "run")
 
 
 if __name__ == "__main__":

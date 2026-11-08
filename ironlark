@@ -20,8 +20,7 @@ import fcntl
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "tools"))
-from renderer_support import select_webots
-from receipts import packages, world_problems
+from receipts import packages
 from run_resources import Sampler
 CACHE = ROOT / ".cache"
 IMAGE = "ironlark-sitl:copter-4.7.1"
@@ -39,8 +38,14 @@ def call(*args, **kwargs):
     return subprocess.run(args, check=True, **kwargs)
 
 
-def webots_home(world="empty"):
-    return select_webots(ROOT, world, os.environ.get("WEBOTS_HOME"))
+def webots_home():
+    """Stock Webots R2025a: WEBOTS_HOME when set, else ./webots/."""
+    override = os.environ.get("WEBOTS_HOME")
+    home = Path(override).resolve() if override else ROOT / "webots"
+    if override and not (home / "webots").is_file():
+        raise RuntimeError(f"WEBOTS_HOME points to an invalid installation: {home}; "
+                           "remove the override or select Webots R2025a.")
+    return home.resolve()
 
 
 def build_lockstep(home):
@@ -97,7 +102,6 @@ def setup():
         str(ROOT / ".venv/bin/python"),
         "numpy==2.2.6",
         "Pillow==12.3.0",
-        "etcpak==0.9.15",
     )
     print("Setup complete. Run ./ironlark doctor, then ./ironlark run.")
 
@@ -197,49 +201,21 @@ def stop_process(proc):
     proc.wait()
 
 
-def stage_world(run, world):
-    """Copy the selected world into the run dir; return (world_path, scene_path)."""
-    if world == "empty":
-        target = run / "worlds/flight_foundation.wbt"
-        target.parent.mkdir()
-        target.write_text(
-            (ROOT / "worlds/flight_foundation.wbt")
-            .read_text()
-            .replace("../.cache/", os.path.relpath(CACHE, target.parent) + "/")
-            .replace("../protos/", os.path.relpath(ROOT / "protos", target.parent) + "/")
-        )
-        shutil.copyfile(
-            ROOT / "worlds/.flight_foundation.wbproj",
-            target.parent / ".flight_foundation.wbproj",
-        )
-        return target, None
-    # Flat layout: Webots resolves controllers from <project>/controllers,
-    # where <project> is the parent of worlds/. A nested worlds/pine_forest/
-    # dir breaks that lookup and robots silently fall back to `generic`.
-    target_dir = run / "worlds"
-    target_dir.mkdir()
-    # The built world's files beside it; its meshes (1.4 GB) are linked, not copied.
-    built = ROOT / "worlds/pine_forest"
-    for name in (".pine_forest.wbproj", "scene.json"):
-        shutil.copyfile(built / name, target_dir / name)
-    (target_dir / "meshes").symlink_to(built / "meshes", target_is_directory=True)
-    target = target_dir / "pine_forest.wbt"
+def stage_world(run):
+    """Copy the empty world into the run dir; return its path."""
+    target = run / "worlds/flight_foundation.wbt"
+    target.parent.mkdir()
     target.write_text(
-        (built / "pine_forest.wbt").read_text()
-        .replace("../.cache/", os.path.relpath(CACHE, target_dir) + "/")
-        .replace("../protos/", os.path.relpath(ROOT / "protos", target_dir) + "/")
+        (ROOT / "worlds/flight_foundation.wbt")
+        .read_text()
+        .replace("../.cache/", os.path.relpath(CACHE, target.parent) + "/")
+        .replace("../protos/", os.path.relpath(ROOT / "protos", target.parent) + "/")
     )
-    return target, target_dir / "scene.json"
-
-
-def build_world(skip_export):
-    args = ["--skip-export"] if skip_export else []
-    # The build runs the code its receipt hashes: Python would trust bytecode compiled earlier by the source's mtime,
-    # to the second, and its size, so a same-size edit within that second would run the old code.
-    for cache in [*ROOT.glob("tools/**/__pycache__"), *ROOT.glob("controllers/**/__pycache__")]:
-        shutil.rmtree(cache, ignore_errors=True)
-    run_tool("forest_pipeline.py", *args)
-
+    shutil.copyfile(
+        ROOT / "worlds/.flight_foundation.wbproj",
+        target.parent / ".flight_foundation.wbproj",
+    )
+    return target
 
 def run_tool(name, *args):
     python = ROOT / ".venv/bin/python"
@@ -389,17 +365,8 @@ def exclusive():
         yield
 
 
-def flight(headless, editor=False, world="forest", record=False):
-    home = webots_home(world)  # Refuse an incompatible forest before creating any run artifacts.
-    if world == "forest":
-        built = ROOT / "worlds/pine_forest"
-        if not (built / "pine_forest.wbt").is_file():
-            raise RuntimeError("Forest world is not built. Run ./ironlark build-world first "
-                               "(or copy .cache/forest-build from another machine).")
-        if problems := world_problems(ROOT, built):
-            more = f" and {len(problems) - 3} more" if len(problems) > 3 else ""
-            raise RuntimeError(f"The forest world is not what today's code builds: {'; '.join(problems[:3])}{more}. "
-                               "Rebuild it: ./ironlark build-world (21 s to 34 min, by what changed).")
+def flight(headless, editor=False, record=False):
+    home = webots_home()  # Refuse an invalid WEBOTS_HOME before creating any run artifacts.
     doctor(overview=False, home=home, record=record)
     if not headless and not os.environ.get("DISPLAY"):
         raise RuntimeError("Webots R2025a needs an X11/XWayland DISPLAY; Wayland-only is unsupported. "
@@ -443,7 +410,7 @@ def flight(headless, editor=False, world="forest", record=False):
                     },
                     "mission": "takeoff-hover-land",
                     "headless": headless,
-                    "world": world,
+                    "world": "empty",
                 },
                 indent=2,
             )
@@ -454,8 +421,6 @@ def flight(headless, editor=False, world="forest", record=False):
         env["WEBOTS_HOME"] = str(home)
         env["PATH"] = str(ROOT / ".venv/bin") + os.pathsep + env.get("PATH", "")
         env["PYTHONUNBUFFERED"] = "1"
-        # Patched Webots keeps parsed meshes here (patch 0048): later loads skip parsing the OBJ text.
-        env.setdefault("WEBOTS_MESH_CACHE", str(CACHE / "mesh-cache"))
         env["IRONLARK_RUN_DIR"] = str(run)
         env.pop("IRONLARK_LOCKSTEP", None)  # the Python loop flies unless this run built the C one
         if lockstep:
@@ -468,9 +433,7 @@ def flight(headless, editor=False, world="forest", record=False):
             env["IRONLARK_FAST_START"] = "1"
         # Webots saves GUI perspectives beside the world. Give each run its own
         # project so watching a flight never rewrites versioned source files.
-        world_path, scene_path = stage_world(run, world)
-        if scene_path is not None:
-            env["IRONLARK_SCENE"] = str(scene_path)
+        world_path = stage_world(run)
         (run / "controllers").symlink_to(ROOT / "controllers", target_is_directory=True)
         command = [
             str(home / "webots"),
@@ -646,7 +609,7 @@ def flight(headless, editor=False, world="forest", record=False):
                       + (f"; not measured: {', '.join(used['missing'])}" if used["missing"] else ""))
                 if not headless:
                     print(
-                        "World left open (keys 1–4 switch views). Ctrl+C to exit.",
+                        "World left open. Ctrl+C to exit.",
                         flush=True,
                     )
                     webots.wait()
@@ -670,13 +633,14 @@ def flight(headless, editor=False, world="forest", record=False):
                 stop_process(webots)
 
 
+COMMANDS = ("setup", "doctor", "run", "check", "build-drone", "replay", "check-recording", "check-replay")
+# The forest and the patched renderer live on main; their commands are refused here by name.
+ON_MAIN = ("build-world", "build-renderer", "render-reference")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "command",
-        choices=("setup", "doctor", "run", "check", "build-world", "build-drone", "build-renderer",
-                 "render-reference", "replay", "check-recording", "check-replay"),
-    )
+    parser.add_argument("command", choices=COMMANDS + ON_MAIN, metavar="{" + ",".join(COMMANDS) + "}")
     parser.add_argument("run_dir", nargs="?", help="replay, check-recording: a flight's run folder (runs/...)")
     parser.add_argument(
         "--record", action="store_true",
@@ -687,20 +651,17 @@ def main():
     )
     parser.add_argument(
         "--world",
-        choices=("forest", "empty"),
         default=None,
-        help="run/check world (defaults: forest for run, empty for check)",
-    )
-    parser.add_argument(
-        "--skip-export",
-        action="store_true",
-        help="build-world: reuse the existing Blender export output",
+        help="run/check world: empty, the only world on this branch (the default)",
     )
     args = parser.parse_args()
+    if args.command in ON_MAIN:
+        parser.error(f"{args.command} builds the forest or the patched renderer, which live on the main branch; "
+                     "this branch flies the empty world on stock Webots")
+    if args.world not in (None, "empty"):
+        parser.error(f"--world {args.world}: this branch has only the empty world (the forest lives on the main branch)")
     if args.editor and args.command != "run":
         parser.error("--editor is only available with run")
-    if args.skip_export and args.command != "build-world":
-        parser.error("--skip-export is only available with build-world")
     if args.world is not None and args.command not in ("run", "check"):
         parser.error("--world is only available with run and check")
     if args.record and args.command not in ("run", "check"):
@@ -713,22 +674,11 @@ def main():
         setup()
     elif args.command == "doctor":
         doctor()
-    elif args.command == "build-renderer":
-        run_tool("build_webots_renderer.py")
-    elif args.command == "render-reference":
-        run_tool("render_reference.py")
-    elif args.command == "build-world":
-        with exclusive():
-            build_world(skip_export=args.skip_export)
-            if stale := drone_stale():
-                print(f"Building the drone ({stale}).", flush=True)
-                build_drone()
     elif args.command == "build-drone":
         with exclusive():
             build_drone()
     else:
-        world = args.world or ("empty" if args.command == "check" else "forest")
-        flight(headless=args.command == "check", editor=args.editor, world=world, record=args.record)
+        flight(headless=args.command == "check", editor=args.editor, record=args.record)
 
 
 if __name__ == "__main__":
