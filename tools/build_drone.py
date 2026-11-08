@@ -197,13 +197,13 @@ PROTO IronlarkDrone [
 """
 
 
-# What the drone is built from; tools/forest_pipeline.py pins Blender.
-INPUTS = ("tools/build_drone.py", "tools/drone_meshes.py", "config/sensors.json", "tools/forest_pipeline.py")
+# What the drone is built from; tools/blender.py pins Blender.
+INPUTS = ("tools/build_drone.py", "tools/drone_meshes.py", "config/sensors.json", "tools/blender.py")
 RECEIPT = PARTS / "receipt.json"
 
 
 def main():
-    from forest_pipeline import blender_executable
+    from blender import blender_executable
 
     # The receipt goes first and comes back last, so a build that stops halfway is never taken for complete.
     inputs = {name: digest(ROOT / name) for name in INPUTS}  # what this build reads, before it reads it
