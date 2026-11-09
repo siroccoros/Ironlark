@@ -10,10 +10,29 @@ import time
 from pymavlink import mavutil
 
 
-def judge(truth, autopilot_seconds):
+DRONE_REACH_M = 0.33  # half the diagonal of the drone's 0.47 m collision box: nearer a wall, it can touch it
+
+
+def clearance(truth, walls):
+    """The drone's least horizontal distance from a wall's footprint while below the wall's top, in metres; None
+    without walls. Walls are truth.json's boxes (tools/generate_maze.py), read only after the flight."""
+    nearest = None
+    for sample in truth:
+        x, y, z = sample["position"]
+        for wall in walls:
+            (cx, cy, cz), (sx, sy, sz) = wall["centre"], wall["size"]
+            if z > cz + sz / 2:
+                continue
+            d = math.hypot(max(abs(x - cx) - sx / 2, 0.0), max(abs(y - cy) - sy / 2, 0.0))
+            nearest = d if nearest is None else min(nearest, d)
+    return nearest
+
+
+def judge(truth, autopilot_seconds, altitude=3.0, walls=()):
     """The flight as Webots measured it (flight_observer's ground truth, every 100 ms of simulated time), never as the
     autopilot reported it: the trajectory covers the flight without a gap, and shows a takeoff, a continuous 5-second
-    hover at 2.5-3.5 m, a landing back on the ground (z = 0 in both worlds) and no drift."""
+    hover within 0.5 m of the altitude, a landing back on the ground (z = 0 in every world), no drift and, among
+    walls, never nearer one than the drone's reach."""
     if not truth:
         raise RuntimeError("No independent Webots trajectory was recorded")
     times = [sample["time"] for sample in truth]
@@ -29,9 +48,10 @@ def judge(truth, autopilot_seconds):
         raise RuntimeError(f"Autopilot/Webots clock mismatch: {clock_difference:.2f} s")
     heights = [sample["position"][2] for sample in truth]
     peak = max(heights)
+    low, high = altitude - 0.5, altitude + 0.5
     hover, entered = 0.0, None  # the longest stay in the band, and when the current one began
     for at, height in zip(times, heights):
-        if not 2.5 <= height <= 3.5:
+        if not low <= height <= high:
             entered = None
             continue
         entered = at if entered is None else entered
@@ -39,21 +59,28 @@ def judge(truth, autopilot_seconds):
     start_xy = truth[0]["position"][:2]
     drift = max(math.hypot(sample["position"][0] - start_xy[0],
                            sample["position"][1] - start_xy[1]) for sample in truth)
-    if not 2.5 <= peak <= 4:
+    if not low <= peak <= altitude + 1:
         raise RuntimeError(f"Physical takeoff height out of bounds: {peak:.2f} m")
     if hover < 5:
-        raise RuntimeError(f"No physical 5-second hover at 2.5-3.5 m: the longest lasted {hover:.1f} s")
+        raise RuntimeError(f"No physical 5-second hover at {low:g}-{high:g} m: the longest lasted {hover:.1f} s")
     if not -0.2 <= heights[-1] <= 0.2:
         raise RuntimeError(f"Drone did not physically land: final height {heights[-1]:.2f} m")
     if drift > 1.5:
         raise RuntimeError(f"Excessive horizontal drift: {drift:.2f} m")
-    return {"peak_height_m": peak, "hover_s": round(hover, 1), "final_height_m": heights[-1],
-            "max_horizontal_drift_m": drift, "clock_difference_s": clock_difference}
+    nearest = clearance(truth, walls)
+    if nearest is not None and nearest < DRONE_REACH_M:
+        raise RuntimeError(f"The drone came within {nearest:.2f} m of a wall, inside its {DRONE_REACH_M} m reach")
+    measured = {"peak_height_m": peak, "hover_s": round(hover, 1), "final_height_m": heights[-1],
+                "max_horizontal_drift_m": drift, "clock_difference_s": clock_difference}
+    if nearest is not None:
+        measured["min_wall_clearance_m"] = round(nearest, 3)
+    return measured
 
 
 class Flight:
-    def __init__(self, output):
+    def __init__(self, output, altitude=3.0):
         self.output = output
+        self.altitude = altitude
         self.connection = None
         self.messages = {}
         self.events = []
@@ -163,10 +190,11 @@ class Flight:
         self.command(mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 1)
         self.wait("armed", lambda m: m.get_type() == "HEARTBEAT"
                   and m.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
-        self.command(mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 3)
+        self.command(mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, self.altitude)
         self.event("TAKING_OFF")
-        self.wait("3 metre altitude", lambda m: m.get_type() == "GLOBAL_POSITION_INT"
-                  and 2700 <= m.relative_alt <= 3400, 45)
+        low, high = self.altitude - 0.5, self.altitude + 0.5
+        self.wait(f"{self.altitude:g} metre altitude", lambda m: m.get_type() == "GLOBAL_POSITION_INT"
+                  and (self.altitude - 0.3) * 1000 <= m.relative_alt <= (self.altitude + 0.4) * 1000, 45)
         self.event("HOVERING")
         # The autopilot's altitude decides when to land; judge() measures the hover on Webots' trajectory.
         start = None
@@ -177,7 +205,7 @@ class Flight:
             if not message or message.get_type() != "GLOBAL_POSITION_INT":
                 continue
             altitude = message.relative_alt / 1000
-            if not 2.5 <= altitude <= 3.5:
+            if not low <= altitude <= high:
                 start = None
                 continue
             if start is None:
@@ -194,10 +222,12 @@ class Flight:
         self.event("EVALUATING")
         # Ground truth is read only after the mission, never to command the vehicle.
         truth = [json.loads(line) for line in self.output.with_name("ground_truth.jsonl").read_text().splitlines()]
+        maze = self.output.with_name("truth.json")  # a generated world's geometry, evaluator only
+        walls = json.loads(maze.read_text())["walls"] if maze.exists() else ()
         autopilot_time = self.messages.get("SYSTEM_TIME")
         if autopilot_time is None:
             raise RuntimeError("No autopilot clock was recorded")
-        measurements = judge(truth, autopilot_time.time_boot_ms / 1000)
+        measurements = judge(truth, autopilot_time.time_boot_ms / 1000, self.altitude, walls)
         self.event("COMPLETED")
         return measurements
 
@@ -210,8 +240,9 @@ class Flight:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--altitude", type=float, default=3.0, help="hover altitude, m (3 in the empty world)")
     args = parser.parse_args()
-    flight = Flight(args.output)
+    flight = Flight(args.output, args.altitude)
     report = {"passed": False, "estimator": "EKF3", "position_source": "simulated GPS"}
     try:
         report["measurements"] = flight.execute()

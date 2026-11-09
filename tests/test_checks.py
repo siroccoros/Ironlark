@@ -102,6 +102,12 @@ class Recording(unittest.TestCase):
         for heights in ((0.05, 1.0, 0.05), (3.0, 3.0, 0.05), (0.05, 3.0, 2.0)):
             self.assertEqual(len(self.problems(self.stamps(), heights)), 1, heights)
 
+    def test_the_climb_follows_the_flight_altitude(self):
+        """A maze flight hovers at 1.5 m: it climbed when it passed 1 m, which the empty world's 2.5 m would refuse."""
+        heights = [0.05, 1.5, 0.05]
+        self.assertEqual(check_recording.completeness(self.stamps(), self.PERIODS, heights, climb=1.0), [])
+        self.assertEqual(len(self.problems(self.stamps(), heights)), 1)
+
 
 class Sensors(unittest.TestCase):
     """check_recording judges what the sensors measured, not only when."""
@@ -183,14 +189,15 @@ class Stream(unittest.TestCase):
 class Flight(unittest.TestCase):
     """flight_smoke judges the flight on Webots' trajectory, never on the autopilot's telemetry."""
 
-    def trajectory(self, hover_s=6.0, final=0.017, gap=None, start=0.1):
-        """Every 100 ms: 10 s on the pad, a 3 s climb to 3 m, the hover, a 4 s descent, 5 s on the pad."""
+    def trajectory(self, hover_s=6.0, final=0.017, gap=None, start=0.1, altitude=3.0):
+        """Every 100 ms: 10 s on the pad, a 3 s climb to the altitude, the hover, a 4 s descent, 5 s on the pad."""
         out, steps = [], round((10 + 3 + hover_s + 4 + 5) * 10)
         for i in range(steps):
             at = round(start + i / 10, 1)
             phase = at - 10
-            height = (0.017 if phase < 0 else 0.017 + phase * 1.0 if phase < 3 else 3.0 if phase < 3 + hover_s
-                      else 3.0 - (phase - 3 - hover_s) * 0.75 if phase < 7 + hover_s else final)
+            height = (0.017 if phase < 0 else 0.017 + phase * altitude / 3 if phase < 3 else altitude
+                      if phase < 3 + hover_s else altitude - (phase - 3 - hover_s) * altitude / 4 if phase < 7 + hover_s
+                      else final)
             if gap is None or not gap[0] <= at < gap[1]:
                 out.append({"time": at, "position": [0.01 * phase if phase > 0 else 0.0, 0.0, height]})
         return out
@@ -221,6 +228,29 @@ class Flight(unittest.TestCase):
         truth = self.trajectory()
         with self.assertRaisesRegex(RuntimeError, "clock mismatch"):
             flight_smoke.judge(truth, truth[-1]["time"] + 2.0)
+
+    # A wall of the maze 1.25 m east of the start: its west face at x = 1.25, the drone drifting east up to 0.18 m.
+    WALL = {"centre": [1.35, 0.0, 1.5], "size": [0.2, 2.9, 3.0]}
+
+    def test_a_maze_flight_hovers_below_the_walls_and_keeps_clear_of_them(self):
+        truth = self.trajectory(altitude=1.5)
+        result = flight_smoke.judge(truth, truth[-1]["time"] + 0.05, altitude=1.5, walls=[self.WALL])
+        self.assertAlmostEqual(result["peak_height_m"], 1.5)
+        self.assertAlmostEqual(result["min_wall_clearance_m"], 1.25 - 0.18, places=2)
+
+    def test_a_flight_at_the_empty_worlds_height_fails_in_the_maze(self):
+        truth = self.trajectory()
+        with self.assertRaisesRegex(RuntimeError, "takeoff height out of bounds: 3.00 m"):
+            flight_smoke.judge(truth, truth[-1]["time"] + 0.05, altitude=1.5, walls=[self.WALL])
+
+    def test_a_flight_within_reach_of_a_wall_fails(self):
+        truth = self.trajectory(altitude=1.5)
+        wall = {**self.WALL, "centre": [0.55, 0.0, 1.5]}  # its face at x = 0.45, 0.27 m from the drone at its farthest
+        with self.assertRaisesRegex(RuntimeError, "within 0.27 m of a wall"):
+            flight_smoke.judge(truth, truth[-1]["time"] + 0.05, altitude=1.5, walls=[wall])
+
+    def test_the_empty_world_reports_no_clearance(self):
+        self.assertNotIn("min_wall_clearance_m", self.judge(self.trajectory()))
 
 
 class Resources(unittest.TestCase):

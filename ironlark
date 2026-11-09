@@ -31,6 +31,9 @@ ROS_TOPICS = ("/clock /imu/data /lidar/points /camera/image_raw /camera/camera_i
 # Each message compressed (zstd, lossless) by two threads, queued deep enough that none is dropped.
 ROS_BAG_OPTIONS = "--compression-mode message --compression-format zstd --compression-threads 2 --compression-queue-size 20000"
 COMMIT = "dbe792162d06cab66c3475fd5556bf7a120f119e"
+WORLDS = ("empty", "maze")
+# The hover altitude per world: in the maze below its 3 m walls, where the LiDAR sees them; never over them.
+ALTITUDE_M = {"empty": 3.0, "maze": 1.5}
 UPSTREAM = "/opt/ardupilot/libraries/SITL/examples/Webots_Python"
 
 
@@ -205,8 +208,20 @@ def interrupt(number, frame):
     raise KeyboardInterrupt
 
 
-def stage_world(run):
-    """Copy the empty world into the run dir; return its path."""
+def stage_world(run, world="empty", seed=None):
+    """The run's world in its own folder: a copy of the empty world, or a maze generated from the seed
+    (tools/generate_maze.py), its truth.json in the run folder for the evaluator. Returns the world's path."""
+    if world == "maze":
+        import generate_maze
+
+        target = run / "worlds/maze.wbt"
+        target.parent.mkdir()
+        truth = generate_maze.generate(seed)
+        proto = os.path.relpath(ROOT / "protos/IronlarkDrone.proto", target.parent)
+        target.write_text(generate_maze.world(truth, proto))
+        (run / "truth.json").write_text(generate_maze.encode(truth) + "\n")
+        shutil.copyfile(ROOT / "worlds/.flight_foundation.wbproj", target.parent / ".maze.wbproj")
+        return target
     target = run / "worlds/flight_foundation.wbt"
     target.parent.mkdir()
     target.write_text(
@@ -369,7 +384,7 @@ def exclusive():
         yield
 
 
-def flight(headless, editor=False, record=False):
+def flight(headless, editor=False, record=False, world="empty", seed=None):
     home = webots_home()  # Refuse an invalid WEBOTS_HOME before creating any run artifacts.
     doctor(overview=False, home=home, record=record)
     if not headless and not os.environ.get("DISPLAY"):
@@ -413,14 +428,16 @@ def flight(headless, editor=False, record=False):
                         "library_sha256": hashlib.sha256(lockstep).hexdigest() if lockstep else None,
                     },
                     "mission": "takeoff-hover-land",
+                    "altitude_m": ALTITUDE_M[world],
                     "headless": headless,
-                    "world": "empty",
+                    "world": world,
+                    "maze_seed": seed,
                 },
                 indent=2,
             )
             + "\n"
         )
-        print(f"Flight logs: {run}", flush=True)
+        print(f"Flight logs: {run}" + (f" (maze seed {seed})" if world == "maze" else ""), flush=True)
         env = os.environ.copy()
         env["WEBOTS_HOME"] = str(home)
         env["PATH"] = str(ROOT / ".venv/bin") + os.pathsep + env.get("PATH", "")
@@ -437,7 +454,7 @@ def flight(headless, editor=False, record=False):
             env["IRONLARK_FAST_START"] = "1"
         # Webots saves GUI perspectives beside the world. Give each run its own
         # project so watching a flight never rewrites versioned source files.
-        world_path = stage_world(run)
+        world_path = stage_world(run, world, seed)
         (run / "controllers").symlink_to(ROOT / "controllers", target_is_directory=True)
         command = [
             str(home / "webots"),
@@ -579,6 +596,8 @@ def flight(headless, editor=False, record=False):
                         "/project/tests/flight_smoke.py",
                         "--output",
                         "/run/ironlark/result.json",
+                        "--altitude",
+                        str(ALTITUDE_M[world]),
                     ],
                     start_new_session=True,
                 )
@@ -667,14 +686,21 @@ def main():
     parser.add_argument(
         "--world",
         default=None,
-        help="run/check world: empty, the only world on this branch (the default)",
+        help="run/check world: empty (the default) or maze, generated from --seed (tools/generate_maze.py)",
+    )
+    parser.add_argument(
+        "--seed", type=int, default=None,
+        help="the maze's seed (--world maze; a random one, recorded in manifest.json, when absent)",
     )
     args = parser.parse_args()
     if args.command in ON_MAIN:
         parser.error(f"{args.command} builds the forest or the patched renderer, which live on the main branch; "
-                     "this branch flies the empty world on stock Webots")
-    if args.world not in (None, "empty"):
-        parser.error(f"--world {args.world}: this branch has only the empty world (the forest lives on the main branch)")
+                     "this branch flies its empty and maze worlds on stock Webots")
+    if args.world not in (None, *WORLDS):
+        parser.error(f"--world {args.world}: this branch has the empty and maze worlds "
+                     "(the forest lives on the main branch)")
+    if args.seed is not None and args.world != "maze":
+        parser.error("--seed is only available with --world maze")
     if args.editor and args.command != "run":
         parser.error("--editor is only available with run")
     if args.world is not None and args.command not in ("run", "check"):
@@ -693,7 +719,13 @@ def main():
         with exclusive():
             build_drone()
     else:
-        flight(headless=args.command == "check", editor=args.editor, record=args.record)
+        world = args.world or "empty"
+        seed = args.seed
+        if world == "maze" and seed is None:
+            import random
+
+            seed = random.randrange(1_000_000)
+        flight(headless=args.command == "check", editor=args.editor, record=args.record, world=world, seed=seed)
 
 
 if __name__ == "__main__":

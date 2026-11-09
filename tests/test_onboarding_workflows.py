@@ -34,7 +34,10 @@ class Workflows(unittest.TestCase):
         self.assertFalse((self.root / ".cache/flight.lock").exists())
 
     def test_forest_world_refused_naming_main(self):
-        self.refused("only the empty world (the forest lives on the main branch)", "run", "--world", "forest")
+        self.refused("the empty and maze worlds (the forest lives on the main branch)", "run", "--world", "forest")
+
+    def test_a_seed_without_the_maze_refused(self):
+        self.refused("--seed is only available with --world maze", "run", "--seed", "3")
 
     def test_forest_and_renderer_commands_refused_naming_main(self):
         for command in ("build-world", "build-renderer", "render-reference"):

@@ -16,7 +16,7 @@ nothing here needs them, and `git checkout main -- <path>` brings any of them ba
 
 Today: a reproducible Webots–ArduPilot flight (take off, hover, land on EKF3
 with simulated GPS) in an empty test area with a calibration wall for the
-sensors. What comes next is in [ROADMAP.md](ROADMAP.md).
+sensors, or in a maze generated from a seed. What comes next is in [ROADMAP.md](ROADMAP.md).
 
 ## Quick start
 
@@ -39,9 +39,9 @@ per-step loop runs in C; without one, in Python.
 | `setup` | Builds ArduPilot Copter 4.7.1 (`dbe7921`) in an Ubuntu 22.04 image, which keeps only the SITL binary, its parameters and pymavlink (0.3 GB; Docker's build cache holds the rest); extracts its Iris model and Webots bridge to `.cache/`; creates `.venv/` (Python 3.12.11, NumPy, Pillow). System Python is untouched. |
 | `doctor` | Lists missing runtime requirements: Docker and its daemon, Webots R2025a, the Python environment, the pinned ArduPilot bridge assets and SITL image, `xvfb-run` for `check`, a display for `run`, and the ROS image. |
 | `build-drone` | Models the drone in Blender 4.2.9 (downloaded once and checksummed by [`tools/blender.py`](tools/blender.py)) and writes `protos/IronlarkDrone.proto`; also run by `run` and `check` when an input or output differs from its receipt, `protos/drone/receipt.json`. |
-| `run` | Flies in the empty world in a fullscreen window, then leaves it open until Ctrl+C. Until the autopilot can arm (EKF3 learning its gyro biases, ~40 s of simulated time) the simulation runs as fast as it can, the view at 10 fps; takeoff comes ~16 s after launch. `--world empty` is the default and the only world here; `--editor` for Webots' UI; `--record` streams the sensors to ROS 2 and records a rosbag2 of the flight in the run folder (in real time throughout). |
+| `run` | Flies in the empty world in a fullscreen window, then leaves it open until Ctrl+C. Until the autopilot can arm (EKF3 learning its gyro biases, ~40 s of simulated time) the simulation runs as fast as it can, the view at 10 fps; takeoff comes ~16 s after launch. `--world empty` is the default; `--world maze --seed N` flies a maze generated from the seed ([`tools/generate_maze.py`](tools/generate_maze.py); a random seed, recorded in `manifest.json`, without `--seed`), hovering at 1.5 m below its 3 m walls, with the maze's `truth.json` in the run folder for the evaluator only; `--editor` for Webots' UI; `--record` streams the sensors to ROS 2 and records a rosbag2 of the flight in the run folder (in real time throughout). |
 | `replay RUN` | Plays a recorded run's bag in the ROS 2 container; its `/clock` topic carries Webots time. |
-| `check-recording RUN` | Checks a recorded flight: the bag is complete (every topic, a message every period, over the whole flight), and the IMU at rest reads gravity, no rotation and the rig's noise. In the empty world, then the calibration wall: LiDAR distance, orientation and scatter against the rig's range noise, camera ↔ LiDAR agreement, and the ground in front of the wall not red. |
+| `check-recording RUN` | Checks a recorded flight: the bag is complete (every topic, a message every period, over the whole flight), and the IMU at rest reads gravity, no rotation and the rig's noise. In the empty world, then the calibration wall: LiDAR distance, orientation and scatter against the rig's range noise, camera ↔ LiDAR agreement, and the ground in front of the wall not red. In a maze, every LiDAR ray of the hovering scans against the run's `truth.json` ([`tools/maze_lidar.py`](tools/maze_lidar.py)): returns on the walls and ground it places on their rays, none missing where it has a surface in range, the layers at their configured angles, and the rig's range noise. |
 | `check-replay RUN` | Replays a recorded flight while recording it again and compares: every topic present, the same messages byte for byte, in order. |
 | `check` | The same flight on a virtual display. Exits nonzero on failure. |
 
@@ -57,9 +57,9 @@ Configure in files, not panels; restart to apply:
 [`config/sensors.json`](config/sensors.json) (sensor poses, rates, ranges, noise),
 [`tests/flight_smoke.py`](tests/flight_smoke.py) (the flight check),
 [`ironlark`](ironlark) (startup, versions, cleanup),
-[`tools/`](tools) (the drone build and the recording checks).
+[`tools/`](tools) (the drone build, the recording checks, the maze generator `generate_maze.py` and its LiDAR check `maze_lidar.py`).
 
-Tests: `.venv/bin/python -m unittest tests.test_sensing tests.test_checks tests.test_build_diagnostics tests.test_onboarding_workflows`.
+Tests: `.venv/bin/python -m unittest tests.test_sensing tests.test_checks tests.test_build_diagnostics tests.test_onboarding_workflows tests.test_maze tests.test_maze_lidar`.
 
 ## What `check` proves
 

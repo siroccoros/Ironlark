@@ -1,4 +1,5 @@
-"""Check a recorded flight's sensors: the bag complete, the IMU at rest, and in the empty world the calibration wall.
+"""Check a recorded flight's sensors: the bag complete, the IMU at rest, then the calibration wall (empty world) or the
+maze's walls (a generated maze).
 
 Runs in the ROS 2 container on a run folder holding a bag (./ironlark check --record):
 
@@ -7,14 +8,16 @@ Runs in the ROS 2 container on a run folder holding a bag (./ironlark check --re
 First, completeness: every topic is in the bag, each periodic one with a message every period
 (config/sensors.json; /clock every physics step) and none missing between its first and last,
 starting and ending within one period of the clock, over a flight that leaves the ground, climbs
-past 2.5 m and lands. Then the IMU while the drone stands still before takeoff (ground truth speed
-under 1 cm/s, from 1 s on): it reads gravity, pointing up in the world by its own orientation, no
-rotation and a level attitude, with the rig's configured noise. In the empty world, the sensors against the calibration wall: for LiDAR scans
+to within 0.5 m of its altitude (manifest.json; 3 m when absent) and lands. Then the IMU while the
+drone stands still before takeoff (ground truth speed under 1 cm/s, from 1 s on): it reads gravity,
+pointing up in the world by its own orientation, no rotation and a level attitude, with the rig's
+configured noise. In the empty world, the sensors against the calibration wall: for LiDAR scans
 taken while hovering it places the returns in the world (ground truth pose and the static
 transforms), fits the wall (face at x = 5.9 m, normal -x) and checks their distance, orientation
 and scatter (the rig's range noise), then projects them into the camera frame taken at the same
-instant: wall returns fall on the wall's red, and pixels seeing the ground in front of it are not red. Writes
-sensor_check.json beside the bag; exits nonzero on failure.
+instant: wall returns fall on the wall's red, and pixels seeing the ground in front of it are not red. In a maze, every
+ray of those scans against the walls and ground of the run's truth.json (tools/maze_lidar.py). Writes sensor_check.json
+beside the bag; exits nonzero on failure.
 """
 import json
 import math
@@ -31,7 +34,8 @@ NOISE_BAND = (0.5, 1.5)  # measured spread over the rig's configured noise (conf
 GRAVITY = 9.81
 TOPICS = ["/clock", "/imu/data", "/lidar/points", "/camera/image_raw", "/camera/camera_info", "/tf_static",
           "/ground_truth/pose", "/ground_truth/velocity"]
-GROUND_M, CLIMB_M = 0.2, 2.5  # on the ground; past it, the flight climbed (tests/flight_smoke.py's bounds)
+GROUND_M = 0.2  # on the ground
+DEFAULT_ALTITUDE_M = 3.0  # runs recorded before manifest.json named the altitude flew the empty world at 3 m
 
 
 def periods(step_ms, config):
@@ -45,9 +49,10 @@ def periods(step_ms, config):
     return {topic: value * 1_000_000 for topic, value in ms.items()}
 
 
-def completeness(stamps, periods, heights):
+def completeness(stamps, periods, heights, climb=DEFAULT_ALTITUDE_M - 0.5):
     """Problems with the recording's completeness, none if it is complete: stamps holds each topic's
-    message stamps (ns) in bag order, heights the ground truth heights in order."""
+    message stamps (ns) in bag order, heights the ground truth heights in order, climb the height the flight passes
+    (tests/flight_smoke.py's lower bound)."""
     problems = []
     for topic in TOPICS:
         if not stamps.get(topic):
@@ -65,7 +70,7 @@ def completeness(stamps, periods, heights):
         if not 0 <= series[0] - clock[0] < period or not 0 <= clock[-1] - series[-1] < period:
             problems.append(f"{topic}: covers {series[0] / 1e9:.3f}-{series[-1] / 1e9:.3f} s, "
                             f"the clock {clock[0] / 1e9:.3f}-{clock[-1] / 1e9:.3f} s")
-    if heights and not (heights[0] <= GROUND_M and max(heights) >= CLIMB_M and heights[-1] <= GROUND_M):
+    if heights and not (heights[0] <= GROUND_M and max(heights) >= climb and heights[-1] <= GROUND_M):
         problems.append(f"the flight is not all there: heights {heights[0]:.2f}, peak {max(heights):.2f}, "
                         f"last {heights[-1]:.2f} m")
     return problems
@@ -197,7 +202,8 @@ def main():
     step_ms = int(re.search(r"basicTimeStep (\d+)", world).group(1))
     config = json.loads((ROOT / "config/sensors.json").read_text())
     expected = periods(step_ms, config)
-    calibration_wall = json.loads((run / "manifest.json").read_text())["world"] == "empty"
+    manifest = json.loads((run / "manifest.json").read_text())
+    world, altitude = manifest["world"], manifest.get("altitude_m", DEFAULT_ALTITUDE_M)
     reader = open_bag(run / "bag")
     types = {t.name: t.type for t in reader.get_all_topics_and_types()}
     static, pose, speed, info = {}, None, 1e9, None
@@ -235,18 +241,32 @@ def main():
         elif topic == "/imu/data":
             a, g, o = msg.linear_acceleration, msg.angular_velocity, msg.orientation
             at_rest.append(((a.x, a.y, a.z), (g.x, g.y, g.z), (o.x, o.y, o.z, o.w)))
-        elif topic == "/lidar/points" and pose and pose[0][2] > 2.0 and speed < 0.3 and len(scans) < 20:
+        elif topic == "/lidar/points" and pose and pose[0][2] > altitude - 1.0 and speed < 0.3 and len(scans) < 20:
             scans.append((ns(msg.header.stamp), pose, msg))
         elif topic == "/camera/image_raw":
             images[ns(msg.header.stamp)] = msg
 
-    problems = completeness(stamps, expected, heights) or imu_problems(at_rest, config)
-    if problems or not calibration_wall:  # a world without the calibration wall
-        report = {"complete": not completeness(stamps, expected, heights), "imu_samples_at_rest": len(at_rest),
+    climb = altitude - 0.5
+    problems = completeness(stamps, expected, heights, climb) or imu_problems(at_rest, config)
+    if problems or world not in ("empty", "maze"):  # a world with neither the calibration wall nor a truth.json
+        report = {"complete": not completeness(stamps, expected, heights, climb), "imu_samples_at_rest": len(at_rest),
                   "problems": problems, "passed": not problems}
         (run / "sensor_check.json").write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report, indent=2))
         sys.exit(1 if problems else 0)
+    if world == "maze":
+        import maze_lidar
+        import numpy as np
+
+        truth = json.loads((run / "truth.json").read_text())
+        lidar = maze_lidar.check([(pose, np.frombuffer(msg.data, maze_lidar.POINT, msg.width)) for _, pose, msg in scans],
+                                 static["lidar_link"], truth, config["lidar"])
+        report = {"complete": True, "messages": {topic: len(stamps.get(topic, ())) for topic in TOPICS},
+                  "imu_samples_at_rest": len(at_rest), "hovering_scans": len(scans), "maze_seed": truth["seed"],
+                  "lidar": lidar, "problems": lidar["problems"], "passed": not lidar["problems"]}
+        (run / "sensor_check.json").write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report, indent=2))
+        sys.exit(0 if report["passed"] else 1)
     lidar_t, lidar_q = static["lidar_link"]
     camera_t, camera_q = static["camera_link"]
     optical_q = static["camera_optical_frame"][1]
