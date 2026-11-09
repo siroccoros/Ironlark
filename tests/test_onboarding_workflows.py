@@ -1,5 +1,6 @@
 """Drive launcher refusal through its CLI, without creating run artifacts."""
 
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -32,6 +33,16 @@ class Workflows(unittest.TestCase):
         self.assertIn(expected, result.stderr)
         self.assertFalse((self.root / "runs").exists())
         self.assertFalse((self.root / ".cache/flight.lock").exists())
+
+    def test_renderer_build_refused_while_a_flight_runs(self):
+        lock = self.root / ".cache/flight.lock"
+        lock.parent.mkdir(exist_ok=True)
+        with lock.open("w") as held:
+            fcntl.flock(held, fcntl.LOCK_EX | fcntl.LOCK_NB)  # a flight, or the world `run` left open
+            result = subprocess.run([sys.executable, str(self.root / "ironlark"), "build-renderer"],
+                                    capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Another Ironlark flight or build is running", result.stderr)
 
     def test_missing_manifest_refused_before_run_artifacts(self):
         self.refused("build-renderer")
