@@ -65,7 +65,8 @@ def link(path, target):
 
 
 def install(source, target):
-    """target replaced by a copy of source in one step. A Webots running from the runtime keeps the file it started:
+    """target replaced by a copy of source in one step. ./ironlark build-renderer refuses while a flight runs, but a
+    Webots started by hand, or left running by a killed launcher, holds no lock: it keeps the file it started, where
     copying over a running executable in place fails (Text file busy) after the whole build."""
     partial = target.with_name(target.name + ".part")
     shutil.copy2(source, partial)

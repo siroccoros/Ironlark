@@ -1,5 +1,6 @@
 """Renderer selection, live resources and prerequisites on real files and Git checkouts."""
 
+import errno
 import hashlib
 import json
 import os
@@ -279,14 +280,25 @@ class Install(unittest.TestCase):
     def test_a_running_executable_is_replaced_not_overwritten(self):
         with tempfile.TemporaryDirectory() as scratch:
             target, built = Path(scratch, "webots-bin"), Path(scratch, "built")
-            shutil.copy2(shutil.which("sleep"), target)
+            # A shell runs under any file name (a multicall sleep, as uutils' is, exits at once as "webots-bin"),
+            # and waiting in its own builtin it stays the running program: a flight's Webots.
+            shutil.copy2(os.path.realpath(shutil.which("sh")), target)
             built.write_bytes(b"the new build")
-            running = subprocess.Popen(["sleep", "30"], executable=str(target))  # a flight's Webots
+            built.chmod(0o755)
+            running = subprocess.Popen(["sh", "-c", "read line"], executable=str(target), stdin=subprocess.PIPE)
             self.addCleanup(running.wait)
+            self.addCleanup(running.stdin.close)
             self.addCleanup(running.kill)
-            builder.install(built, target)  # copied in place, this fails: Text file busy
+            try:
+                open(target, "r+b").close()
+            except OSError as error:
+                self.assertEqual(error.errno, errno.ETXTBSY)  # what copying in place meets
+            else:
+                self.skipTest("this kernel lets a running executable be opened for writing")
+            builder.install(built, target)
             self.assertIsNone(running.poll())
             self.assertEqual(target.read_bytes(), b"the new build")
+            self.assertTrue(os.access(target, os.X_OK))
             self.assertFalse(target.with_name("webots-bin.part").exists())
 
 

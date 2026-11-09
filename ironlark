@@ -728,7 +728,8 @@ def main():
     elif args.command == "doctor":
         doctor()
     elif args.command == "build-renderer":
-        run_tool("build_webots_renderer.py")
+        with exclusive():  # it replaces the runtime's resources and binary, which a flight's Webots is using
+            run_tool("build_webots_renderer.py")
     elif args.command == "render-reference":
         run_tool("render_reference.py")
     elif args.command == "build-world":
