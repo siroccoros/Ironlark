@@ -31,49 +31,56 @@ earlier.
 
 ## Now: GPS-denied navigation
 
-Goal: with GPS cut, the drone takes off, flies out through a cluttered site to a goal and back,
-and lands at home, localized by its own LiDAR and IMU. The empty-world flight check stays the
-regression gate.
+Goal: with GPS cut, the drone escapes a maze it has never seen. It takes off inside, localizes by
+its own LiDAR and IMU, maps the walls as it flies, plans towards the exit, turns back from dead
+ends, replans around an obstacle that appears mid-flight, and lands. The empty-world flight check
+stays the regression gate.
 
-1. **LiDAR(-inertial) odometry.** Evaluate it first on recorded flights (`run --record` bags),
-   scoring pose and velocity against `/ground_truth/*`. Per-return LiDAR timing if the odometry
-   needs it: model the acquisition, never fake it.
-2. **External navigation into EKF3.** Feed the odometry's pose, velocity, uncertainty and health to
-   ArduPilot's external-navigation input, with EKF3's position and velocity sources set to it. Hover
-   and make short moves, measuring error against the evaluator.
-3. **GPS cut at the measurement layer.** `SIM_GPS1_ENABLE 0`: SITL's receiver stops reporting; the
-   physical state Webots reports is untouched (see the localization boundary in the README). Then
-   GPS ↔ external-navigation transitions tested in motion, keeping frame and return route; GPS
-   degradation needs an explicit model.
-4. **A primitive tank/crane world.** Tanks, pipes, a crane and open ground from Webots primitives,
-   on stock Webots, generated from a file with a fixed seed: enough structure for the LiDAR to hold
-   on to, and gaps and overhangs to plan around. Its visual and collision shapes agree; its sensor
-   returns are checked, not just its looks.
-5. **Planning and replanning.** A local map from the LiDAR, a collision-aware path to the goal and
-   back, replanned as the map grows. Unknown space stays unknown.
-6. **Failsafes.** Odometry tracking loss, unhealthy estimates and lost links end in a defined hold
-   or landing, tested by injecting each in flight.
-7. **Batch evaluation.** Many headless flights over seeds and starts, each judged on its run folder
-   (`result.json`, `ground_truth.jsonl`, `telemetry.jsonl`): success, position error, drift, time,
-   and what the machine spent; a summary across the batch.
+1. **A generated maze world.** `tools/generate_maze.py` turns a seed into a maze of Webots
+   primitives on stock Webots (walls about 3 m high, corridors about 2.5 m wide; the numbers are
+   parameters) and writes `truth.json` beside it: the true walls, the start, the exit and the
+   shortest path, for the evaluator only. Visual and collision shapes agree; its LiDAR returns are
+   checked against `truth.json`, not just its looks. A fixed seed always gives the same maze.
+2. **LiDAR(-inertial) odometry.** Evaluated first on recorded maze flights (`run --record`), scored
+   against `/ground_truth/*` (ATE, RPE). Long straight corridors are a named test case: they are
+   where LiDAR odometry is weakest. Per-return LiDAR timing if the odometry needs it: model the
+   acquisition, never fake it.
+3. **External navigation into EKF3.** The odometry's pose, velocity, uncertainty and health into
+   ArduPilot's external-navigation input, on its own MAVLink port (SITL starts with
+   `--serial1 none` today). Every navigation node runs on Webots time (`/clock`). Frames convert
+   only through `sensing/frames.py`. GPS ↔ external-navigation transition tested in flight first.
+4. **GPS cut at the measurement layer.** `SIM_GPS1_ENABLE 0`: SITL's receiver stops reporting; the
+   physical state Webots reports is untouched (see the localization boundary in the README).
+   Takeoff, hover and a fixed route through the maze. A `--gps-denied` check in the style of
+   `check` fails if GPS is enabled or if ground truth reaches navigation code.
+5. **Mapping and planning in an unknown maze.** A local occupancy map from the LiDAR, scored against
+   `truth.json`. Unknown space stays unknown in the map. The planner may route through it as
+   unverified and replans as it is observed: dead ends discovered, turned back from, another route
+   taken.
+6. **Obstacles and failsafes.** An obstacle spawned in a corridor mid-flight forces a replan.
+   Odometry loss, unhealthy estimates and lost links end in a defined hover or landing, tested by
+   injecting each in flight.
+7. **Batch evaluation.** Headless flights over random seeds and starts, each judged on its run
+   folder (`result.json`, `ground_truth.jsonl`, `telemetry.jsonl`) and `truth.json`: escaped or
+   not, time, path length against the shortest path, ATE, map accuracy, minimum clearance, replan
+   time, and what the machine spent; a summary across the batch.
 
-**Done when** a batch of out-and-back flights in the tank/crane world with `SIM_GPS1_ENABLE 0`
-passes the evaluator's checks, every run's error and failures named.
+**Done when** a batch of 10 random unknown mazes with `SIM_GPS1_ENABLE 0` is flown, every run
+judged as above, the escape rate and the other metrics reported, and every injected failure ends in
+a hover or landing.
 
 Rules that carry over:
 
-- World geometry is never an autonomy map; unknown areas stay unknown.
-- GPS loss is a simulated rule, not a side effect of a roof.
+- World geometry and `truth.json` are never an autonomy map; unknown space stays unknown.
+- GPS loss is a simulated rule, not a side effect of a roof; degradation short of a cut needs an
+  explicit model.
 - Feeding evaluator pose in as odometry is not localization.
 - Measure rendering, sensing and physics together before promising scale or frame rate.
 
 ## Later
 
-First full mission: leave home, reach a given entrance, map a bounded unknown
-interior, exit, return, land. Its behaviours become reusable tasks under a
-manager that handles priority, interruption and resumption while perception,
-mapping, planning and control run concurrently. General-purpose behaviour
-grows from these tested pieces.
-
-Richer regions (the forest on `main`, an outdoor-to-cave region) join the
-navigation work one at a time, when its capabilities need them.
+- A primitive tank/crane world (tanks, pipes, a crane, open ground) generated the same way, for
+  overhangs and the site layout of real customers.
+- The forest regions from `main`, when a capability needs them.
+- Real recorded LiDAR (a public drone dataset or the team's own hardware) to compare the simulated
+  returns and the odometry's drift with reality.
