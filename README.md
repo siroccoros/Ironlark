@@ -17,7 +17,8 @@ nothing here needs them, and `git checkout main -- <path>` brings any of them ba
 Today: a reproducible Webots–ArduPilot flight (take off, hover, land on EKF3
 with simulated GPS) in an empty test area with a calibration wall for the
 sensors, or in a maze generated from a seed. A sensor-only LiDAR/IMU odometer
-can be replayed and evaluated. What comes next is in [ROADMAP.md](ROADMAP.md).
+can be replayed and evaluated, and an optional flight tests a GPS to external
+navigation to GPS EKF3 transition. What comes next is in [ROADMAP.md](ROADMAP.md).
 
 ## Quick start
 
@@ -35,6 +36,7 @@ per-step loop runs in C; without one, in Python.
 ./ironlark check-replay RUN       # replay it and compare, message by message
 ./ironlark check --world maze --seed 7 --odometry-route  # record the long corridor case
 ./ironlark check-odometry RUN     # replay a recorded maze run, score ATE/RPE against hidden truth
+./ironlark check --world maze --seed 7 --external-nav  # test EKF3 source transition in flight
 ```
 
 | Command | Does |
@@ -49,6 +51,7 @@ per-step loop runs in C; without one, in Python.
 | `check` | The same flight on a virtual display. Exits nonzero on failure. |
 | `check --world maze --seed 7 --odometry-route` | Records a GPS-guided route through three waypoints, including a 5.4 m straight section at up to 0.6 m/s. The route is fixed in `config/odometry_route_seed7.json`; no evaluator truth is read in flight. Run `check-odometry` on its output folder. |
 | `check-odometry RUN` | Replays only `/imu/data` and `/lidar/points` through the odometer. After replay, compares its trajectory with independent `ground_truth.jsonl`, writing `odometry_check.json`: ATE, one second RPE, healthy scans, and a pass limit. On the seed-7 route, scores moving scans and the named straight corridor separately. Requires a recorded maze run. |
+| `check --external-nav` | Records sensors, runs the odometer live, sends MAVLink `ODOMETRY` on serial1 port 5761, and switches EKF3 from GPS source set 1 to ExternalNav source set 2 for a five second hover and a 0.5 m forward and return move, then back to GPS. It fails on unhealthy odometry or EKF position. GPS stays enabled; denial is step 4. |
 
 Webots is `WEBOTS_HOME` when set, else `./webots/`; this branch never selects a
 patched build. To ignore a `WEBOTS_HOME` override in sh or fish, use
@@ -59,6 +62,7 @@ so builds are source-pinned, not bit-identical.
 Configure in files, not panels; restart to apply:
 [`worlds/flight_foundation.wbt`](worlds/flight_foundation.wbt) (empty-world scene, vehicle, camera, timestep),
 [`config/flight.parm`](config/flight.parm) (autopilot overrides),
+[`config/external_nav.parm`](config/external_nav.parm) (optional EKF3 source set and visual odometry),
 [`config/sensors.json`](config/sensors.json) (sensor poses, rates, ranges, noise),
 [`tests/flight_smoke.py`](tests/flight_smoke.py) (the flight check),
 [`ironlark`](ironlark) (startup, versions, cleanup),
@@ -106,8 +110,9 @@ Webots provides nominal per-return LiDAR times over about 100 ms, but raycasting
 moving scans shows that the cloud geometry is one snapshot at the latest return
 time. The odometer uses that measured time and rewinds the gyro attitude to it.
 Per-point deskew would introduce false motion for this renderer.
-[`tools/evaluate_odometry.py`](tools/evaluate_odometry.py) reads evaluator truth only
-after the sensor-only replay completes.
+The live node writes `odometry.jsonl`, `/odom/lidar` and `/odom/health`;
+it does not subscribe to `/ground_truth/*`. [`tools/evaluate_odometry.py`](tools/evaluate_odometry.py)
+is the separate truth-reading evaluator.
 
 Each run writes `runs/<timestamp>/`: `manifest.json` (versions, Webots patches,
 world, estimator), `result.json` (verdict, transitions, measurements),

@@ -1,4 +1,6 @@
-"""Geometry and scan timing regression for sensor odometry."""
+"""Geometry and frame regression for sensor odometry and its EKF handoff."""
+import io
+import math
 import sys
 import unittest
 from pathlib import Path
@@ -9,10 +11,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 try:
     from sensing.odometry import ScanOdometry  # noqa: E402
+    from ros.lidar_odometry import mavlink_payload  # noqa: E402
 except ModuleNotFoundError as error:
-    if error.name not in ("scipy",):
+    if error.name not in ("scipy", "rclpy", "sensor_msgs", "nav_msgs", "pymavlink"):
         raise
     ScanOdometry = None
+    mavlink_payload = None
 
 
 def walls(corner=True):
@@ -76,6 +80,32 @@ class ScanMatching(unittest.TestCase):
         self.assertFalse(state["healthy"])
         self.assertEqual(state["reason"], "corridor degeneracy")
 
+    def test_external_nav_has_ned_position_and_covariance(self):
+        state = {"time": 2.0, "position": [1, 2, 3], "yaw": 0.0,
+                 "velocity": [0.1, 0.2, 0.3], "healthy": True,
+                 "covariance_z": 0.05,
+                 "covariance_xy_yaw": [[0.04, 0, 0], [0, 0.09, 0], [0, 0, 0.01]]}
+        packet = mavlink_payload(state)
+        self.assertEqual(packet[3:6], (1, -2, -3))
+        for actual, expected in zip(packet[7:10], (0.1, -0.2, -0.3)):
+            self.assertAlmostEqual(actual, expected)
+        self.assertAlmostEqual(abs(packet[6][0]), 1.0)
+        self.assertEqual(packet[13][0], 0.04)
+        self.assertTrue(math.isnan(packet[14][0]))
+        self.assertEqual(packet[-1], 80)
+        from pymavlink import mavutil
+        output = io.BytesIO()
+        mavutil.mavlink.MAVLink(output).odometry_send(*packet)
+        self.assertGreater(len(output.getvalue()), 0)
+
+    def test_velocity_rotates_with_body_heading(self):
+        state = {"time": 2.0, "position": [0, 1, 0], "yaw": math.pi / 2,
+                 "velocity": [0, 1, 0], "healthy": True, "covariance_z": 0.05,
+                 "covariance_xy_yaw": [[0.04, 0, 0], [0, 0.04, 0], [0, 0, 0.01]]}
+        packet = mavlink_payload(state)
+        self.assertEqual(packet[3:6], (0, -1, 0))
+        self.assertAlmostEqual(packet[7], 1.0)
+        self.assertAlmostEqual(packet[8], 0.0)
 
 
 if __name__ == "__main__":
