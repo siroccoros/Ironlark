@@ -16,7 +16,8 @@ nothing here needs them, and `git checkout main -- <path>` brings any of them ba
 
 Today: a reproducible Webots–ArduPilot flight (take off, hover, land on EKF3
 with simulated GPS) in an empty test area with a calibration wall for the
-sensors, or in a maze generated from a seed. What comes next is in [ROADMAP.md](ROADMAP.md).
+sensors, or in a maze generated from a seed. A sensor-only LiDAR/IMU odometer
+can be replayed and evaluated. What comes next is in [ROADMAP.md](ROADMAP.md).
 
 ## Quick start
 
@@ -32,6 +33,8 @@ per-step loop runs in C; without one, in Python.
 ./ironlark run --record           # watch the flight and record its sensors (rosbag2)
 ./ironlark check-recording RUN    # judge the recording: completeness, IMU, LiDAR/camera on the wall
 ./ironlark check-replay RUN       # replay it and compare, message by message
+./ironlark check --world maze --seed 7 --odometry-route  # record the long corridor case
+./ironlark check-odometry RUN     # replay a recorded maze run, score ATE/RPE against hidden truth
 ```
 
 | Command | Does |
@@ -44,6 +47,8 @@ per-step loop runs in C; without one, in Python.
 | `check-recording RUN` | Checks a recorded flight: the bag is complete (every topic, a message every period, over the whole flight), and the IMU at rest reads gravity, no rotation and the rig's noise. In the empty world, then the calibration wall: LiDAR distance, orientation and scatter against the rig's range noise, camera ↔ LiDAR agreement, and the ground in front of the wall not red. In a maze, every LiDAR ray of the hovering scans against the run's `truth.json` ([`tools/maze_lidar.py`](tools/maze_lidar.py)): returns on the walls and ground it places on their rays, none missing where it has a surface in range, the layers at their configured angles, and the rig's range noise. |
 | `check-replay RUN` | Replays a recorded flight while recording it again and compares: every topic present, the same messages byte for byte, in order. |
 | `check` | The same flight on a virtual display. Exits nonzero on failure. |
+| `check --world maze --seed 7 --odometry-route` | Records a GPS-guided route through three waypoints, including a 5.4 m straight section at up to 0.6 m/s. The route is fixed in `config/odometry_route_seed7.json`; no evaluator truth is read in flight. Run `check-odometry` on its output folder. |
+| `check-odometry RUN` | Replays only `/imu/data` and `/lidar/points` through the odometer. After replay, compares its trajectory with independent `ground_truth.jsonl`, writing `odometry_check.json`: ATE, one second RPE, healthy scans, and a pass limit. On the seed-7 route, scores moving scans and the named straight corridor separately. Requires a recorded maze run. |
 
 Webots is `WEBOTS_HOME` when set, else `./webots/`; this branch never selects a
 patched build. To ignore a `WEBOTS_HOME` override in sh or fish, use
@@ -59,7 +64,7 @@ Configure in files, not panels; restart to apply:
 [`ironlark`](ironlark) (startup, versions, cleanup),
 [`tools/`](tools) (the drone build, the recording checks, the maze generator `generate_maze.py` and its LiDAR check `maze_lidar.py`).
 
-Tests: `.venv/bin/python -m unittest tests.test_sensing tests.test_checks tests.test_build_diagnostics tests.test_onboarding_workflows tests.test_maze tests.test_maze_lidar`.
+Tests: `.venv/bin/python -m unittest tests.test_sensing tests.test_checks tests.test_build_diagnostics tests.test_onboarding_workflows tests.test_maze tests.test_maze_lidar`. The odometry geometry test runs in the ROS image: `docker run --rm --mount type=bind,src="$PWD",dst=/project,readonly ironlark-ros:humble bash -c 'source /opt/ros/humble/setup.bash && cd /project && python3 -m unittest tests.test_odometry'`.
 
 ## What `check` proves
 
@@ -90,6 +95,19 @@ Position still comes from simulated GPS, which ArduPilot synthesizes from the
 physical state Webots reports. GPS denial must be cut at the measurement layer,
 never by removing that state. Feeding evaluator pose in as odometry is not
 localization.
+
+The odometer in [`sensing/odometry.py`](sensing/odometry.py) matches planar wall
+returns to a nearby reference scan, using gyro yaw as a prior. It estimates height
+from the change in a visible wall top edge, with IMU acceleration between scans.
+The edge height is learned from the first scan and the generator's wall geometry
+is never read by the estimator. A straight corridor without a second wall
+direction is marked unhealthy; the estimator raises position uncertainty there.
+Webots provides nominal per-return LiDAR times over about 100 ms, but raycasting
+moving scans shows that the cloud geometry is one snapshot at the latest return
+time. The odometer uses that measured time and rewinds the gyro attitude to it.
+Per-point deskew would introduce false motion for this renderer.
+[`tools/evaluate_odometry.py`](tools/evaluate_odometry.py) reads evaluator truth only
+after the sensor-only replay completes.
 
 Each run writes `runs/<timestamp>/`: `manifest.json` (versions, Webots patches,
 world, estimator), `result.json` (verdict, transitions, measurements),

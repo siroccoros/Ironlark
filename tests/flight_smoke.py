@@ -9,6 +9,10 @@ import time
 
 from pymavlink import mavutil
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from sensing import frames  # noqa: E402
+
 
 DRONE_REACH_M = 0.33  # half the diagonal of the drone's 0.47 m collision box: nearer a wall, it can touch it
 
@@ -28,7 +32,7 @@ def clearance(truth, walls):
     return nearest
 
 
-def judge(truth, autopilot_seconds, altitude=3.0, walls=()):
+def judge(truth, autopilot_seconds, altitude=3.0, walls=(), route_points=()):
     """The flight as Webots measured it (flight_observer's ground truth, every 100 ms of simulated time), never as the
     autopilot reported it: the trajectory covers the flight without a gap, and shows a takeoff, a continuous 5-second
     hover within 0.5 m of the altitude, a landing back on the ground (z = 0 in every world), no drift and, among
@@ -65,22 +69,41 @@ def judge(truth, autopilot_seconds, altitude=3.0, walls=()):
         raise RuntimeError(f"No physical 5-second hover at {low:g}-{high:g} m: the longest lasted {hover:.1f} s")
     if not -0.2 <= heights[-1] <= 0.2:
         raise RuntimeError(f"Drone did not physically land: final height {heights[-1]:.2f} m")
-    if drift > 1.5:
+    if not route_points and drift > 1.5:
         raise RuntimeError(f"Excessive horizontal drift: {drift:.2f} m")
     nearest = clearance(truth, walls)
     if nearest is not None and nearest < DRONE_REACH_M:
         raise RuntimeError(f"The drone came within {nearest:.2f} m of a wall, inside its {DRONE_REACH_M} m reach")
+    if route_points:
+        cursor = 0
+        for i, point in enumerate(route_points, 1):
+            reached = next((j for j in range(cursor, len(truth))
+                            if math.hypot(truth[j]["position"][0] - point[0],
+                                          truth[j]["position"][1] - point[1]) < 0.4), None)
+            if reached is None:
+                raise RuntimeError(f"Physical odometry route missed waypoint {i}: {point}")
+            cursor = reached
+        if math.hypot(truth[-1]["position"][0] - route_points[-1][0],
+                      truth[-1]["position"][1] - route_points[-1][1]) > 0.6:
+            raise RuntimeError("Physical odometry route landed away from its final waypoint")
     measured = {"peak_height_m": peak, "hover_s": round(hover, 1), "final_height_m": heights[-1],
                 "max_horizontal_drift_m": drift, "clock_difference_s": clock_difference}
     if nearest is not None:
         measured["min_wall_clearance_m"] = round(nearest, 3)
+    if route_points:
+        measured["route_length_m"] = round(sum(math.hypot(b["position"][0] - a["position"][0],
+                                                  b["position"][1] - a["position"][1])
+                                                 for a, b in zip(truth, truth[1:])), 3)
+        measured["route_waypoints_reached"] = len(route_points)
     return measured
 
 
 class Flight:
-    def __init__(self, output, altitude=3.0):
+    def __init__(self, output, altitude=3.0, odometry_route=False):
         self.output = output
         self.altitude = altitude
+        self.route_points = (json.loads((ROOT / "config/odometry_route_seed7.json").read_text())
+                             ["waypoints_webots_xy_m"] if odometry_route else ())
         self.connection = None
         self.messages = {}
         self.events = []
@@ -215,6 +238,8 @@ class Flight:
                 break
         if not hovered:
             raise RuntimeError("Could not sustain a 5-second hover within 0.5 m of target altitude")
+        if self.route_points:
+            self.fly_odometry_route()
         self.event("LANDING")
         self.mode(9)  # LAND
         self.wait("landed and disarmed", lambda m: m.get_type() == "HEARTBEAT"
@@ -227,9 +252,41 @@ class Flight:
         autopilot_time = self.messages.get("SYSTEM_TIME")
         if autopilot_time is None:
             raise RuntimeError("No autopilot clock was recorded")
-        measurements = judge(truth, autopilot_time.time_boot_ms / 1000, self.altitude, walls)
+        measurements = judge(truth, autopilot_time.time_boot_ms / 1000, self.altitude, walls,
+                             self.route_points)
         self.event("COMPLETED")
         return measurements
+
+    def fly_odometry_route(self):
+        """GPS-guided data collection fixture; no generated maze truth enters the mission."""
+        start = self.wait("route start position", lambda m: m.get_type() == "LOCAL_POSITION_NED", 5)
+        for i, (x, y) in enumerate(self.route_points, 1):
+            self.event(f"ODOMETRY_ROUTE_{i}")
+            dx, dy, _ = frames.webots_to_sitl_local((x, y, 0.0))
+            target_x, target_y = start.x + dx, start.y + dy
+            sim_start, wall_start = self.sim_time, time.monotonic()
+            while not self.expired(sim_start, wall_start, 45):
+                m = self.poll()
+                if not m or m.get_type() != "LOCAL_POSITION_NED":
+                    continue
+                ex, ey = target_x - m.x, target_y - m.y
+                distance = math.hypot(ex, ey)
+                if distance < 0.12 and math.hypot(m.vx, m.vy) < 0.2:
+                    self.send_route_velocity(0.0, 0.0, 0.0)
+                    break
+                speed = min(0.6, 0.55 * distance)
+                vx, vy = (speed * ex / distance, speed * ey / distance) if distance > 0 else (0, 0)
+                vz = max(-0.15, min(0.15, 0.5 * (start.z - m.z)))
+                self.send_route_velocity(vx, vy, vz)
+            else:
+                raise RuntimeError(f"Timeout: route waypoint {i}")
+
+    def send_route_velocity(self, vx, vy, vz):
+        # Guided velocity target, refreshed at each LOCAL_POSITION_NED update (~10 Hz).
+        self.connection.mav.set_position_target_local_ned_send(
+            int(self.sim_time * 1000), self.connection.target_system, self.connection.target_component,
+            mavutil.mavlink.MAV_FRAME_LOCAL_NED, 0x0DC7,
+            0, 0, 0, vx, vy, vz, 0, 0, 0, 0, 0)
 
     def close(self):
         self.log.close()
@@ -241,8 +298,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--altitude", type=float, default=3.0, help="hover altitude, m (3 in the empty world)")
+    parser.add_argument("--odometry-route", action="store_true")
     args = parser.parse_args()
-    flight = Flight(args.output, args.altitude)
+    flight = Flight(args.output, args.altitude, args.odometry_route)
     report = {"passed": False, "estimator": "EKF3", "position_source": "simulated GPS"}
     try:
         report["measurements"] = flight.execute()

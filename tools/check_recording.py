@@ -241,7 +241,8 @@ def main():
         elif topic == "/imu/data":
             a, g, o = msg.linear_acceleration, msg.angular_velocity, msg.orientation
             at_rest.append(((a.x, a.y, a.z), (g.x, g.y, g.z), (o.x, o.y, o.z, o.w)))
-        elif topic == "/lidar/points" and pose and pose[0][2] > altitude - 1.0 and speed < 0.3 and len(scans) < 20:
+        elif (topic == "/lidar/points" and pose and abs(pose[0][2] - altitude) < 0.2
+              and speed < 0.1 and len(scans) < 20):
             scans.append((ns(msg.header.stamp), pose, msg))
         elif topic == "/camera/image_raw":
             images[ns(msg.header.stamp)] = msg

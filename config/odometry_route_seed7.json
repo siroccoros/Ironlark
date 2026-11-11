@@ -1,0 +1,5 @@
+{
+  "seed": 7,
+  "description": "Manually chosen GPS-guided data collection route through a 5.4 m straight section at up to 0.6 m/s; no world truth is read in flight.",
+  "waypoints_webots_xy_m": [[2.7, 0.0], [2.7, 2.7], [8.1, 2.7]]
+}
