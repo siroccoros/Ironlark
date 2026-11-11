@@ -46,3 +46,8 @@ FLU_TO_FRD = (1.0, 0.0, 0.0, 0.0)
 
 def attitude_enu_flu_to_ned_frd(q):
     return quaternion_multiply(quaternion_multiply(ENU_TO_NED, q), FLU_TO_FRD)
+
+
+def webots_to_sitl_local(v):
+    """Pinned Webots flight bridge's FDM mapping: Webots (x,y,z) -> SITL (x,-y,-z)."""
+    return flu_to_frd(v)

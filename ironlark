@@ -372,6 +372,13 @@ def check_recording(run):
     call(*ros_container(f"ironlark-check-{os.getpid()}", run, "python3 /project/tools/check_recording.py /run/ironlark"))
 
 
+def check_odometry(run):
+    """Replay maze sensors through the odometer, then evaluate against hidden truth."""
+    require_ros_image()
+    call(*ros_container(f"ironlark-odom-check-{os.getpid()}", Path(run).resolve(),
+                        "python3 /project/tools/evaluate_odometry.py /run/ironlark"))
+
+
 @contextlib.contextmanager
 def exclusive():
     """One flight or build at a time, across the checkouts sharing .cache: a build replaces what a flight loaded."""
@@ -384,7 +391,8 @@ def exclusive():
         yield
 
 
-def flight(headless, editor=False, record=False, world="empty", seed=None):
+def flight(headless, editor=False, record=False, world="empty", seed=None, odometry_route=False):
+    record = record or odometry_route
     home = webots_home()  # Refuse an invalid WEBOTS_HOME before creating any run artifacts.
     doctor(overview=False, home=home, record=record)
     if not headless and not os.environ.get("DISPLAY"):
@@ -427,7 +435,8 @@ def flight(headless, editor=False, record=False, world="empty", seed=None):
                         "language": "C" if lockstep else "Python",
                         "library_sha256": hashlib.sha256(lockstep).hexdigest() if lockstep else None,
                     },
-                    "mission": "takeoff-hover-land",
+                    "mission": "GPS-guided odometry data collection" if odometry_route else "takeoff-hover-land",
+                    "odometry_route_fixture": "config/odometry_route_seed7.json" if odometry_route else None,
                     "altitude_m": ALTITUDE_M[world],
                     "headless": headless,
                     "world": world,
@@ -598,6 +607,7 @@ def flight(headless, editor=False, record=False, world="empty", seed=None):
                         "/run/ironlark/result.json",
                         "--altitude",
                         str(ALTITUDE_M[world]),
+                        *(["--odometry-route"] if odometry_route else []),
                     ],
                     start_new_session=True,
                 )
@@ -667,7 +677,7 @@ def flight(headless, editor=False, record=False, world="empty", seed=None):
                     signal.signal(number, handler)
 
 
-COMMANDS = ("setup", "doctor", "run", "check", "build-drone", "replay", "check-recording", "check-replay")
+COMMANDS = ("setup", "doctor", "run", "check", "build-drone", "replay", "check-recording", "check-replay", "check-odometry")
 # The forest and the patched renderer live on main; their commands are refused here by name.
 ON_MAIN = ("build-world", "build-renderer", "render-reference")
 
@@ -675,11 +685,13 @@ ON_MAIN = ("build-world", "build-renderer", "render-reference")
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=COMMANDS + ON_MAIN, metavar="{" + ",".join(COMMANDS) + "}")
-    parser.add_argument("run_dir", nargs="?", help="replay, check-recording: a flight's run folder (runs/...)")
+    parser.add_argument("run_dir", nargs="?", help="replay and checks: a flight's run folder (runs/...)")
     parser.add_argument(
         "--record", action="store_true",
         help="run/check: stream the sensors (config/sensors.json) to ROS 2 and record a rosbag2 in the run folder",
     )
+    parser.add_argument("--odometry-route", action="store_true",
+                        help="run/check: record a GPS-guided seed-7 route through a straight maze corridor")
     parser.add_argument(
         "--editor", action="store_true", help="show Webots' development UI (run only)"
     )
@@ -707,10 +719,13 @@ def main():
         parser.error("--world is only available with run and check")
     if args.record and args.command not in ("run", "check"):
         parser.error("--record is only available with run and check")
-    if args.command in ("replay", "check-recording", "check-replay"):
+    if args.odometry_route and (args.world != "maze" or args.seed != 7 or args.command not in ("run", "check")):
+        parser.error("--odometry-route requires run/check --world maze --seed 7")
+    if args.command in ("replay", "check-recording", "check-replay", "check-odometry"):
         if not args.run_dir:
             parser.error(f"{args.command} needs a run folder")
-        {"replay": replay, "check-recording": check_recording, "check-replay": check_replay}[args.command](args.run_dir)
+        {"replay": replay, "check-recording": check_recording, "check-replay": check_replay,
+         "check-odometry": check_odometry}[args.command](args.run_dir)
     elif args.command == "setup":
         setup()
     elif args.command == "doctor":
@@ -725,7 +740,8 @@ def main():
             import random
 
             seed = random.randrange(1_000_000)
-        flight(headless=args.command == "check", editor=args.editor, record=args.record, world=world, seed=seed)
+        flight(headless=args.command == "check", editor=args.editor, record=args.record, world=world,
+               seed=seed, odometry_route=args.odometry_route)
 
 
 if __name__ == "__main__":

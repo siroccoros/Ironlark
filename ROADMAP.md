@@ -41,10 +41,14 @@ stays the regression gate.
    parameters) and writes `truth.json` beside it: the true walls, the start, the exit and the
    shortest path, for the evaluator only. Visual and collision shapes agree; its LiDAR returns are
    checked against `truth.json`, not just its looks. A fixed seed always gives the same maze.
-2. **LiDAR(-inertial) odometry.** Evaluated first on recorded maze flights (`run --record`), scored
-   against `/ground_truth/*` (ATE, RPE). Long straight corridors are a named test case: they are
-   where LiDAR odometry is weakest. Per-return LiDAR timing if the odometry needs it: model the
-   acquisition, never fake it.
+2. **LiDAR(-inertial) odometry.** `check-odometry` replays only sensor topics from recorded maze
+   flights, then scores ATE/RPE against evaluator truth. The seed-7 data route covers three
+   waypoints including a 5.4 m straight corridor at up to 0.6 m/s. The run recorded in
+   `runs/20261111-231941-58621` passed: 0.076 m overall ATE, 0.022 m one-second RPE,
+   0.104 m moving ATE, 0.134 m corridor ATE, with all 67 corridor scans healthy. A synthetic
+   corridor without cross-wall features is flagged as degenerate. Webots' nominal per-return
+   times describe one geometric snapshot at the latest return; the estimator uses that time
+   and measured gyro rotation instead of inventing per-point motion.
 3. **External navigation into EKF3.** The odometry's pose, velocity, uncertainty and health into
    ArduPilot's external-navigation input, on its own MAVLink port (SITL starts with
    `--serial1 none` today). Every navigation node runs on Webots time (`/clock`). Frames convert
