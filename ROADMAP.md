@@ -49,10 +49,12 @@ stays the regression gate.
    corridor without cross-wall features is flagged as degenerate. Webots' nominal per-return
    times describe one geometric snapshot at the latest return; the estimator uses that time
    and measured gyro rotation instead of inventing per-point motion.
-3. **External navigation into EKF3.** The odometry's pose, velocity, uncertainty and health into
-   ArduPilot's external-navigation input, on its own MAVLink port (SITL starts with
-   `--serial1 none` today). Every navigation node runs on Webots time (`/clock`). Frames convert
-   only through `sensing/frames.py`. GPS ↔ external-navigation transition tested in flight first.
+3. **External navigation into EKF3.** `--external-nav` sends pose, body-frame velocity, uncertainty
+   and health on MAVLink serial1 port 5761. The in-flight GPS → ExternalNav → GPS check passed a
+   five-second hover and 0.5 m forward/return move on seed 7, with 0.89 m minimum wall
+   clearance. The live node runs on
+   Webots time, and frame conversions live in `sensing/frames.py`. GPS stays enabled for this
+   transition check; cutting it is step 4.
 4. **GPS cut at the measurement layer.** `SIM_GPS1_ENABLE 0`: SITL's receiver stops reporting; the
    physical state Webots reports is untouched (see the localization boundary in the README).
    Takeoff, hover and a fixed route through the maze. A `--gps-denied` check in the style of

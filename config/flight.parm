@@ -19,8 +19,7 @@ ATC_RAT_RLL_I 0.05
 ATC_RAT_PIT_I 0.05
 SCHED_LOOP_RATE 250
 
-# This first integration check has GPS. External odometry and loss-of-GPS
-# transitions will be added only after sensor-derived localization is working.
+# The optional external-navigation run adds config/external_nav.parm.
 GPS1_TYPE 1
 SIM_GPS1_ENABLE 1
 

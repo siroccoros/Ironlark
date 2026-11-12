@@ -32,7 +32,7 @@ def clearance(truth, walls):
     return nearest
 
 
-def judge(truth, autopilot_seconds, altitude=3.0, walls=(), route_points=()):
+def judge(truth, autopilot_seconds, altitude=3.0, walls=(), external_nav_route=False, route_points=()):
     """The flight as Webots measured it (flight_observer's ground truth, every 100 ms of simulated time), never as the
     autopilot reported it: the trajectory covers the flight without a gap, and shows a takeoff, a continuous 5-second
     hover within 0.5 m of the altitude, a landing back on the ground (z = 0 in every world), no drift and, among
@@ -74,6 +74,14 @@ def judge(truth, autopilot_seconds, altitude=3.0, walls=(), route_points=()):
     nearest = clearance(truth, walls)
     if nearest is not None and nearest < DRONE_REACH_M:
         raise RuntimeError(f"The drone came within {nearest:.2f} m of a wall, inside its {DRONE_REACH_M} m reach")
+    if external_nav_route:
+        forward = max(sample["position"][0] - start_xy[0] for sample in truth)
+        lateral = max(abs(sample["position"][1] - start_xy[1]) for sample in truth)
+        final_drift = math.hypot(truth[-1]["position"][0] - start_xy[0],
+                                 truth[-1]["position"][1] - start_xy[1])
+        if forward < 0.35 or lateral > 0.4 or final_drift > 0.6:
+            raise RuntimeError(f"External-navigation route missed physically: forward {forward:.2f} m, "
+                               f"lateral {lateral:.2f} m, final drift {final_drift:.2f} m")
     if route_points:
         cursor = 0
         for i, point in enumerate(route_points, 1):
@@ -90,6 +98,9 @@ def judge(truth, autopilot_seconds, altitude=3.0, walls=(), route_points=()):
                 "max_horizontal_drift_m": drift, "clock_difference_s": clock_difference}
     if nearest is not None:
         measured["min_wall_clearance_m"] = round(nearest, 3)
+    if external_nav_route:
+        measured.update({"route_forward_m": round(forward, 3), "route_lateral_m": round(lateral, 3),
+                         "route_final_drift_m": round(final_drift, 3)})
     if route_points:
         measured["route_length_m"] = round(sum(math.hypot(b["position"][0] - a["position"][0],
                                                   b["position"][1] - a["position"][1])
@@ -99,9 +110,10 @@ def judge(truth, autopilot_seconds, altitude=3.0, walls=(), route_points=()):
 
 
 class Flight:
-    def __init__(self, output, altitude=3.0, odometry_route=False):
+    def __init__(self, output, altitude=3.0, external_nav=False, odometry_route=False):
         self.output = output
         self.altitude = altitude
+        self.external_nav = external_nav
         self.route_points = (json.loads((ROOT / "config/odometry_route_seed7.json").read_text())
                              ["waypoints_webots_xy_m"] if odometry_route else ())
         self.connection = None
@@ -238,6 +250,8 @@ class Flight:
                 break
         if not hovered:
             raise RuntimeError("Could not sustain a 5-second hover within 0.5 m of target altitude")
+        if self.external_nav:
+            self.transition_external_nav()
         if self.route_points:
             self.fly_odometry_route()
         self.event("LANDING")
@@ -253,9 +267,39 @@ class Flight:
         if autopilot_time is None:
             raise RuntimeError("No autopilot clock was recorded")
         measurements = judge(truth, autopilot_time.time_boot_ms / 1000, self.altitude, walls,
-                             self.route_points)
+                             self.external_nav, self.route_points)
         self.event("COMPLETED")
         return measurements
+
+    def transition_external_nav(self):
+        """Switch EKF3 GPS -> sensor odometry -> GPS while airborne; move 0.5 m on source 2."""
+        odometry = self.output.with_name("odometry.jsonl")
+        if not odometry.exists():
+            raise RuntimeError("External odometry did not start")
+        recent = [json.loads(line) for line in odometry.read_text().splitlines()[-5:]]
+        if (len(recent) < 5 or not all(item["healthy"] for item in recent)
+                or self.sim_time is None or abs(recent[-1]["time"] - self.sim_time) > 1.0):
+            raise RuntimeError("External odometry is unhealthy: " + (recent[-1]["reason"] if recent else "no scans"))
+        self.event("EXTERNAL_NAV")
+        self.command(42007, 2)  # MAV_CMD_SET_EKF_SOURCE_SET
+        initial = self.wait("external navigation position", lambda m: m.get_type() == "LOCAL_POSITION_NED", 5)
+        start, wall_start = self.sim_time, time.monotonic()
+        while self.sim_time is None or self.sim_time - start < 5:
+            message = self.poll()
+            if message and message.get_type() == "EKF_STATUS_REPORT" and (not message.flags & 16 or message.flags & 128):
+                raise RuntimeError("EKF position became unhealthy after external-navigation switch")
+            if self.expired(start, wall_start, 15):
+                raise RuntimeError("External-navigation hover timed out")
+        self.event("EXTERNAL_NAV_ROUTE")
+        for target_x in (initial.x + 0.5, initial.x):
+            self.connection.mav.set_position_target_local_ned_send(
+                int(self.sim_time * 1000), self.connection.target_system, self.connection.target_component,
+                mavutil.mavlink.MAV_FRAME_LOCAL_NED, 0x0DF8,
+                target_x, initial.y, initial.z, 0, 0, 0, 0, 0, 0, 0, 0)
+            self.wait("external navigation route", lambda m: m.get_type() == "LOCAL_POSITION_NED"
+                      and abs(m.x - target_x) < 0.12 and abs(m.y - initial.y) < 0.18, 15)
+        self.command(42007, 1)
+        self.event("GPS_RESTORED")
 
     def fly_odometry_route(self):
         """GPS-guided data collection fixture; no generated maze truth enters the mission."""
@@ -298,10 +342,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--altitude", type=float, default=3.0, help="hover altitude, m (3 in the empty world)")
+    parser.add_argument("--external-nav", action="store_true")
     parser.add_argument("--odometry-route", action="store_true")
     args = parser.parse_args()
-    flight = Flight(args.output, args.altitude, args.odometry_route)
-    report = {"passed": False, "estimator": "EKF3", "position_source": "simulated GPS"}
+    flight = Flight(args.output, args.altitude, args.external_nav, args.odometry_route)
+    report = {"passed": False, "estimator": "EKF3",
+              "position_source": "GPS and sensor odometry transition" if args.external_nav else "simulated GPS"}
     try:
         report["measurements"] = flight.execute()
         report["passed"] = True

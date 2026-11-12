@@ -1,0 +1,7 @@
+# Loaded only with --external-nav: VISO_TYPE requires a live stream even before arming.
+EK3_SRC2_POSXY 6
+EK3_SRC2_VELXY 6
+EK3_SRC2_POSZ 1
+EK3_SRC2_VELZ 0
+EK3_SRC2_YAW 1
+VISO_TYPE 3

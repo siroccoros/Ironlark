@@ -391,8 +391,9 @@ def exclusive():
         yield
 
 
-def flight(headless, editor=False, record=False, world="empty", seed=None, odometry_route=False):
-    record = record or odometry_route
+def flight(headless, editor=False, record=False, world="empty", seed=None, external_nav=False,
+           odometry_route=False):
+    record = record or external_nav or odometry_route
     home = webots_home()  # Refuse an invalid WEBOTS_HOME before creating any run artifacts.
     doctor(overview=False, home=home, record=record)
     if not headless and not os.environ.get("DISPLAY"):
@@ -402,6 +403,9 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, odome
         raise RuntimeError("Headless checks require xvfb-run.")
     with exclusive():
         check_ports()
+        if external_nav:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+                probe.bind(("127.0.0.1", 5761))
         if stale := drone_stale():
             print(f"Building the drone ({stale}).", flush=True)
             build_drone()
@@ -428,14 +432,17 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, odome
                     "webots_clock_patch_sha256": hashlib.sha256(
                         (ROOT / "docker/webots-clock.patch").read_bytes()
                     ).hexdigest(),
-                    "position_source": "simulated GPS",
+                    "position_source": "GPS and sensor odometry transition" if external_nav else "simulated GPS",
+                    "autopilot_parameters": (["config/flight.parm"]
+                                             + (["config/external_nav.parm"] if external_nav else [])),
                     # The flight bridge's per-step loop: lockstep.c (flight_lockstep.so here), or its Python twin
                     # without a C compiler.
                     "flight_loop": {
                         "language": "C" if lockstep else "Python",
                         "library_sha256": hashlib.sha256(lockstep).hexdigest() if lockstep else None,
                     },
-                    "mission": "GPS-guided odometry data collection" if odometry_route else "takeoff-hover-land",
+                    "mission": ("GPS-external-nav-GPS transition" if external_nav else
+                                "GPS-guided odometry data collection" if odometry_route else "takeoff-hover-land"),
                     "odometry_route_fixture": "config/odometry_route_seed7.json" if odometry_route else None,
                     "altitude_m": ALTITUDE_M[world],
                     "headless": headless,
@@ -509,8 +516,11 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, odome
                             ros_name,
                             run,
                             "python3 /project/ros/ironlark_bridge.py & bridge=$!; "
-                            f"ros2 bag record -o bag --qos-profile-overrides-path /project/ros/record_qos.yaml {ROS_BAG_OPTIONS} {ROS_TOPICS} & recorder=$!; "
-                            "trap 'kill -INT $recorder; wait $recorder; kill $bridge' INT TERM; wait",
+                            + ("python3 /project/ros/lidar_odometry.py --external-nav & odom=$!; "
+                               if external_nav else "")
+                            + f"ros2 bag record -o bag --qos-profile-overrides-path /project/ros/record_qos.yaml {ROS_BAG_OPTIONS} {ROS_TOPICS} & recorder=$!; "
+                            + "trap 'kill -INT $recorder; wait $recorder; kill $bridge"
+                            + ("; kill $odom" if external_nav else "") + "' INT TERM; wait",
                         ),
                         stdout=(run / "ros.log").open("w"),
                         stderr=subprocess.STDOUT,
@@ -549,11 +559,12 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, odome
                         "31.9500,35.9300,750,0",
                         "--defaults",
                         "/opt/ardupilot/Tools/autotest/default_params/copter.parm,"
-                        f"{UPSTREAM}/params/iris.parm,/project/config/flight.parm",
+                        f"{UPSTREAM}/params/iris.parm,/project/config/flight.parm"
+                        + (",/project/config/external_nav.parm" if external_nav else ""),
                         "--serial0",
                         "tcp:5760",
                         "--serial1",
-                        "none",
+                        "tcp:5761" if external_nav else "none",
                         "--serial2",
                         "none",
                         "--sim-address",
@@ -607,6 +618,7 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, odome
                         "/run/ironlark/result.json",
                         "--altitude",
                         str(ALTITUDE_M[world]),
+                        *(["--external-nav"] if external_nav else []),
                         *(["--odometry-route"] if odometry_route else []),
                     ],
                     start_new_session=True,
@@ -690,6 +702,8 @@ def main():
         "--record", action="store_true",
         help="run/check: stream the sensors (config/sensors.json) to ROS 2 and record a rosbag2 in the run folder",
     )
+    parser.add_argument("--external-nav", action="store_true",
+                        help="run/check: stream sensor odometry on serial1 and test GPS to external navigation in flight")
     parser.add_argument("--odometry-route", action="store_true",
                         help="run/check: record a GPS-guided seed-7 route through a straight maze corridor")
     parser.add_argument(
@@ -719,8 +733,12 @@ def main():
         parser.error("--world is only available with run and check")
     if args.record and args.command not in ("run", "check"):
         parser.error("--record is only available with run and check")
-    if args.odometry_route and (args.world != "maze" or args.seed != 7 or args.command not in ("run", "check")):
-        parser.error("--odometry-route requires run/check --world maze --seed 7")
+    if args.external_nav and args.command not in ("run", "check"):
+        parser.error("--external-nav is only available with run and check")
+    if args.external_nav and args.world != "maze":
+        parser.error("--external-nav requires --world maze for nearby wall returns")
+    if args.odometry_route and (args.world != "maze" or args.seed != 7 or args.external_nav):
+        parser.error("--odometry-route requires --world maze --seed 7 without --external-nav")
     if args.command in ("replay", "check-recording", "check-replay", "check-odometry"):
         if not args.run_dir:
             parser.error(f"{args.command} needs a run folder")
@@ -741,7 +759,7 @@ def main():
 
             seed = random.randrange(1_000_000)
         flight(headless=args.command == "check", editor=args.editor, record=args.record, world=world,
-               seed=seed, odometry_route=args.odometry_route)
+               seed=seed, external_nav=args.external_nav, odometry_route=args.odometry_route)
 
 
 if __name__ == "__main__":
