@@ -110,12 +110,14 @@ def judge(truth, autopilot_seconds, altitude=3.0, walls=(), external_nav_route=F
 
 
 class Flight:
-    def __init__(self, output, altitude=3.0, external_nav=False, odometry_route=False):
+    def __init__(self, output, altitude=3.0, external_nav=False, odometry_route=False, gps_denied=False):
         self.output = output
         self.altitude = altitude
         self.external_nav = external_nav
         self.route_points = (json.loads((ROOT / "config/odometry_route_seed7.json").read_text())
                              ["waypoints_webots_xy_m"] if odometry_route else ())
+        self.gps_denied = gps_denied
+        self.gps_fix_seen = False
         self.connection = None
         self.messages = {}
         self.events = []
@@ -141,6 +143,8 @@ class Flight:
             self.last_heartbeat = now
         message = self.connection.recv_match(blocking=True, timeout=0.2)
         if message and message.get_type() != "BAD_DATA":
+            if message.get_type() == "GPS_RAW_INT" and message.fix_type >= 3:
+                self.gps_fix_seen = True
             self.messages[message.get_type()] = message
             boot = getattr(message, "time_boot_ms", None)
             if boot is not None:
@@ -215,11 +219,31 @@ class Flight:
     def execute(self):
         self.connect()
         self.event("WAITING_FOR_POSITION")
-        self.wait("GPS fix", lambda m: m.get_type() == "GPS_RAW_INT" and m.fix_type >= 3, 60)
+        if self.gps_denied:
+            self.connection.mav.param_request_read_send(self.connection.target_system,
+                self.connection.target_component, b"SIM_GPS1_ENABLE", -1)
+            disabled = self.wait("GPS disabled parameter", lambda m: m.get_type() == "PARAM_VALUE"
+                                 and m.param_id == "SIM_GPS1_ENABLE", 10)
+            if disabled.param_value != 0:
+                raise RuntimeError("GPS-denied check requires SIM_GPS1_ENABLE=0")
+        else:
+            self.wait("GPS fix", lambda m: m.get_type() == "GPS_RAW_INT" and m.fix_type >= 3, 60)
         # Require the EKF to have an absolute horizontal position estimate.
         self.wait("EKF position", lambda m: m.get_type() == "EKF_STATUS_REPORT"
                   and m.flags & 16 and not m.flags & 128, 60)
+        if self.gps_denied:
+            # A fixed geographic origin gives EKF3 a local NED frame; it is metadata,
+            # never a position measurement or evaluator pose. Send after EKF startup.
+            self.connection.mav.set_gps_global_origin_send(self.connection.target_system,
+                                                            319500000, 359300000, 750000)
+            self.wait("EKF geographic origin", lambda m: m.get_type() == "GLOBAL_POSITION_INT"
+                      and m.lat != 0 and m.lon != 0, 10)
         self.wait("local position", lambda m: m.get_type() == "LOCAL_POSITION_NED")
+        if self.gps_denied:
+            # ExternalNav initializes early; SITL's separate accelerometer
+            # consistency check still needs its stationary calibration period.
+            self.wait("stationary IMU calibration", lambda m: self.sim_time is not None
+                      and self.sim_time >= 42.0, 50)
         self.mode(4)  # GUIDED
         self.event("ARMING")
         self.command(mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 1)
@@ -259,6 +283,8 @@ class Flight:
         self.wait("landed and disarmed", lambda m: m.get_type() == "HEARTBEAT"
                   and not m.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED, 60)
         self.event("EVALUATING")
+        if self.gps_denied and self.gps_fix_seen:
+            raise RuntimeError("GPS fix appeared during GPS-denied flight")
         # Ground truth is read only after the mission, never to command the vehicle.
         truth = [json.loads(line) for line in self.output.with_name("ground_truth.jsonl").read_text().splitlines()]
         maze = self.output.with_name("truth.json")  # a generated world's geometry, evaluator only
@@ -344,10 +370,12 @@ def main():
     parser.add_argument("--altitude", type=float, default=3.0, help="hover altitude, m (3 in the empty world)")
     parser.add_argument("--external-nav", action="store_true")
     parser.add_argument("--odometry-route", action="store_true")
+    parser.add_argument("--gps-denied", action="store_true")
     args = parser.parse_args()
-    flight = Flight(args.output, args.altitude, args.external_nav, args.odometry_route)
+    flight = Flight(args.output, args.altitude, args.external_nav, args.odometry_route, args.gps_denied)
     report = {"passed": False, "estimator": "EKF3",
-              "position_source": "GPS and sensor odometry transition" if args.external_nav else "simulated GPS"}
+              "position_source": ("sensor odometry, GPS disabled" if args.gps_denied else
+                                  "GPS and sensor odometry transition" if args.external_nav else "simulated GPS")}
     try:
         report["measurements"] = flight.execute()
         report["passed"] = True

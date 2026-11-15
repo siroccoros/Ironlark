@@ -1,0 +1,8 @@
+# The only horizontal source is companion LiDAR odometry; no simulated GPS fixes.
+SIM_GPS1_ENABLE 0
+EK3_SRC1_POSXY 6
+EK3_SRC1_VELXY 6
+EK3_SRC1_POSZ 1
+EK3_SRC1_VELZ 0
+EK3_SRC1_YAW 1
+VISO_TYPE 3

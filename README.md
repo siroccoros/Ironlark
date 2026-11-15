@@ -37,6 +37,7 @@ per-step loop runs in C; without one, in Python.
 ./ironlark check --world maze --seed 7 --odometry-route  # record the long corridor case
 ./ironlark check-odometry RUN     # replay a recorded maze run, score ATE/RPE against hidden truth
 ./ironlark check --world maze --seed 7 --external-nav  # test EKF3 source transition in flight
+./ironlark check --world maze --seed 7 --gps-denied   # fly the route with SIM_GPS1_ENABLE=0
 ```
 
 | Command | Does |
@@ -51,7 +52,8 @@ per-step loop runs in C; without one, in Python.
 | `check` | The same flight on a virtual display. Exits nonzero on failure. |
 | `check --world maze --seed 7 --odometry-route` | Records a GPS-guided route through three waypoints, including a 5.4 m straight section at up to 0.6 m/s. The route is fixed in `config/odometry_route_seed7.json`; no evaluator truth is read in flight. Run `check-odometry` on its output folder. |
 | `check-odometry RUN` | Replays only `/imu/data` and `/lidar/points` through the odometer. After replay, compares its trajectory with independent `ground_truth.jsonl`, writing `odometry_check.json`: ATE, one second RPE, healthy scans, and a pass limit. On the seed-7 route, scores moving scans and the named straight corridor separately. Requires a recorded maze run. |
-| `check --external-nav` | Records sensors, runs the odometer live, sends MAVLink `ODOMETRY` on serial1 port 5761, and switches EKF3 from GPS source set 1 to ExternalNav source set 2 for a five second hover and a 0.5 m forward and return move, then back to GPS. It fails on unhealthy odometry or EKF position. GPS stays enabled; denial is step 4. |
+| `check --external-nav` | Records sensors, runs the odometer live, sends MAVLink `ODOMETRY` on serial1 port 5761, and switches EKF3 from GPS source set 1 to ExternalNav source set 2 for a five second hover and a 0.5 m forward and return move, then back to GPS. It fails on unhealthy odometry or EKF position. GPS stays enabled in this transition check. |
+| `check --world maze --seed 7 --gps-denied` | Loads `config/gps_denied.parm`: `SIM_GPS1_ENABLE 0` stops SITL's GPS receiver, and EKF3 source set 1 takes horizontal position and velocity from the LiDAR odometry on serial1 (barometer height, compass yaw). The check confirms the parameter before arming, gives EKF3 a fixed geographic origin (frame metadata, not a measurement), flies the fixed three-waypoint route of `--odometry-route`, and fails if a GPS fix ever appears. It verifies the measurement cut and the route on odometry; it does not explore an unknown maze. |
 
 Webots is `WEBOTS_HOME` when set, else `./webots/`; this branch never selects a
 patched build. To ignore a `WEBOTS_HOME` override in sh or fish, use
