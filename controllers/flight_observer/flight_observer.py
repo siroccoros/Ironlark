@@ -7,6 +7,7 @@ time, physics and the autopilot (in lockstep) are unaffected; only the wait's wa
 """
 
 import json
+import math
 import os
 from pathlib import Path
 
@@ -24,8 +25,11 @@ if destination is None:
 
 fast_start = os.environ.get("IRONLARK_FAST_START") == "1"
 flight_state = Path(destination) / "flight-state.json"
+children = robot.getRoot().getField("children")
+obstacle_file = Path(destination) / "obstacle.json"
+obstacle = json.loads(obstacle_file.read_text()) if obstacle_file.exists() else None
+obstacle_spawned = False
 if fast_start:
-    children = robot.getRoot().getField("children")
     world_info = next(children.getMFNode(i) for i in range(children.getCount())
                       if children.getMFNode(i).getTypeName() == "WorldInfo")
     fps = world_info.getField("FPS")
@@ -35,6 +39,20 @@ if fast_start:
 
 with (Path(destination) / "ground_truth.jsonl").open("w", buffering=1) as stream:
     while robot.step(100) != -1:
+        if obstacle is not None and not obstacle_spawned and robot.getTime() >= obstacle["minimum_spawn_time_s"]:
+            px, py, pz = drone.getPosition()
+            x, y, z = obstacle["centre"]
+            distance = math.hypot(px - x, py - y)
+            if 1.5 < distance <= obstacle["approach_distance_m"] and pz > 0.5:
+                sx, sy, sz = obstacle["size"]
+                node = (f'Solid {{ translation {x} {y} {z} children [ Shape {{ '
+                        'appearance PBRAppearance { baseColor 0.8 0.22 0.12 roughness 0.9 } '
+                        f'geometry DEF DYNAMIC_OBSTACLE_BOX Box {{ size {sx} {sy} {sz} }} '
+                        '} ] name "dynamic obstacle" boundingObject USE DYNAMIC_OBSTACLE_BOX }')
+                children.importMFNodeFromString(-1, node)
+                obstacle_spawned = True
+                (Path(destination) / "obstacle-spawned.json").write_text(
+                    json.dumps({"time": robot.getTime(), "drone_position": [px, py, pz]}) + "\n")
         if fast_start and flight_state.exists():
             state = json.loads(flight_state.read_text()).get("state")
             if state not in ("CONNECTING", "WAITING_FOR_POSITION"):

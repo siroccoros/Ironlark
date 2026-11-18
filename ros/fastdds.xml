@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fast DDS defaults for the ROS container (FASTRTPS_DEFAULT_PROFILES_FILE). Late in long flights
+     reliable topics stalled in exact 2.99 s steps (runs/20261112-210226-148307, 420-630 s): a lost
+     sample held every later one back until the writer's next heartbeat, 3 s by default. A 0.1 s
+     heartbeat bounds that repair. Transports stay Fast DDS's own; a 16 MB shared-memory segment
+     instead stalled the stream ~3 s every ~27 s (runs/20261114-130536-21048). -->
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+  <data_writer profile_name="ironlark_writer" is_default_profile="true">
+    <times>
+      <heartbeatPeriod>
+        <sec>0</sec>
+        <nanosec>100000000</nanosec>
+      </heartbeatPeriod>
+    </times>
+  </data_writer>
+</profiles>

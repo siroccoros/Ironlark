@@ -17,7 +17,7 @@ from geometry_msgs.msg import PoseStamped
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from sensing.pointcloud import cloud_xyzt, seconds  # noqa: E402
+from ros.lidar_odometry import cloud_xyzt, seconds  # noqa: E402
 from sensing.odometry import ScanOdometry  # noqa: E402
 from bag_reader import open_bag  # noqa: E402
 

@@ -211,6 +211,28 @@ def generate(seed, rows=8, cols=8, corridor_m=2.5, wall_height_m=3.0, wall_thick
     }
 
 
+def detour_obstacle(truth):
+    """A full-height box in a path passage with a known alternate route, for evaluation."""
+    choices = [(index, item) for index, item in enumerate(truth["shortest_path"]["if_blocked"])
+               if index >= 4 and item["length_m"] is not None]
+    if not choices:
+        raise ValueError("this maze has no nontrivial passage with a detour")
+    index, item = choices[0]
+    a, b = item["passage"]
+    pitch = truth["cell_pitch_m"]
+    origin = truth["start"]["cell"]
+    x = ((a[1] + b[1]) / 2 - origin[1]) * pitch
+    y = ((a[0] + b[0]) / 2 - origin[0]) * pitch
+    p = truth["parameters"]
+    horizontal = a[0] != b[0]
+    size = ([p["corridor_m"] + p["wall_thickness_m"], p["wall_thickness_m"], p["wall_height_m"]]
+            if horizontal else [p["wall_thickness_m"], p["corridor_m"] + p["wall_thickness_m"],
+                               p["wall_height_m"]])
+    return {"centre": [round(x, 4), round(y, 4), p["wall_height_m"] / 2],
+            "size": size, "passage": item["passage"], "shortest_detour_m": item["length_m"],
+            "approach_distance_m": 4.0, "minimum_spawn_time_s": 60.0, "path_index": index}
+
+
 def number(v):
     """A coordinate for the world file: to the tenth of a millimetre, without trailing zeros."""
     text = f"{v:.4f}".rstrip("0").rstrip(".")
