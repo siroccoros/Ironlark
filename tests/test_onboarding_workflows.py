@@ -39,6 +39,12 @@ class Workflows(unittest.TestCase):
     def test_a_seed_without_the_maze_refused(self):
         self.refused("--seed is only available with --world maze", "run", "--seed", "3")
 
+    def test_gps_denied_route_refused_outside_seed_7_maze(self):
+        expected = "--gps-denied requires run/check --world maze --seed 7"
+        self.refused(expected, "check", "--gps-denied")
+        self.refused(expected, "check", "--world", "maze", "--seed", "3", "--gps-denied")
+        self.refused(expected, "check", "--world", "maze", "--seed", "7", "--gps-denied", "--external-nav")
+
     def test_forest_and_renderer_commands_refused_naming_main(self):
         for command in ("build-world", "build-renderer", "render-reference"):
             self.refused("live on the main branch", command)

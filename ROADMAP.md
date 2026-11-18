@@ -57,8 +57,10 @@ stays the regression gate.
    transition check; cutting it is step 4.
 4. **GPS cut at the measurement layer.** `SIM_GPS1_ENABLE 0`: SITL's receiver stops reporting; the
    physical state Webots reports is untouched (see the localization boundary in the README).
-   Takeoff, hover and a fixed route through the maze. A `--gps-denied` check in the style of
-   `check` fails if GPS is enabled or if ground truth reaches navigation code.
+   `check --world maze --seed 7 --gps-denied` flies takeoff, hover, the fixed three-waypoint route
+   and landing with EKF3 positioned by LiDAR odometry alone. It fails if `SIM_GPS1_ENABLE` is not 0
+   or a GPS fix appears; the navigation process reads sensor topics only, and the evaluator opens
+   truth after flight. The fixed route is a flight gate, not maze exploration.
 5. **Mapping and planning in an unknown maze.** A local occupancy map from the LiDAR, scored against
    `truth.json`. Unknown space stays unknown in the map. The planner may route through it as
    unverified and replans as it is observed: dead ends discovered, turned back from, another route

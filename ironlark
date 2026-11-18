@@ -392,8 +392,8 @@ def exclusive():
 
 
 def flight(headless, editor=False, record=False, world="empty", seed=None, external_nav=False,
-           odometry_route=False):
-    record = record or external_nav or odometry_route
+           odometry_route=False, gps_denied=False):
+    record = record or external_nav or odometry_route or gps_denied
     home = webots_home()  # Refuse an invalid WEBOTS_HOME before creating any run artifacts.
     doctor(overview=False, home=home, record=record)
     if not headless and not os.environ.get("DISPLAY"):
@@ -403,7 +403,7 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
         raise RuntimeError("Headless checks require xvfb-run.")
     with exclusive():
         check_ports()
-        if external_nav:
+        if external_nav or gps_denied:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
                 probe.bind(("127.0.0.1", 5761))
         if stale := drone_stale():
@@ -432,18 +432,23 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                     "webots_clock_patch_sha256": hashlib.sha256(
                         (ROOT / "docker/webots-clock.patch").read_bytes()
                     ).hexdigest(),
-                    "position_source": "GPS and sensor odometry transition" if external_nav else "simulated GPS",
+                    "position_source": ("sensor odometry, GPS disabled" if gps_denied else
+                                        "GPS and sensor odometry transition" if external_nav else "simulated GPS"),
                     "autopilot_parameters": (["config/flight.parm"]
-                                             + (["config/external_nav.parm"] if external_nav else [])),
+                                             + (["config/external_nav.parm"] if external_nav else [])
+                                             + (["config/gps_denied.parm"] if gps_denied else [])),
                     # The flight bridge's per-step loop: lockstep.c (flight_lockstep.so here), or its Python twin
                     # without a C compiler.
                     "flight_loop": {
                         "language": "C" if lockstep else "Python",
                         "library_sha256": hashlib.sha256(lockstep).hexdigest() if lockstep else None,
                     },
-                    "mission": ("GPS-external-nav-GPS transition" if external_nav else
+                    "mission": ("GPS-denied fixed maze route" if gps_denied else
+                                "GPS-external-nav-GPS transition" if external_nav else
                                 "GPS-guided odometry data collection" if odometry_route else "takeoff-hover-land"),
-                    "odometry_route_fixture": "config/odometry_route_seed7.json" if odometry_route else None,
+                    "odometry_route_fixture": ("config/odometry_route_seed7.json"
+                                               if odometry_route or gps_denied else None),
+                    "gps_denied": gps_denied,
                     "altitude_m": ALTITUDE_M[world],
                     "headless": headless,
                     "world": world,
@@ -517,10 +522,10 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                             run,
                             "python3 /project/ros/ironlark_bridge.py & bridge=$!; "
                             + ("python3 /project/ros/lidar_odometry.py --external-nav & odom=$!; "
-                               if external_nav else "")
+                               if external_nav or gps_denied else "")
                             + f"ros2 bag record -o bag --qos-profile-overrides-path /project/ros/record_qos.yaml {ROS_BAG_OPTIONS} {ROS_TOPICS} & recorder=$!; "
                             + "trap 'kill -INT $recorder; wait $recorder; kill $bridge"
-                            + ("; kill $odom" if external_nav else "") + "' INT TERM; wait",
+                            + ("; kill $odom" if external_nav or gps_denied else "") + "' INT TERM; wait",
                         ),
                         stdout=(run / "ros.log").open("w"),
                         stderr=subprocess.STDOUT,
@@ -560,11 +565,12 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                         "--defaults",
                         "/opt/ardupilot/Tools/autotest/default_params/copter.parm,"
                         f"{UPSTREAM}/params/iris.parm,/project/config/flight.parm"
-                        + (",/project/config/external_nav.parm" if external_nav else ""),
+                        + (",/project/config/external_nav.parm" if external_nav else "")
+                        + (",/project/config/gps_denied.parm" if gps_denied else ""),
                         "--serial0",
                         "tcp:5760",
                         "--serial1",
-                        "tcp:5761" if external_nav else "none",
+                        "tcp:5761" if external_nav or gps_denied else "none",
                         "--serial2",
                         "none",
                         "--sim-address",
@@ -619,7 +625,8 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                         "--altitude",
                         str(ALTITUDE_M[world]),
                         *(["--external-nav"] if external_nav else []),
-                        *(["--odometry-route"] if odometry_route else []),
+                        *(["--odometry-route"] if odometry_route or gps_denied else []),
+                        *(["--gps-denied"] if gps_denied else []),
                     ],
                     start_new_session=True,
                 )
@@ -706,6 +713,8 @@ def main():
                         help="run/check: stream sensor odometry on serial1 and test GPS to external navigation in flight")
     parser.add_argument("--odometry-route", action="store_true",
                         help="run/check: record a GPS-guided seed-7 route through a straight maze corridor")
+    parser.add_argument("--gps-denied", action="store_true",
+                        help="run/check: disable simulated GPS and fly the seed-7 route on LiDAR odometry")
     parser.add_argument(
         "--editor", action="store_true", help="show Webots' development UI (run only)"
     )
@@ -739,6 +748,9 @@ def main():
         parser.error("--external-nav requires --world maze for nearby wall returns")
     if args.odometry_route and (args.world != "maze" or args.seed != 7 or args.external_nav):
         parser.error("--odometry-route requires --world maze --seed 7 without --external-nav")
+    if args.gps_denied and (args.command not in ("run", "check") or args.world != "maze" or args.seed != 7
+                            or args.external_nav or args.odometry_route):
+        parser.error("--gps-denied requires run/check --world maze --seed 7 without --external-nav or --odometry-route")
     if args.command in ("replay", "check-recording", "check-replay", "check-odometry"):
         if not args.run_dir:
             parser.error(f"{args.command} needs a run folder")
@@ -759,7 +771,8 @@ def main():
 
             seed = random.randrange(1_000_000)
         flight(headless=args.command == "check", editor=args.editor, record=args.record, world=world,
-               seed=seed, external_nav=args.external_nav, odometry_route=args.odometry_route)
+               seed=seed, external_nav=args.external_nav, odometry_route=args.odometry_route,
+               gps_denied=args.gps_denied)
 
 
 if __name__ == "__main__":
