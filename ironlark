@@ -28,6 +28,7 @@ ROS_IMAGE = "ironlark-ros:humble"
 # Recorded by name, so the recorder subscribes to each before the first message (-a discovers late).
 ROS_TOPICS = ("/clock /imu/data /lidar/points /camera/image_raw /camera/camera_info /tf_static "
               "/ground_truth/pose /ground_truth/velocity")
+NAV_TOPICS = "/clock /imu/data /lidar/points /ground_truth/pose /ground_truth/velocity"
 # Each message compressed (zstd, lossless) by two threads, queued deep enough that none is dropped.
 ROS_BAG_OPTIONS = "--compression-mode message --compression-format zstd --compression-threads 2 --compression-queue-size 20000"
 COMMIT = "dbe792162d06cab66c3475fd5556bf7a120f119e"
@@ -208,7 +209,7 @@ def interrupt(number, frame):
     raise KeyboardInterrupt
 
 
-def stage_world(run, world="empty", seed=None):
+def stage_world(run, world="empty", seed=None, obstacle=False):
     """The run's world in its own folder: a copy of the empty world, or a maze generated from the seed
     (tools/generate_maze.py), its truth.json in the run folder for the evaluator. Returns the world's path."""
     if world == "maze":
@@ -220,6 +221,8 @@ def stage_world(run, world="empty", seed=None):
         proto = os.path.relpath(ROOT / "protos/IronlarkDrone.proto", target.parent)
         target.write_text(generate_maze.world(truth, proto))
         (run / "truth.json").write_text(generate_maze.encode(truth) + "\n")
+        if obstacle:
+            (run / "obstacle.json").write_text(json.dumps(generate_maze.detour_obstacle(truth), indent=2) + "\n")
         shutil.copyfile(ROOT / "worlds/.flight_foundation.wbproj", target.parent / ".maze.wbproj")
         return target
     target = run / "worlds/flight_foundation.wbt"
@@ -317,6 +320,8 @@ def ros_container(name, run, command):
         "docker", "run", "--rm", "--name", name, "--network", "host",
         "--user", f"{os.getuid()}:{os.getgid()}",
         "-e", "HOME=/tmp", "-e", "ROS_LOCALHOST_ONLY=1", "-e", "ROS_LOG_DIR=/run/ironlark/ros-log",
+        # A 0.1 s reliable heartbeat: see ros/fastdds.xml.
+        "-e", "FASTRTPS_DEFAULT_PROFILES_FILE=/project/ros/fastdds.xml",
         "--mount", f"type=bind,src={ROOT},dst=/project,readonly",
         "--mount", f"type=bind,src={run},dst=/run/ironlark",
         ROS_IMAGE, "bash", "-c", "source /opt/ros/humble/setup.bash && " + command,
@@ -379,6 +384,53 @@ def check_odometry(run):
                         "python3 /project/tools/evaluate_odometry.py /run/ironlark"))
 
 
+def check_map(run):
+    """Build the observed occupancy map, then score known cells against evaluator walls."""
+    require_ros_image()
+    call(*ros_container(f"ironlark-map-check-{os.getpid()}", Path(run).resolve(),
+                        "python3 /project/tools/evaluate_map.py /run/ironlark"))
+
+
+def batch(count=10, batch_seed=None):
+    """Fly seeded unknown mazes, retain failures, then judge every run folder."""
+    import random
+
+    source = random.Random(batch_seed)
+    seeds = source.sample(range(1_000_000), count)
+    folder = ROOT / "runs" / ("batch-" + time.strftime("%Y%m%d-%H%M%S"))
+    folder.mkdir(parents=True)
+    (folder / "seeds.json").write_text(json.dumps({"batch_seed": batch_seed, "seeds": seeds}, indent=2) + "\n")
+    runs = []
+    for index, seed in enumerate(seeds, 1):
+        if shutil.disk_usage(ROOT).free < 3 * 1024 ** 3:
+            print("Batch stopped before the next flight: less than 3 GiB free.", flush=True)
+            break
+        print(f"Batch {index}/{count}: maze seed {seed}", flush=True)
+        before = set((ROOT / "runs").glob("20*"))
+        try:
+            flight(headless=True, world="maze", seed=seed, gps_denied=True, explore=True)
+        except Exception as exc:
+            print(f"Flight failed for seed {seed}: {exc}", flush=True)
+        created = set((ROOT / "runs").glob("20*")) - before
+        if len(created) != 1:
+            raise RuntimeError(f"Expected one run folder for seed {seed}, found {len(created)}")
+        run = created.pop()
+        runs.append(run)
+        for name, evaluator in (("odometry", check_odometry), ("map", check_map)):
+            try:
+                evaluator(run)
+            except Exception as exc:
+                print(f"{name} evaluation failed for {run}: {exc}", flush=True)
+    output = folder / "summary.json"
+    if not runs:
+        raise RuntimeError("Batch could not start a flight; no run folders to evaluate")
+    call(str(ROOT / ".venv/bin/python"), str(ROOT / "tools/evaluate_batch.py"),
+         *(str(run) for run in runs), "--output", str(output))
+    print(f"Batch summary: {output}")
+    if len(runs) != count:
+        raise RuntimeError(f"Batch completed {len(runs)} of {count} requested flights; see {output}")
+
+
 @contextlib.contextmanager
 def exclusive():
     """One flight or build at a time, across the checkouts sharing .cache: a build replaces what a flight loaded."""
@@ -392,8 +444,9 @@ def exclusive():
 
 
 def flight(headless, editor=False, record=False, world="empty", seed=None, external_nav=False,
-           odometry_route=False, gps_denied=False):
-    record = record or external_nav or odometry_route or gps_denied
+           odometry_route=False, gps_denied=False, explore=False, obstacle=False, inject_link_loss=False,
+           inject_unhealthy_odometry=False):
+    record = record or external_nav or odometry_route or gps_denied or explore
     home = webots_home()  # Refuse an invalid WEBOTS_HOME before creating any run artifacts.
     doctor(overview=False, home=home, record=record)
     if not headless and not os.environ.get("DISPLAY"):
@@ -443,12 +496,20 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                         "language": "C" if lockstep else "Python",
                         "library_sha256": hashlib.sha256(lockstep).hexdigest() if lockstep else None,
                     },
-                    "mission": ("GPS-denied fixed maze route" if gps_denied else
+                    "mission": ("GPS-denied GCS-link-loss injection" if inject_link_loss else
+                                "GPS-denied unhealthy-odometry injection" if inject_unhealthy_odometry else
+                                "GPS-denied unknown-maze exploration" if explore else
+                                "GPS-denied fixed maze route" if gps_denied else
                                 "GPS-external-nav-GPS transition" if external_nav else
                                 "GPS-guided odometry data collection" if odometry_route else "takeoff-hover-land"),
-                    "odometry_route_fixture": ("config/odometry_route_seed7.json"
-                                               if odometry_route or gps_denied else None),
+                    "odometry_route_fixture": "config/odometry_route_seed7.json" if odometry_route else None,
                     "gps_denied": gps_denied,
+                    "explore": explore,
+                    "dynamic_obstacle": obstacle,
+                    "injected_link_loss": inject_link_loss,
+                    "injected_unhealthy_odometry": inject_unhealthy_odometry,
+                    "map_stride": 10 if external_nav or gps_denied else None,
+                    "recorded_topics": (NAV_TOPICS if explore else ROS_TOPICS).split(),
                     "altitude_m": ALTITUDE_M[world],
                     "headless": headless,
                     "world": world,
@@ -475,7 +536,7 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
             env["IRONLARK_FAST_START"] = "1"
         # Webots saves GUI perspectives beside the world. Give each run its own
         # project so watching a flight never rewrites versioned source files.
-        world_path = stage_world(run, world, seed)
+        world_path = stage_world(run, world, seed, obstacle)
         (run / "controllers").symlink_to(ROOT / "controllers", target_is_directory=True)
         command = [
             str(home / "webots"),
@@ -521,11 +582,13 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                             ros_name,
                             run,
                             "python3 /project/ros/ironlark_bridge.py & bridge=$!; "
-                            + ("python3 /project/ros/lidar_odometry.py --external-nav & odom=$!; "
+                            + ("python3 /project/ros/lidar_odometry.py --external-nav"
+                               + (" --explore" if explore else "")
+                               + (" --inject-unhealthy" if inject_unhealthy_odometry else "") + " & odom=$!; "
                                if external_nav or gps_denied else "")
-                            + f"ros2 bag record -o bag --qos-profile-overrides-path /project/ros/record_qos.yaml {ROS_BAG_OPTIONS} {ROS_TOPICS} & recorder=$!; "
+                            + f"ros2 bag record -o bag --qos-profile-overrides-path /project/ros/record_qos.yaml {ROS_BAG_OPTIONS} {NAV_TOPICS if explore else ROS_TOPICS} & recorder=$!; "
                             + "trap 'kill -INT $recorder; wait $recorder; kill $bridge"
-                            + ("; kill $odom" if external_nav or gps_denied else "") + "' INT TERM; wait",
+                            + ("; kill -INT $odom; wait $odom" if external_nav or gps_denied else "") + "' INT TERM; wait",
                         ),
                         stdout=(run / "ros.log").open("w"),
                         stderr=subprocess.STDOUT,
@@ -625,13 +688,19 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                         "--altitude",
                         str(ALTITUDE_M[world]),
                         *(["--external-nav"] if external_nav else []),
-                        *(["--odometry-route"] if odometry_route or gps_denied else []),
+                        *(["--odometry-route"] if odometry_route or (gps_denied and not explore
+                                                                      and not inject_link_loss
+                                                                      and not inject_unhealthy_odometry) else []),
                         *(["--gps-denied"] if gps_denied else []),
+                        *(["--explore"] if explore else []),
+                        *(["--inject-link-loss"] if inject_link_loss else []),
+                        *(["--inject-unhealthy-odometry"] if inject_unhealthy_odometry else []),
                     ],
                     start_new_session=True,
                 )
                 # A backstop only: the check itself times out on simulated time.
-                deadline = time.monotonic() + 900
+                flight_backstop = 3600 if explore else 900
+                deadline = time.monotonic() + flight_backstop
                 while mission.poll() is None:
                     if webots.poll() is not None or sitl.poll() is not None:
                         raise RuntimeError(
@@ -642,7 +711,7 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                                            f"Inspect {run / 'webots.log'} and {run / 'ros.log'}.")
                     if time.monotonic() > deadline:
                         raise RuntimeError(
-                            f"Flight exceeded the 900-second wall-clock backstop. Inspect {run}."
+                            f"Flight exceeded the {flight_backstop}-second wall-clock backstop. Inspect {run}."
                         )
                     time.sleep(0.2)
                 if mission.returncode:
@@ -696,7 +765,7 @@ def flight(headless, editor=False, record=False, world="empty", seed=None, exter
                     signal.signal(number, handler)
 
 
-COMMANDS = ("setup", "doctor", "run", "check", "build-drone", "replay", "check-recording", "check-replay", "check-odometry")
+COMMANDS = ("setup", "doctor", "run", "check", "batch", "build-drone", "replay", "check-recording", "check-replay", "check-odometry", "check-map")
 # The forest and the patched renderer live on main; their commands are refused here by name.
 ON_MAIN = ("build-world", "build-renderer", "render-reference")
 
@@ -715,6 +784,16 @@ def main():
                         help="run/check: record a GPS-guided seed-7 route through a straight maze corridor")
     parser.add_argument("--gps-denied", action="store_true",
                         help="run/check: disable simulated GPS and fly the seed-7 route on LiDAR odometry")
+    parser.add_argument("--explore", action="store_true",
+                        help="run/check: explore an unknown maze on LiDAR odometry; requires --gps-denied")
+    parser.add_argument("--obstacle", action="store_true",
+                        help="run/check: spawn an evaluator-controlled wall in a detour-capable passage during exploration")
+    parser.add_argument("--inject-unhealthy-odometry", action="store_true",
+                        help="run/check: mark the odometry unhealthy after takeoff and require a monitored LAND")
+    parser.add_argument("--inject-link-loss", action="store_true",
+                        help="run/check: close the GCS connection after takeoff and require failsafe LAND")
+    parser.add_argument("--count", type=int, default=10, help="batch: number of random maze flights (default 10)")
+    parser.add_argument("--batch-seed", type=int, default=None, help="batch: seed for the list of maze seeds")
     parser.add_argument(
         "--editor", action="store_true", help="show Webots' development UI (run only)"
     )
@@ -748,14 +827,30 @@ def main():
         parser.error("--external-nav requires --world maze for nearby wall returns")
     if args.odometry_route and (args.world != "maze" or args.seed != 7 or args.external_nav):
         parser.error("--odometry-route requires --world maze --seed 7 without --external-nav")
-    if args.gps_denied and (args.command not in ("run", "check") or args.world != "maze" or args.seed != 7
+    if args.gps_denied and (args.world != "maze" or (args.seed != 7 and not args.explore)
                             or args.external_nav or args.odometry_route):
-        parser.error("--gps-denied requires run/check --world maze --seed 7 without --external-nav or --odometry-route")
-    if args.command in ("replay", "check-recording", "check-replay", "check-odometry"):
+        parser.error("--gps-denied requires --world maze (seed 7 for the fixed route) without --external-nav or --odometry-route")
+    if args.explore and (not args.gps_denied or args.command not in ("run", "check")):
+        parser.error("--explore requires run/check --world maze --gps-denied")
+    if args.obstacle and not args.explore:
+        parser.error("--obstacle requires --explore")
+    if args.inject_link_loss and (args.command not in ("run", "check") or not args.gps_denied
+                                  or args.explore or args.obstacle or args.seed != 7):
+        parser.error("--inject-link-loss requires --world maze --seed 7 --gps-denied without --explore")
+    if args.inject_unhealthy_odometry and (args.command not in ("run", "check") or not args.gps_denied
+                                           or args.explore or args.obstacle or args.seed != 7
+                                           or args.inject_link_loss):
+        parser.error("--inject-unhealthy-odometry requires --world maze --seed 7 --gps-denied "
+                     "without --explore or --inject-link-loss")
+    if args.command == "batch" and not 1 <= args.count <= 100:
+        parser.error("--count must be between 1 and 100")
+    if args.command != "batch" and (args.count != 10 or args.batch_seed is not None):
+        parser.error("--count and --batch-seed are only available with batch")
+    if args.command in ("replay", "check-recording", "check-replay", "check-odometry", "check-map"):
         if not args.run_dir:
             parser.error(f"{args.command} needs a run folder")
         {"replay": replay, "check-recording": check_recording, "check-replay": check_replay,
-         "check-odometry": check_odometry}[args.command](args.run_dir)
+         "check-odometry": check_odometry, "check-map": check_map}[args.command](args.run_dir)
     elif args.command == "setup":
         setup()
     elif args.command == "doctor":
@@ -763,6 +858,8 @@ def main():
     elif args.command == "build-drone":
         with exclusive():
             build_drone()
+    elif args.command == "batch":
+        batch(args.count, args.batch_seed)
     else:
         world = args.world or "empty"
         seed = args.seed
@@ -772,7 +869,9 @@ def main():
             seed = random.randrange(1_000_000)
         flight(headless=args.command == "check", editor=args.editor, record=args.record, world=world,
                seed=seed, external_nav=args.external_nav, odometry_route=args.odometry_route,
-               gps_denied=args.gps_denied)
+               gps_denied=args.gps_denied, explore=args.explore, obstacle=args.obstacle,
+               inject_link_loss=args.inject_link_loss,
+               inject_unhealthy_odometry=args.inject_unhealthy_odometry)
 
 
 if __name__ == "__main__":

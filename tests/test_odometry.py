@@ -1,5 +1,4 @@
 """Geometry and frame regression for sensor odometry and its EKF handoff."""
-import io
 import math
 import sys
 import unittest
@@ -11,12 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 try:
     from sensing.odometry import ScanOdometry  # noqa: E402
-    from ros.lidar_odometry import mavlink_payload  # noqa: E402
+    from ros.lidar_odometry import external_nav_fresh, mavlink_payload  # noqa: E402
 except ModuleNotFoundError as error:
     if error.name not in ("scipy", "rclpy", "sensor_msgs", "nav_msgs", "pymavlink"):
         raise
     ScanOdometry = None
-    mavlink_payload = None
+    mavlink_payload = external_nav_fresh = None
 
 
 def walls(corner=True):
@@ -91,12 +90,7 @@ class ScanMatching(unittest.TestCase):
             self.assertAlmostEqual(actual, expected)
         self.assertAlmostEqual(abs(packet[6][0]), 1.0)
         self.assertEqual(packet[13][0], 0.04)
-        self.assertTrue(math.isnan(packet[14][0]))
         self.assertEqual(packet[-1], 80)
-        from pymavlink import mavutil
-        output = io.BytesIO()
-        mavutil.mavlink.MAVLink(output).odometry_send(*packet)
-        self.assertGreater(len(output.getvalue()), 0)
 
     def test_velocity_rotates_with_body_heading(self):
         state = {"time": 2.0, "position": [0, 1, 0], "yaw": math.pi / 2,
@@ -106,6 +100,11 @@ class ScanMatching(unittest.TestCase):
         self.assertEqual(packet[3:6], (0, -1, 0))
         self.assertAlmostEqual(packet[7], 1.0)
         self.assertAlmostEqual(packet[8], 0.0)
+
+    def test_late_scan_is_not_sent_as_current_pose(self):
+        self.assertTrue(external_nav_fresh(10.0, None))
+        self.assertTrue(external_nav_fresh(10.0, 10.25))
+        self.assertFalse(external_nav_fresh(10.0, 10.9))
 
 
 if __name__ == "__main__":

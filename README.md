@@ -34,10 +34,13 @@ per-step loop runs in C; without one, in Python.
 ./ironlark run --record           # watch the flight and record its sensors (rosbag2)
 ./ironlark check-recording RUN    # judge the recording: completeness, IMU, LiDAR/camera on the wall
 ./ironlark check-replay RUN       # replay it and compare, message by message
-./ironlark check --world maze --seed 7 --odometry-route  # record the long corridor case
 ./ironlark check-odometry RUN     # replay a recorded maze run, score ATE/RPE against hidden truth
+./ironlark check --world maze --seed 7 --odometry-route  # record the long corridor case
 ./ironlark check --world maze --seed 7 --external-nav  # test EKF3 source transition in flight
 ./ironlark check --world maze --seed 7 --gps-denied   # fly the route with SIM_GPS1_ENABLE=0
+./ironlark check-map RUN          # score observed occupancy cells against evaluator-only walls
+./ironlark check --world maze --seed 7 --gps-denied --explore  # experimental unknown-maze explorer
+./ironlark batch --count 10 --batch-seed 42  # run and score ten random GPS-denied mazes
 ```
 
 | Command | Does |
@@ -50,10 +53,15 @@ per-step loop runs in C; without one, in Python.
 | `check-recording RUN` | Checks a recorded flight: the bag is complete (every topic, a message every period, over the whole flight), and the IMU at rest reads gravity, no rotation and the rig's noise. In the empty world, then the calibration wall: LiDAR distance, orientation and scatter against the rig's range noise, camera ↔ LiDAR agreement, and the ground in front of the wall not red. In a maze, every LiDAR ray of the hovering scans against the run's `truth.json` ([`tools/maze_lidar.py`](tools/maze_lidar.py)): returns on the walls and ground it places on their rays, none missing where it has a surface in range, the layers at their configured angles, and the rig's range noise. |
 | `check-replay RUN` | Replays a recorded flight while recording it again and compares: every topic present, the same messages byte for byte, in order. |
 | `check` | The same flight on a virtual display. Exits nonzero on failure. |
-| `check --world maze --seed 7 --odometry-route` | Records a GPS-guided route through three waypoints, including a 5.4 m straight section at up to 0.6 m/s. The route is fixed in `config/odometry_route_seed7.json`; no evaluator truth is read in flight. Run `check-odometry` on its output folder. |
 | `check-odometry RUN` | Replays only `/imu/data` and `/lidar/points` through the odometer. After replay, compares its trajectory with independent `ground_truth.jsonl`, writing `odometry_check.json`: ATE, one second RPE, healthy scans, and a pass limit. On the seed-7 route, scores moving scans and the named straight corridor separately. Requires a recorded maze run. |
+| `check --world maze --seed 7 --odometry-route` | Records a GPS-guided route through three waypoints, including a 5.4 m straight section at up to 0.6 m/s. The route is fixed in `config/odometry_route_seed7.json`; no evaluator truth is read in flight. Run `check-odometry` on its output folder. |
 | `check --external-nav` | Records sensors, runs the odometer live, sends MAVLink `ODOMETRY` on serial1 port 5761, and switches EKF3 from GPS source set 1 to ExternalNav source set 2 for a five second hover and a 0.5 m forward and return move, then back to GPS. It fails on unhealthy odometry or EKF position. GPS stays enabled in this transition check. |
-| `check --world maze --seed 7 --gps-denied` | Loads `config/gps_denied.parm`: `SIM_GPS1_ENABLE 0` stops SITL's GPS receiver, and EKF3 source set 1 takes horizontal position and velocity from the LiDAR odometry on serial1 (barometer height, compass yaw). The check confirms the parameter before arming, gives EKF3 a fixed geographic origin (frame metadata, not a measurement), flies the fixed three-waypoint route of `--odometry-route`, and fails if a GPS fix ever appears. It verifies the measurement cut and the route on odometry; it does not explore an unknown maze. |
+| `check --world maze --seed 7 --gps-denied` | Disables SITL GPS measurements and flies the fixed three-waypoint maze route on LiDAR odometry. The check rejects a GPS fix, monitors odometry health while armed, and commands LAND if the mission fails airborne. An injected odometry-process stop after takeoff produced `FAILSAFE_LANDED` and a 0.055 m final physical height. This verifies the measurement cut and route; it does not yet navigate an unknown maze. |
+| `check-map RUN` | Rebuilds a 20 cm occupancy map from recorded LiDAR and live odometry, then scores only observed cells against evaluator-only maze walls. Unobserved cells stay unknown. Writes `occupancy_map.json` and `map_check.json`. |
+| `check --world maze --seed N --gps-denied --explore` | Experimental live frontier explorer: the ROS node maps observed free and occupied cells, publishes local waypoints, and the flight controller follows them on EKF3 external navigation. It lands on sustained sensor or planner loss. The exit is verified with evaluator truth only after landing. Escape and clearance have not yet passed together. |
+| `check --world maze --seed N --gps-denied --explore --obstacle` | Adds a wall in a detour-capable passage after takeoff when the drone approaches. The evaluator records its spawn time and geometry; the planner sees only LiDAR returns. |
+| `check --world maze --seed 7 --gps-denied --inject-link-loss` | Closes the GCS connection after takeoff and requires ArduPilot to enter LAND and disarm. GPS-denied runs set `FS_GCS_ENABLE=5`, the [Copter GCS failsafe LAND action](https://ardupilot.org/copter/docs/gcs-failsafe.html). This injection still needs its flight check. |
+| `batch --count 10 --batch-seed N` | Runs random seeded GPS-denied explorations headlessly, then scores each run folder for escape, path length, odometry, map, clearance, replan time, and resources. The seed list and summary are saved in `runs/batch-*/`. `--batch-seed 20261114` escaped 10 of 10 (`runs/batch-20261118-212622/`). |
 
 Webots is `WEBOTS_HOME` when set, else `./webots/`; this branch never selects a
 patched build. To ignore a `WEBOTS_HOME` override in sh or fish, use
@@ -115,6 +123,21 @@ Per-point deskew would introduce false motion for this renderer.
 The live node writes `odometry.jsonl`, `/odom/lidar` and `/odom/health`;
 it does not subscribe to `/ground_truth/*`. [`tools/evaluate_odometry.py`](tools/evaluate_odometry.py)
 is the separate truth-reading evaluator.
+
+The same live node accumulates [`sensing/mapping.py`](sensing/mapping.py)'s occupancy
+grid from wall returns and writes `occupancy_map.json` on shutdown. Ground returns
+are excluded by the odometer's estimated height. Absent cells are unknown;
+[`sensing/planning.py`](sensing/planning.py) can plan through observed free cells,
+select a frontier, or explicitly mark a route through unknown cells as unverified.
+`check-map` opened the seed-7 GPS-denied route's truth only after mapping: 95.8%
+accuracy over the 24.5% of maze cells observed. The live explorer is under
+integration testing; its first long runs found a clearance violation and a
+straight-corridor odometry degeneracy before reaching the exit.
+[`tools/evaluate_batch.py`](tools/evaluate_batch.py) scores a list of maze run
+folders for exit through the true gate, path length against the shortest route,
+wall clearance, and any available odometry, map and resource metrics. Missing
+metrics stay null. For example, `.venv/bin/python tools/evaluate_batch.py runs/RUN1
+runs/RUN2 --output runs/batch.json`.
 
 Each run writes `runs/<timestamp>/`: `manifest.json` (versions, Webots patches,
 world, estimator), `result.json` (verdict, transitions, measurements),

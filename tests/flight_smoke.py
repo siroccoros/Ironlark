@@ -1,6 +1,7 @@
 """Execute and evaluate the simulated takeoff/hover/land integration gate."""
 
 import argparse
+from collections import deque
 import json
 import math
 from pathlib import Path
@@ -12,8 +13,17 @@ from pymavlink import mavutil
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from sensing import frames  # noqa: E402
+from tools.evaluate_batch import escape_index  # noqa: E402
 
 
+EXPLORATION_LIMIT_S = 1500
+UNHEALTHY_CHECKS_BEFORE_LAND = 4  # consecutive 0.5 s health checks
+# Crossing an exit gate, only the outer wall is left behind the drone: odometry turns degenerate
+# before the explorer can commit (it commits only on a healthy estimate). Seed 135227 lost 6 s
+# there (runs/20261115-163215-13755, degenerate from 170 deg open); inside nine batch mazes no
+# uncommitted reading exceeded 120 deg on either radius. The grace is bounded per flight.
+OPENING_GRACE_SECTOR_DEG = 150
+OPENING_GRACE_CHECKS = 16  # 8 s of IMU coasting, at most, over the whole flight
 DRONE_REACH_M = 0.33  # half the diagonal of the drone's 0.47 m collision box: nearer a wall, it can touch it
 
 
@@ -32,7 +42,19 @@ def clearance(truth, walls):
     return nearest
 
 
-def judge(truth, autopilot_seconds, altitude=3.0, walls=(), external_nav_route=False, route_points=()):
+def limit_xy_acceleration(previous, target, dt, acceleration=0.2):
+    """Limit change in a horizontal velocity command to metres per second squared."""
+    change = math.dist(previous, target)
+    limit = acceleration * max(0.0, dt)
+    if change <= limit:
+        return target
+    if limit == 0:
+        return previous
+    return tuple(old + (new - old) * limit / change for old, new in zip(previous, target))
+
+
+def judge(truth, autopilot_seconds, altitude=3.0, walls=(), external_nav_route=False, route_points=(),
+          escape_route=False):
     """The flight as Webots measured it (flight_observer's ground truth, every 100 ms of simulated time), never as the
     autopilot reported it: the trajectory covers the flight without a gap, and shows a takeoff, a continuous 5-second
     hover within 0.5 m of the altitude, a landing back on the ground (z = 0 in every world), no drift and, among
@@ -69,7 +91,7 @@ def judge(truth, autopilot_seconds, altitude=3.0, walls=(), external_nav_route=F
         raise RuntimeError(f"No physical 5-second hover at {low:g}-{high:g} m: the longest lasted {hover:.1f} s")
     if not -0.2 <= heights[-1] <= 0.2:
         raise RuntimeError(f"Drone did not physically land: final height {heights[-1]:.2f} m")
-    if not route_points and drift > 1.5:
+    if not route_points and not escape_route and drift > 1.5:
         raise RuntimeError(f"Excessive horizontal drift: {drift:.2f} m")
     nearest = clearance(truth, walls)
     if nearest is not None and nearest < DRONE_REACH_M:
@@ -110,13 +132,19 @@ def judge(truth, autopilot_seconds, altitude=3.0, walls=(), external_nav_route=F
 
 
 class Flight:
-    def __init__(self, output, altitude=3.0, external_nav=False, odometry_route=False, gps_denied=False):
+    def __init__(self, output, altitude=3.0, external_nav=False, odometry_route=False, gps_denied=False,
+                 explore=False, inject_link_loss=False, inject_unhealthy_odometry=False):
         self.output = output
         self.altitude = altitude
         self.external_nav = external_nav
         self.route_points = (json.loads((ROOT / "config/odometry_route_seed7.json").read_text())
-                             ["waypoints_webots_xy_m"] if odometry_route else ())
+                             ["waypoints_webots_xy_m"] if odometry_route or (gps_denied and not explore
+                                                                            and not inject_link_loss
+                                                                            and not inject_unhealthy_odometry) else ())
         self.gps_denied = gps_denied
+        self.explore = explore
+        self.inject_link_loss = inject_link_loss
+        self.inject_unhealthy_odometry = inject_unhealthy_odometry
         self.gps_fix_seen = False
         self.connection = None
         self.messages = {}
@@ -125,6 +153,13 @@ class Flight:
         self.started = time.monotonic()
         self.last_heartbeat = 0
         self.sim_time = None  # autopilot boot time in seconds; tracks simulated time
+        self.armed = False
+        self.health_check_time = None
+        self.monitor_odometry = True
+        self.stale_odometry_checks = 0
+        self.unhealthy_odometry_checks = 0
+        self.opening_grace_checks = 0
+        self.odometry_unhealthy = False
 
     def event(self, state):
         print(state, flush=True)
@@ -145,6 +180,8 @@ class Flight:
         if message and message.get_type() != "BAD_DATA":
             if message.get_type() == "GPS_RAW_INT" and message.fix_type >= 3:
                 self.gps_fix_seen = True
+            if message.get_type() == "HEARTBEAT" and message.get_srcSystem() == self.connection.target_system:
+                self.armed = bool(message.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
             self.messages[message.get_type()] = message
             boot = getattr(message, "time_boot_ms", None)
             if boot is not None:
@@ -152,7 +189,68 @@ class Flight:
             self.log.write(json.dumps(message.to_dict()) + "\n")
             if message.get_type() == "STATUSTEXT":
                 print(f"  ArduPilot: {message.text}", flush=True)
+            if self.gps_denied and self.armed and self.monitor_odometry:
+                self.check_odometry_health()
         return message
+
+    def check_odometry_health(self):
+        if self.sim_time is None or (self.health_check_time is not None
+                                     and self.sim_time - self.health_check_time < 0.5):
+            return
+        self.health_check_time = self.sim_time
+        path = self.output.with_name("odometry.jsonl")
+        if not path.exists():
+            raise RuntimeError("GPS-denied odometry stream disappeared")
+        with path.open() as handle:
+            recent = [json.loads(line) for line in deque(handle, maxlen=5)]
+        age = self.sim_time - recent[-1]["time"] if recent else math.inf
+        self.stale_odometry_checks = self.stale_odometry_checks + 1 if age > 1.0 else 0
+        if age > 2.5 and self.stale_odometry_checks >= 3:
+            raise RuntimeError("GPS-denied odometry stream became stale")
+        self.odometry_unhealthy = len(recent) == 5 and not any(item["healthy"] for item in recent)
+        # Beyond the opening there may be no walls to match. EKF3 can coast
+        # briefly while the already committed exit maneuver completes.
+        if self.odometry_unhealthy:
+            target = self.output.with_name("navigation_target.json")
+            if target.exists():
+                nav = json.loads(target.read_text())
+                if (self.sim_time - nav["time"] < 2.0 and nav.get("exit_commitment")
+                        and nav.get("open_sector_deg", 0) >= 220
+                        and nav.get("exit_commitment_age_s") is not None
+                        and nav["exit_commitment_age_s"] <= 20):
+                    self.unhealthy_odometry_checks = 0
+                    return
+                if (self.sim_time - nav["time"] < 2.0
+                        and recent[-1]["reason"] == "corridor degeneracy"
+                        and nav.get("open_sector_deg", 0) >= OPENING_GRACE_SECTOR_DEG
+                        and (nav.get("open_sector_6m_deg") or 0) >= OPENING_GRACE_SECTOR_DEG
+                        and self.opening_grace_checks < OPENING_GRACE_CHECKS):
+                    self.opening_grace_checks += 1
+                    self.unhealthy_odometry_checks = 0
+                    return
+        self.unhealthy_odometry_checks = (self.unhealthy_odometry_checks + 1
+                                          if self.odometry_unhealthy else 0)
+        # Away from the exit, in-flight unhealthy streaks lasted at most 0.4 s; without a pose,
+        # EKF3 coasts on the IMU and the drone drifts quadratically (an injected loss drifted
+        # 0.45 m in 5.6 s), so land after about 2 s.
+        if self.unhealthy_odometry_checks >= UNHEALTHY_CHECKS_BEFORE_LAND:
+            raise RuntimeError("GPS-denied odometry became unhealthy: " + recent[-1]["reason"])
+
+    def fail_safe_land(self):
+        """Keep the simulation alive until LAND disarms when a mission fails airborne."""
+        if not self.armed or self.connection is None:
+            return
+        self.monitor_odometry = False
+        self.event("FAILSAFE_LANDING")
+        try:
+            self.connection.mav.command_long_send(self.connection.target_system,
+                self.connection.target_component, mavutil.mavlink.MAV_CMD_DO_SET_MODE, 0,
+                mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED, 9, 0, 0, 0, 0, 0)
+            self.wait("failsafe landing and disarm", lambda m: m.get_type() == "HEARTBEAT"
+                      and not m.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED, 60)
+            self.event("FAILSAFE_LANDED")
+        except Exception as exc:
+            self.event(f"FAILSAFE_LANDING_FAILED: {exc}")
 
     def expired(self, sim_start, wall_start, timeout):
         """Timeouts run on simulated time, so a slow renderer cannot fail a
@@ -276,26 +374,148 @@ class Flight:
             raise RuntimeError("Could not sustain a 5-second hover within 0.5 m of target altitude")
         if self.external_nav:
             self.transition_external_nav()
+        if self.inject_link_loss:
+            self.test_link_loss()
+        if self.inject_unhealthy_odometry:
+            detection = self.test_unhealthy_odometry()
+        if self.explore:
+            self.fly_explore()
         if self.route_points:
             self.fly_odometry_route()
-        self.event("LANDING")
-        self.mode(9)  # LAND
-        self.wait("landed and disarmed", lambda m: m.get_type() == "HEARTBEAT"
-                  and not m.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED, 60)
+        if not self.inject_link_loss and not self.inject_unhealthy_odometry:
+            self.event("LANDING")
+            # Exploration can finish in open ground with too few LiDAR features
+            # for scan matching. Guidance is over; LAND owns the descent now.
+            self.monitor_odometry = False
+            self.mode(9)  # LAND
+            self.wait("landed and disarmed", lambda m: m.get_type() == "HEARTBEAT"
+                      and not m.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED, 60)
         self.event("EVALUATING")
         if self.gps_denied and self.gps_fix_seen:
             raise RuntimeError("GPS fix appeared during GPS-denied flight")
         # Ground truth is read only after the mission, never to command the vehicle.
         truth = [json.loads(line) for line in self.output.with_name("ground_truth.jsonl").read_text().splitlines()]
         maze = self.output.with_name("truth.json")  # a generated world's geometry, evaluator only
-        walls = json.loads(maze.read_text())["walls"] if maze.exists() else ()
+        maze_truth = json.loads(maze.read_text()) if maze.exists() else None
+        walls = maze_truth["walls"] if maze_truth else ()
         autopilot_time = self.messages.get("SYSTEM_TIME")
         if autopilot_time is None:
             raise RuntimeError("No autopilot clock was recorded")
         measurements = judge(truth, autopilot_time.time_boot_ms / 1000, self.altitude, walls,
-                             self.external_nav, self.route_points)
+                             self.external_nav, self.route_points, self.explore)
+        if self.inject_unhealthy_odometry:
+            measurements["unhealthy_detection_s"] = detection
+        if self.explore:
+            index = escape_index(truth, maze_truth)
+            measurements["escaped"] = index is not None
+            if index is None:
+                raise RuntimeError("Exploration did not leave the maze through its exit")
+            measurements["escape_time_s"] = round(truth[index]["time"] - truth[0]["time"], 2)
         self.event("COMPLETED")
         return measurements
+
+    def test_unhealthy_odometry(self):
+        """Have the odometer mark its estimates unhealthy in flight; the health monitor must land.
+
+        The odometer keeps publishing (the stream is not stale) but reports every estimate
+        unhealthy and sends EKF3 quality -1. Returns simulated seconds from injection to LAND."""
+        trigger = self.output.with_name("inject-unhealthy-odometry")
+        trigger.write_text(json.dumps({"time": self.sim_time}) + "\n")
+        self.event("UNHEALTHY_ODOMETRY_INJECTED")
+        injected, wall_start = self.sim_time, time.monotonic()
+        try:
+            while not self.expired(injected, wall_start, 30):
+                message = self.poll()
+                if message and message.get_type() == "LOCAL_POSITION_NED":
+                    self.send_route_velocity(0, 0, 0)
+        except RuntimeError as exc:
+            if "odometry became unhealthy" not in str(exc):
+                raise
+            detection = round(self.sim_time - injected, 2)
+            self.event(f"UNHEALTHY_ODOMETRY_DETECTED after {detection:.1f} s")
+            self.fail_safe_land()
+            if self.events[-1]["state"] != "FAILSAFE_LANDED":
+                raise RuntimeError("Unhealthy-odometry failsafe did not land and disarm")
+            return detection
+        raise RuntimeError("Injected unhealthy odometry was not detected within 30 simulated seconds")
+
+    def test_link_loss(self):
+        """Drop the GCS TCP connection in flight; Copter's configured failsafe must land."""
+        self.event("LINK_LOSS_INJECTED")
+        self.connection.close()
+        self.connection = None
+        time.sleep(15)  # the simulation is real-time or slower; Copter needs 5 simulated seconds
+        self.connect()
+        self.wait("GCS failsafe landing and disarm", lambda m: m.get_type() == "HEARTBEAT"
+                  and m.custom_mode == 9 and not m.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED, 30)
+        self.event("LINK_FAILSAFE_LANDED")
+
+    def fly_explore(self):
+        """Follow sensor-map frontiers without opening the world's evaluator truth."""
+        start = self.wait("exploration origin", lambda m: m.get_type() == "LOCAL_POSITION_NED", 5)
+        self.event("EXPLORING")
+        sim_start, wall_start = self.sim_time, time.monotonic()
+        last_target = self.sim_time
+        stale_planner_checks = 0
+        overspeed_checks = 0
+        commanded_vx = commanded_vy = 0.0
+        last_command_time = self.sim_time
+
+        def hold():
+            nonlocal commanded_vx, commanded_vy, last_command_time
+            self.send_route_velocity(0, 0, 0)
+            commanded_vx = commanded_vy = 0.0
+            last_command_time = self.sim_time
+
+        target_file = self.output.with_name("navigation_target.json")
+        # Both escapes of the first batch took 823-855 s at 0.25 m/s, so 900 s decided outcomes.
+        # 1500 simulated s is ~1900 wall s at 0.8x real time, inside the 3600 s flight backstop.
+        while not self.expired(sim_start, wall_start, EXPLORATION_LIMIT_S):
+            m = self.poll()
+            if not m or m.get_type() != "LOCAL_POSITION_NED":
+                continue
+            if not self.armed:
+                raise RuntimeError("Exploration vehicle disarmed in flight")
+            overspeed_checks = overspeed_checks + 1 if math.hypot(m.vx, m.vy) > 0.75 else 0
+            if overspeed_checks:
+                hold()
+                if overspeed_checks >= 5:
+                    raise RuntimeError("Exploration horizontal speed exceeded safety limit")
+                continue
+            if not target_file.exists():
+                hold()
+                continue
+            nav = json.loads(target_file.read_text())
+            age = self.sim_time - nav["time"]
+            stale_planner_checks = stale_planner_checks + 1 if age > 2.0 else 0
+            if age > 2.0:
+                hold()
+                if age > 5.0 and stale_planner_checks >= 5:
+                    raise RuntimeError("Exploration map and planner became stale")
+                continue
+            if nav["state"] == "escaped":
+                hold()
+                self.event("EXIT_DETECTED")
+                return
+            waypoint = nav["waypoint_xy_m"]
+            if waypoint is None:
+                hold()
+                if self.sim_time - last_target > 15:
+                    raise RuntimeError("Exploration found no reachable frontier")
+                continue
+            last_target = self.sim_time
+            dx, dy, _ = frames.webots_to_sitl_local((*waypoint, 0.0))
+            ex, ey = start.x + dx - m.x, start.y + dy - m.y
+            distance = math.hypot(ex, ey)
+            speed = min(0.25 if nav.get("odometry_healthy", True) else 0.12, 0.5 * distance)
+            vx, vy = (speed * ex / distance, speed * ey / distance) if distance > 0.02 else (0, 0)
+            vx, vy = limit_xy_acceleration((commanded_vx, commanded_vy), (vx, vy),
+                                           self.sim_time - last_command_time)
+            commanded_vx, commanded_vy = vx, vy
+            last_command_time = self.sim_time
+            vz = max(-0.15, min(0.15, 0.5 * (start.z - m.z)))
+            self.send_route_velocity(vx, vy, vz)
+        raise RuntimeError(f"Exploration exceeded {EXPLORATION_LIMIT_S} simulated seconds")
 
     def transition_external_nav(self):
         """Switch EKF3 GPS -> sensor odometry -> GPS while airborne; move 0.5 m on source 2."""
@@ -371,8 +591,12 @@ def main():
     parser.add_argument("--external-nav", action="store_true")
     parser.add_argument("--odometry-route", action="store_true")
     parser.add_argument("--gps-denied", action="store_true")
+    parser.add_argument("--explore", action="store_true")
+    parser.add_argument("--inject-link-loss", action="store_true")
+    parser.add_argument("--inject-unhealthy-odometry", action="store_true")
     args = parser.parse_args()
-    flight = Flight(args.output, args.altitude, args.external_nav, args.odometry_route, args.gps_denied)
+    flight = Flight(args.output, args.altitude, args.external_nav, args.odometry_route, args.gps_denied,
+                    args.explore, args.inject_link_loss, args.inject_unhealthy_odometry)
     report = {"passed": False, "estimator": "EKF3",
               "position_source": ("sensor odometry, GPS disabled" if args.gps_denied else
                                   "GPS and sensor odometry transition" if args.external_nav else "simulated GPS")}
@@ -382,7 +606,7 @@ def main():
     except Exception as exc:
         report["error"] = str(exc)
         flight.event(f"FAILED: {exc}")
-        # The enclosing launcher tears down this software-only simulation on failure.
+        flight.fail_safe_land()
     finally:
         report["events"] = flight.events
         args.output.write_text(json.dumps(report, indent=2) + "\n")

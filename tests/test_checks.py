@@ -3,6 +3,7 @@ import importlib.util
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
@@ -30,6 +31,146 @@ def bag(**extra):
     topics = {topic: [f"{topic}-{i}".encode() for i in range(2)] for topic in check_replay.TOPICS}
     topics.update(extra)
     return topics
+
+
+class OdometryFailsafe(unittest.TestCase):
+    def test_velocity_reversal_is_acceleration_limited(self):
+        self.assertAlmostEqual(flight_smoke.limit_xy_acceleration((0.25, 0), (-0.25, 0), 0.1)[0], 0.23)
+        self.assertEqual(flight_smoke.limit_xy_acceleration((0.25, 0), (-0.25, 0), 0),
+                         (0.25, 0))
+
+    def test_brief_degeneracy_is_tolerated_and_persistent_loss_lands(self):
+        with tempfile.TemporaryDirectory() as directory:
+            flight = flight_smoke.Flight.__new__(flight_smoke.Flight)
+            flight.output = Path(directory) / "result.json"
+            flight.health_check_time = None
+            flight.stale_odometry_checks = 0
+            flight.unhealthy_odometry_checks = 0
+            flight.opening_grace_checks = 0
+            flight.odometry_unhealthy = False
+            stream = flight.output.with_name("odometry.jsonl")
+
+            def check(time_s, healthy):
+                flight.sim_time = time_s
+                stream.write_text("".join(json.dumps({"time": time_s, "healthy": healthy,
+                                                      "reason": "ok" if healthy else "corridor degeneracy"}) + "\n"
+                                          for _ in range(5)))
+                flight.check_odometry_health()
+
+            for index in range(3):
+                check(index * 0.5, False)
+            self.assertTrue(flight.odometry_unhealthy)
+            check(1.5, True)
+            self.assertFalse(flight.odometry_unhealthy)
+            for index in range(3):
+                check(2.0 + index * 0.5, False)
+            with self.assertRaisesRegex(RuntimeError, "corridor degeneracy"):
+                check(3.5, False)
+
+    def test_featureless_exit_gets_bounded_odometry_grace(self):
+        with tempfile.TemporaryDirectory() as directory:
+            flight = flight_smoke.Flight.__new__(flight_smoke.Flight)
+            flight.output = Path(directory) / "result.json"
+            flight.health_check_time = None
+            flight.stale_odometry_checks = 0
+            flight.unhealthy_odometry_checks = 0
+            flight.opening_grace_checks = 0
+            flight.odometry_unhealthy = False
+            stream = flight.output.with_name("odometry.jsonl")
+            target = flight.output.with_name("navigation_target.json")
+
+            for index in range(20):
+                flight.sim_time = 250 + index * 0.5
+                stream.write_text("".join(json.dumps({"time": flight.sim_time, "healthy": False,
+                                                       "reason": "corridor degeneracy"}) + "\n"
+                                          for _ in range(5)))
+                target.write_text(json.dumps({"time": flight.sim_time, "exit_commitment": True,
+                                              "open_sector_deg": 230, "exit_commitment_age_s": 5 + index * 0.5}))
+                flight.check_odometry_health()
+            self.assertEqual(flight.unhealthy_odometry_checks, 0)
+            for index in range(4):
+                flight.sim_time += 0.5
+                target.write_text(json.dumps({"time": flight.sim_time, "exit_commitment": True,
+                                              "open_sector_deg": 230, "exit_commitment_age_s": 21 + index * 0.5}))
+                stream.write_text("".join(json.dumps({"time": flight.sim_time, "healthy": False,
+                                                       "reason": "corridor degeneracy"}) + "\n"
+                                          for _ in range(5)))
+                if index == 3:
+                    with self.assertRaisesRegex(RuntimeError, "corridor degeneracy"):
+                        flight.check_odometry_health()
+                else:
+                    flight.check_odometry_health()
+
+    def test_degenerate_gate_crossing_before_commitment_gets_bounded_grace(self):
+        with tempfile.TemporaryDirectory() as directory:
+            flight = flight_smoke.Flight.__new__(flight_smoke.Flight)
+            flight.output = Path(directory) / "result.json"
+            flight.health_check_time = None
+            flight.stale_odometry_checks = 0
+            flight.unhealthy_odometry_checks = 0
+            flight.opening_grace_checks = 0
+            flight.odometry_unhealthy = False
+            stream = flight.output.with_name("odometry.jsonl")
+            target = flight.output.with_name("navigation_target.json")
+
+            def check(sector_3m, sector_6m, reason="corridor degeneracy"):
+                flight.sim_time = (flight.sim_time or 400) + 0.5
+                stream.write_text("".join(json.dumps({"time": flight.sim_time, "healthy": False,
+                                                       "reason": reason}) + "\n" for _ in range(5)))
+                target.write_text(json.dumps({"time": flight.sim_time, "exit_commitment": False,
+                                              "open_sector_deg": sector_3m,
+                                              "open_sector_6m_deg": sector_6m}))
+                flight.check_odometry_health()
+
+            flight.sim_time = None
+            # Inside the maze (at most 120 deg seen in the batch), degeneracy still lands.
+            for _ in range(3):
+                check(120, 120)
+            with self.assertRaisesRegex(RuntimeError, "corridor degeneracy"):
+                check(120, 120)
+            flight.unhealthy_odometry_checks = 0
+            # An injected unhealthy estimate gets no opening grace.
+            for _ in range(3):
+                check(190, 190, "injected unhealthy estimate")
+            with self.assertRaisesRegex(RuntimeError, "injected"):
+                check(190, 190, "injected unhealthy estimate")
+            flight.unhealthy_odometry_checks = 0
+            # Seed 135227's gate crossing: 6 s degenerate from 170 deg open.
+            for _ in range(12):
+                check(185, 185)
+            self.assertEqual(flight.unhealthy_odometry_checks, 0)
+            # The grace is spent after 8 s in total; then the usual 2 s rule lands.
+            for _ in range(4 + 3):
+                check(190, 190)
+            with self.assertRaisesRegex(RuntimeError, "corridor degeneracy"):
+                check(190, 190)
+
+    def test_injected_unhealthy_estimate_is_detected_then_lands(self):
+        with tempfile.TemporaryDirectory() as directory:
+            flight = flight_smoke.Flight.__new__(flight_smoke.Flight)
+            flight.output = Path(directory) / "result.json"
+            flight.events, flight.started, flight.sim_time = [], 0.0, 100.0
+            flight.health_check_time = None
+            flight.stale_odometry_checks = flight.unhealthy_odometry_checks = 0
+            flight.odometry_unhealthy = False
+            stream = flight.output.with_name("odometry.jsonl")
+            sent = []
+
+            def poll():
+                flight.sim_time += 0.5
+                healthy = not flight.output.with_name("inject-unhealthy-odometry").exists()
+                stream.write_text("".join(json.dumps({"time": flight.sim_time, "healthy": healthy,
+                                                      "reason": "ok" if healthy else "injected unhealthy estimate"})
+                                          + "\n" for _ in range(5)))
+                flight.check_odometry_health()
+                return None
+
+            flight.poll = poll
+            flight.expired = lambda start, wall, timeout: flight.sim_time - start > timeout
+            flight.send_route_velocity = lambda *velocity: sent.append(velocity)
+            flight.fail_safe_land = lambda: flight.events.append({"state": "FAILSAFE_LANDED"})
+            self.assertEqual(flight.test_unhealthy_odometry(), 2.0)
+            self.assertIn("UNHEALTHY_ODOMETRY_DETECTED after 2.0 s", [e["state"] for e in flight.events])
 
 
 class Replay(unittest.TestCase):

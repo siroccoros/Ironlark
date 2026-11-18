@@ -40,10 +40,19 @@ class Workflows(unittest.TestCase):
         self.refused("--seed is only available with --world maze", "run", "--seed", "3")
 
     def test_gps_denied_route_refused_outside_seed_7_maze(self):
-        expected = "--gps-denied requires run/check --world maze --seed 7"
+        expected = "--gps-denied requires --world maze (seed 7 for the fixed route)"
         self.refused(expected, "check", "--gps-denied")
         self.refused(expected, "check", "--world", "maze", "--seed", "3", "--gps-denied")
         self.refused(expected, "check", "--world", "maze", "--seed", "7", "--gps-denied", "--external-nav")
+
+    def test_exploration_and_injections_refused_outside_their_flights(self):
+        self.refused("--explore requires run/check --world maze --gps-denied",
+                     "check", "--world", "maze", "--seed", "3", "--explore")
+        self.refused("--obstacle requires --explore",
+                     "check", "--world", "maze", "--seed", "7", "--gps-denied", "--obstacle")
+        self.refused("--inject-unhealthy-odometry requires --world maze --seed 7 --gps-denied",
+                     "check", "--world", "maze", "--seed", "3", "--gps-denied", "--explore",
+                     "--inject-unhealthy-odometry")
 
     def test_forest_and_renderer_commands_refused_naming_main(self):
         for command in ("build-world", "build-renderer", "render-reference"):

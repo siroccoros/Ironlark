@@ -1,8 +1,19 @@
 # The only horizontal source is companion LiDAR odometry; no simulated GPS fixes.
 SIM_GPS1_ENABLE 0
 EK3_SRC1_POSXY 6
-EK3_SRC1_VELXY 6
+# Let EKF3 derive horizontal velocity from position and IMU; the scan-to-scan
+# velocity is noisy enough to excite the controller during exploration.
+EK3_SRC1_VELXY 0
+# Keep velocity feedback responsive enough to arrest the vehicle before
+# narrow turns, while limiting integral buildup over long exploration.
+PSC_NE_VEL_P 2.0
+PSC_NE_VEL_I 0.1
 EK3_SRC1_POSZ 1
 EK3_SRC1_VELZ 0
 EK3_SRC1_YAW 1
 VISO_TYPE 3
+# Without a pose, EKF3 coasts on the IMU and the drone drifts; a failsafe descent from
+# 1.5 m takes 1.5 s instead of the default 3 s.
+LAND_SPEED 100
+# If the command link disappears, ArduPilot lands after its GCS failsafe delay.
+FS_GCS_ENABLE 5
