@@ -1,0 +1,148 @@
+{
+  "query": {
+    "query": "2025 2026 released source code quadrotor autonomous navigation obstacle avoidance systems paper real world flight github missing from Fast-Planner EGO-Planner SUPER YOPO lists",
+    "type": "deep",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    },
+    "additionalQueries": [
+      "recent collision avoidance drone planners 2026 code release",
+      "2025 2026 aerial autonomous navigation research software open source flight evaluation"
+    ]
+  },
+  "response": {
+    "requestId": "50235aedcd537caddb5c3a8c976b3302",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/mit-acl/sando",
+        "title": "mit-acl/sando",
+        "url": "https://github.com/mit-acl/sando",
+        "highlights": [
+          "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments\n...\n**Submitted to the IEEE Transactions on Robotics (T-RO)**\n\n \n \n Spatiotemporal SFC \n Hardware Heatmap \n \n \n Sim Interactive \n Sim Static \n \n \n Sim Dynamic \n Hardware Single Dynamic \n \n \n Hardware Multiple Dynamic \n Hardware Dynamic + Static \n \n \n\nSANDO plans safe, dynamically-feasible trajectories for UAVs in environments with both static and dynamic obstacles, including previously unseen ones detected at runtime via onboard sensors.\n...\n_Safe_Autonomous_Trajectory_Planning_for_Dynamic_Unknown_Environments](\n...\nresearchgate.net/publication/403632573_SANDO_Safe_Autonomous_\n...\n_Planning_for_Dynamic_Unknown_Environments)\n...\n1. **Sensor Input** \u2014 Point cloud subscriptions update the voxel grid\n2. **HGP Manager** (`include/hgp/`) \u2014 Heat map-based global planner: voxel map, A* with heat costs, convex decomposition into safety corridors\n3. **SANDO Core** (`include/sando/sando.hpp`) \u2014 Planning orchestrator with state machine (YAWING \u2192 TRAVELING \u2192 GOAL_SEEN \u2192 GOAL_REACHED)\n4. **Gurobi Solver** (`include/sando/gurobi_solver.hpp`) \u2014 Local trajectory optimization using Hermite spline parameterization with dynamic factor adaptation\n5. **SANDO Node** (`src/sando/sando_node.cpp`) \u2014 ROS 2 node wrapper\n...\n- **Dynamic factor adaptation** \u2014 automatically adjusts time-scaling for reliable"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/abs/2604.07599v1",
+        "title": "[2604.07599v1] SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments",
+        "url": "https://arxiv.org/abs/2604.07599v1",
+        "highlights": [
+          "> Abstract:SANDO is a safe trajectory planner for 3D dynamic unknown environments, where obstacle locations and motions are unknown a priori and a collision-free plan can become unsafe at any moment, requiring fast replanning. Existing soft-constraint planners are fast but cannot guarantee collision-free paths, while hard-constraint methods ensure safety at the cost of longer computation. SANDO addresses this trade-off through three contributions. First, a heat map-based A* global planner steers paths away from high-risk regions using soft costs, and a spatiotemporal safe flight corridor (STSFC) generator produces time-layered polytopes that inflate obstacles only by their worst-case reachable set at each time layer, rather than by the worst case over the entire horizon. Second, trajectory optimization is formulated as a Mixed-Integer Quadratic Program (MIQP) with hard collision-avoidance constraints, and a variable elimination technique reduces the number of decision variables, enabling fast computation. Third, a formal safety analysis establishes collision-free guarantees under explicit velocity-bound and estimation-error assumptions. Ablation studies show that variable elimination yields up to 7.4x speedup in optimization time, and that STSFCs are critical for feasibility in dense dynamic environments. Benchmark simulations against state-of-the-art methods across"
+        ],
+        "image": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/apple-touch-icon.png"
+      },
+      {
+        "id": "https://github.com/sjtu-visys-team/avoid-mpc",
+        "title": "SJTU-ViSYS-team/Avoid-MPC",
+        "url": "https://github.com/sjtu-visys-team/avoid-mpc",
+        "highlights": [
+          "Mapless Collision-Free Flight via MPC using Dual KD-Trees in Cluttered Environments(IROS 2025)\n...\nCollision-free navigation in cluttered environments is essential for autonomous quadrotors. Traditional approaches typically rely on a cascade pipeline involving detailed 3D mapping, trajectory generation, and tracking. However, such methods can suffer from accumulated errors and computational latency, which limits agility and safety.\n...\nIn this work, we propose a novel **mapless** method for collision-free flight without constructing explicit 3D maps or generating collision-free trajectories. Instead, we use **Model Predictive Control (MPC)** to directly generate safe control actions from sparse waypoints and point cloud data obtained from a depth camera.\n...\n- The **Obstacle KD-Tree** identifies nearby obstacles for real-time avoidance.\n- The **Edge KD-Tree** provides a strong initial guess to the MPC solver, helping it escape local minima.\n...\nWe validate our method through both simulation and real-world experiments. Our results show that it:\n...\n- Outperforms traditional mapping-based approaches;\n- Surpasses imitation learning-based methods;\n- Achieves speeds of up to **12 m/s in simulation** and **6 m/s in real-world** scenarios.\n...\non [Flightmare](https://github.com/uzh-rpg/flightmare) to\n...\n2 compatible version to enable broader integration with modern robotic platforms"
+        ]
+      },
+      {
+        "id": "https://github.com/Robotics-STAR-Lab/LA-Planner",
+        "title": "Robotics-STAR-Lab/LA-Planner",
+        "url": "https://github.com/Robotics-STAR-Lab/LA-Planner",
+        "highlights": [
+          "[IROS 2025] Perception-aware Planning for Quadrotor Flight in Unknown and Feature-limited Environments\n...\nA novel **localization-aware** planner for quadrotor flight in **unknown** and **feature-limited** environments that properly allocates perception resources among environmental information during navigation. It tackles the issue of strong dependency on prior environmental knowledge inherent in traditional localization-aware planning methods.\n\n \n \n \n \n\n## Introduction\n...\n**[IROS'25 oral]** This repository maintains the implementation of \"**Perception-aware Planning for Quadrotor Flight in Unknown and Feature-limited Environments**\". [arxiv Preprint](https://arxiv.org/abs/2503.15273)\n...\nThe terminal will continuously print\n...\nthe source code\n...\nour paper to\n...\neach error type and the conditions that trigger them. We\n...\ncontributions from everyone\n...\nproposing new methods\n...\nWe use [MINCO](https://github.com/ZJU-FAST-Lab/GCOPTER) as our yaw trajectory representation.\n...\nWe draw inspiration from the autonomous exploration framework in [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL).\n...\nOur perception-aware trajectory planning method is partially inspired by the design of [APACE](https://github.com/HKUST-Aerial-Robotics/APACE).\n...\nThe source code is released under the [GPLv3](https://www.gnu.org/licenses/) license."
+        ]
+      },
+      {
+        "id": "https://arxiv.org/abs/2609.03630",
+        "title": "[2609.03630] Local Path Planning and Obstacle Avoidance for an Omnicopter Platform",
+        "url": "https://arxiv.org/abs/2609.03630",
+        "publishedDate": "2026-09-03T05:17:50.000Z",
+        "highlights": [
+          "> Autonomous unmanned aerial vehicles (UAVs) increasingly operate in cluttered environments where global planners such as RRT* are not directly deployable at control rates. This paper presents a real-time local planning and obstacle avoidance module for an omnidirectional multirotor (omnicopter) by extending the Dynamic Window Approach to six degrees of freedom (6D-DWA). Our method achieves real-time feasibility through (i) local-map voxelisation, (ii) a compact sphere-based approximation of the vehicle geometry, and (iii) adaptive velocity sampling in the 6D search space. To improve reactivity to unknown obstacles, we introduce a context-aware \"Agile Mode\" that adjusts scoring weights online to trade-off between goal progress, clearance, and heading/facing constraints during evasive manoeuvres. We evaluate our approach in simulation across computational stress tests, dense-waypoint path tracking, and static/unknown obstacle scenarios. Our planner runs consistently within a 0.2s control loop, tracks waypoint-dense global paths with < 0.1m average cross-track error and 13deg average heading error, and avoids collisions in static environments. For unknown obstacle avoidance, Agile Mode achieves 79.3% success for an off-centre obstacle and 41.4% for a centred obstacle, highlighting both the effectiveness of adaptive weighting and remaining limitations in highly constrained"
+        ],
+        "image": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2608.20948v1",
+        "title": "Neural-Primitive: An Efficient End-to-end Local Planner with Primitive-based Imitation Learning for Autonomous Flight",
+        "url": "https://arxiv.org/html/2608.20948v1",
+        "highlights": [
+          "mid-360 for onboard sensing, an NVIDIA Jetson Orin NX 4 4 4 https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/ for end-to-end planning and SE(3) geometric tracking control [8], and a PX4 5 5 5 https://px4.io/ flight controller for low-level attitude control.\n...\nIn this section, we compare the proposed method with four representative local planners, including three well-established approaches under the classical hierarchical planning framework and one state-of-the-art learning-based planner, namely: 1) Fast [29]: Kinodynamic path searching on an incrementally updated voxel map, followed by gradient-based trajectory optimization relying on a constantly maintained ESDF for safety regularization; 2) Ego [30]: A \u2217 path searching on the constructed grid map, with subsequent ESDF-free trajectory optimization leveraging collision costs derived directly from grid-obstacle information; 3) Super [17]: Path searching and flight corridor generation directly on an efficient spatiotemporal sliding point cloud map, followed by MINCO-based [22] dual-trajectory optimization that jointly accounts for high-speed exploration and safety assurance; 4) Yopo [13]: Objective-function-guided unsupervised learning for the network, inferring the end-state related terms of all pre-sampled primitives from sensory inputs, after which one is selected for closed-form BVP solving."
+        ],
+        "image": "http://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg"
+      },
+      {
+        "id": "https://github.com/XuPeng23/AeroVLA",
+        "title": "XuPeng23/AeroVLA",
+        "url": "https://github.com/XuPeng23/AeroVLA",
+        "highlights": [
+          "[Accepted to ECCV 2026] Official repository for AeroVLA (formerly known as AerialVLA): A Vision-Language-Action Model for UAV Navigation via Minimalist End-to-End Control\n...\nfuture simulation-to-reality transfer. To reclaim genuine autonomy, we deploy a fuzzy directional prompting mechanism derived solely from onboard sensors, completely eliminating the dependency on dense oracle guidance. Ultimately, we formulate a unified control space that integrates continuous 3-Degree-of-Freedom (3-DoF) kinematic commands with an intrinsic landing signal, freeing the agent from external object detectors for precision landing. Extensive experiments on the TravelUAV benchmark demonstrate that AeroVLA achieves state-of-the-art performance in seen environments. Furthermore, it exhibits superior generalization in unseen scenarios by achieving nearly three times the success rate of leading baselines, validating that a minimalist, autonomy-centric paradigm captures more robust visual-motor\n...\n## \ud83d\ude80 News & Updates\n\n - **[2026-07]** \ud83d\udd25 **Training code and training dataset are officially released!** You can now train your own AeroVLA models.\n - **[2026-06]** **Our paper has been accepted to ECCV 2026!** Please note that the project has been officially renamed from *AerialVLA* to **AeroVLA**.\n - **[2026-04]** AerialVLA evaluation code and pre-trained LoRA weights are officially released!"
+        ]
+      },
+      {
+        "id": "https://github.com/SmartDianLab/FineCogNav",
+        "title": "SmartDianLab/FineCogNav",
+        "url": "https://github.com/SmartDianLab/FineCogNav",
+        "publishedDate": "2026-04-03T14:51:38.000Z",
+        "highlights": [
+          "# Repository: SmartDianLab/FineCogNav\n...\n[CVPR 2026 Findings] FineCog-Nav: Integrating Fine-grained Cognitive Modules for Zero-shot Multimodal UAV Navigation\n...\n- Stars: 13\n- Forks: 0\n- Watchers: 1\n- Open issues: 0\n- Primary language: Python\n- Languages: Python (99.8%), Shell (0.2%)\n- Default branch: main\n- Homepage: https://smartdianlab.github.io/projects-FineCogNav/\n- Created: 2026-04-03T14:51:38Z\n- Last push: 2026-04-20T01:56:26Z\n- Contributors: 2 (top: JiaFeiMiao-K-Cat, Lozumi)\n...\n# FineCog-Nav: Integrating Fine-grained Cognitive Modules for Zero-shot Multimodal UAV Navigation\n...\n## \ud83d\udcda **Evaluation**\n...\nEvaluation Script (`scripts/eval.py`) evaluates agent trajectories.\n...\nThe two main arguments, `<ref_type>` and `<pred_type>`, define the format of your ground truth and prediction data.\n...\n## \ud83d\udcdc **Citing**\n...\nIf you use FineCog-Nav in your research, please cite the following paper:\n...\n```\n@misc{shao2026finecognavintegratingfinegrainedcognitive,\n      title={FineCog-Nav: Integrating Fine-grained Cognitive Modules for Zero-shot Multimodal UAV Navigation}, \n      author={Dian Shao and Zhengzheng Xu and Peiyang Wang and Like Liu and Yule Wang and Jieqi Shi and Jing Huo},\n      year={2026},\n      eprint={2604.16298},\n      archivePrefix={arXiv},\n      primaryClass={cs.CV},\n      url={https://arxiv.org/abs/2604.16298}, \n}\n```"
+        ]
+      },
+      {
+        "id": "https://github.com/KumarRobotics/HALO",
+        "title": "KumarRobotics/HALO",
+        "url": "https://github.com/KumarRobotics/HALO",
+        "publishedDate": "2026-04-24T18:58:16.000Z",
+        "highlights": [
+          "# Repository: KumarRobotics/HALO\n...\n[RA-L 2026] HALO: Language-Conditioned Overhead Monocular Aerial Exploration and Navigation\n...\n: Language-Conditioned Overhead Monocular Aerial Exploration and\n...\n### IEEE Robotics and Automation Letters (RA-L), 2026\n\n \n Yuezhan Tao* \u00b7\n Dexter Ong* \u00b7\n Fernando Cladera \u00b7\n Jason Hughes \u00b7\n Camillo J. Taylor \u00b7\n Pratik Chaudhari \u00b7\n Vijay Kumar \n \n\n * Equal contribution \n\n### [\ud83d\udcc4 Paper](https://arxiv.org/abs/2511.17497) | [\ud83c\udfa5 Video](https://www.youtube.com/watch?v=MB65Bz4iBXI) | [\ud83c\udf10 Project Page](https://tyuezhan.github.io/halo/)\n\n \n\n---\n\n \n \n \n \n\n---\n...\nHALO is a language-conditioned autonomous aerial exploration and navigation system designed for overhead monocular UAV operation. The system enables a robot to explore unknown environments, build semantic maps, and search for user-specified targets using natural language prompts.\n...\nThis repository provides the official release, including simulation tools, ROS integration, configuration files, and deployment utilities.\n...\nrelease includes:\n...\n- Source code\n- ROS launch files\n- Configuration files\n- Utility scripts\n- tmux session scripts for simulation and robot deployment\n- Dockerfiles\n- Unity simulation binaries\n...\n- Zenoh router\n- Unity simulator\n- Planner node\n- Geometric mapper node\n- Semantic mapper node\n- Simulation tracker node\n...\ntitle\n...\n-Conditioned Mon\n...\n5}\n}"
+        ]
+      },
+      {
+        "id": "https://github.com/castacks/RAVEN",
+        "title": "castacks/RAVEN",
+        "url": "https://github.com/castacks/RAVEN",
+        "publishedDate": "2025-10-01T00:00:00.000Z",
+        "highlights": [
+          "[ICRA 2026] RAVEN: Resilient Aerial Navigation via Open-Set Semantic Memory and Behavior Adaptation\n...\nREADME\n\n \n RAVEN: Resilient Aerial Navigation via Open-Set Semantic Memory and Behavior Adaptation\n...\nIEEE International Conference on Robotics and Automation (ICRA) 2026\n...\n(Oral Presentation)\n...\n1\n...\n1\n...\n1\n...\nWenshan\n...\n1\n...\n- 01/31/2026: RAVEN was accepted to IEEE ICRA 2026!\n- 10/25/2025: RAVEN was presented at IROS 2025 Active Perception Workshop, and received Outstanding Best Paper Award Finalist!\n- 09/28/2025: arXiv paper is uploaded. Stay tuned for code release!\n...\nRayFronts serves as a perception and representation backbone of RAVEN. \n\nAirStack serves as an aerial robot autonomy stack, which supports interface for Isaac Sim, and handles sensors, global & local planning, collision avoidance. \n\n +-------------+ Interface +-------------------+ Sensor Topics +-------------------+\n | Isaac Sim | -----------> | AirStack | ------------------> | RayFronts |\n | Simulation | | Autonomy Stack | | Perception & Map |\n...\n+-------------+ |-------------------| |-------------------|\n | - Sim interface | | - 3D Mapping |\n | - Sensor drivers | | - Representation |\n | - Global planner | <-------------------| - Semantic logic |\n | - Local planner | Global Waypoints | - Behavior Tree |\n | - Collision avoid | | |\n +-------------------+ +-------------------+"
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/SUPER",
+        "title": "hku-mars/SUPER",
+        "url": "https://github.com/hku-mars/SUPER",
+        "publishedDate": "2024-12-19T09:07:25.000Z",
+        "highlights": [
+          "Science Robotics'\n...\n- **Mar. 09, 2025** - The hardware components of SUPER have been released at [SUPER-Hardware](https://github.com/hku-mars/SUPER-Hardware) \ud83e\uddbe\n- **Jan. 29, 2025** - The preview version of SUPER's planning module, supporting both ROS1 and ROS2, is now available! Try it out, and we welcome any issues or contributions.\n- **Jan. 29, 2025** - The paper of SUPER is now featured on the official website of [*Science Robotics*](https://www.science.org/doi/10.1126/scirobotics.ado6187).\n- **Dec. 12, 2024** - \ud83c\udf89 Our paper has been accepted by *Science Robotics*!\n...\nBuilding on SUPER, a similar planning system has been successfully validated in [Autonomous Navigation for Tail-Sitter UAVs](https://github.com/hku-mars/EFOPT) by [@genegzl](https://github.com/genegzl) et al.\n...\nSUPER serves as the flight platform and navigation system in the video demonstration of [FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry](https://github.com/hku-mars/FAST-LIVO2) by [@xuankuzcr](https://github.com/xuankuzcr) et al.\n\n \n\n# 2 Quick Start\n...\nA detailed guide for deploying SUPER on real-world hardware will be available soon. In\n...\nmeantime, you can refer to\n...\n5](https://\n...\nhku-mars/\n...\nsome helpful hints.\n...\n.com/hku-mars\n...\nROG-Map"
+        ]
+      },
+      {
+        "id": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "title": "TJU-Aerial-Robotics/YOPO",
+        "url": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "highlights": [
+          "You Only Plan Once: A Learning Based Quadrotor Planner\n...\nOriginal Paper: [You Only Plan Once:\n...\nieee.org/document\n...\nWe propose **a learning-based planner for autonomous navigation in obstacle-dense environments** which integrates (i) perception and mapping, (ii) front-end path searching, and (iii) back-end optimization of classical methods into a single network. \n\n**Learning-based Planner:** Considering the multi-modal nature of the navigation problem and to avoid local minima around initial values, our approach adopts a set of motion primitives as anchor to cover the searching space, and predicts the offsets and scores of primitives for further improvement (like the one-stage object detector YOLO).\n...\n- **[2026-08-14]** We adopt [MINCO](https://github.com/ZJU-FAST-Lab/GCOPTER) as YOPO's trajectory representation, along with several other improvements. Please refer to the [YOPO-MINCO](https://github.com/TJU-Aerial-Robotics/YOPO/tree/YOPO-MINCO) branch. A simple comparison:\n\n \n \n \n\n- **[2025-6-17]** The code is greatly simplified and refactored in Python/PyTorch. We also replaced the simulator with our CUDA-accelerated randomized environment, which is faster, lightweight, and boundless. For the stable version consistent with our paper, please refer to the [main](https://github.com/TJU-Aerial-Robotics/YOPO/tree/main) branch."
+        ]
+      },
+      {
+        "id": "https://github.com/peDrontonio/VLNontheFly",
+        "title": "peDrontonio/VLNontheFly",
+        "url": "https://github.com/peDrontonio/VLNontheFly",
+        "highlights": [
+          "Vision-language models (VLMs) have unlocked open-vocabulary, instruction-following navigation on many robot embodiments, but aerial robots have mostly been left out, because limited onboard compute, hierarchical-integration complexity, and safety concerns get in the way. **VLN on the Fly** is a fully onboard, decoupled VLN stack for micro air vehicles:\n...\n- a **quantized VLM** grounds a natural-language instruction to a coarse image region,\n...\nB-spline planner** turns that region into a collision-aware 3D trajectory over an onboard occupancy map, and\n...\n- a **pretrained cross-platform RL policy** tracks it\n...\nWe deploy the full stack on a real UAV across **15 open-volume flights** across three everyday referents, and validate obstacle avoidance in **6 additional cluttered-environment trials** with collision-free trajectory tracking and safe perception gating.\n...\n2. **Planning.** [`ego-planner-swarm`](./ego-planner-swarm) (EGO-Planner) builds a local occupancy map from depth + pose and returns a collision-aware, dynamically feasible B-spline trajectory toward the goal, replanning continuously.\n...\n| [`ego-planner-swarm`](./ego-planner-swarm) | `ego_planner`, `plan_env`, `bspline_opt`, `path_searching`, `traj_utils`, `poscmd_2_odom`, `quadrotor_msgs`, \u2026 | EGO-Planner B-spline trajectory generation, occupancy mapping, `raptor_path_tracker.py` bridge to PX4 EXTERNAL mode |"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2608.15741v1",
+        "title": "Some Modifications to Our End-to-End UAV Planner",
+        "url": "https://arxiv.org/html/2608.15741v1",
+        "highlights": [
+          "In this report, we summarize several effective modifications. We adopt a two-piece MINCO parameterization, trading time for smoothness without altering the trajectory\u2019s spatial profile. We further lift YOPO\u2019s multi-modal prediction to span distinct homotopy classes, treating each motion primitive as a homotopy anchor that confines the trajectory to a feasible basin\u2014without explicit safe-flight-corridor construction or front-end search. For dynamic feasibility, we impose barrier penalties on velocity and acceleration together with a curvature-dependent speed limit whose gradient acts only on the velocity, producing an adaptive-speed behavior that decelerates in cluttered regions or sharp turns. We replace score regression with a ranking loss, preventing small score errors from reordering the candidate set. These yield richer trajectory representations, safer obstacle avoidance, and more direct flight paths. Code: https://github.com/TJU-Aerial-Robotics/YOPO/tree/YOPO-MINCO.\n...\nhomotopy anchors\u2014\n...\n, trading extended\n...\nduration for smoothness\n...\nintermediate waypoint anchors\n...\ncover different local minima with\n...\n- [17] Z\n...\nL. Xu\n...\n, and F\n...\nDynamically feasible trajectory\n...\nautonomous flight,\u201d IEEE Robotics and Automation Letters, 2\n...\n25."
+        ],
+        "image": "http://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg"
+      }
+    ],
+    "searchTime": 4652.7,
+    "costDollars": {
+      "total": 0.016
+    }
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "query": {
+    "query": "Established open-source aerial robot autonomy integrated frameworks real flight obstacle avoidance goal navigation repositories CERLAB MRS Aerostack2 NTNU Kumar Robotics Prometheus",
+    "type": "deep",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    },
+    "additionalQueries": [
+      "complete UAV autonomy frameworks with released software and field experiments",
+      "open source drone navigation systems PX4 ArduPilot ROS2 comparison"
+    ]
+  },
+  "response": {
+    "requestId": "933b465a3d1f6772f2af16b9f0308a7f",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/aerostack2/aerostack2",
+        "title": "aerostack2/aerostack2",
+        "url": "https://github.com/aerostack2/aerostack2",
+        "highlights": [
+          "Aerostack2 is a ROS 2 framework developed to create autonomous multi-aerial-robots systems in an easy and powerful way.\n...\n- aerial-robotics\n- drones\n- robotics\n- ros2\n- swarm-robotics\n- uavs\n...\nAerostack2 is a ROS 2 framework developed to create autonomous multi-aerial-robots systems in an easy and powerful way.\n...\nCurrently is currently developed and tested over ROS 2 humble (over Ubuntu 22.04) .\n\nVersions below 1.0.9 were also developed and tested over ROS 2 galactic (over Ubuntu 20.04), can be found in the branch `EOL/galactic`.\n...\nMost important features:\n...\n- Natively developed on ROS 2.\n- Complete modularity, allowing elements to be changed or interchanged without affecting the rest of the system.\n- Independence of the aerial platform. Easy Sim2Real deployment.\n- Project-oriented, allowing to install and use only the necessary packages for the application to be developed. \n- Swarming orientation.\n...\n* M. Fernandez-Cortizas, M. Molina, P. Arias-Perez, R. Perez-Segui,\nD. Perez-Saura, and P. Campoy, 2023, [\"Aerostack2: A software framework for\ndeveloping multi-robot aerial systems\"](https://arxiv.org/abs/2303.18237), ArXiv DOI 2303.18237."
+        ]
+      },
+      {
+        "id": "https://github.com/ctu-mrs/mrs_uav_system/tree/ros2?tab=readme-ov-file",
+        "title": "GitHub - ctu-mrs/mrs_uav_system at ros2 \u00b7 GitHub",
+        "url": "https://github.com/ctu-mrs/mrs_uav_system/tree/ros2?tab=readme-ov-file",
+        "publishedDate": "2020-05-03T08:59:00.000Z",
+        "author": "ctu-mrs",
+        "highlights": [
+          "The Multi-robot Systems Group is a robotics lab at the Czech Technical University in Prague. We specialize in multi-rotor helicopters, and for them specifically, we develop this control, estimation, and simulation system. We think real-world and replicable experiments should support excellent research and science in robotics. Thus, our platform is built to allow safe real-world experimental validation of approaches in planning, control, estimation, computer vision, tracking, and more.\n...\n- built on the Robot Operating System Jazzy,\n- meant to be executed entirely onboard on a companion computer,\n- can control underactuated multirotor helicopters,\n- contains control, state estimation, mapping, and planning pipelines.\n...\n_system | `ros-jazzy-mrs-uav-system` |\n...\nackages |\n...\n| --- | --- | --- |\n...\nUAV Modules |\n...\nmodules | `ros-jazzy-mrs-u\n...\n-modules` |\n...\noctomap\n...\nplanning | `ros-jazzy-mrs-octomap-mapping-planning` |\n...\n| OpenVINS\n...\n| `ros-jazzy-\n...\n-open-vins\n...\ncore` |\n| PointL\n...\n| `ros-jazzy-mrs-point-lio-core` |\n|\n...\n|\n| AL\n...\n(?, probably not) |\n...\n|\n| LIO-\n...\nCore | TODO (?, probably not) | TODO |\n| Hector\n...\n| TODO (?, probably not) | TODO |\n...\n| Simulators | Repository | Package |\n| --- | --- | --- |\n| MRS Multirotor Simulator | mrs_multirotor_simulator | `ros-jazzy-mrs-multirotor-simulator` |\n| FlightForge Simulator | mrs_uav_flightforge_simulator | `ros-jazzy-mrs-uav-flightforge-simulator` |\n| Gazebo Simulator | mrs_uav_gazebo_simulation | `ros-jazzy-mrs-uav-gazebo-simulator` |\n| Coppelia Simulator | TODO | TODO |"
+        ],
+        "image": "https://opengraph.githubassets.com/ae113298d65016f83e24766c2cc686dea084d48710a4d6782dcd5b84a76ad530/ctu-mrs/mrs_uav_system",
+        "favicon": "https://github.com/fluidicon.png"
+      },
+      {
+        "id": "https://github.com/kumarrobotics/kr_autonomous_flight/",
+        "title": "KumarRobotics/kr_autonomous_flight",
+        "url": "https://github.com/kumarrobotics/kr_autonomous_flight/",
+        "highlights": [
+          "KR (KumarRobotics) autonomous flight system for GPS-denied quadrotors\n...\nThis is the autonomous flight code stack used at KumarRobotics, providing a complete solution for GPS-denied quadcopter autonomy. It has been tested extensively in challenging urban and rural (under forest canopy) environments.\n...\nAn experimental ROS2 Jazzy Jalisco (Ubuntu 24.04) port of this stack lives on the [`ros2_dev`](https://github.com/KumarRobotics/kr_autonomous_flight/tree/ros2_dev) branch. It is built on top of [`feature/integrate_lidar_3d_planner_default`](https://github.com/KumarRobotics/kr_autonomous_flight/tree/feature/integrate_lidar_3d_planner_default), which adds two capabilities beyond `master`:\n...\n- a **3D optimization-based planner** (gcopter-family trajectory optimization integrated into the action planner), and\n- support for both **LIDAR + VIO** and **LIDAR-only** autonomous flight modalities (the stack can now fly without a visual-inertial frontend when lighting / texture conditions make VIO unreliable).\n...\npackage, launch file\n...\nimage, and CI workflow on\n...\nros2_dev` has been adapted\n...\n2 Jazzy\n...\n**This port has not been extensively tested or experimented with and is not the\n...\nused to produce any\n...\nresults shown in\n...\nvideos above.** It is provided as\n...\nstarting point for developers who want\n...\nuse kr_autonomous_flight under\n...\n2. Several external\n...\nexternal_*.yaml\n...\n_trackers_manager\n...\nsucceeds. See\n...\nIGRATION_REPORT.md`](https://\n...\n.com/\n...\nRobotics/kr_\n...\n/blob/ros2_dev/ROS2_MIGRATION_REPORT.md) for a detailed\n...\nand the list of known"
+        ]
+      },
+      {
+        "id": "https://github.com/KumarRobotics/kr_autonomous_flight",
+        "title": "KumarRobotics/kr_autonomous_flight",
+        "url": "https://github.com/KumarRobotics/kr_autonomous_flight",
+        "publishedDate": "2020-11-17T16:52:31.000Z",
+        "highlights": [
+          "KR (KumarRobotics) autonomous flight system for GPS-denied quadrotors\n...\nThis is the autonomous flight code stack used at KumarRobotics, providing a complete solution for GPS-denied quadcopter autonomy. It has been tested extensively in challenging urban and rural (under forest canopy) environments.\n...\nAn experimental ROS2 Jazzy Jalisco (Ubuntu 24.04) port of this stack lives on the [`ros2_dev`](https://github.com/KumarRobotics/kr_autonomous_flight/tree/ros2_dev) branch. It is built on top of [`feature/integrate_lidar_3d_planner_default`](https://github.com/KumarRobotics/kr_autonomous_flight/tree/feature/integrate_lidar_3d_planner_default), which adds two capabilities beyond `master`:\n...\n- a **3D optimization-based planner** (gcopter-family trajectory optimization integrated into the action planner), and\n- support for both **LIDAR + VIO** and **LIDAR-only** autonomous flight modalities (the stack can now fly without a visual-inertial frontend when lighting / texture conditions make VIO unreliable).\n...\nimage, and CI workflow on\n...\n2_dev` has been adapted\n...\n2 Jazzy\n...\n**This port has not been extensively tested or experimented with and is not the\n...\nused to produce any of\n...\nresults shown in\n...\nvideos above.** It is provided as\n...\nfor developers who want\n...\nuse kr_autonomous_flight under\n...\nexternal_*.yaml` (`kr\n...\ntrackers_manager\n...\nonly and must\n...\nfull end-\n...\nIGRATION_REPORT.md`](https://github.com/KumarRobotics/kr_autonomous_\n...\n/blob/ros2_dev/ROS2_MIGRATION_REPORT.\n...\n) for a detailed\n...\nand the list of known follow-ups."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/organization/7zyg9hf64sx",
+            "type": "company",
+            "version": 1,
+            "properties": {
+              "name": "Vijay Kumar Lab",
+              "foundedYear": null,
+              "description": null,
+              "workforce": {
+                "total": 1
+              },
+              "headquarters": {
+                "address": "220 S 33rd St, Philadelphia, Pennsylvania 19104, US",
+                "city": "Philadelphia",
+                "postalCode": null,
+                "country": "United States"
+              },
+              "financials": null,
+              "webTraffic": {
+                "visitsMonthly": 10675,
+                "countryRank": 148367,
+                "avgDurationSeconds": 214,
+                "history": [
+                  {
+                    "value": 6322,
+                    "dateFrom": "2026-02",
+                    "dateTo": "2026-02"
+                  },
+                  {
+                    "value": 4991,
+                    "dateFrom": "2026-03",
+                    "dateTo": "2026-03"
+                  },
+                  {
+                    "value": 4794,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 4794,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 4405,
+                    "dateFrom": "2026-05",
+                    "dateTo": "2026-05"
+                  },
+                  {
+                    "value": 10675,
+                    "dateFrom": "2026-06",
+                    "dateTo": "2026-06"
+                  }
+                ]
+              },
+              "research": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://ntnu-arl.github.io/unified_autonomy_stack/",
+        "title": "Unified Autonomy Stack",
+        "url": "https://ntnu-arl.github.io/unified_autonomy_stack/",
+        "author": "Autonomous Robots Lab, NTNU",
+        "highlights": [
+          "Welcome to the documentation for the Unified Autonomy Stack. This stack presents an autonomy architecture integrating perception, planning, and navigation algorithms developed and field tested at the Autonomous Robots Lab across robot configurations. The stack consists of the software for the core algorithms along with drivers, utilities, and tools for simulation and testing. We currently support rotary-wing (e.g., multirotor) and certain ground systems (e.g., legged robots) with extension to other configurations, such as underwater robots, coming soon. The software distributed as a part of this stack has been thoroughly tested in real-world scenarios, demonstrating robust autonomous operation in challenging GPS-denied environments.\n...\n- Planning: Graph-based efficient path planning algorithms tailored for volumetric exploration, visual inspection, and waypoint navigation in complex environments. The planning framework extends to aerial, ground, and underwater robots.\n...\n- Multi-layered Safe Navigation: Combining map-based path planning with learning-based reactive navigation and safety layers.\n...\n- SDF-NMPC and RL: Neural MPC and Reinforcement Learning based map-free approaches for safe navigation.\n- Last-resort Safety: Control Barrier Functions for filtering unsafe commands.\n...\n- Multi-platform Support: Designed for both aerial robots and ground robots with planned extension to underwater.\n...\nand setup.\n...\n- Multi-platform Support: Verified on diverse aerial and ground robots with the ambition to eventually cover most morphologies across air, land and sea."
+        ],
+        "image": "https://ntnu-arl.github.io/unified_autonomy_stack/figures/arl_logo.png"
+      },
+      {
+        "id": "https://github.com/zhefan-xu/cerlab-uav-autonomy",
+        "title": "Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "url": "https://github.com/zhefan-xu/cerlab-uav-autonomy",
+        "highlights": [
+          "Welcome to the **CERLAB UAV Autonomy Framework**, a versatile and modular framework for autonomous unmanned aerial vehicles (UAVs). This framework comprises distinct components (simulator, perception, mapping, planning, and control) to achieve autonomous navigation, unknown exploration, and target inspection.\n...\npackage integrating all other modules for various tasks. [details](https://github.com/Zhefan-Xu/autonomous_flight)\n - ```global_planner```: The global waypoint planner library for autonomous robots. [details](https://github.com/Zhefan-Xu/global_planner)\n - ```map_manager```: The 3D mapping library for autonomous robots. [details](https://github.com/Zhefan-Xu/map_manager)\n - ```onboard_detector```: The dynamic obstacle detection and tracking algorithm for autonomous robots. [details](https://github.com/Zhefan-Xu/onboard_detector)\n - ```remote_control```: The Rviz configuration and launch files for easy visualization. [details](https://github.com/Zhefan-Xu/remote_control)\n - ```time_optimizer```: The optimal trajectory time allocation library for autonomous robots. [details](https://github.com/Zhefan-Xu/time_optimizer)\n - ```tracking_controller```: The trajectory tracking controller for autonomous robots. [details](https://github.com/Zhefan-Xu/tracking_controller)\n - ```trajectory_planner```: The trajectory olanning library for autonomous robots. [details](https://github.com/Zhefan-Xu/trajectory_planner)\n - ```uav_simulator```: The lightweight Gazebo/ROS-based simulator for unmanned aerial vehicles. [details](https://github.com/Zhefan-Xu/uav_simulator)\n \n\n## II."
+        ]
+      },
+      {
+        "id": "https://github.com/Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "title": "GitHub - Zhefan-Xu/CERLAB-UAV-Autonomy: [CMU] A Versatile and Modular Framework Designed for Autonomous Unmanned Aerial Vehicles [UAVs] (C++/ROS/PX4) \u00b7 GitHub",
+        "url": "https://github.com/Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "publishedDate": "2024-01-10T00:00:00.000Z",
+        "author": "Zhefan-Xu",
+        "highlights": [
+          "GitHub - Zhefan-Xu/CERLAB-UAV-Autonomy: [CMU] A Versatile and Modular Framework Designed for Autonomous Unmanned Aerial Vehicles [UAVs] (C++/ROS/PX4) \u00b7 GitHub\n...\n# CERLAB UAV Autonomy Framework\n\n \n\nWelcome to the CERLAB UAV Autonomy Framework, a versatile and modular framework for autonomous unmanned aerial vehicles (UAVs). This framework comprises distinct components (simulator, perception, mapping, planning, and control) to achieve autonomous navigation, unknown exploration, and target inspection.\n...\n- `autonomous_flight`: The autonomous flight package integrating all other modules for various tasks. details\n...\n- `global_planner`: The global waypoint planner library for autonomous robots. details\n- `map_manager`: The 3D mapping library for autonomous robots. details\n- `onboard_detector`: The dynamic obstacle detection and tracking algorithm for autonomous robots. details\n...\n- `remote_control`: The Rviz configuration and launch files for easy visualization. details\n...\n- `time_optimizer`: The optimal trajectory time allocation library for autonomous robots. details\n...\n- `tracking_controller`: The trajectory tracking controller for autonomous robots. details\n- `trajectory_planner`: The trajectory olanning library for autonomous robots. details\n...\n- `uav_simulator`: The lightweight Gazebo/ROS-based simulator for unmanned aerial vehicles. details\n...\nyou have tested the flight in the PX4 simulation, the real flight experiments will have exactly the same behavior as you saw in the simulation. The inputs required for this framework in the real flight experiments are:"
+        ],
+        "image": "https://opengraph.githubassets.com/cb688b33c9dedad535f10da269fe7b0010b44589fffd4d2fe9ce31751c2c1230/Zhefan-Xu/CERLAB-UAV-Autonomy"
+      },
+      {
+        "id": "https://github.com/crazy-robotics/aerial-autonomy-stack",
+        "title": "crazy-robotics/aerial-autonomy-stack",
+        "url": "https://github.com/crazy-robotics/aerial-autonomy-stack",
+        "highlights": [
+          "drone PX4\n...\nArduPilot ROS2 control of\n...\nads and VTOLs, with YOLO\n...\n*Aerial autonomy stack* (AAS) is the all-in-one software stack to:\n...\n1. **Develop** multi-drone autonomy\u2014with ROS2, PX4, and ArduPilot\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLOv8 and 3D LiDAR \n3. **Deploy** in real drones\u2014with JetPack and NVIDIA Orin\n\n \n Feature list (click to expand) \n\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors and VTOLs**)\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n- **YOLOv8** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n- 3D worlds for perception-based simulation\n...\n- **Steppable** [Gymnasium environment](https://gymnasium.farama.org/index.html) and **faster-than-real-time**, **multi-instance** simulation\n...\n- Gazebo'\n...\nwind effects plugin\n...\nio/nvidia\n...\n- [Zenoh](https://github.com/eclipse-zenoh/zenoh-plugin-ros2dds) inter-vehicle ROS2 bridge\n...\n- [PX4 Offboard](https://docs.px4.io/main/en/flight_modes/offboard.html) interface (e.g. CTBR/`VehicleRatesSetpoint` for agile, GNSS-denied flight) \n- [ArduPilot Guided](https://ardupilot.org/copter/docs/ac2_guidedmode.html) interface (i.e. `setpoint_velocity`, `setpoint_accel` references)\n...\n\u2502\u00a0\u00a0 \u2502\n...\nautopilot_interface # Ardupilot/PX4 high-level actions (Takeoff, Orbit, Offboard, Land)\n...\nautopilot_\n...\nthe Offboard\n...\nduPilot VTOL"
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/46gh9849vdv",
+        "title": "aerial-autonomy-stack\u2014a Faster-than-real-time, Autopilot-agnostic, ROS2 Framework to Simulate and Deploy Perception-based Drones",
+        "url": "https://doi.org/10.48550/arxiv.2602.07264",
+        "publishedDate": "2026-02-06T00:00:00.000Z",
+        "author": "Jacopo Panerati, Sina Sajjadi, Sina Soleymanpour, Varun Mehta, Iraj Mantegh",
+        "highlights": [
+          ". In the 2010s, a combination of high-performance compute, data, and open-source software led to the current deep learning and AI boom, unlocking decades of prior theoretical work. Robotics is on the cusp of a similar transformation. However, physical AI faces unique hurdles, often combined under the umbrella term \u201csimulation-to-reality gap\u201d. These span from modeling shortcomings to the complexity of vertically integrating the highly heterogeneous hardware and software systems typically found in field robots. To address the latter, we introduce aerial-autonomy-stack, an open-source, end-to-end framework designed to streamline the pipeline from (GPU-accelerated) perception to (flight controller-based) action. Our stack allows the development of aerial autonomy using ROS2 and provides a common interface for two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20 $\\times$ faster-than-real-time, end-to-end simulation of\n...\n| aerostack2 [9] | PX4, Tello, DJI, Crazyflie | ROS2, MAVLink, BehaviorTree | x86, Jetson Xavier | Multicopters | \u2713 | \u2713 | \u2713 | \u2713 | \u2713 | \u2713 | Gazebo, DJI HITL Simulator |\n...\nAmong the software stacks attempting to unify these components (see Table I), Aerostack2 [22, 9] offers a ROS2 framework for multi-robot autonomy compatible with several autopilots. It relies on a plugin architecture that can add flexibility but also introduce integration overhead. The MRS System [14], originally built on a legacy ROS architecture, has several demonstrated successes in the field deployment of multi-robot systems based on PX4."
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/46gh9849vdv",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "aerial-autonomy-stack -- a Faster-than-real-time, Autopilot-agnostic, ROS2 Framework to Simulate and Deploy Perception-based Drones",
+              "year": 2026,
+              "date": "2026-02-06",
+              "type": "article",
+              "language": null,
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Jacopo Panerati",
+                  "id": null
+                },
+                {
+                  "name": "Sina Sajjadi",
+                  "id": null
+                },
+                {
+                  "name": "Sina Soleymanpour",
+                  "id": null
+                },
+                {
+                  "name": "Varun Mehta",
+                  "id": null
+                },
+                {
+                  "name": "Iraj Mantegh",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Unmanned aerial vehicles are rapidly transforming multiple applications, from agricultural and infrastructure monitoring to logistics and defense. Introducing greater autonomy to these systems can simultaneously make them more effective as well as reliable. Thus, the ability to rapidly engineer and deploy autonomous aerial systems has become of strategic importance. In the 2010s, a combination of high-performance compute, data, and open-source software led to the current deep learning and AI boom, unlocking decades of prior theoretical work. Robotics is on the cusp of a similar transformation. However, physical AI faces unique hurdles, often combined under the umbrella term \"simulation-to-reality gap\". These span from modeling shortcomings to the complexity of vertically integrating the highly heterogeneous hardware and software systems typically found in field robots. To address the latter, we introduce aerial-autonomy-stack, an open-source, end-to-end framework designed to streamline the pipeline from (GPU-accelerated) perception to (flight controller-based) action. Our stack allows the development of aerial autonomy using ROS2 and provides a common interface for two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20x faster-than-real-time, end-to-end simulation of a complete development and deployment stack -- including edge compute and networking -- significantly compressing the build-test-release cycle of perception-based autonomy.",
+              "doi": "10.48550/arxiv.2602.07264"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/OmerMersin/LIONav",
+        "title": "OmerMersin/LIONav",
+        "url": "https://github.com/OmerMersin/LIONav",
+        "highlights": [
+          "Solo-authored, full-stack drone autonomy system: LiDAR-inertial SLAM, GPU mapping, 6-level planning hierarchy, Smart RTL, MAVLink flight control, custom UDP binary protocol, and a Qt6 cross-platform GCS. Designed for GPS-denied, comms-degraded real-world operations.\n...\nLIONav is a **production-grade, end-to-end autonomous drone flight stack** built for GPS-denied environments where off-the-shelf autopilots fail. It is not a research prototype or a stitched-together demo \u2014 it is a complete autonomy system engineered around failure modes, constrained edge hardware, degraded communications, and real-world repeat operations.\n...\nAlways-on\n...\nwatchdog; auto-\n...\n, ODOM\n...\nobstacle forwarding |\n...\n| Layer | Technology |\n|---|---|\n| **Middleware** | ROS 2 Humble, `ament_cmake`, `colcon` |\n| **Languages** | C++17 \u2014 core, GCS, bridges \u00b7 Python 3 \u2014 launch, tooling |\n| **Localization** | FAST-LIO \u2014 LiDAR-inertial odometry |\n| **GPU Mapping** | NVIDIA nvblox \u2014 CUDA TSDF/ESDF |\n| **SLAM Backend** | GTSAM iSAM2 \u00b7 Scan Context \u00b7 ICP +\n...\nDT loop closure |\n...\n| **Point Cloud** | PCL \u00b7 Eigen |\n...\n| **Planning** | Custom flyable graph planner \u00b7 6-level autonomy manager \u00b7 weighted A* RTL |\n...\n| **Flight Integration** | MAVLink / ArduPilot |\n...\n| **Ground Station** | Qt6 (Widgets, Network, Multimedia, OpenGL) \u00b7 C++17 \u00b7 OpenGL |\n| **Web Client** | WebSocket \u00b7 WebGPU \u00b7 WebGL2 |\n...\n| **Transport** | Custom `LION` UDP binary protocol \u00b7 WebSocket binary |\n...\n| **Build** | `colcon` \u00b7 `ament` \u00b7 `CMake` |"
+        ]
+      },
+      {
+        "id": "https://www.mdpi.com/2079-9292/13/23/4785",
+        "title": "A Survey of Open-Source UAV Autopilots",
+        "url": "https://www.mdpi.com/2079-9292/13/23/4785",
+        "publishedDate": "2024-12-04T22:26:28.000Z",
+        "highlights": [
+          "The Ardupilot and PX4 ecosystems can be integrated with ROS via MAVROS [31], a tool that translates MAVLink messages into ROS messages. Typically, ROS and MAVROS are installed on a companion computer that communicates with the autopilot firmware. ROS has evolved into ROS2, where communication with Ardupilot and PX4 firmware is performed over the XRCE-DDS bridge [56], enabling efficient data exchange between the flight controller and companion computers. For instance, the paper [57] highlights the flexibility and robustness of\n...\nilot\u2019s capabilities to support advanced communication among multiple drones. Ref. [59] discusses the seamless integration of PX4 with ROS for drone control, and Ref. [60] illustrates a practical application of PX4 and ROS to achieve autonomous quadrotor landings. In the Ref. [61] is presented a distributed autonomous flight system that utilizes ROS and 3D position tracking to enhance UAV operations; in [62] issues related to securing UAV communications with a custom method implemented in ROS are described, and the work [63] introduces a testbed for UAV swarm simulation that leverages ROS and PX4 firmware for prototyping and basic research in drone swarming.\n...\nfew singular papers, such as [66] which describes an experimental setup using LibrePilot and ROS to control an airship formation for animal motion capture, or [67] which describes an experimental setup using iNAV with ROS employing a monocular event-based camera for\n...\nwith ROS, but it is not as extensive as Ardupilot or PX4, and its limited compatibility with MATLAB/Simulink PSP"
+        ],
+        "image": "https://pub.mdpi-res.com/electronics/electronics-13-04785/article_deploy/html/images/electronics-13-04785-g001-550.jpg?1733302585",
+        "favicon": "https://pub.mdpi-res.com/img/mask-icon-128.svg?c1c7eca266cd7013?1782465688"
+      },
+      {
+        "id": "https://medium.com/@sidharthmohannair/transitioning-from-ros-1-ardupilot-to-ros-2-px4-a-complete-mental-model-98c54758f569",
+        "title": "\ud83d\ude80 Transitioning from ROS 1 (ArduPilot) to ROS 2 (PX4): A Complete Mental Model | by Sidharth Mohan Nair | Medium",
+        "url": "https://medium.com/@sidharthmohannair/transitioning-from-ros-1-ardupilot-to-ros-2-px4-a-complete-mental-model-98c54758f569",
+        "publishedDate": "2025-03-09T15:58:52.000Z",
+        "author": "Sidharth Mohan Nair",
+        "highlights": [
+          "If you\u2019ve worked with ROS 1 Noetic + ArduPilot SITL, you\u2019re familiar with MAVROS, sim_vehicle.py, and MAVLink-based communication. Now, with ROS 2, the ecosystem is different:\n...\n- MAVROS is replaced with PX4-ROS 2 Bridge (MicroRTPS)\n- PX4 uses DDS (Data Distribution Service) and RTPS (Real-Time Publish-Subscribe) instead of ROS 1 Master\n- Gazebo Classic replaces Gazebo Harmonic\n- Launch files move from XML (.launch) to Python (.launch.py)\n...\n## \ud83d\udd39 ROS 2 + PX4 (MicroRTPS) \u2192 DDS-based Communication\n...\n- PX4 doesn\u2019t use MAVROS \u2014 instead, it has a built-in ROS 2 messaging layer\n- PX4\u2019s middleware doesn\u2019t use MAVLink internally (except when communicating with GCS)\n- Instead of MAVLink + MAVROS, PX4 communicates via DDS (Data Distribution Service) and RTPS\n- MicroRTPS Agent acts as the bridge between PX4 and ROS 2\n...\n\u2705 RTPS (Real-Time Publish-Subscribe protocol) replaces MAVROS as the communication bridge.\n...\n\u2705 Instead of MAVLink messages, PX4 directly publishes ROS 2 messages.\n...\ntakeaway: In PX4,\n...\nare structured as`/fmu\n...\nin/...`(inputs to PX4) and\n...\n\u2705 PX4 doesn\u2019t need MAVROS \u2014 MicroRTPS handles the communication.\n...\nMAVLink\n...\nnot used internally \u2014 commands\n...\n- MAVROS (ROS 1) is replaced by PX4\u2019s MicroRTPS bridge in ROS 2.\n- PX4 uses DDS (RTPS) for internal communication instead of MAVLink.\n- Topics are structured as`/fmu/in/...` and`/fmu/out/...`.\n- Launch files move from .launch (XML) to .launch.py (Python).\n- MAVLink is still used for communication with GCS, but not inside PX4-ROS 2."
+        ],
+        "image": "https://miro.medium.com/v2/resize:fit:1200/1*z1AdbFEqxCc-W26J2yylZQ.png",
+        "favicon": "https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19"
+      },
+      {
+        "id": "https://www.genium.com/blog/px4-vs-ardupilot-for-uav-development",
+        "title": "PX4 vs ArduPilot for UAV Development | Genium",
+        "url": "https://www.genium.com/blog/px4-vs-ardupilot-for-uav-development",
+        "publishedDate": "2026-04-22T07:00:00.000Z",
+        "author": "Genium",
+        "highlights": [
+          "PX4 and ArduPilot are two widely used open-source autopilot ecosystems for UAV and unmanned systems development. Both support flight control, mission planning, simulation, and integrations with ground control software, but they differ in architecture, ecosystem, and development workflow.\n...\nPX4 is an open-source flight control platform used for drones and other unmanned vehicles. It is often selected by teams looking for a modular architecture, modern development workflows, and strong integration with simulation and robotics tooling.\n...\nArduPilot is an open-source autopilot platform with broad vehicle support and a long history in UAV development. It is commonly used across multicopters, fixed-wing aircraft, rovers, boats, and custom unmanned systems.\n...\n- PX4 is often favored for modularity and developer-oriented workflows.\n- ArduPilot is known for broad vehicle support and mature field use.\n- Both ecosystems support simulation, telemetry, mission planning, and ground control integration.\n- The right choice depends on vehicle type, team expertise, and project requirements.\n...\nAutopilot selection affects how teams design flight simulation and mission planning workflows. It influences testing methods, integration with ground control software, telemetry handling, and the path from simulation to real-world deployment.\n...\nhelps engineering organizations design and build the software platforms behind simulation, synthetic data, AI validation, cloud infrastructure, and intelligent physical systems. Learn more about Genium's Flight Simulation & Mission Planning capabilities."
+        ],
+        "image": "https://22089908.fs1.hubspotusercontent-na1.net/hub/22089908/hubfs/Genium_Logo_White_Transp%201.png?width=270&height=80&name=Genium_Logo_White_Transp%201.png"
+      },
+      {
+        "id": "https://openfly.win/comparisons/px4-vs-ardupilot/",
+        "title": "PX4 vs ArduPilot Flight Stacks - Evidence Comparison | OpenFly Tech Hub",
+        "url": "https://openfly.win/comparisons/px4-vs-ardupilot/",
+        "highlights": [
+          "PX4 vs ArduPilot Flight Stacks - Evidence Comparison | OpenFly Tech Hub\n...\n# PX4 vs ArduPilot Flight Stacks\n...\nI am choosing between the PX4 and ArduPilot open-source autopilot stacks and need an evidence-backed starting comparison.\n\n Last reviewed 8/7/2026. Data checked within the review cycle. Review cycles are documented on the Methodology page. Methodology \n\n 2 objects \u00b7 6 fields \u00b7 4 Unknown cells preserved \n\n## Scope\n...\nMetadata and repository facts recorded\n...\n026\n...\n| Field | PX4/PX4-Autopilot | ArduPilot/ardupilot |\n| --- | --- | --- |\n| License GitHub API repository license.spdx_id | BSD-3-Clause Tier A 2026-08-02 Source | GPL-3.0 Tier A 2026-08-02 Source |\n| License status Repository record license status | Inferred from GitHub API license object Tier A 2026-08-02 Source | Inferred from GitHub API license object Tier A 2026-08-02 Source |\n| Last repository activity GitHub API repository updated_at | 2026-08-02T07:48:10Z Tier A 2026-08-02 Source | 2026-08-02T06:49:56Z Tier A 2026-08-02 Source |\n...\n| Official site GitHub API homepage or repository URL | https://px4.io Tier A 2026-08-02 Source | http://ardupilot.org/ Tier A 2026-08-02 Source |\n...\n| Certification status No official certification record in the indexed sources | Unknown No certification evidence in the indexed sources; do not infer | Unknown No certification evidence in the indexed sources; do not infer |\n...\n| Public flight-test evidence No official aggregate flight-test record in the indexed sources | Unknown Not verified from indexed sources | Unknown Not verified from indexed sources |"
+        ]
+      }
+    ],
+    "searchTime": 4573.3,
+    "costDollars": {
+      "total": 0.016
+    }
+  }
+}

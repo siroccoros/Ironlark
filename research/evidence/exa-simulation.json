@@ -1,0 +1,298 @@
+{
+  "query": {
+    "query": "open source drone autonomy simulators benchmarks Pegasus Isaac Lab Flightmare gym pybullet drones safe control gym AirSim Project AirSim",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "d849ae9ab7b0446cb5af8db41362e222",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/microsoft/AirSim",
+        "title": "microsoft/AirSim",
+        "url": "https://github.com/microsoft/AirSim",
+        "highlights": [
+          "Open source simulator for autonomous vehicles built on Unreal Engine / Unity, from Microsoft AI & Research\n...\n# Welcome to AirSim \n \nAirSim is a simulator for drones, cars and more, built on [Unreal Engine](https://www.unrealengine.com/) (we now also have an experimental [Unity](https://unity3d.com/) release). It is open-source, cross platform, and supports software-in-the-loop simulation with popular flight controllers such as PX4 & ArduPilot and hardware-in-loop with PX4 for physically and visually realistic simulations. It is developed as an Unreal plugin that can simply be dropped into any Unreal environment. Similarly, we have an experimental release for a Unity plugin. \n \nAirSim was conceived and created by [Shital Shah](https://shital.com) with PX4 and hardware-in-loop code contributed by [Chris Lovett](https://lovettsoftware.com/). \n \nOur goal is to develop AirSim as a platform for AI research to experiment with deep learning, computer vision and reinforcement learning algorithms for autonomous vehicles. For this purpose, AirSim also exposes APIs to retrieve data and control vehicles in a platform independent way. \n \n**Check out the quick 1.5 minute demo** \n \nDrones in AirSim\n...\ngithub.com/microsoft/AirSim/pull/3949) \n* [ROS2 wrapper](https://github.com/microsoft/AirSim/pull/3976) \n* [API to list all assets](https://github.com/microsoft/AirSim/pull/3940) \n* [movetoGPS API](https://github.com/microsoft/AirSim/pull/3746) \n* [Optical flow camera](https://github.com/microsoft/AirSim/pull/3938) \n* [simSetKinematics API](https://github.com/microsoft/AirSim/pull/4066)"
+        ]
+      },
+      {
+        "id": "https://github.com/PegasusSimulator/PegasusSimulator",
+        "title": "PegasusSimulator/PegasusSimulator",
+        "url": "https://github.com/PegasusSimulator/PegasusSimulator",
+        "publishedDate": "2023-02-27T08:58:27.000Z",
+        "highlights": [
+          "A framework built on top of NVIDIA Isaac Sim for simulating drones with PX4 support and much more\n...\n**Pegasus Simulator** is a framework built on top of [NVIDIA Omniverse](https://docs.omniverse.nvidia.com/) and [IsaacSim](https://docs.omniverse.nvidia.com/app_isaacsim/app_isaacsim/overview.html). It is designed to provide an easy yet powerful way of simulating the dynamics of vehicles. It provides a simulation interface for [PX4](https://px4.io/) and [ArduPilot](https://ardupilot.org/) integration, as well as a custom python control interface. At the moment, only multirotor vehicles are supported, with support for other vehicle topologies planned for future versions.\n\n \n \n \n \n\nCheck the provided documentation [here](https://pegasussimulator.github.io/PegasusSimulator/) to discover how to install and use this framework.\n...\nCunha, Rita\n...\nframework is an open-\n...\neffort, started by me, Marcelo Jacinto in January/2023. It is a tool that was created with the original purpose of serving my Ph.D. workplan for the next 4 years, which means that you can expect this repository to be mantained, hopefully at least until 20\n...\nIn parallel to this project, the Pegasus (GNC) guidance, control, and navigation project serves as the foundation control code for performing real-world experiments for my Ph.D. More information can be found at this link:\n...\nPX4-Autopilot is available as an open-source project under [BSD-3 License](https://github.com/PX4/PX4-Autopilot)."
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2311.02296v7",
+        "title": "Survey of Simulators for Aerial Robots An Overview and In ...",
+        "url": "https://arxiv.org/html/2311.02296v7",
+        "highlights": [
+          "Isaac Sim [28], developed by NVIDIA, is a photorealistic high-fidelity simulator for a variety of platforms. Pegasus Simulator [29] is an open-source extension to Isaac Sim that includes an extended multirotor dynamics model, simulating multiple vehicles in parallel, integration with PX4 and ROS 2, and additional sensors (magnetometer, GPS, and barometer). Isaac Gym [30] is NVIDIA\u2019s library for GPU-accelerated RL (RL) simulations and uses more basic rendering than Isaac Sim. Aerial Gym [31] is an open-source extension to Isaac Gym Preview Release 4 notable for its capability to parallelize the simulation of thousands of multirotors and includes customizable obstacle randomization.\n...\nAirSim [38] is a Microsoft-led project built on the Unreal Engine, offering various sensors, a weather API, and compatibility with open-source controllers (e.g., PX4 and ArduPilot). AirSim primarily serves as a platform for AI research, providing platform-independent API for data retrieval and vehicle control. Notably, AirSim demands substantial computing power compared to other simulators. PRL4AirSim [39] is an extension for efficient parallel training in RL applications. The original AirSim is open-source, but will no longer be supported by Microsoft. Their focus has shifted to Project AirSim, which will be released under a commercial license.\n...\nsafe-control-gym [45] is an open-source safety-focused RL environment and benchmark suite, built using the PyBullet physics engine [46], for comparing control and RL approaches. Three dynamics systems (cart-pole, 1D and 2D quadrotor) and two"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://ela.kpi.ua/bitstreams/6ac76caf-05ce-4dc0-95cf-c2b0644958b1/download",
+        "title": "COMPARATIVE REVIEW OF DRONE SIMULATORS",
+        "url": "https://ela.kpi.ua/bitstreams/6ac76caf-05ce-4dc0-95cf-c2b0644958b1/download",
+        "highlights": [
+          "In [7], the authors compare four widely utilized simulators: AirSim [10], Flightmare [11],\n...\nGazebo [1\n...\n], focusing on\n...\n, and\n...\nThis comparison includes RotorS [14] (based on Gazebo), AirSim [10], Flightmare [11],\n...\nFlightGoggles [15], and gym-pybullet-drones [16] (based on PyBullet). Likewise, [9] provides an\n...\nNVIDIA's Isaac Sim [23] stands out as a photorealistic, high-fidelity simulator catering to\n...\ntasks that do not need detailed graphics. Building upon Isaac Sim, the Pegasus Simulator [24]\n...\nfunctionalities including a magnetometer, GPS, and barometer. Further, Isaac Gym [25] offers a\n...\nreinforcement learning, albeit\n...\nrendering compared to Isaac Sim. Complementing this suite, Aerial Gym [26], an extension of the\n...\nIsaac Gym Preview Release\n...\nInitiated by Microsoft, AirSim [10] is constructed atop the Unreal Engine, providing a suite of\n...\nFlightmare [33] emerges as a dynamic simulator composed of two core elements: a rendering\n...\nThe gym-pybullet-drones [16] presents an open-source platform for the simulation of quadrotor\n...\nswarms using PyBullet's [37] physics engine, specifically\n...\nfor investigations at the intersection\n...\nsuch as X-Plane, Flight\n...\n, and RealFlight. \nThe open-source environment and benchmark suite known as safe-control-gym [43] focuses on\n...\nrealm of reinforcement learning (RL).\n...\non the PyBullet physics engine\n...\n[37], it aims to\n...\nof control strategies and RL methodologies. It encompasses\n...\n-based and\n...\nsafe-control-gym"
+        ]
+      },
+      {
+        "id": "https://github.com/darkmoon519/gym-pybullet-drones",
+        "title": "GitHub - darkmoon519/gym-pybullet-drones: PyBullet Gym environments for single and multi-agent reinforcement learning of quadcopter control \u00b7 GitHub",
+        "url": "https://github.com/darkmoon519/gym-pybullet-drones",
+        "publishedDate": "2023-06-08T21:33:53.000Z",
+        "author": "darkmoon519",
+        "highlights": [
+          "reinforcement learning with quad\n...\n- If you are\n...\nin safe control and the companion code of\"Safe Learning in Robotics\" and\"Safe Control Gym\", check out safe-control-gym\n...\n| `gym-pybullet-drones` | AirSim | Flightmare |\n| --- | --- | --- |\n| Physics | PyBullet | FastPhysicsEngine/PhysX | Ad hoc/Gazebo |\n| Rendering | PyBullet | Unreal Engine 4 | Unity |\n| Language | Python | C++/C# | C++/Python |\n| RGB/Depth/Segm. views | Yes | Yes | Yes |\n| Multi-agent control | Yes | Yes | Yes |\n| ROS interface | ROS2/Python | ROS/C++ | ROS/C++ |\n| Hardware-In-The-Loop | No | Yes | No |\n| Fully steppable physics | Yes | No | Yes |\n| Aerodynamic effects | Drag, downwash, ground | Drag | Drag |\n| OpenAI Gym interface | Yes | Yes | Yes |\n| RLlib MultiAgentEnv interface | Yes | No | No |\n...\nWhile it is easy to\u2014consciously or not\u2014 cherry pick statistics, ~5kHz PyBullet physics (CPU-only) is faster than AirSim (1kHz) and more accurate than Flightmare's 35kHz simple single quadcopter dynamics\n...\nMulti-agent 6-ch. video capture at ~750kB/s with CPU rendering (`(64*48)*(4+4+2)*24*5*0.2`) is comparable to Flightmare's 240 RGB frames/s(`(32*32)*3*240`)\u2014although in more complex Unity environments\u2014and up to an order of magnitude faster on Ubuntu, with OpenGL rendering\n...\n- Shital Shah, Debadeepta Dey, Chris Lovett, and Ashish Kapoor (2017) AirSim: High-Fidelity Visual and Physical Simulation for Autonomous Vehicles\n...\n- Yunlong Song, Selim Naji, Elia Kaufmann, Antonio Loquercio, and Davide Scaramuzza (2020) Flightmare: A Flexible Quadrotor Simulator"
+        ],
+        "image": "https://opengraph.githubassets.com/9f4a65955868cab7fba7621e2e7a67596f482e980ffd179f381f6bc1323de8d4/darkmoon519/gym-pybullet-drones",
+        "favicon": "https://github.com/fluidicon.png"
+      },
+      {
+        "id": "https://arxiv.org/pdf/2307.05263",
+        "title": "",
+        "url": "https://arxiv.org/pdf/2307.05263",
+        "highlights": [
+          ", while providing out-of-the-box integration with the widely adopted PX4-Autopilot and ROS2 through its\n...\nThis limitation has fueled the development of further simulators. One example of those is AirSim [8] \u2013 an extension developed by Microsoft for quadrotor simulation with a custom physics engine that interfaces with Unreal Engine for rendering and collision detection. This simulator, similarly to the PX4-SITL extension, provides basic integration with the widely adopted PX4-Autopilot and a wrapper for the OpenAI Gym [9] framework targeting RL applications. There is also Flightmare [10], developed at UZH, which comes with a custom physics engine and uses the Unity game engine for rendering and multi-modal sensor data generation. Similarly to AirSim, it provides integration with OpenAI Gym [9], but does not provide any out-of-the-box PX4-Autopilot integration.\n...\nThe simulator also provides basic ROS1 and 2 integration, wrappers for NVIDIA\u00ae Isaac Gym, extensions such as Isaac Orbit [14], domain randomization tools used for RL applications as well as extensions to simulate humans events [15], and multi-modal sensors such as cameras (RGB and depth) and LiDARs. Although this simulator is shipped with a very complete feature set, it lacks proper support for realistic aerial vehicle simulation. Most of the available tools are targeted at articulated robotic arms and wheeled robots development. In addition, it lacks basic sensors such as barometers and GPS and does not provide integration with popular flight controllers such as PX4 or the MAVLink communication protocol."
+        ],
+        "image": "https://arxiv.org/html/2307.05263v2/extracted/2307.05263v2/Figures/simulator_complete2.jpg",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/rdtcw6vnh5b",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Pegasus Simulator: An Isaac Sim Framework for Multiple Aerial Vehicles Simulation",
+              "year": 2023,
+              "date": "2023-07-11",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Marcelo Jacinto",
+                  "id": null
+                },
+                {
+                  "name": "J.R. Caldas Pinto",
+                  "id": null
+                },
+                {
+                  "name": "Jay Patrikar",
+                  "id": null
+                },
+                {
+                  "name": "J. S. Keller",
+                  "id": null
+                },
+                {
+                  "name": "Rita Cunha",
+                  "id": null
+                },
+                {
+                  "name": "Sebastian Scherer",
+                  "id": null
+                },
+                {
+                  "name": "A. Pascoal",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Developing and testing novel control and motion planning algorithms for aerial vehicles can be a challenging task, with the robotics community relying more than ever on 3D simulation technologies to evaluate the performance of new algorithms in a variety of conditions and environments. In this work, we introduce the Pegasus Simulator, a modular framework implemented as an NVIDIA Isaac Sim extension that enables real-time simulation of multiple multirotor vehicles in photo-realistic environments, while providing out-of-the-box integration with the widely adopted PX4-Autopilot and ROS2 through its modular implementation and intuitive graphical user interface. To demonstrate some of its capabilities, a nonlinear controller was implemented and simulation results for two drones performing aggressive flight maneuvers are presented. Code and documentation for this framework are also provided as supplementary material.",
+              "doi": "10.48550/arxiv.2307.05263"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/rdtcw6vnh5b",
+        "title": "Pegasus Simulator: An Isaac Sim Framework for Multiple Aerial Vehicles Simulation",
+        "url": "https://doi.org/10.48550/arxiv.2307.05263",
+        "publishedDate": "2023-07-11T00:00:00.000Z",
+        "author": "Marcelo Jacinto, J.R. Caldas Pinto, Jay Patrikar, J. S. Keller, Rita Cunha, Sebastian Scherer, et al.",
+        "highlights": [
+          "for aerial vehicles can be a challenging task, with the robotics community relying more than ever on 3D simulation technologies to evaluate the performance of new algorithms in a variety of conditions and environments. In this work, we introduce the Pegasus Simulator, a modular framework implemented as an NVIDIA \u00ae Isaac Sim extension that enables real-time simulation of multiple multirotor vehicles in photo-realistic environments, while providing out-of-the-box integration with the widely adopted PX4-Autopilot and ROS2 through its modular implementation and intuitive graphical user interface. To demonstrate some of its capabilities, a nonlinear controller was implemented and simulation results for two drones performing aggressive flight maneuvers are presented. Code and documentation for this framework are also\n...\nThis limitation has fueled the development of further simulators. One example of those is AirSim [8] -an extension developed by Microsoft for quadrotor simulation with a custom physics engine that interfaces with Unreal Engine for rendering and collision detection. This simulator, similarly to the PX4-SITL extension, provides basic integration with the widely adopted PX4-Autopilot and a wrapper for the OpenAI Gym [9] framework targeting RL applications. There is also Flightmare [10] , developed at UZH, which comes with a custom physics engine and uses the Unity game engine for rendering and multi-modal sensor data generation. Similarly to AirSim, it provides integration with OpenAI Gym [9] , but does not provide any out-of-the-box PX4-Autopilot integration."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/rdtcw6vnh5b",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Pegasus Simulator: An Isaac Sim Framework for Multiple Aerial Vehicles Simulation",
+              "year": 2023,
+              "date": "2023-07-11",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Marcelo Jacinto",
+                  "id": null
+                },
+                {
+                  "name": "J.R. Caldas Pinto",
+                  "id": null
+                },
+                {
+                  "name": "Jay Patrikar",
+                  "id": null
+                },
+                {
+                  "name": "J. S. Keller",
+                  "id": null
+                },
+                {
+                  "name": "Rita Cunha",
+                  "id": null
+                },
+                {
+                  "name": "Sebastian Scherer",
+                  "id": null
+                },
+                {
+                  "name": "A. Pascoal",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Developing and testing novel control and motion planning algorithms for aerial vehicles can be a challenging task, with the robotics community relying more than ever on 3D simulation technologies to evaluate the performance of new algorithms in a variety of conditions and environments. In this work, we introduce the Pegasus Simulator, a modular framework implemented as an NVIDIA Isaac Sim extension that enables real-time simulation of multiple multirotor vehicles in photo-realistic environments, while providing out-of-the-box integration with the widely adopted PX4-Autopilot and ROS2 through its modular implementation and intuitive graphical user interface. To demonstrate some of its capabilities, a nonlinear controller was implemented and simulation results for two drones performing aggressive flight maneuvers are presented. Code and documentation for this framework are also provided as supplementary material.",
+              "doi": "10.48550/arxiv.2307.05263"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/pegasussimulator/pegasussimulator",
+        "title": "PegasusSimulator/PegasusSimulator",
+        "url": "https://github.com/pegasussimulator/pegasussimulator",
+        "highlights": [
+          "A framework built on top of NVIDIA Isaac Sim for simulating drones with PX4 support and much more\n...\n**Pegasus Simulator** is a framework built on top of [NVIDIA Omniverse](https://docs.omniverse.nvidia.com/) and [IsaacSim](https://docs.omniverse.nvidia.com/app_isaacsim/app_isaacsim/overview.html). It is designed to provide an easy yet powerful way of simulating the dynamics of vehicles. It provides a simulation interface for [PX4](https://px4.io/) and [ArduPilot](https://ardupilot.org/) integration, as well as a custom python control interface. At the moment, only multirotor vehicles are supported, with support for other vehicle topologies planned for future versions.\n\n \n \n \n \n\nCheck the provided documentation [here](https://pegasussimulator.github.io/PegasusSimulator/) to discover how to install and use this framework.\n...\nThis simulation framework is an open-source effort, started by me, Marcelo Jacinto in January/2023. It is a tool that was created with the original purpose of serving my Ph.D. workplan for the next 4 years, which means that you can expect this repository to be mantained, hopefully at least until\n...\nIn parallel to this project, the Pegasus (GNC) guidance, control, and navigation project serves as the foundation control code for performing real-world experiments for my Ph.D. More information can be found at this link:\n...\nNVIDIA Isaac Sim is available freely under [individual license](https://www.nvidia.com/en-us/omniverse/download/). \n\nPX4-Autopilot is available as an open-source project under [BSD-3 License](https://github.com/PX4/PX4-Autopilot)."
+        ]
+      },
+      {
+        "id": "https://github.com/ntnu-arl/aerial_gym_simulator",
+        "title": "ntnu-arl/aerial_gym_simulator",
+        "url": "https://github.com/ntnu-arl/aerial_gym_simulator",
+        "publishedDate": "2023-04-04T00:00:00.000Z",
+        "highlights": [
+          "The Aerial Gym Simulator is a high-fidelity physics-based simulator for training Micro Aerial Vehicle (MAV) platforms such as multirotors to learn to fly and navigate cluttered environments using learning-based methods. The environments are built upon the underlying [NVIDIA Isaac Gym](https://developer.nvidia.com/isaac-gym) simulator. We offer aerial robot models for standard planar quadrotor platforms, as well as fully-actuated platforms and multirotors with arbitrary configurations. These configurations are supported with low-level and high-level geometric controllers that reside on the GPU and provide parallelization for the simultaneous control of thousands of multirotors.\n...\nThis is the *second release* of the simulator and includes a variety of new features and improvements. Task definition and environment configuration allow for fine-grained customization of all the environment entities without having to deal with large monolithic environment files. A custom rendering framework allows obtaining depth, and segmentation images at high speeds and can be used to simulate custom sensors such as LiDARs with varying properties. The simulator is open-source and is released under the [BSD-3-Clause License](https://opensource.org/licenses/BSD-3-Clause).\n...\n[NVIDIA Isaac Gym](https://developer.nvidia.com/isaac-gym/download), which provides a\n...\n> [!IMPORTANT] \n> Support for [**Isaac Lab**](https://isaac-sim.github.io/IsaacLab/) and [**Isaac Sim**](https://developer.nvidia.com/isaac/sim) is currently under development. We anticipate releasing this feature in the near future."
+        ]
+      },
+      {
+        "id": "https://pegasussimulator.github.io/PegasusSimulator/",
+        "title": "Pegasus Simulator documentation",
+        "url": "https://pegasussimulator.github.io/PegasusSimulator/",
+        "highlights": [
+          "Pegasus Simulator is a framework built on top of NVIDIA Omniverse and Isaac Sim. It is designed to provide an easy yet powerful way of simulating the dynamics of multirotors vehicles. It provides a simulation interface for PX4 integration as well as custom python control interface. At the moment, only multirotor vehicles are supported, with support for other vehicle topologies planned for future versions.\n...\n59,\n...\nand Cunha, Rita and\n...\n},\n...\n={202\n...\nanned Aircraft Systems\n...\n)},\n...\nPegasus Simulator\n...\nSim Framework for Multiple\n...\nVehicles Simulation},\n   year={\n...\n},\n   volume={},\n   number={},\n   pages\n...\n2},\n   keywords={Simulation;Robot sensing systems;Real-time systems;Sensor systems;\n...\nors;Task analysis},\n   doi\n...\n59}}\n...\nIn parallel to this project, the Pegasus (GNC) guidance, control, and navigation project serves as the foundation control code for performing real-world experiments for my Ph.D. More information can be found at this link: Pegasus GNC.\n...\nThis simulation framework is an open-source effort, started by me, Marcelo Jacinto in January/2023. It is a tool that was created with the original purpose of serving my Ph.D. workplan for the next 4 years, which means that you can expect this repository to be mantained, hopefully at least until 2027.\n...\n- Project Founder\n- Architecture\n- Multirotor Dynamic Simulation and Control\n- Example Applications\n- Ardupilot Integration (Experimental)\n...\n[MHP15] PX4-SITL simulation plugin\n...\n[SDLK18] Microsoft Airsim project for Unreal Engine\n...\n[SNK+21] Flightmare simulator for Unity"
+        ],
+        "image": "https://pegasussimulator.github.io/PegasusSimulator/_static/logo.png"
+      },
+      {
+        "id": "https://github.com/FP-Flight/AirGym",
+        "title": "emNavi/AirGym",
+        "url": "https://github.com/FP-Flight/AirGym",
+        "publishedDate": "2024-03-02T16:36:33.000Z",
+        "highlights": [
+          "A high-performance drone deep reinforcement learning platform built upon IsaacGym.\n...\nAirGym is an open souce Python quadrotor simulator based on IsaacGym, a part of AirGym series Sim-to-Real workding flow. It provides a high-fidelity dynamics and Deep Reinforcement Learning (DRL) framework for quadrotor robot learning research. Furthermore, we also provide toolkits for transferring policy from AirGym simulator to the real quadrotor [emNavi-X152b](https://emnavi.tech/droneKit/#x152b%E5%B9%B3%E5%8F%B0), making Sim-to-Real possible. The documentation website is at https://emnavi.tech/AirGym/.\n\n \n \n \n\nThe Sim-to-Real working flow of AirGym series is broken down into four parts:\n...\ncom/emNavi\n...\nGym is more\n...\nand has a clearer file structure compared to\n...\nwas designed from the beginning with the goal of\n...\nLightweight &\n...\nlightweight yet highly\n...\n- **[Strict Alignment with PX4 Logic]()**: Flight control in AirGym is supported by [rlPx4Controller](https://github.com/emNavi/rlPx4Controller). It maintains strict control logic alignment with the open-source PX4, for a better Sim-to-Real.\n...\n- **[Multiple Control Modes]()**: AirGym provides various control modes including PY (position & yaw), LV (linear velocity & yaw), CTA (collective thrust & attitude angle), CTBR (collective thrust & body rate), SRT (single-rotor thrust).\n...\n- **[Sim-to-Real Toolkits]()**: AirGym series have complete flow of robot learning Sim-to-Real and provide a potential to transfer well-trained policies to a physical device."
+        ]
+      },
+      {
+        "id": "https://github.com/Andrea94c/gym-pybullet-drones",
+        "title": "Andrea94c/gym-pybullet-drones",
+        "url": "https://github.com/Andrea94c/gym-pybullet-drones",
+        "highlights": [
+          "| | `gym-pybullet-drones` | [AirSim](https://github.com/microsoft/AirSim) | [Flightmare](https://github.com/uzh-rpg/flightmare) |\n|---------------------------------: | :-------------------: | :-------------------------------------------: | :-------------------------------------------------: |\n| *Physics* | PyBullet | FastPhysicsEngine/PhysX | *Ad hoc*/Gazebo |\n| *Rendering* | PyBullet | Unreal Engine 4 | Unity |\n| *Language* | Python | C++/C# | C++/Python | \n| *RGB/Depth/Segm. views* | **Yes** | **Yes** | **Yes** |\n| *Multi-agent control* | **Yes** | **Yes** | **Yes** |\n| *ROS interface* | ROS2/Python | ROS/C++ | ROS/C++ |\n| *Hardware-In-The-Loop* | No | **Yes** | No |\n| *Fully steppable physics* | **Yes** | No | **Yes** |\n| *Aerodynamic effects* | Drag, downwash, ground| Drag | Drag |\n| *OpenAI [`Gym`](https://github.com/openai/gym/blob/master/gym/core.py) interface* | **Yes** | No | **Yes** |\n| *RLlib [`MultiAgentEnv`](https://github.com/ray-project/ray/blob/master/rllib/env/multi_agent_env.py) interface* | **Yes** | No | No |\n...\n> While it is easy to\u2014consciously or not\u2014[cherry pick](https://en.wikipedia.org/wiki/Cherry_picking) statistics, \\~5kHz PyBullet physics (CPU-only) is faster than [AirSim (1kHz)](https://arxiv.org/pdf/1705.05065.pdf) and more accurate than [Flightmare's 35kHz simple single quadcopter dynamics](https://arxiv.org/pdf/2009.00563.pdf)\n...\nmare's 240 RGB frames/s](https://arxiv.org/pdf/2009.00563.pdf) (`(32*32)*3*240`)\u2014although in more complex [Unity environments](https://arxiv.org/pdf/2009.00563.pdf)\u2014and up to an order of magnitude faster on"
+        ]
+      },
+      {
+        "id": "https://docs.theairlab.org/0.17.0/docs/simulation/isaac_sim/pegasus_scene_setup/",
+        "title": "Aerial Robot Simulation via the Pegasus Extension - AirStack",
+        "url": "https://docs.theairlab.org/0.17.0/docs/simulation/isaac_sim/pegasus_scene_setup/",
+        "highlights": [
+          "Pegasus Simulator is a multirotor simulation and control framework built on top of NVIDIA Isaac Sim\u2019s physics engine. Isaac Sim provides the underlying physics and rendering and Pegasus Simulator implements the drone flight dynamics, control algorithms, and PX4 integration.\n...\nPegasus Sim accurately models multirotor dynamics and environment interaction, providing a physically grounded foundation for UAV simulation. Pegasus connects directly to the AirStack autonomy stack with its PX4 MAVLink integration, allowing AirStack\u2019s higher-level planning and perception components to control a realistically simulated drone as if it were a physical vehicle.\n...\nTo make things more GUI-friendly for the user, AirStack maintains a fork of Pegasus Simulator that enables Pegasus's features from an Omnigraph node. This node serves as an Isaac Sim OmniGraph action graph wrapper around the Pegasus Sim code which can then be saved in Universal Scene Description (USD) format which are easily readable in Isaac-Sim. This design allows Pegasus-based simulations to be defined entirely in USD, enabling scenario reusability and modular composition. Users can drop the same Pegasus node into different environments or swap robots while maintaining consistent physics and control behavior.\n...\n`ISAAC_SIM_USE_STANDALONE` variable in the`.env` file. If set to`false`, the file specified by`ISAAC_SIM_GUI` is loaded directly. If set to`true`, the script named in`ISAAC_SIM_SCRIPT_NAME` is executed to generate the scene. It is generally recommended to use the scripted approach to generate new scenes (or at"
+        ],
+        "image": "https://docs.theairlab.org/0.17.0/docs/assets/airstack_white.png",
+        "favicon": "https://docs.theairlab.org/0.17.0/docs/assets/StackedWhite.png"
+      },
+      {
+        "id": "https://github.com/iimmer/gym-pybullet-drones",
+        "title": "iimmer/gym-pybullet-drones",
+        "url": "https://github.com/iimmer/gym-pybullet-drones",
+        "highlights": [
+          "| | `gym-pybullet-drones` | [AirSim](https://github.com/microsoft/AirSim) | [Flightmare](https://github.com/uzh-rpg/flightmare) |\n|---------------------------------: | :-------------------: | :-------------------------------------------: | :-------------------------------------------------: |\n| *Physics* | PyBullet | FastPhysicsEngine/PhysX | *Ad hoc*/Gazebo |\n| *Rendering* | PyBullet | Unreal Engine 4 | Unity |\n| *Language* | Python | C++/C# | C++/Python | \n| *RGB/Depth/Segm. views* | **Yes** | **Yes** | **Yes** |\n| *Multi-agent control* | **Yes** | **Yes** | **Yes** |\n| *ROS interface* | ROS2/Python | ROS/C++ | ROS/C++ |\n| *Hardware-In-The-Loop* | No | **Yes** | No |\n| *Fully steppable physics* | **Yes** | No | **Yes** |\n| *Aerodynamic effects* | Drag, downwash, ground| Drag | Drag |\n| *OpenAI [`Gym`](https://github.com/openai/gym/blob/master/gym/core.py) interface* | **Yes** | **[Yes](https://github.com/microsoft/AirSim/pull/3215)** | **Yes** |\n...\n| *RLlib [`MultiAgentEnv`](https://github.com/ray-project/ray/blob/master/rllib/env/multi_agent_env.py) interface* | **Yes** | No | No |\n...\n> While it is easy to\u2014consciously or not\u2014[cherry pick](https://en.wikipedia.org/wiki/Cherry_picking) statistics, \\~5kHz PyBullet physics (CPU-only) is faster than [AirSim (1kHz)](https://arxiv.org/pdf/1705.05065.pdf) and more accurate than [Flightmare's 35kHz simple single quadcopter dynamics](https://arxiv.org/pdf/2009.00563.pdf)\n...\n9.00563.\n...\nUnity environments](https://arxiv.org/pdf/2009.00563.pdf\n...\nand up to an order of magnitude faster on Ubuntu, with OpenGL rendering"
+        ]
+      },
+      {
+        "id": "https://github.com/Shine-yzhao/gym-pybullet-drones",
+        "title": "Shine-yzhao/gym-pybullet-drones",
+        "url": "https://github.com/Shine-yzhao/gym-pybullet-drones",
+        "highlights": [
+          "| | `gym-pybullet-drones` | [AirSim](https://github.com/microsoft/AirSim) | [Flightmare](https://github.com/uzh-rpg/flightmare) |\n|---------------------------------: | :-------------------: | :-------------------------------------------: | :-------------------------------------------------: |\n| *Physics* | PyBullet | FastPhysicsEngine/PhysX | *Ad hoc*/Gazebo |\n| *Rendering* | PyBullet | Unreal Engine 4 | Unity |\n| *Language* | Python | C++/C# | C++/Python | \n| *RGB/Depth/Segm. views* | **Yes** | **Yes** | **Yes** |\n| *Multi-agent control* | **Yes** | **Yes** | **Yes** |\n| *ROS interface* | ROS2/Python | ROS/C++ | ROS/C++ |\n| *Hardware-In-The-Loop* | No | **Yes** | No |\n| *Fully steppable physics* | **Yes** | No | **Yes** |\n| *Aerodynamic effects* | Drag, downwash, ground| Drag | Drag |\n| *OpenAI [`Gym`](https://github.com/openai/gym/blob/master/gym/core.py) interface* | **Yes** | **[Yes](https://github.com/microsoft/AirSim/pull/3215)** | **Yes** |\n...\n| *RLlib [`MultiAgentEnv`](https://github.com/ray-project/ray/blob/master/rllib/env/multi_agent_env.py) interface* | **Yes** | No | No |\n...\n> While it is easy to\u2014consciously or not\u2014[cherry pick](https://en.wikipedia.org/wiki/Cherry_picking) statistics, \\~5kHz PyBullet physics (CPU-only) is faster than [AirSim (1kHz)](https://arxiv.org/pdf/1705.05065.pdf) and more accurate than [Flightmare's 35kHz simple single quadcopter dynamics](https://arxiv.org/pdf/2009.00563.pdf)\n...\n32)*3*240`)\n...\nUnity environments](https://arxiv.org/pdf/2009.00563.pdf\n...\nup to an order of magnitude faster on Ubuntu, with OpenGL rendering"
+        ]
+      },
+      {
+        "id": "https://github.com/gajena/gym-pybullet-drones",
+        "title": "gajena/gym-pybullet-drones",
+        "url": "https://github.com/gajena/gym-pybullet-drones",
+        "highlights": [
+          "| | `gym-pybullet-drones` | [AirSim](https://github.com/microsoft/AirSim) | [Flightmare](https://github.com/uzh-rpg/flightmare) |\n|---------------------------------: | :-------------------: | :-------------------------------------------: | :-------------------------------------------------: |\n| *Physics* | PyBullet | FastPhysicsEngine/PhysX | *Ad hoc*/Gazebo |\n| *Rendering* | PyBullet | Unreal Engine 4 | Unity |\n| *Language* | Python | C++/C# | C++/Python | \n| *RGB/Depth/Segm. views* | **Yes** | **Yes** | **Yes** |\n| *Multi-agent control* | **Yes** | **Yes** | **Yes** |\n| *ROS interface* | ROS2/Python | ROS/C++ | ROS/C++ |\n| *Hardware-In-The-Loop* | No | **Yes** | No |\n| *Fully steppable physics* | **Yes** | No | **Yes** |\n| *Aerodynamic effects* | Drag, downwash, ground| Drag | Drag |\n| *OpenAI [`Gym`](https://github.com/openai/gym/blob/master/gym/core.py) interface* | **Yes** | No | **Yes** |\n...\nEnv`](https://github.com/ray-project/ray/blob/master/rllib/env/multi_agent_env.py) interface* | **Yes** | No | No |\n| *[PyMARL](https://github.com/oxwhirl/pymarl) integration* | *WIP* | No | No |\n...\n> While it is easy to\u2014consciously or not\u2014[cherry pick](https://en.wikipedia.org/wiki/Cherry_picking) statistics, \\~5kHz PyBullet physics (CPU-only) is faster than [AirSim (1kHz)](https://arxiv.org/pdf/1705.05065.pdf) and more accurate than [Flightmare's 35kHz simple single quadcopter dynamics](https://arxiv.org/pdf/2009.00563.pdf)\n...\ns](https://arxiv.org/pdf/2009.00563.pdf) (`(32*32)*3*240`)\u2014although in more complex [Unity"
+        ]
+      },
+      {
+        "id": "https://github.com/mkolodziejczyk-piap/gym-pybullet-drones",
+        "title": "mkolodziejczyk-piap/gym-pybullet-drones",
+        "url": "https://github.com/mkolodziejczyk-piap/gym-pybullet-drones",
+        "highlights": [
+          "| | `gym-pybullet-drones` | [AirSim](https://github.com/microsoft/AirSim) | [Flightmare](https://github.com/uzh-rpg/flightmare) |\n|---------------------------------: | :-------------------: | :-------------------------------------------: | :-------------------------------------------------: |\n| *Physics* | PyBullet | FastPhysicsEngine/PhysX | *Ad hoc*/Gazebo |\n| *Rendering* | PyBullet | Unreal Engine 4 | Unity |\n| *Language* | Python | C++/C# | C++/Python | \n| *RGB/Depth/Segm. views* | **Yes** | **Yes** | **Yes** |\n| *Multi-agent control* | **Yes** | **Yes** | **Yes** |\n| *ROS interface* | ROS2/Python | ROS/C++ | ROS/C++ |\n| *Hardware-In-The-Loop* | No | **Yes** | No |\n| *Fully steppable physics* | **Yes** | No | **Yes** |\n| *Aerodynamic effects* | Drag, downwash, ground| Drag | Drag |\n| *OpenAI [`Gym`](https://github.com/openai/gym/blob/master/gym/core.py) interface* | **Yes** | No | **Yes** |\n| *RLlib [`Multi\n...\nEnv`](https://github.com/ray-project/ray/blob/master/rllib/env/multi_agent_env.py) interface* | **Yes** | No | No |\n| *[PyMARL](https://github.com/oxwhirl/pymarl) integration* | *WIP* | No | No |\n...\n> While it is easy to\u2014consciously or not\u2014[cherry pick](https://en.wikipedia.org/wiki/Cherry_picking) statistics, \\~5kHz PyBullet physics (CPU-only) is faster than [AirSim (1kHz)](https://arxiv.org/pdf/1705.05065.pdf) and more accurate than [Flightmare's 35kHz simple single quadcopter dynamics](https://arxiv.org/pdf/2009.00563.pdf)\n...\nin more complex [Unity environments](https://arxiv.org/pdf/2009.00563.pdf)\u2014and up to an order of magnitude faster on Ubuntu,"
+        ]
+      },
+      {
+        "id": "https://github.com/PegasusSimulator/PegasusSimulator/blob/v1.0.3/README.md",
+        "title": "README.md at v1.0.3 \u00b7 PegasusSimulator/PegasusSimulator",
+        "url": "https://github.com/PegasusSimulator/PegasusSimulator/blob/v1.0.3/README.md",
+        "highlights": [
+          "- Repository: PegasusSimulator/PegasusSimulator | A framework built on top of NVIDIA Isaac Sim for simulating drones with PX4 support and much more | 765 stars | Python\n- Branch: v1.0.3\n...\n**Pegasus Simulator** is a framework built on top of [NVIDIA\nOmniverse](https://docs.omniverse.nvidia.com/) and [Isaac\n...\nSim](https://docs.omniverse.nvidia.com/app_isaacsim/app_isaacsim/overview.html). It is designed to provide an easy yet powerful way of simulating the dynamics of vehicles. It provides a simulation interface for [PX4](https://px4.io/) integration as well as a custom python control interface. At the moment, only multirotor vehicles are supported, with support for other vehicle topologies planned for future versions.\n...\nthe provided documentation\n...\nhow to install\n...\n@misc{jacinto2023pegasus,\n...\nPegasus Simulator: An Isaac\n...\nThis simulation framework is an open-source effort, started by me, Marcelo Jacinto in January/2023. It is a tool that was created with the original purpose of serving my Ph.D. workplan for the next 4 years, which means that you can expect this repository to be mantained, hopefully at least until 2027.\n...\nJacinto)\n...\nPegasus Simulator is released under [BSD-3 License](LICENSE). The license files of its dependencies and assets are present in the [`docs/licenses`](docs/licenses) directory.\n...\nNVIDIA Isaac Sim is available freely under [individual license](https://www.nvidia.com/en-us/omniverse/download/). \n\nPX4-Autopilot is available as an open-source project under [BSD-3 License](https://github.com/PX4/PX4-Autopilot)."
+        ]
+      },
+      {
+        "id": "https://www.emergentmind.com/papers/2307.05263",
+        "title": "Pegasus Simulator: Multirotor UAV Simulation",
+        "url": "https://www.emergentmind.com/papers/2307.05263",
+        "publishedDate": "2023-07-11T00:00:00.000Z",
+        "highlights": [
+          ": An Isaac Sim Framework for Multiple Aerial Vehicles Simulation \n\n Published 11 Jul 2023 in cs.RO, cs.SY, and eess.SY | (2307.05263v2) \n\nAbstract: Developing and testing novel control and motion planning algorithms for aerial vehicles can be a challenging task, with the robotics community relying more than ever on 3D simulation technologies to evaluate the performance of new algorithms in a variety of conditions and environments. In this work, we introduce the Pegasus Simulator, a modular framework implemented as an NVIDIA Isaac Sim extension that enables real-time simulation of multiple multirotor vehicles in photo-realistic environments, while providing out-of-the-box integration with the widely adopted PX4-Autopilot and ROS2 through its modular implementation and intuitive graphical user interface. To demonstrate some of its capabilities, a nonlinear controller was implemented and simulation results for two drones performing aggressive flight maneuvers are presented. Code and documentation for this framework are also provided as supplementary\n...\n- Gazebo: While Gazebo is flexible with strong support for ROS, its lack of realistic graphics is overcome in Pegasus using NVIDIA's rendering capabilities.\n- AirSim and Flightmare: These offer attractive graphical capabilities but are complex to extend and not natively designed for robotics applications like Gazebo. Pegasus strikes a balance between ease of use and photo-realism.\n- jMAVSim: While effective for testing PX4 functionalities, it lacks graphics sophistication, a gap filled by Pegasus' advanced visual capabilities."
+        ],
+        "image": "https://assets.emergentmind.com/assets/600px-a61320449b8c848bcc56e02826b033b5efa09fa52cc48b487e8f9a2eb8efd705.png"
+      },
+      {
+        "id": "https://github.com/farbod1277/gym-pybullet-drones",
+        "title": "farbod1277/gym-pybullet-drones",
+        "url": "https://github.com/farbod1277/gym-pybullet-drones",
+        "highlights": [
+          "| | `gym-pybullet-drones` | [AirSim](https://github.com/microsoft/AirSim) | [Flightmare](https://github.com/uzh-rpg/flightmare) |\n|---------------------------------: | :-------------------: | :-------------------------------------------: | :-------------------------------------------------: |\n| *Physics* | PyBullet | FastPhysicsEngine/PhysX | *Ad hoc*/Gazebo |\n| *Rendering* | PyBullet | Unreal Engine 4 | Unity |\n| *Language* | Python | C++/C# | C++/Python | \n| *RGB/Depth/Segm. views* | **Yes** | **Yes** | **Yes** |\n| *Multi-agent control* | **Yes** | **Yes** | **Yes** |\n| *ROS interface* | ROS2/Python | ROS/C++ | ROS/C++ |\n| *Hardware-In-The-Loop* | No | **Yes** | No |\n| *Fully steppable physics* | **Yes** | No | **Yes** |\n| *Aerodynamic effects* | Drag, downwash, ground| Drag | Drag |\n| *OpenAI [`Gym`](https://github.com/openai/gym/blob/master/gym/core.py) interface* | **Yes** | No | **Yes** |\n| *RLlib [`MultiAgentEnv`](https://github.com/ray-project/ray/blob/master/rllib/env/multi_agent_env.py) interface* | **Yes** | No | No |\n| *[PyMARL](https://github.com/oxwhirl/pymarl) integration* | *WIP* | No | No |\n...\n> While it is easy to\u2014consciously or not\u2014[cherry pick](https://en.wikipedia.org/wiki/Cherry_picking) statistics, \\~5kHz PyBullet physics (CPU-only) is faster than [AirSim (1kHz)](https://arxiv.org/pdf/1705.05065.pdf) and more accurate than [Flightmare's 35kHz simple single quadcopter dynamics](https://arxiv.org/pdf/2009.00563.pdf)\n...\n.org/pdf/2009.00563.pdf) (`(32*32)*3*240`)\u2014although in more complex [Unity"
+        ]
+      }
+    ],
+    "searchTime": 1085.9,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "query": {
+    "query": "Open source drone visual inertial lidar inertial odometry mapping OpenVINS VINS Fusion ORB SLAM3 FAST LIO FAST LIVO2 R3LIVE nvblox",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "0845e9550cd0117acb4d679feafc345a",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/hku-mars/FAST-LIVO2?tab=readme-ov-file",
+        "title": "hku-mars/FAST-LIVO2",
+        "url": "https://github.com/hku-mars/FAST-LIVO2?tab=readme-ov-file",
+        "publishedDate": "2024-04-22T00:00:00.000Z",
+        "highlights": [
+          "FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\n- 3d-reconstruction\n- colored-point-cloud\n- gaussian-splatting\n- lidar-camera-fusion\n- lidar-inertial-odometry\n- lidar-slam\n- mesh-reconstruction\n- nerf\n- sensor-fusion\n- slam\n...\n## FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\nFAST-LIVO2 is an efficient and accurate LiDAR-inertial-visual fusion localization and mapping system, demonstrating significant potential for real-time 3D reconstruction and onboard robotic localization in severely degraded environments.\n...\n[FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry](https://arxiv.org/pdf/2408.14035) \n\n[FAST-LIVO2 on Resource-Constrained Platforms](https://arxiv.org/pdf/2501.13876) \n\n[FAST-LIVO: Fast and Tightly-coupled Sparse-Direct LiDAR-Inertial-Visual Odometry](https://arxiv.org/pdf/2203.00893)\n...\nWe open-source\n...\nhandheld device, including\n...\nROS driver. Access these resources at this repository: [**L\n...\n_handhold**](https://github.com/xuankuzcr/LIV_\n...\nOur associate dataset [**FAST-LIVO2-Dataset**](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/zhengcr_connect_hku_hk/ErdFNQtjMxZOorYKDTtK4ugBkogXfq1OfDm90GECouuIQA?e=KngY9Z) used for evaluation is also available online.\n...\n-Calib**](https://github\n...\ncom/hku-mars/FAST-Calib) toolkit is recommended. Its output extrinsic parameters can be directly filled into the YAML file. \n\n## 2. Prere\n...\nDownload FAST-LIVO2-Dataset from [Global-LVBA](https://github.com/xuankuzcr/Global-LVBA) Section IV.\n...\n```\nroslaunch fast_livo mapping_avia.launch\nrosbag play YOUR_DOWNLOADED.bag\n```"
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/r3live",
+        "title": "hku-mars/r3live: A Robust, Real-time, RGB-colored, LiDAR-Inertial-Visual ...",
+        "url": "https://github.com/hku-mars/r3live",
+        "highlights": [
+          "A Robust, Real-time, RGB-colored, LiDAR-Inertial-Visual tightly-coupled state Estimation and mapping package\n...\ntime, RGB\n...\nial-Visual tightly\n...\n**R3LIVE** is a novel LiDAR-Inertial-Visual sensor fusion framework, which takes advantage of measurement of LiDAR, inertial, and visual sensors to achieve robust and accurate state estimation. R3LIVE is built upon our previous work [R2LIVE](https://github.com/hku-mars/r2live), is contained of two subsystems: the LiDAR-inertial odometry (LIO) and the visual-inertial odometry (VIO). The LIO subsystem ([FAST-LIO](https://github.com/hku-mars/FAST_LIO)) takes advantage of the measurement from LiDAR and inertial sensors and builds the geometric structure of (i.e. the position of 3D points) global maps. The VIO subsystem utilizes the data of visual-inertial sensors and renders the map's texture (i.e. the color of 3D points). \n\nThe source code of this package is released under [**GPLv2**](http://www.gnu.org/licenses/) license. We only allow it free for personal and academic\n...\n. For commercial\n...\n, please contact me <ziv.lin.ljrATgmail.com> and Dr. Fu Zhang <fuzhangAThku.hk> to negotiate a different license.\n...\n1. [R2LIVE](https://github.com/hku-mars/r2live): A robust, real-time tightly-coupled multi-sensor fusion package.\n...\n2. [FAST-LIO](https://github.com/hku-mars/FAST_LIO): A computationally efficient and robust LiDAR-inertial odometry package.\n...\nong, and Fu Zhang\n...\nR3LIVE: A Robust, Real-time, RGB\n...\ncolored, LiDAR-Inertial-Visual tightly-coupled state Estimation and mapping\n...\nR2LIVE\n...\nial-Visual"
+        ]
+      },
+      {
+        "id": "https://github.com/iGNSS/ORB_SLAM3",
+        "title": "iGNSS/ORB_SLAM3",
+        "url": "https://github.com/iGNSS/ORB_SLAM3",
+        "highlights": [
+          "ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual-Inertial and Multi-Map SLAM\n...\nORB-SLAM3 is the first real-time SLAM library able to perform **Visual, Visual-Inertial and Multi-Map SLAM** with **monocular, stereo and RGB-D** cameras, using **pin-hole and fisheye** lens models. In all sensor configurations, ORB-SLAM3 is as robust as the best systems available in the literature, and significantly more accurate. \n\nWe provide examples to run ORB-SLAM3 in the [EuRoC dataset](http://projects.asl.ethz.ch/datasets/doku.php?id=kmavvisualinertialdatasets) using stereo or monocular, with or without IMU, and in the [TUM-VI dataset](https://vision.in.tum.de/data/datasets/visual-inertial-dataset) using fisheye stereo or monocular, with or without IMU. Videos of some example executions can be found at [ORB-SLAM3 channel](https://www.youtube.com/channel/UCXVt-kXG6T95Z4tVaYlU80Q).\n...\nFor a monocular input from topic `/camera/image_raw` and an inertial input from topic `/imu`, run node OR\n...\n_SLAM3/Mono_Inertial. Setting the optional third\n...\nto true will apply CLAHE equalization to images (Mainly for TUM-VI dataset).\n...\n_VOCABULARY\n...\nFor a stereo input from topics `/camera/left/image_raw` and `/camera/right/image_raw`, and an inertial input from topic `/imu`, run node ORB_SLAM3/Stereo_Inertial. You will need to provide the vocabulary file and a settings file, including rectification matrices if required in a similar way to Stereo case:\n\n  ```\n  rosrun ORB_SLAM3 Stereo_Inertial PATH_TO_VOCABULARY PATH_TO_SETTINGS_FILE ONLINE_RECTIFICATION [EQUALIZATION]\t\n  ```\n \n###"
+        ]
+      },
+      {
+        "id": "https://github.com/OmerMersin/fastlio_nvblox_mapper",
+        "title": "OmerMersin/fastlio_nvblox_mapper",
+        "url": "https://github.com/OmerMersin/fastlio_nvblox_mapper",
+        "highlights": [
+          "Real-time voxel mapping from Fast-LIO odometry using NVIDIA NVBlox on ROS 2. Converts LiDAR point clouds + Fast-LIO poses into TSDF/ESDF voxel maps for navigation and visualization.\n...\n> GPU-ready ROS 2 bridge that feeds FAST-LIO state estimation directly into NVBlox for real-time TSDF, mesh, and ESDF map generation on Jetson Orin.\n...\nThis package provides a high-performance bridge between **FAST-LIO** (LiDAR-inertial odometry) and **nvblox** (GPU-accelerated volumetric mapping). It consumes the registered point clouds and odometry from FAST-LIO to generate dense 3D reconstructions in real-time on NVIDIA Jetson platforms.\n...\n- **Seamless Integration**: Directly subscribes to `/cloud_registered` and `/Odometry` from FAST-LIO.\n- **Jetson Optimized**: Tuned for NVIDIA Jetson Orin (SM 8.7) with CUDA 12.8.\n- **Real-time Reconstruction**: Generates TSDF, ESDF, and Mesh layers at LiDAR frame rates (10-20 Hz).\n- **Rich Visualization**: Pre-configured RViz setup for viewing meshes, voxel grids, and distance fields.\n- **Voxel Export**: Includes functionality to export the reconstructed map to PCD files.\n...\n| `pointcloud_topic` | `/cloud_registered` | FAST-LIO registered cloud input. |\n| `odom_topic` | `/Odometry` | FAST-LIO pose stream used for TSDF poses. |\n...\n| `publish_voxels` | `true` | Toggle voxel `CUBE_LIST` marker publisher. |\n| `publish_voxel_points` | `false` | Publish sampled voxel point cloud for analytics. |\n...\n| `voxel_export_*` | see `nvblox_\n...\n- **Subscriptions**: `/cloud_registered` (`sensor_msgs/PointCloud2`), `/Odometry` (`nav_msgs/Odometry`).\n...\nnvblox/es"
+        ]
+      },
+      {
+        "id": "https://github.com/rpng/open_vins/?tab=readme-ov-file",
+        "title": "rpng/open_vins",
+        "url": "https://github.com/rpng/open_vins/?tab=readme-ov-file",
+        "highlights": [
+          "An open source platform for visual-inertial navigation research.\n...\nThe OpenVINS project houses some core computer vision code along with a state-of-the art filter-based visual-inertial\nestimator. The core filter is an [Extended Kalman filter](https://en.wikipedia.org/wiki/Extended_Kalman_filter) which\n...\nfuses inertial information with sparse visual feature tracks. These visual feature tracks are fused leveraging\n...\nthe [Multi-State Constraint Kalman Filter (MSCKF)](https://ieeexplore.ieee.org/document/4209642) sliding window\n...\nformulation which allows for 3D features to update the state estimate without directly estimating\n...\nfeature states in\n...\nthe filter. Inspired by graph-based optimization systems, the included filter has modularity allowing for\n...\n. Please take a look at the feature list below for full\n...\ndetails on what the system supports.\n...\n* **[ov_maplab](https://github.com/rpng/ov_maplab)** - This codebase contains the interface wrapper for exporting\n visual-inertial runs from [OpenVINS](https://github.com/rpng/open_vins) into the ViMap structure taken\n by [maplab](https://github.com/ethz-asl/maplab). The state estimates and raw images are appended to the ViMap as\n OpenVINS runs through a dataset. After completion of the dataset, features are re-extract and triangulate with\n maplab's feature system. This can be used to merge multi-session maps, or to perform a batch optimization after first\n running the data through OpenVINS. Some example have been provided along with a helper script to export trajectories\n into the standard groundtruth format."
+        ]
+      },
+      {
+        "id": "https://github.com/Livox-SDK/LIO-Livox",
+        "title": "Livox-SDK/LIO-Livox",
+        "url": "https://github.com/Livox-SDK/LIO-Livox",
+        "highlights": [
+          "A Robust LiDAR-Inertial Odometry for Livox LiDAR\n...\n# LIO-Livox (A Robust LiDAR-Inertial Odometry for Livox LiDAR)\n...\nThis respository implements a robust LiDAR-inertial odometry system for Livox LiDAR. \nThe system uses only a single Livox LiDAR with a built-in IMU. It has a robust initialization module, \nwhich is independent to the sensor motion. **It can be initialized with the static state, dynamic state, and the mixture of static and dynamic state.** \nThe system achieves super robust performance. **It can pass through a 4km-tunnel and run on the highway with a very high speed (about 80km/h) using a single Livox Horizon.**\n...\ndistortion of the\n...\nInspired by ORB-SLAM3, a maximum a posteriori (MAP) estimation method is adopted to jointly initialize IMU biases, velocities, and the gravity direction.\n...\nAfter the initialization, a tightly coupled slding window based sensor fusion module is performed to estimate IMU poses, biases, and velocities within the sliding window.\n...\nVINS-Mono](https://github.com/HKUST-Aerial-Robotics/VINS-Mono) (VINS-Mono\n...\nA Robust and Versatile Monocular Visual-Inertial State Estimator)\n...\n* [LIO-mapping](https://github.com/hyye/lio-mapping) (Tightly Coupled 3D Lidar Inertial Odometry and Mapping)\n...\n* [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) (ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual-Inertial and Multi-Map SLAM)\n...\n](https://github\n...\n-Inertial Odometry\n...\n* [livox_mapping](https://github.com/Livox-SDK/livox_mapping)\n...\n* [livox_horizon_loam](https://github.\n...\n/Livox-SDK/livox_horizon\n...\nloam)"
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/fast-livo",
+        "title": "hku-mars/FAST-LIVO",
+        "url": "https://github.com/hku-mars/fast-livo",
+        "highlights": [
+          "A Fast and Tightly-coupled Sparse-Direct LiDAR-Inertial-Visual Odometry (LIVO).\n...\n## Fast and Tightly-coupled Sparse-Direct LiDAR-Inertial-Visual Odometry\n...\n- **3 July 2024**: We are excited to announce the upcoming release of [**FAST-LIVO2**](https://github.com/hku-mars/FAST-LIVO2) (some high-resolution results are already showcased). This new version delivers a **overwhelming enhancement** over **FAST-LIVO**, establishing an **undisputed state-of-the-art** in accuracy **(pixel-level)**, efficiency **(the first LIVO system applied for fully onboard autonomous UAV navigation)**, and robustness **(validated with over 2TB data, demonstrating exceptional performance in numerous degenerated LiDAR and camera scenarios)**.\n...\n**FAST-LIVO** is a fast LiDAR-Inertial-Visual odometry system, which builds on two tightly-coupled and direct odometry subsystems: a VIO subsystem and a LIO subsystem. The LIO subsystem registers raw points (instead of feature points on e.g., edges or planes) of a new scan to an incrementally-built point cloud map. The map points are additionally attached with image patches, which are then used in the VIO subsystem to align a new image by minimizing the direct photometric errors without extracting any visual features (e.g., ORB or FAST corner features).\n...\nPlease note that our system can only work in the hard synchronized LiDAR-Inertial-Visual dataset at present due to the unestimated time offset between the camera and IMU. The frame headers of the camera and the LiDAR are at\n...\nsetting the appropriate topic name and parameters,"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2408.14035v2",
+        "title": "FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry",
+        "url": "https://arxiv.org/html/2408.14035v2",
+        "publishedDate": "2024-08-28T00:00:00.000Z",
+        "highlights": [
+          "key modules in the system is also validated. Lastly, we detail three applications of FAST-LIVO2: UAV onboard navigation demonstrating the system\u2019s computation efficiency for real-time onboard navigation, airborne mapping showcasing the system\u2019s mapping accuracy, and 3D model rendering (mesh-based and NeRF-based) underscoring the suitability of our reconstructed dense map for subsequent rendering tasks. We open source our code, dataset and application of this work on GitHub111 https://github.com/hku-mars/FAST-LIVO2\n...\nSeveral systems achieve complete tight coupling at both the measurement and state estimation levels. LVI-SAM [35] fuses the LiDAR, visual and inertial sensors in a tightly-coupled smoothing and mapping framework, which is built atop a factor graph. The VIO subsystem performs visual feature tracking and extracts feature depth using LiDAR scans. R3LIVE [36] constructs the geometric structure of the global map by LIO and renders map texture by VIO. These two subsystems estimate the system state jointly by fusing their respective LiDAR or visual data with IMUs. The advanced version, R3LIVE++ [37], estimates exposure time in real time and conducts photometric calibration in advance[38], which enables the system to recover the radiance of map points. Unlike most previously mentioned LiDAR-inertial-visual systems that rely on feature-based methods for both LIO and VIO subsystems, R3LIVE series [36, 37] adopt direct methods for both without feature extraction, enabling them to capture subtle environmental features even in texture-less or structure-less scenarios."
+        ],
+        "image": "https://arxiv.org/html/2408.14035v2/extracted/5818774/figures/Framework7.png"
+      },
+      {
+        "id": "https://github.com/hku-mars/FAST-LIVO/",
+        "title": "hku-mars/FAST-LIVO",
+        "url": "https://github.com/hku-mars/FAST-LIVO/",
+        "highlights": [
+          "A Fast and Tightly-coupled Sparse-Direct LiDAR-Inertial-Visual Odometry (LIVO).\n...\n## Fast and Tightly-coupled Sparse-Direct LiDAR-Inertial-Visual Odometry\n...\n- **3 July 2024**: We are excited to announce the upcoming release of [**FAST-LIVO2**](https://github.com/hku-mars/FAST-LIVO2) (some high-resolution results are already showcased). This new version delivers a **overwhelming enhancement** over **FAST-LIVO**, establishing an **undisputed state-of-the-art** in accuracy **(pixel-level)**, efficiency **(the first LIVO system applied for fully onboard autonomous UAV navigation)**, and robustness **(validated with over 2TB data, demonstrating exceptional performance in numerous degenerated LiDAR and camera scenarios)**.\n...\n**FAST-LIVO** is a fast LiDAR-Inertial-Visual odometry system, which builds on two tightly-coupled and direct odometry subsystems: a VIO subsystem and a LIO subsystem. The LIO subsystem registers raw points (instead of feature points on e.g., edges or planes) of a new scan to an incrementally-built point cloud map. The map points are additionally attached with image patches, which are then used in the VIO subsystem to align a new image by minimizing the direct photometric errors without extracting any visual features (e.g., ORB or FAST corner features).\n...\n-Inert\n...\nThanks for [FAST-LIO2](https://github.com/hku-mars/FAST_LIO) and [SVO2.0](https://github.com/uzh-\n...\npg/rpg\n...\nsvo_pro_open\n...\nThanks for [Liv\n...\nTechnology](https://www.livoxtech."
+        ]
+      },
+      {
+        "id": "https://docs.openvins.com/",
+        "title": "OpenVINS",
+        "url": "https://docs.openvins.com/",
+        "highlights": [
+          "Welcome to the OpenVINS project! The OpenVINS project houses some core computer vision code along with a state-of-the art filter-based visual-inertial estimator. The core filter is an Extended Kalman filter which fuses inertial information with sparse visual feature tracks. These visual feature tracks are fused leveraging the Multi-State Constraint Kalman Filter (MSCKF) sliding window formulation which allows for 3D features to update the state estimate without directly estimating the feature states in the filter. Inspired by graph-based optimization systems, the included filter has modularity allowing for convenient covariance management with a proper type-based state system. Please take a look at the feature list below for full details on what the system supports.\n...\nmaplab\n\n - This codebase contains the interface wrapper for exporting visual-inertial runs from OpenVINS into the ViMap structure taken by maplab. The state estimates and raw images are appended to the ViMap as OpenVINS runs through a dataset. After completion of the dataset, features are re-extract and triangulate with maplab's feature system. This can be used to merge multi-session maps, or to perform a batch optimization after first running the data through OpenVINS. Some example have been provided along with a helper script to export trajectories into the standard groundtruth format.\n...\nfor OpenVINS. This is a modification of the code originally developed by the HKUST aerial robotics group and can be found in their VINS-Fusion repository. Here we stress that this is a loosely coupled method, thus no"
+        ],
+        "image": "https://github.com/rpng/open_vins/actions/workflows/build_ros1.yml/badge.svg"
+      },
+      {
+        "id": "https://github.com/illiniaerialrobotics/open_vins",
+        "title": "illiniaerialrobotics/open_vins",
+        "url": "https://github.com/illiniaerialrobotics/open_vins",
+        "highlights": [
+          "An open source platform for visual-inertial navigation research.\n...\nThe OpenVINS project houses some core computer vision code along with a state-of-the art filter-based visual-inertial\nestimator. The core filter is an [Extended Kalman filter](https://en.wikipedia.org/wiki/Extended_Kalman_filter) which\n...\nfuses inertial information with sparse visual feature tracks. These visual feature tracks are fused leveraging\n...\nthe [Multi-State Constraint Kalman Filter (MSCKF)](https://ieeexplore.ieee.org/document/4209642) sliding window\n...\nformulation which allows for\n...\nto update the state\n...\nfeature states in\n...\n. Inspired by graph-based optimization systems, the included filter has\n...\nity allowing for convenient\n...\nmanagement with a proper type-based state\n...\n. Please take a look at the feature list below for full\n...\ndetails on what the system supports.\n...\n* **[ov_maplab](https://github.com/rpng/ov_maplab)** - This codebase contains the interface wrapper for exporting\n visual-inertial runs from [OpenVINS](https://github.com/rpng/open_vins) into the ViMap structure taken\n by [maplab](https://github.com/ethz-asl/maplab). The state estimates and raw images are appended to the ViMap as\n OpenVINS runs through a dataset. After completion of the dataset, features are re-extract and triangulate with\n maplab's feature system. This can be used to merge multi-session maps, or to perform a batch optimization after first\n running the data through OpenVINS. Some example have been provided along with a helper script to export trajectories\n into the standard groundtruth format."
+        ]
+      },
+      {
+        "id": "https://github.com/TK72/FAST-LIVOSAM",
+        "title": "TK72/FAST-LIVOSAM",
+        "url": "https://github.com/TK72/FAST-LIVOSAM",
+        "highlights": [
+          "This project is developed for the paper \u201cRobust Urban SLAM via Resilient GNSS\u2013IMU\u2013LiDAR\u2013Camera\u2013Loop Fusion\u201d. It is adapted and extended from FAST-LIVO2, aiming to realize a tightly coupled GNSS\u2013LiDAR\u2013IMU\u2013Camera multi-sensor factor-graph-based SLAM framework for robust localization and mapping in complex urban environments.\n...\n## README\n\n# FAST-LIVOSAM\n\n \n\n### A Robust Global LiDAR-Visual-Inertial SLAM Framework with CenterPoint-based 3D Object Detection and Dynamic Objects Removal\n\n \n\n---\n...\nFAST-LIVOSAM is a robust global LiDAR-Visual-Inertial SLAM framework built upon FAST-LIVO2 with:\n...\n* Global pose graph optimization\n* Dynamic object removal\n* TensorRT-accelerated CenterPoint 3D object detection\n* Multi-sensor fusion\n* High-performance real-time mapping\n...\nThe framework supports:\n...\n* LiDAR-Inertial-Visual SLAM\n* Dynamic scene understanding\n* Global optimization with GTSAM\n* TensorRT deployment\n* GPU acceleration\n...\n* FAST-LIVO based tightly-coupled LIO/VIO\n* Global pose graph optimization\n* Dynamic object removal\n* TensorRT CenterPoint inference\n* CUDA accelerated point cloud processing\n* Multi-threaded optimization\n* ROS-based deployment\n* Docker support\n...\n* CenterPoint 3D detection and Dynamic object removal\n* Global mapping\n...\n* Eigen3\n* PCL\n* OpenCV\n* Boost\n* Sophus (legacy version)\n* GeographicLib\n* GTSAM\n* OpenMP\n* CUDA\n* TensorRT\n* spconv\n...\n```bash\nroslaunch fast_livo mapping_GREAT_WHU_centerpoint.launch\n```\n...\nThis project is built upon:\n\n* FAST-LIVO2\n* FAST-LIO2\n* FAST-LIOSAM\n* TRLO\n* GTSAM\n* Sophus\n* CenterPoint\n* TensorRT\n* ROS"
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/bhrsthmstqn",
+        "title": "R3LIVE++: A Robust, Real-Time, Radiance Reconstruction Package With a Tightly-Coupled LiDAR-Inertial-Visual State Estimator",
+        "url": "https://doi.org/10.1109/tpami.2024.3456473",
+        "publishedDate": "2024-09-09T00:00:00.000Z",
+        "author": "Jiarong Lin, Fu Zhang",
+        "highlights": [
+          "This work proposed a LiDAR-inertial-visual fusion framework termed R$^{3}$LIVE++ to achieve robust and accurate state estimation while simultaneously reconstructing the radiance map on the fly. R$^{3}$LIVE++ consists of a LiDAR-inertial odometry (LIO) and a visual-inertial odometry (VIO), both running in real-time. The LIO subsystem utilizes the measurements from a LiDAR for reconstructing the geometric structure, while the VIO subsystem simultaneously recovers the radiance information of the geometric structure from the input images. R$^{3}$LIVE++ is developed based on R$^{3}$LIVE and further improves the accuracy in localization and mapping by accounting for the camera photometric calibration and the online estimation of camera exposure time. We conduct more extensive experiments on public and self-collected datasets to compare our proposed system against other state-of-the-art SLAM systems. Quantitative and qualitative results show that R$^{3}$LIVE++ has significant improvements over others in both accuracy and robustness. Moreover, to demonstrate the extendability of R$^{3}$LIVE++, we developed several applications based on our reconstructed maps, such as high dynamic range (HDR) imaging, virtual environment exploration, and 3D video gaming.\n...\nand mapping package. 2022 International Conference on Robotics and Automation (ICRA). 2022;10672-10678.\n...\n- Wei Xu, Yixi Cai, Dongjiao He, Jiarong Lin, Fu Zhang. FAST-LIO2: Fast Direct LiDAR-Inertial Odometry. IEEE Transactions on Robotics. 2022;38(4):2053-2073. doi:10.1109/tro.2022.3141876."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/bhrsthmstqn",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "R3LIVE++: A Robust, Real-Time, Radiance Reconstruction Package With a Tightly-Coupled LiDAR-Inertial-Visual State Estimator",
+              "year": 2024,
+              "date": "2024-09-09",
+              "type": "article",
+              "language": "en",
+              "citationCount": 38,
+              "authors": [
+                {
+                  "name": "Jiarong Lin",
+                  "id": null
+                },
+                {
+                  "name": "Fu Zhang",
+                  "id": null
+                }
+              ],
+              "referenceCount": 56,
+              "abstract": "This work proposed a LiDAR-inertial-visual fusion framework termed R$^{3}$LIVE++ to achieve robust and accurate state estimation while simultaneously reconstructing the radiance map on the fly. R$^{3}$LIVE++ consists of a LiDAR-inertial odometry (LIO) and a visual-inertial odometry (VIO), both running in real-time. The LIO subsystem utilizes the measurements from a LiDAR for reconstructing the geometric structure, while the VIO subsystem simultaneously recovers the radiance information of the geometric structure from the input images. R$^{3}$LIVE++ is developed based on R$^{3}$LIVE and further improves the accuracy in localization and mapping by accounting for the camera photometric calibration and the online estimation of camera exposure time. We conduct more extensive experiments on public and self-collected datasets to compare our proposed system against other state-of-the-art SLAM systems. Quantitative and qualitative results show that R$^{3}$LIVE++ has significant improvements over others in both accuracy and robustness. Moreover, to demonstrate the extendability of R$^{3}$LIVE++, we developed several applications based on our reconstructed maps, such as high dynamic range (HDR) imaging, virtual environment exploration, and 3D video gaming.",
+              "doi": "10.1109/tpami.2024.3456473"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/tlin442/r3live",
+        "title": "tlin442/r3live",
+        "url": "https://github.com/tlin442/r3live",
+        "highlights": [
+          "A Robust, Real-time, RGB-colored, LiDAR-Inertial-Visual tightly-coupled state Estimation and mapping package\n...\n**R3LIVE** is a novel LiDAR-Inertial-Visual sensor fusion framework, which takes advantage of measurement of LiDAR, inertial, and visual sensors to achieve robust and accurate state estimation. R3LIVE is built upon our previous work [R2LIVE](https://github.com/hku-mars/r2live), is contained of two subsystems: the LiDAR-inertial odometry (LIO) and the visual-inertial odometry (VIO). The LIO subsystem ([FAST-LIO](https://github.com/hku-mars/FAST_LIO)) takes advantage of the measurement from LiDAR and inertial sensors and builds the geometric structure of (i.e. the position of 3D points) global maps. The VIO subsystem utilizes the data of visual-inertial sensors and renders the map's texture (i.e. the color of 3D points). \n\u2003 Our preprint paper is available [here](https://github.com/hku-mars/r3live/blob/master/papers/R3LIVE:%20A%20Robust%2C%20Real-time%2C%20RGB-colored%2C%20LiDAR-Inertial-Visual%20tightly-coupled%20stateEstimation%20and%20mapping%20package.pdf), with our accompanying videos are now available on YouTube (click below images to open) and Bilibili [1](https://www.bilibili.com/video/BV1d341117d6?share_source=copy_web), [2](https://www.bilibili.com/video/BV1e3411q7Di?share_source=copy_web).\n...\n1. [R2LIVE](https://github.com/hku-mars/r2live): A robust, real-\n...\nmulti-sensor fusion package.\n...\n2. [FAST-LIO](https://github.com/hku-mars/FAST_LIO): A computationally efficient and robust LiDAR-inertial odometry package."
+        ]
+      },
+      {
+        "id": "https://renyunfan.cn/papers/2024tro_livo2.pdf",
+        "title": "FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual",
+        "url": "https://renyunfan.cn/papers/2024tro_livo2.pdf",
+        "highlights": [
+          "ments, we use a sequential update strategy in the Kalman filter. To enhance the efficiency, we use direct methods for both the visual and LiDAR fusion, where the LiDAR module registers raw points without extracting edge or plane features and the visual module minimizes direct photometric errors without extracting ORB or FAST corner features. The fusion of both visual and LiDAR measurements is based on a single unified voxel map where the LiDAR module constructs the geometric structure for registering new LiDAR scans and the visual module attaches image patches to the LiDAR points (i.e., visual map points) enabling new image alignment. To enhance the accuracy of image alignment, we use plane priors from the LiDAR points in the voxel map (and even refine the plane prior in the alignment process) and update the reference patch dynamically after new\n...\n\u2019s mapping accuracy, and 3D model ren dering (mesh-based and NeRF-based) underscoring the suitability of our reconstructed dense map for subsequent rendering tasks. We open source our code, dataset and application of this work on GitHub 1 to benefit the robotics community. Index Terms\u2014Simultaneous Localization and Mapping (SLAM), Sensor Fusion, 3D\n...\nB. Benchmark Experiments In this experiment, we conduct quantitative evaluations on 25 sequences from the NTU-VIRAL, Hilti\u201922, and 23 open datasets. Our approach is benchmarked against several state of-the-art open-source odometry systems, including R3LIVE [36], a dense direct LiDAR-inertial-visual odometry system; FAST-LIO2 [13], a direct LiDAR-inertial odometry system;"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/pdf/2209.03666",
+        "title": "",
+        "url": "https://arxiv.org/pdf/2209.03666",
+        "highlights": [
+          "Abstract\u2014This work proposed a LiDAR-inertial-visual fusion framework termed R3LIVE++ to achieve robust and accurate state\n...\nestimation while simultaneously reconstructing the radiance map on the fly. R3LIVE++ consists of a LiDAR-inertial odometry (LIO) and\n...\na visual-inertial odometry (VIO), both running in real-time. The LIO subsystem utilizes the measurements from a LiDAR for\n...\nreconstructing the geometric structure, while the VIO subsystem simultaneously recovers the radiance information of the geometric\n...\nstructure from the input images. R3LIVE++ is developed based on R3LIVE and further improves the accuracy in localization and\n...\n\u201a It is a LiDAR-Inertial-Visual fusion framework that\n...\nodometry (LIO) subsystem and the visual-inertial\n...\nometry (VIO) subsystem. The two subsystems\n...\nThe LIO subsystem of R3LIVE++ is largely based on\n...\nFAST-LIO2 [23] since it achieves the best overall perfor\u0002mance among its counterparts in terms of accuracy, effi\u0002ciency, and robustness. Moreover, to address the LiDAR\n...\n, we fuse the LIO subsystem with our V\n...\nsubsys\u0002tem in a tightly-coupled manner.\n...\nLiDAR-inertial-\n...\nand VIO. In contrast, R3LIVE++\n...\ndata fusion at a\n...\nlevel and the\n...\nhigh\u0002accuracy colored 3D maps\n...\nR3LIVE++\n...\nWhile our LIO subsystem reconstructs the geometric struc\u0002ture of the environment, our VIO subsystem recovers the\n...\nincluding LIO-SAM [19], LVI-SAM [40], FAST-LIO2\n...\n2LIVE [41], on the NCLT\u0002dataset [49]. LIO-SAM and FAST-LIO2 are LiDAR-inertial\n...\n-LIO2 to the feature-based method LIO-SAM"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/jm23mgdd7xd",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "R$^3$LIVE++: A Robust, Real-time, Radiance reconstruction package with a tightly-coupled LiDAR-Inertial-Visual state Estimator",
+              "year": 2022,
+              "date": "2022-09-08",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 13,
+              "authors": [
+                {
+                  "name": "Jiarong Lin",
+                  "id": null
+                },
+                {
+                  "name": "Fu Zhang",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Simultaneous localization and mapping (SLAM) are crucial for autonomous robots (e.g., self-driving cars, autonomous drones), 3D mapping systems, and AR/VR applications. This work proposed a novel LiDAR-inertial-visual fusion framework termed R$^3$LIVE++ to achieve robust and accurate state estimation while simultaneously reconstructing the radiance map on the fly. R$^3$LIVE++ consists of a LiDAR-inertial odometry (LIO) and a visual-inertial odometry (VIO), both running in real-time. The LIO subsystem utilizes the measurements from a LiDAR for reconstructing the geometric structure (i.e., the positions of 3D points), while the VIO subsystem simultaneously recovers the radiance information of the geometric structure from the input images. R$^3$LIVE++ is developed based on R$^3$LIVE and further improves the accuracy in localization and mapping by accounting for the camera photometric calibration (e.g., non-linear response function and lens vignetting) and the online estimation of camera exposure time. We conduct more extensive experiments on both public and our private datasets to compare our proposed system against other state-of-the-art SLAM systems. Quantitative and qualitative results show that our proposed system has significant improvements over others in both accuracy and robustness. In addition, to demonstrate the extendability of our work, {we developed several applications based on our reconstructed radiance maps, such as high dynamic range (HDR) imaging, virtual environment exploration, and 3D video gaming.} Lastly, to share our findings and make contributions to the community, we make our codes, hardware design, and dataset publicly available on our Github: github.com/hku-mars/r3live",
+              "doi": "10.48550/arxiv.2209.03666"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/Livox-SDK/LIO-Livox/blob/master/README.md",
+        "title": "Search code, repositories, users, issues, pull requests...",
+        "url": "https://github.com/Livox-SDK/LIO-Livox/blob/master/README.md",
+        "publishedDate": "2021-07-29T00:00:00.000Z",
+        "author": "Livox-SDK",
+        "highlights": [
+          "Livox-\n...\nA Robust LiDAR-In\n...\nial Odometry for Livox LiDAR |\n...\n0 stars | C++\n...\nThis respository implements a robust LiDAR-inertial odometry system for Livox LiDAR. \nThe system uses only a single Livox LiDAR with a built-in IMU. It has a robust initialization module, \nwhich is independent to the sensor motion. **It can be initialized with the static state, dynamic state, and the mixture of static and dynamic state.** \nThe system achieves super robust performance. **It can pass through a 4km-tunnel and run on the highway with a very high speed (about 80km/h) using a single Livox Horizon.**\n...\nnode \"PoseEstimation\", the motion distortion of the point cloud is compensated using IMU preintegration or constant velocity model. Then the IMU initialization module is performed. If the Initialization\n...\nInspired by ORB-SLAM3, a maximum a posteriori (MAP) estimation method is adopted to jointly initialize IMU biases, velocities, and the gravity direction.\n...\nAfter the initialization, a tightly coupled slding window based sensor fusion module is performed to estimate IMU poses, biases, and velocities within the sliding window.\n...\nVINS-Mono\n...\nhttps://github.com/HKUST-Aerial-Robotics/VINS-Mono)\n...\nVINS-Mono\n...\n* [LIO-mapping](https://github.com/hyye/lio-mapping) (Tightly Coupled 3D Lidar Inertial Odometry and Mapping)\n...\n* [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) (ORB-SLAM3: An Accurate Open-Source Library for Visual, Visual-Inertial and Multi-Map SLAM)\n...\n* [livox_mapping](https://github.com/Livox-SDK/livox_mapping)\n...\nam](https\n...\n/Livox-SDK/livox"
+        ]
+      },
+      {
+        "id": "https://www.mdpi.com/2504-446X/8/9/487",
+        "title": "R-LVIO: Resilient LiDAR-Visual-Inertial Odometry for ...",
+        "url": "https://www.mdpi.com/2504-446X/8/9/487",
+        "publishedDate": "2024-09-14T00:00:00.000Z",
+        "highlights": [
+          "been made in the field of sensor fusion localization. Nguyen proposes VIRAL-fusion [11], which combines an IMU, an ultra wideband ranging sensor, and multiple on-board visual-inertial and LiDAR-ranging subsystems to implement an optimization-based comprehensive state estimator on UAVs. This estimator effectively mitigates the problem of pose position drift and robustness in low-texture environments. LIC-fusion2 [12] introduces a novel sliding-window planar feature tracking technique based on online spatio-temporal calibration for efficient processing of 3D LiDAR point clouds. A novel outlier rejection criterion is proposed in planar feature tracking to initialize feature points belonging to the same plane for high-quality data correlation. Shao [13] proposes a integrated LiDAR-visual-inertial framework that conducts coupling optimization in a factor graph manner, enabling a refined system state. Lin [14] proposes a novel multi-sensor fusion framework, called R3LIVE, that leverages the measurement strengths of LIDAR, inertial, and visual sensors to enable real-time reconstruction of accurate, dense, 3D, RGB-colored maps of the surrounding environment. Zheng [15] proposes a fast LiDAR-inertial-visual odometry system based on two tightly coupled direct subsystems: a VIO subsystem and a LIO subsystem. The LIO subsystem registers new sweep points onto an incrementally constructed point cloud map. The points on the map are also appended with image patches, which are then used in the VIO subsystem to align the new image by minimizing photometric errors. The system combines the"
+        ],
+        "image": "https://pub.mdpi-res.com/drones/drones-08-00487/article_deploy/html/images/drones-08-00487-g001-550.jpg?1726826414",
+        "favicon": "https://pub.mdpi-res.com/img/mask-icon-128.svg?c1c7eca266cd7013?1778040678"
+      },
+      {
+        "id": "https://numfer.com/hku-mars/r3live",
+        "title": "r3live: Robust RGB-colored LiDAR-Inertial-Visual State Estimation",
+        "url": "https://numfer.com/hku-mars/r3live",
+        "highlights": [
+          "R3LIVE performs real-time, robust 3D state estimation and mapping using LiDAR, inertial, and visual sensors, excelling in challenging scenarios.\n...\nR3LIVE is a novel sensor fusion framework for robust state estimation and mapping, integrating LiDAR, inertial, and visual sensors. Built upon R2LIVE, it comprises LiDAR-inertial odometry (LIO) and visual-inertial odometry (VIO) subsystems. The LIO subsystem constructs global maps from LiDAR and IMU data, while the VIO subsystem textures these maps with RGB color information. We released the source code under GPLv2 license and accompanied datasets for evaluation and use.\n...\n- Open Source: Code and hardware designs are openly available for community contribution and study.\n...\n- Core Functionality: LiDAR-Inertial-Visual sensor fusion for state estimation and mapping.\n...\n- Sensor Fusion: Leverages LiDAR, Inertial, and Visual data for optimal state estimation.\n- Mapping: Generates dense, RGB-colored 3D maps of the environment.\n...\n- Modular: Separates LiDAR-Inertial odometry and Visual-Inertial odometry for modularity.\n- Evaluation: Provides data and publications to evaluate algorithm performance.\n...\nR3LIVE benefits robotics researchers and developers needing robust, visually-enhanced 3D mapping capabilities. It's valuable in applications like autonomous navigation, scene understanding, and robotic exploration, offering high-quality 3D reconstruction for diverse environments. R3LIVE enables researchers to quickly prototype sensor fusion solutions with a thoroughly tested framework and dataset."
+        ],
+        "image": "https://s3.eu-central-003.backblazeb2.com/numfer/screenshots/404724835/screenshot.png"
+      },
+      {
+        "id": "https://github.com/ProjektOsmium/r3live_fisheye",
+        "title": "ProjektOsmium/r3live_fisheye",
+        "url": "https://github.com/ProjektOsmium/r3live_fisheye",
+        "highlights": [
+          "R3LIVE with FISHEYE SUPPORT< A Robust, Real-time, RGB-colored, LiDAR-Inertial-Visual tightly-coupled state Estimation and mapping package\n...\n**R3LIVE** is a novel LiDAR-Inertial-Visual sensor fusion framework, which takes advantage of measurement of LiDAR, inertial, and visual sensors to achieve robust and accurate state estimation. R3LIVE is built upon our previous work [R2LIVE](https://github.com/hku-mars/r2live), is contained of two subsystems: the LiDAR-inertial odometry (LIO) and the visual-inertial odometry (VIO). The LIO subsystem ([FAST-LIO](https://github.com/hku-mars/FAST_LIO)) takes advantage of the measurement from LiDAR and inertial sensors and builds the geometric structure of (i.e. the position of 3D points) global maps. The VIO subsystem utilizes the data of visual-inertial sensors and renders the map's texture (i.e. the color of 3D points). \n\u2003 Our preprint paper is available [here](https://github.com/hku-mars/r3live/blob/master/papers/R3LIVE:%20A%20Robust%2C%20Real-time%2C%20RGB-colored%2C%20LiDAR-Inertial-Visual%20tightly-coupled%20stateEstimation%20and%20mapping%20package.pdf), with our accompanying videos are now available on YouTube (click below images to open) and Bilibili [1](https://www.bilibili.com/video/BV1d341117d6?share_source=copy_web), [2](https://www.bilibili.com/video/BV1e3411q7Di?share_source=copy_web).\n \n \n \n \n\n## 2. What\n...\n1. [R2LIVE](https://github.com/hku-mars/r2live): A robust, real-time tightly-coupled\n...\n2. [FAST-LIO](https://github.com/hku-mars/FAST_LIO): A computationally efficient and robust LiDAR-inertial odometry package."
+        ]
+      }
+    ],
+    "searchTime": 1407.6,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

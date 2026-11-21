@@ -1,0 +1,200 @@
+{
+  "query": {
+    "query": "open source drone visual inertial odometry Basalt OKVIS2 SVO Pro Kimera VIO OV2SLAM D2SLAM MIMOSA Point LIO github",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "f503fdd6c56b0e86549028c929812570",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/uzh-rpg/rpg_svo_pro_open",
+        "title": "uzh-rpg/rpg_svo_pro_open",
+        "url": "https://github.com/uzh-rpg/rpg_svo_pro_open",
+        "highlights": [
+          "This repo includes **SVO Pro** which is the newest version of Semi-direct Visual Odometry (SVO) developed over the past few years at the Robotics and Perception Group (RPG).\n...\n* Visual-inertial odometry: SVO fronted + visual-inertial sliding window optimization backend (modified from [OKVIS](https://github.com/ethz-asl/okvis))\n...\n* Visual-inertial SLAM: SVO frontend + visual-inertial sliding window optimization backend + globally bundle adjusted map (using [iSAM2](https://gtsam.org/)). The global map is updated in real-time, thanks to iSAM2, and used for localization at frame-rate.\n...\n* Visual-inertial SLAM with loop closure: Loop closures, via [DBoW2](https://github.com/dorian3d/DBoW2), are integrated in the global bundle adjustment. Pose graph optimization is also included as a lightweight replacement of the global bundle adjustment.\n...\nSVO Pro and its extensions have been used to support various projects at RPG, such as our recent work on [multiple camera SLAM](http://rpg.ifi.uzh.ch/docs/ICRA20_Kuo.pdf), [voxel map for visual SLAM](http://rpg.ifi.uzh.ch/docs/ICRA20_Muglikar.pdf) and [the tight-coupling of global positional measurements into VIO](http://rpg.ifi.uzh.ch/docs/IROS20_Cioffi.pdf). We hope that the efforts we made can facilitate the research and applications of SLAM and spatial perception.\n...\nVIS, and the\n...\nis retained at the"
+        ]
+      },
+      {
+        "id": "https://github.com/uw-visual-odometry/basalt",
+        "title": "uw-visual-odometry/basalt",
+        "url": "https://github.com/uw-visual-odometry/basalt",
+        "publishedDate": "2025-03-04T18:49:41.000Z",
+        "highlights": [
+          "# Repository: uw-visual-odometry/basalt\n...\n## Basalt\n...\nmore information see https://vision.in.tum.de/research/vslam/basalt\n...\nThis project contains tools for:\n...\n- Camera, IMU and motion capture calibration.\n- Visual-inertial odometry and mapping.\n- Simulated environment to test different components of the system.\n...\nThere is also a [Github mirror](https://github.com/VladyslavUsenko/basalt-mirror) of this project to enable easy forking.\n...\nVisual-Inertial Odometry and Mapping:\n...\nsquare-root optimization and marginalization used in VIO/VO):\n...\n- [Camera, IMU and Mocap calibration. (TUM-VI, Euroc, UZH-FPV and Kalibr datasets)](doc/Calibration.md)\n- [Visual-inertial odometry and mapping. (TUM-VI and Euroc datasets)](doc/VioMapping.md)\n- [Visual odometry (no IMU). (KITTI dataset)](doc/Vo.md)\n- [Simulation tools to test different components of the system.](doc/Simulation.md)\n- [Batch evaluation tutorial (ICCV'21 experiments)](doc/BatchEvaluation.md)"
+        ]
+      },
+      {
+        "id": "https://github.com/MIT-SPARK/kimera-vio",
+        "title": "MIT-SPARK/Kimera-VIO: Visual Inertial Odometry with ...",
+        "url": "https://github.com/MIT-SPARK/kimera-vio",
+        "highlights": [
+          "# MIT-SPARK/Kimera-VIO\n...\nVisual Inertial Odometry with SLAM capabilities and 3D Mesh generation.\n...\n- euro\n...\n-dataset\n-\n...\nreal-time\n- reconstruction\n...\n- state-\n...\n- visual-\n...\nial-odometry\n...\n## README\n\n \n \n \n \n \n \n \n \n \n \n \n\n# Kimera-VIO: Open-Source Visual Inertial Odometry\n...\nKimera-VIO is a Visual Inertial Odometry pipeline for accurate State Estimation from **Stereo** + **IMU** data. It can optionally use **Mono** + **IMU** data instead of stereo cameras.\n\n## Publications\n...\n910\n...\n```\n...\n{Rosinol20icra-Kimera,\n...\n= {Kimera: an Open-Source Library for\n...\n-Time Metric-\n...\nand Mapping},\n   author = {Rosinol, Antoni and Abate, Marcus and Chang, Yun and Carlone, Luca},\n   year = {2020},\n   booktitle = {IEEE Intl. Conf. on Robotics and Automation (ICRA)},\n   url = {https://github.com/MIT-SPARK/Kimera},\n   pdf = {https://arxiv.org/pdf/1910.02490.pdf}\n }\n ```\n \n - A. Rosinol and A. Violette and M. Abate and N. Hughes and Y. Chang and J. Shi and A. Gupta and L. Carlone, [**Kimera: from SLAM to Spatial Perception with 3D Dynamic Scene Graphs**](https://arxiv.org/abs/2101.06894). arXiv preprint, 2021. [arXiv:2101.06894](https://arxiv.org/abs\n...\n2101.06894).\n...\n## ii. Using [ROS wrapper](https://github.com/MIT-SPARK/Kimera-VIO-ROS)\n...\nWe provide a ROS wrapper of Kimera-VIO that you can find at: https://github.com/MIT-SPARK/Kimera-VIO-ROS."
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-mrl/okvis2",
+        "title": "ethz-mrl/okvis2",
+        "url": "https://github.com/ethz-mrl/okvis2",
+        "highlights": [
+          "# ethz-mrl/okvis2\n...\nOpen Keyframe-based Visual-Inertial SLAM (Version 2)\n...\nWelcome to OKVIS2: Open Keyframe-based Visual-Inertial SLAM.\n\nThis is the Author's implementation of [1]. It is further based on work presented in [2-4].\n...\n[2] Stefan Leutenegger, Simon Lynen, Michael Bosse, Roland Siegwart and Paul Timothy Furgale.\n Keyframe-based visual-inertial odometry using nonlinear optimization. The International Journal\n of Robotics Research, 2015.\n...\n[4] Stefan Leutenegger, Paul Timothy Furgale, Vincent Rabaud, Margarita Chli, Kurt Konolige, Roland\n Siegwart. Keyframe-Based Visual-Inertial SLAM using Nonlinear Optimization. In Proceedings of\n Robotics: Science and Systems, 2013.\n...\nNote that the codebase that you are provided here is free of charge and without any warranty. This\nis bleeding edge research software.\n...\nClone the OKVIS2 repository:\n\n git clone --recurse-submodules git@github.com:smartroboticslab/okvis2.git\n...\nYou will find\n...\ndemo application in\n...\nvis_apps. It can process datasets in\n...\nEuRoC (ASL/ETH)\nformat.\n...\nFinally, you can also process datasets. Currently, the EuRoC format is supported by default, as well\n...\nbags (db3/mcap/..). Run the\n...\nsynchronous (blocking\n...\nprocessing as\n\n ros\n...\nvis okvis_node_synchronous.launch.xml config_filename:=<cfg.yaml\n...\n### HEALTH WARNING\n...\nokvis\n...\ncurrent project add"
+        ]
+      },
+      {
+        "id": "https://p.rst.im/q/Github.com/HKUST-Aerial-Robotics/D2SLAM",
+        "title": "GitHub - HKUST-Aerial-Robotics/D2SLAM: $D^2$SLAM: Decentralized and Distributed Collaborative Visual-inertial SLAM System for Aerial Swarm \u00b7 GitHub",
+        "url": "https://p.rst.im/q/Github.com/HKUST-Aerial-Robotics/D2SLAM",
+        "publishedDate": "2023-03-11T00:00:00.000Z",
+        "author": "HKUST-Aerial-Robotics",
+        "highlights": [
+          "GitHub - HKUST-Aerial-Robotics/D2SLAM: $D^2$SLAM: Decentralized and Distributed Collaborative Visual-inertial SLAM System for Aerial Swarm \u00b7 GitHub\n...\nThis is open-source code for \n\n$D^2$\n\n SLAM: Decentralized and Distributed Collaborative Visual-inertial SLAM System for Aerial Swarm\n...\nA crucial technology in fully autonomous aerial swarms is collaborative SLAM (CSLAM), which enables the estimation of relative pose and global consistent trajectories of aerial robots. However, existing CSLAM systems do not prioritize relative localization accuracy, critical for close collaboration among UAVs. This paper and open-source project presents \n\n$D^2$\n\n SLAM, a novel decentralized and distributed (\n\n$D^2$\n\n) CSLAM system that covers two scenarios: near-field estimation for high accuracy state estimation in close range and far-field estimation for consistent global trajectory estimation.\n\n \n\nWe argue $D^2$SLAM can be applied in a wide range of real-world applications.\n...\n1   # 1 or 0. If 1, the IMU data will be used to\n...\nthe odometry\n...\nestimation_mode: 2\n...\nAvailable options are 0 (D2VINS works as mono-robot\n...\nVINS instance estimates\n...\nin the swarm with all information it found\n...\n2 (distributed estimation mode\n...\nthe network and estimate the states"
+        ],
+        "image": "https://opengraph.githubassets.com/27d088d976e9269a476cf2486f0f47217e4a366c4ca1ee74a5c3b89ea8ada4ea/HKUST-Aerial-Robotics/D2SLAM"
+      },
+      {
+        "id": "https://github.com/ethz-mrl/OKVIS2-X",
+        "title": "ethz-mrl/OKVIS2-X",
+        "url": "https://github.com/ethz-mrl/OKVIS2-X",
+        "highlights": [
+          "OKVIS2-X: Open Keyframe-based Visual-Inertial SLAM Configurable with Dense Depth or LiDAR, and GNSS\n...\nOKVIS2-X is a multi-sensor SLAM system based on a factor graph, and is a non-trivial extension of the sparse, landmark-based [OKVIS2](https://github.com/ethz-mrl/okvis2). OKVIS2-X supports fusing multiple cameras and an IMU, with optional integration of a GNSS receiver and LiDAR or depth images (from a depth network or depth sensor). For map representation, OKVIS2-X uses submap-based volumetric occupancy to seamlessly support robot exploration and navigation.\n\n \n \n \n\n###\n...\n* `okvis_app\n...\nsynchronous`: Visual(-Inertial) Mode with optional Fusion of GNSS\n...\n* `okvis2x_app_synchronous`: Runs OKVIS2-X with dense mapping either based on provided depth images or LiDAR measurements\n...\n* `okvis2x_app_snetwork_synchronous`: Runs OKVIS2-X with dense mapping based on Depth Prediction from the Stereo Network\n...\n* `okvis2x_app_depthfusion_synchronous`: Runs OKVIS2-X with dense mapping based on Depth Fusion (adding MVS network)\n...\n* `okvis2x_app\n...\n_synchronous\n...\nconfig] \\"
+        ]
+      },
+      {
+        "id": "https://github.com/ov2slam/ov2slam",
+        "title": "ov2slam/ov2slam",
+        "url": "https://github.com/ov2slam/ov2slam",
+        "highlights": [
+          "# ov2slam/ov2slam\n...\nOV\u00b2SLAM is a Fully Online and Versatile Visual SLAM for Real-Time Applications\n...\n- bundle-adjustment\n- localization\n- opencv\n- ov2slam\n- real-time\n...\nslam\n- versatile\n...\nison\n- visual-slam\n...\n## A Fully Online and Versatile Visual SLAM for Real-Time Applications\n...\ncom/ov2slam\n...\nov2slam\n...\n---\n\n \n\n**OV\u00b2SLAM** is a fully real-time **Visual SLAM** algorithm for **Stereo** and **Monocular** cameras. A complete SLAM pipeline\n...\nis implemented with a carefully designed multi-threaded architecture allowing to perform Tracking, Mapping, Bundle Adjustment and Loop Closing in real-time.\n...\nbased on an undirect\n...\nThe Mapping works at the keyframes' rate and ensures continuous localization by populating the sparse 3D map and minimize drift through a local map\n...\nBundle Adjustment is applied with an anchored inverse depth formulation, reducing\n...\n3D\n...\npoints to 1 parameter instead of\n...\nLoop Closing is\n...\nthrough an **Online Bag of Words** method thanks to [iBoW-LCD](https://github.com/emiliofidalgo/ibow-lcd). In opposition to classical\n...\nis released under the\n...\nGPLv3 license](https://www.gnu.org/licenses/gpl-3.0.txt). For a closed-source version of OV\n...\nSLAM for commercial purposes, please contact [ONERA](https://www.onera.fr/en/contact-us) (https://www.onera\n...\n/en/contact-us) or the authors.\n...\nONERA](https://www.onera"
+        ]
+      },
+      {
+        "id": "https://cvg.cit.tum.de/research/vslam/basalt",
+        "title": "Computer Vision Group - Visual SLAM - Basalt: Visual-Inertial Mapping with Non-Linear Factor Recovery",
+        "url": "https://cvg.cit.tum.de/research/vslam/basalt",
+        "highlights": [
+          "that have large time intervals between each other. Inertial data on the other hand quickly degrades with the duration of the intervals and after several seconds of integration, it typically contains only little useful information. \n\n In this paper, we propose to extract relevant information for visual-inertial mapping from visual-inertial odometry using non-linear factor recovery. We reconstruct a set of non-linear factors that make an optimal approximation of the information on the trajectory accumulated by VIO. To obtain a globally consistent map we combine these factors with loop-closing constraints using bundle adjustment. The VIO factors make the roll and pitch angles of the global map observable, and improve the robustness and the accuracy of the mapping. In experiments on a public benchmark, we demonstrate superior performance of our method over the state-of-the-art approaches. \n\n## Open-Source Code\n\n The code is available here https://gitlab.com/VladyslavUsenko/basalt. \n\n (GitHub mirror: https://github.com/VladyslavUsenko/basalt-mirror) \n\n The code includes: \n\n- Camera, IMU and motion capture calibration.\n- Visual-inertial odometry and mapping.\n- Simulated environment to test different components of the system.\n\n Some reusable components of the system are extracted in a separate header-only library ( Documentation) https://gitlab.com/VladyslavUsenko/basalt-headers. \n\n|"
+        ],
+        "image": "https://cvg.cit.tum.de/lib/tpl/inf9v4/portal/login.png"
+      },
+      {
+        "id": "https://github.laiyagushi.com/ntnu-arl/mimosa",
+        "title": "GitHub - ntnu-arl/mimosa: Multi-modal SLAM \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/ntnu-arl/mimosa",
+        "publishedDate": "2025-04-07T00:00:00.000Z",
+        "author": "ntnu-arl",
+        "highlights": [
+          "GitHub - ntnu-arl/mimosa: Multi-modal SLAM \u00b7 GitHub\n...\n# mimosa\n\n \n\nThis package implements a tightly-coupled multi-modal fusion framework. It currently supports fusing LiDAR (Geometric, Photometric), Radar, any Odometry and IMU to provide robust state estimation in challenging environments. The framework is designed to be modular and easily extensible to add new sensors.\n...\nmimosa maintains a sliding window factor graph to fuse factors generated from multiple sensors. On arrival of a new measurement (a pointcloud from the LiDAR or Radar or an odometry message from an external odometry source like VIO), a new state is \"declared\" in the graph and connected with a preintegrated IMU factor. Then the measurement gets processed by the corresponding sensor manager to generate a new factor(s). This factor(s) is(are) then added to the graph and the graph is optimized. The optimized state is then published on `mimosa_node/graph/odometry` topic as a `nav_msgs/Odometry` message.\n...\nConsecutive odometry measurements (e.g., from a VIO system) are used to create relative pose factors (Between factors) between the corresponding states in the graph.\n...\n@misc{\n...\ntitle = {{PG\n...\nLIO}: {Photometric\n...\nGeometric} fusion for {Robust} {Li\n...\n{http://arxiv.org\n...\n06.18\n...\n{10.48550/arXiv.2506.18583},\n    publisher = {arXiv\n...\nauthor\n...\n{Khedekar, Nikhil and Alexis"
+        ],
+        "image": "https://opengraph.githubassets.com/97b41352afe1c77b8071645dcf8bfe11f48078ca4548e7e15578062e491cd220/ntnu-arl/mimosa"
+      },
+      {
+        "id": "https://github.com/maikelborys/Kimera-VIO",
+        "title": "maikelborys/Kimera-VIO",
+        "url": "https://github.com/maikelborys/Kimera-VIO",
+        "publishedDate": "2026-05-01T00:00:00.000Z",
+        "highlights": [
+          "# maikelborys/Kimera-VIO\n...\nVisual Inertial Odometry with SLAM capabilities and 3D Mesh generation.\n...\n## README\n\n \n \n \n \n \n \n \n \n \n \n \n\n# Kimera-VIO: Open-Source Visual Inertial Odometry\n...\nKimera-VIO is a Visual Inertial Odometry pipeline for accurate State Estimation from **Stereo** + **IMU** data. It can optionally use **Mono** + **IMU** data instead of stereo cameras.\n\n## Publications\n...\none, [\n...\nRobotics and Automation (\n...\n. [arXiv\n...\n1910.0\n...\n```bibtex\n @In\n...\n{Rosinol20icra-Kimera,\n   title = {Kimera: an Open-Source Library for Real-Time Metric-\n...\nLocalization and Mapping},\n   author = {Rosinol, Antoni and Abate, Marcus and Chang, Yun and Carlone, Luca},\n   year = {2020},\n   booktitle = {IEEE Intl\n...\nConf. on Robotics and Automation (ICRA)},\n   url = {https://github.com/MIT-SPARK/Kimera},\n   pdf = {https://arxiv.org/pdf/1910.02490.pdf}\n }\n ```\n \n - A. Rosinol and A. Violette and M. Abate and N. Hughes and Y. Chang and J. Shi and A. Gupta and L. Carlone, [**Kimera: from SLAM to Spatial Perception with 3D Dynamic Scene Graphs**](https://arxiv.org/abs/2101.06894). arXiv preprint, 2021. [arXiv:2101.06894](https://arxiv.org/abs/2101.06894).\n...\n## ii. Using [ROS wrapper](https://github.com/MIT-SPARK/Kimera-VIO-ROS)\n...\nWe provide a ROS wrapper of Kimera-VIO that you can find at: https://github.com/MIT-SPARK/Kimera-VIO-ROS."
+        ]
+      },
+      {
+        "id": "https://explore.market.dev/ecosystems/ros/projects/d2slam",
+        "title": "D2SLAM | Ecosystem Directory | market.dev",
+        "url": "https://explore.market.dev/ecosystems/ros/projects/d2slam",
+        "highlights": [
+          "$D^2$SLAM\n...\nDecentralized and Distributed Collaborative Visual-inertial SLAM System for Aerial Swarm\n...\nThis is open-source code for $D^2$ SLAM: Decentralized and Distributed Collaborative Visual-inertial SLAM System for Aerial Swarm\n...\nA crucial technology in fully autonomous aerial swarms is collaborative SLAM (CSLAM), which enables the estimation of relative pose and global consistent trajectories of aerial robots. However, existing CSLAM systems do not prioritize relative localization accuracy, critical for close collaboration among UAVs. This paper and open-source project presents $D^2$ SLAM, a novel decentralized and distributed ($D^2$) CSLAM system that covers two scenarios: near-field estimation for high accuracy state estimation in close range and far-field estimation for consistent global trajectory estimation.\n...\nimu: 1   # 1 or 0. If 1, the IMU data will be used to estimate the odometry\n...\nimu_topic:\n...\ndji_sdk_1/dji_sdk/imu\" # The\n...\ntopic for IMU.\n...\n(D2VINS works\n...\nVINS instance\n...\n909 LeGO-LOAM, LIO-SAM, LVI-SAM, FAST-LIO2, Faster-LIO, VoxelMap, R3LIVE, Point-LIO, KISS-ICP, DLO, DLIO, Ada-LIO, PV-LIO, SLAMesh, ImMesh, FAST-LIO-MULTI, M-LOAM, LOCUS, SLICT, MA-LIO, CT-ICP, GenZ-ICP, iG-LIO, SR-LIO application and comparison on Gazebo and real-world datasets. Installation and config files are provided."
+        ],
+        "image": "https://explore.market.dev/ecosystems/ros/projects/d2slam/opengraph"
+      },
+      {
+        "id": "https://github.com/hku-mars/FAST-LIVO2?tab=readme-ov-file",
+        "title": "hku-mars/FAST-LIVO2",
+        "url": "https://github.com/hku-mars/FAST-LIVO2?tab=readme-ov-file",
+        "publishedDate": "2024-04-22T00:00:00.000Z",
+        "highlights": [
+          "# hku-mars/FAST-LIVO2\n...\nFAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\n- 3d-reconstruction\n- colored-point-cloud\n- gaussian-splatting\n- lidar-camera-fusion\n- lidar-inertial-odometry\n- lidar-slam\n- mesh-reconstruction\n- nerf\n- sensor-fusion\n- slam\n...\n## FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\nFAST-LIVO2 is an efficient and accurate LiDAR-inertial-visual fusion localization and mapping system, demonstrating significant potential for real-time 3D reconstruction and onboard robotic localization in severely degraded environments.\n...\n[FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry](https://arxiv.org/pdf/2408.14035) \n\n[FAST-LIVO2 on Resource-Constrained Platforms](https://arxiv.org/pdf/2501.13876) \n\n[FAST-LIVO: Fast and Tightly-coupled Sparse-Direct LiDAR-Inertial-Visual Odometry](https://arxiv.org/pdf/2203.00893)\n...\nWe open-source our handheld device, including CAD files, synchronization scheme, STM32 source code, wiring instructions, and sensor ROS driver. Access these resources at this repository: [**LIV_handhold**](https://github.com/xuankuzcr/LIV_handhold).\n...\nDataset**](\n...\nhengcr_\n...\n_hku_hk/\n...\nThe [**FAST-Calib**](https://github.com/hku-mars/FAST-Calib) toolkit is recommended. Its output extrinsic parameters can be directly filled into the YAML file. \n\n## 2. Prerequisited"
+        ]
+      },
+      {
+        "id": "https://github.com/ov2slam/ov2slam/tree/ros2",
+        "title": "GitHub - ov2slam/ov2slam at ros2 \u00b7 GitHub",
+        "url": "https://github.com/ov2slam/ov2slam/tree/ros2",
+        "publishedDate": "2020-10-15T16:00:18.000Z",
+        "author": "ov2slam",
+        "highlights": [
+          "GitHub - ov2slam/ov2slam at ros2 \u00b7 GitHub\n...\n## A Fully Online and Versatile Visual SLAM for Real-Time Applications\n...\nOV\u00b2SLAM is a fully real-time Visual SLAM algorithm for Stereo and Monocular cameras. A complete SLAM pipeline is implemented with a carefully designed multi-threaded architecture allowing to perform Tracking, Mapping, Bundle Adjustment and Loop Closing in real-time. The Tracking is based on an undirect Lucas-Kanade optical-flow formulation and provides camera poses estimations at the camera's frame-rate. The Mapping works at the keyframes' rate and ensures continuous localization by populating the sparse 3D map and minimize drift through a local map tracking step. Bundle Adjustment is applied with an anchored inverse depth formulation, reducing the parametrization of 3D map points to 1 parameter instead of 3. Loop Closing is performed through an Online Bag of Words method thanks to iBoW-LCD. In opposition to classical offline BoW methods, no pre-trained vocabulary tree is required. Instead, the vocabulary tree is computed online from the descriptors extracted in the incoming video stream, making it always suited to the currently explored environment.\n...\nOV\u00b2SLAM is released under the GPLv3 license. For a closed-source version of OV\u00b2SLAM for commercial purposes, please contact ONERA(https://www.onera.fr/en/contact-us) or the authors.\n...\nOV\u00b2SLAM"
+        ],
+        "image": "https://opengraph.githubassets.com/a6012fdc514c0d16fc0480bb535a2b115afe61725e87e2e62f30b1191d9a1079/ov2slam/ov2slam",
+        "favicon": "https://github.com/fluidicon.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2510.04612",
+        "title": "OKVIS2-X: Open Keyframe-based Visual-Inertial SLAM Configurable with Dense Depth or LiDAR, and GNSS",
+        "url": "https://arxiv.org/html/2510.04612",
+        "highlights": [
+          "VIS2-X: a state-of-the-art multi-sensor Simultaneous Localization and Mapping (SLAM) system building dense volumetric occupancy maps, while scalable to large environments and operating in realtime. Our unified SLAM framework seamlessly integrates different sensor modalities: visual, inertial, measured or learned depth, LiDAR and Global Navigation Satellite System (GNSS) measurements. Unlike most state-of-the-art SLAM systems, we advocate using dense volumetric map representations when leveraging depth or range-sensing capabilities. We employ an efficient submapping strategy that allows our system to scale to large environments, showcased in sequences of up to 9 kilometers. OKVIS2-X enhances its accuracy and robustness by tightly-coupling the estimator and submaps through map alignment factors. Our system provides globally consistent maps, directly usable for autonomous navigation. To further improve the accuracy of OKVIS2-X, we also incorporate the option of performing online calibration of camera extrinsics. Our system achieves the highest trajectory accuracy in EuRoC against state-of-the-art alternatives, outperforms all competitors in the Hilti22 VI-only benchmark, while also proving competitive in the LiDAR version, and showcases state of the art accuracy in the diverse and large-scale sequences from the VBR dataset. Code available at: https://github.com/ethz-mrl/OKVIS2-X."
+        ],
+        "image": "https://arxiv.org/html/2510.04612v1/figures/top-figure-vertical.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/9x09q84jltj",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "OKVIS2-X: Open Keyframe-Based Visual-Inertial SLAM Configurable With Dense Depth or LiDAR, and GNSS",
+              "year": 2025,
+              "date": "2025-01-01",
+              "type": "article",
+              "language": "en",
+              "citationCount": 6,
+              "authors": [
+                {
+                  "name": "Simon Boche",
+                  "id": null
+                },
+                {
+                  "name": "Jaehyung Jung",
+                  "id": null
+                },
+                {
+                  "name": "Sebasti\u00e1n Barbas Laina",
+                  "id": null
+                },
+                {
+                  "name": "Stefan Leutenegger",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "To empower mobile robots with usable maps as well as highest state estimation accuracy and robustness, we present OKVIS2-X: a state-of-the-art multi-sensor Simultaneous Localization and Mapping (SLAM) system building dense volumetric occupancy maps, while scalable to large environments and operating in realtime. Our unified SLAM framework seamlessly integrates different sensor modalities: visual, inertial, measured or learned depth, LiDAR and Global Navigation Satellite System (GNSS) measurements. Unlike most state-of-the-art SLAM systems, we advocate using dense volumetric map representations when leveraging depth or range-sensing capabilities. We employ an efficient submapping strategy that allows our system to scale to large environments, showcased in sequences of up to 9 kilometers. OKVIS2-X enhances its accuracy and robustness by tightly-coupling the estimator and submaps through map alignment factors. Our system provides globally consistent maps, directly usable for autonomous navigation. To further improve the accuracy of OKVIS2-X, we also incorporate the option of performing online calibration of camera extrinsics. Our system achieves the highest trajectory accuracy in EuRoC against stateof-the-art alternatives, outperforms all competitors in the Hilti22 VI-only benchmark, while also proving competitive in the LiDAR version, and showcases state of the art accuracy in the diverse and large-scale sequences from the VBR dataset. Code available at: https://github.com/ethz-mrl/OKVIS2-X",
+              "doi": "10.1109/tro.2025.3619051"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://www.alphaxiv.org/abs/2401.06323",
+        "title": "Kimera2: Robust and Accurate Metric-Semantic SLAM in the Real World | alphaXiv",
+        "url": "https://www.alphaxiv.org/abs/2401.06323",
+        "publishedDate": "2024-01-12T00:00:00.000Z",
+        "author": "Luca Carlone",
+        "highlights": [
+          "We present improvements to Kimera, an open-source metric-semantic visual-inertial SLAM library. In particular, we enhance Kimera-VIO, the visual-inertial odometry pipeline powering Kimera, to support better feature tracking, more efficient keyframe selection, and various input modalities (eg monocular, stereo, and RGB-D images, as well as wheel odometry). Additionally, Kimera-RPGO and Kimera-PGMO, Kimera's pose-graph optimization backends, are updated to support modern outlier rejection methods - specifically, Graduated-Non-Convexity - for improved robustness to spurious loop closures. These new features are evaluated extensively on a variety of simulated and real robotic platforms, including drones, quadrupeds, wheeled robots, and simulated self-driving cars. We present comparisons against several state-of-the-art visual-inertial SLAM pipelines and discuss strengths and weaknesses of the new release of Kimera. The newly added features have been released open-source at this https URL.\n...\na 3D map [15,16]. We refer the reader to [10] for a more extensive review. 3 Kimera2: System Improvements 3.1 Kimera-VIO Frontend Kimera-VIO\u2019s frontend serves as an initial data-processing module to prepare raw sensor measurements for optimization in the VIO backend. The frontend is flexible enough to be implemented for a variety of sensor inputs. In the original version of Kimera-VIO [3,1]"
+        ],
+        "image": "https://api.alphaxiv.org/open-graph/v1/paper/2401.06323.png"
+      }
+    ],
+    "searchTime": 1971.9,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

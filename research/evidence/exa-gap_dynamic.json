@@ -1,0 +1,205 @@
+{
+  "query": {
+    "query": "UAV drone dynamic obstacle avoidance open source DYNUS SANDO MIGHTY MADER PANTHER RMADER FAPP EGO-Planner ROS github",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "3eb092e3cc42be23c3325a635cf6f8a7",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/mit-acl/dynus/",
+        "title": "mit-acl/dynus",
+        "url": "https://github.com/mit-acl/dynus/",
+        "highlights": [
+          "# mit-acl/dynus\n...\n# DYNUS: Uncertainty-aware Trajectory Planner in Dynamic Unknown Environment #\n...\n| **Static Forest** | **Dynamic Obstacles** |\n| ------------------------- | ------------------------- |\n | |\n...\n[Robust MADER: Decentralized and Asynchronous Multiagent Trajectory Planner Robust to Communication Delay](https://github.com/mit-acl/rmader)\n...\nDYNUS has been tested on both Docker and native installations on Ubuntu 22.04 with ROS 2 Humble.\n...\n1. **`high_res_forest`** \u2013 High-resolution forest with 3D obstacles (note: Gazebo may run slowly)\n2. **`easy_forest`** \u2013 Benchmarking environment used in the paper\n3. **`office`** \u2013 Confined indoor office space\n4. **`empty`** \u2013 Open space with dynamic obstacles\n...\ncave`** \u2013 Cave-like environment with YOLO-based person detection  \n- **`wheeled_robot`** \u2013 2D ground robot simulation  \n- **`quadruped`** \u2013 2\n...\nsimulation\n...\n**Path Push Visualization:**\n    ```bash\n    ros\n...\nNX01\n...\ngeometry_msgs/msg\n...\nheader: {stamp\n...\n{sec: 0, nanosec:\n...\n0}, frame_id: 'map'}, pose: {position: {x:\n...\n.0, y: 0.0\n...\n3.0\n...\n0.0, y: 0.0, z: 0\n...\n0, w\n...\n1.0}}\n...\n--once\n    ```\n - **Ground Robot:**\n    ```bash\n    ros2 topic pub /NX01\n...\nterm_goal geometry_msgs/msg/PoseStamped \"{header:\n...\n, nanosec\n...\n: {position:\n...\nx: 50.0\n...\ny:\n...\nz: 0.5}, orientation\n...\nx:\n...\n--once"
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/sando",
+        "title": "mit-acl/sando",
+        "url": "https://github.com/mit-acl/sando",
+        "highlights": [
+          "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments\n...\n**Submitted to the IEEE Transactions on Robotics (T-RO)**\n\n \n \n Spatiotemporal SFC \n Hardware Heatmap \n \n \n Sim Interactive \n Sim Static \n \n \n Sim Dynamic \n Hardware Single Dynamic \n \n \n Hardware Multiple Dynamic \n Hardware Dynamic + Static \n \n \n\nSANDO plans safe, dynamically-feasible trajectories for UAVs in environments with both static and dynamic obstacles, including previously unseen ones detected at runtime via onboard sensors.\n...\n| `interactive` | Click goals in RViz, drone navigates around obstacles | RViz-only |\n...\n| `static` | Pre-defined static forest | Gazebo |\n| `dynamic` | Known dynamic obstacles | RViz-only |\n...\n| `unknown_dynamic` | Unknown obstacles detected via pointcloud | Gazebo |\n...\n1. **Sensor Input** \u2014 Point cloud subscriptions update the voxel grid\n2. **HGP Manager** (`include/hgp/`) \u2014 Heat map-based global planner: voxel map, A* with heat costs, convex decomposition into safety corridors\n3. **SANDO Core** (`include/sando/sando.hpp`) \u2014 Planning orchestrator with state machine (YAWING \u2192 TRAVELING \u2192 GOAL_SEEN \u2192 GOAL_REACHED)\n4. **Gurobi Solver** (`include/sando/gurobi_solver.hpp`) \u2014 Local trajectory optimization using Hermite spline parameterization with dynamic factor adaptation\n5. **SANDO Node** (`src/sando/sando_node.cpp`) \u2014 ROS 2 node wrapper"
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/panther/",
+        "title": "mit-acl/panther",
+        "url": "https://github.com/mit-acl/panther/",
+        "highlights": [
+          "# mit-acl/panther\n...\nPerception-Aware Trajectory Planner in Dynamic Environments\n...\n- dynamic-obstacles\n- obstacle-avoidance\n- obstacle-avoidance-algorithm\n- optimization\n- path\n- perception\n- perception-aware\n- planning\n- trajectory\n- uav\n...\n# PANTHER: Perception-Aware Trajectory Planner in Dynamic Environments #\n...\n**If you are looking for a Planner** \n\n* **In Multi-Agent and Dynamic Environments, you may be interesed also in [MADER](https://github.com/mit-acl/mader)** ([pdf](https://arxiv.org/abs/2010.11061), [video](https://www.youtube.com/watch?v=aoSoiZDfxGE)):\n...\nPANTHER has been tested with Ubuntu 20.04/ROS Noetic. Other Ubuntu/ROS version may need some minor modifications, feel free to [create an issue](https://github.com/mit-acl/panther/issues) if you have any problems.\n...\n**You can use PANTHER with only open-source packages**. \nMatlab is only needed if you want to introduce modifications to the optimization problem.\n...\n```\nroslaunch panther simulation.launch quad:=SQ01s\n...\n| ----------- |\n|\n...\nand compile [\n...\n](https://\n...\n.com/mit-acl/fsw/\n...\n) and [\n...\n.com/mit-acl/fsw/\n...\n-stack/\n...\n|\n|\n...\n` | If true,\n...\nhave access to\n...\nground truth of the\n...\nof the obstacles. If false, the\n...\n:=true` in this case). |\n...\nIf false, (and if `\n...\n:=true`) only gzserver will be launched"
+        ]
+      },
+      {
+        "id": "https://github.com/arclab-hku/FAPP",
+        "title": "arclab-hku/FAPP",
+        "url": "https://github.com/arclab-hku/FAPP",
+        "highlights": [
+          "[T-RO'24] Fast and Adaptive Perception and Planning for UAVs in Dynamic Cluttered Environments\n...\n- aerial-systems\n- dynamic-environment\n- motion-planning\n- obstacle-avoidance\n- point-cloud\n...\n**FAPP** (**F**ast and **A**daptive **P**erception and **P**lanning) is one of the first few works that consider the obstacle avoidance of UAVs in highly cluttered and dynamic environments. The performance of FAPP is validated in various simulation and experimental tests. The whole perception and planning process can be completed within a few milliseconds, which is highly efficient. (Click the image to view the video)\n...\n816\n...\nLu, Minghao and Fan\n...\nXiyu and Chen, Han and Lu, Peng\n...\njournal\n...\nIEEE Transactions on Robotics\n...\nFAPP: Fast and Adaptive Perception and Planning for UAVs in Dynamic Cluttered Environments}, \n  year={2025},\n  volume={41},\n  number={},\n  pages={871-886\n...\n;Vehicle dynamics;\n...\n;Heuristic algorithms;\n...\n;Real-time systems;Navigation;\n...\navoidance;point cloud},\n...\n24.3522187}}\n...\n* Ubuntu 20.04\n* ROS Noetic\n...\n```bash\ngit clone https://github.com/arclab-hku/FAPP.git\ncd FAPP \ncatkin build\n...\n- [GCOPTER](https://github.com/ZJU-FAST-Lab/GCOPTER): A general-purpose trajectory optimizer for multicopters.\n- [EGO-Planner](https://github.com/ZJU-FAST-Lab/EGO-Planner-v2): An efficient framework for gradient-based quadrotor local planning."
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/rmader/",
+        "title": "mit-acl/rmader",
+        "url": "https://github.com/mit-acl/rmader/",
+        "highlights": [
+          "# mit-acl/rmader\n...\nDecentralized Multiagent Trajectory Planner Robust to Communication Delay\n...\n- communication-delay-robust\n- dynamic-environments\n- hardware\n- minvo\n- multiagent-systems\n- obstacle-avoidance\n- optimization\n- path-planning\n- planner\n- rmader\n- robotics\n- ros\n- ros-noetic\n- trajectory-optimization\n...\n# Robust MADER: Decentralized and Asynchronous Multiagent Trajectory Planner Robust to Communication Delay #\n...\n|4 agents with 2 dynamic obstacles|6 agents with 2 dynamic obstacles|\n...\n10 agents under 300ms comm\n...\ndelay|10 agents with\n...\n10 dynamic\n...\nunder 50ms comm\n...\nRMADER has been tested with Ubuntu 20.04/ROS Noetic\n...\ncd ~/ && mkdir ws && cd ws && mkdir src && cd src\ngit clone https://github.com/mit-acl/\n...\n.git\ncd ..\n...\n_compile.sh\n...\nThe script [install_and_compile.sh](https://github.com/mit-acl/rmader/blob/master/install_and_compile.sh) will install [CGAL v4.12.4](https://www.cgal.org/), [GLPK](https://www.gnu.org/software/glpk/) and other ROS packages (check the script for details). It will also compile the repo. This bash script assumes that you already have ROS installed in your machine. \n\n### Using Docker\n...\ngithub.com/\n...\n10 agents\n...\n> **Note**: For a high number of agents, the performance of RMADER improves with the number of CPUs available in your computer. \n\n```\nroscd rmader && cd script && python run_rmader.py"
+        ]
+      },
+      {
+        "id": "https://github.com/ZJU-FAST-Lab/ego-planner",
+        "title": "ZJU-FAST-Lab/ego-planner",
+        "url": "https://github.com/ZJU-FAST-Lab/ego-planner",
+        "highlights": [
+          "# ZJU-FAST-Lab/ego-planner\n...\nOur recently developed planner [EGO-Swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm) is an evolution from EGO-Planner. \nIt is more robust and safe, and therefore, is more recommended to use.\nIf you have only one drone, just set the `drone_id` to `0` in EGO-Swarm's launch files.\nOf course, some topic names are changed from EGO-Planner, check it using `rqt_graph` and `rosnode info `.\n\n# ROS2 Support\n...\nFor the ROS2 version, please refer to the branch [ros2_version](https://github.com/ZJU-FAST-Lab/ego-planner-swarm/tree/ros2_version) of the repo ego-planner-swarm.\n...\n# EGO-Planner \nEGO-Planner: An ESDF-free Gradient-based Local Planner for Quadrotors\n...\n**EGO-Planner** is a lightweight gradient-based local planner without ESDF construction, which significantly reduces computation time compared to some state-of-the-art methods. The total planning time is only **around 1ms** and don't need to compute ESDF.\n\n \n \n \n \n \n \n\n**Video Links:** [YouTube](https://youtu.be/UKoaGW7t7Dk), [bilibili](https://www.bilibili.com/video/BV1VC4y1t7F4/) (for Mainland China)\n...\n**Step 1**. Install [Armadillo](http://arma.sourceforge.net/), which is required by **uav_simulator**.\n...\nthe code from github or gitee. This two repositories synchronize automaticly.\n...\n```\ngit clone https://github.com/ZJU-FAST-Lab/ego-planner.git\n```\n...\nsource devel/"
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/mighty/blob/main/README.md",
+        "title": "README.md at main \u00b7 mit-acl/mighty",
+        "url": "https://github.com/mit-acl/mighty/blob/main/README.md",
+        "highlights": [
+          "```md\n# MIGHTY: Hermite Spline-based Efficient Trajectory Planning\n...\nAgent Trajectory Planning** \u2014 multiple\n...\n| **Dynamic Obstacles** | **Long Flight** |\n| ------------------------- | ------------------------- |\n...\n: Hermite Spline-based Efficient Trajectory Planning is available at [https\n...\nbeen tested on Ubuntu 22.04 with ROS 2 Humble\n...\nFour installation methods are available:\n...\n## Additional Information\n\n \n Dependencies \n\n All dependencies are version-controlled in `mighty.repos`:\n - **ROS 2 packages**: acl-mapping, dynus_interfaces, gazebo_ros_pkgs, livox_laser_simulation_ros2, realsense_gazebo_plugin, uav_simulator\n - **DecompROS2**: Decomposition utilities (requires decomp_util to build first)\n - **Livox-SDK2**: Livox LiDAR SDK (non-ROS binary)\n - **livox_ros_driver2**: Livox ROS 2 driver (uses custom build.sh)\n \n\n \n Paper Benchmarking \n\n The simple, complex, jerk weight sweep, and reference position/velocity benchmarking is available at:\n  ```bash\n  https://github.com/kotakondo/GCOPTER\n  ```\n \n\n \n Bag Recording \n\n  ```bash\n  python3 src/mighty/scripts/bag_record.py --bag_number 3\n  ```\n \n\n \n Goal Command Example \n\n  ```bash\n  ros2 topic pub /NX01/term_goal geometry_msgs/msg/PoseStamped \"{header: {stamp: {sec: 0, nanosec: 0}, frame_id: 'map'}, pose: {position: {x: 305.0, y: 0.0, z: 3.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}\" --once"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2604.07599v2",
+        "title": "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments",
+        "url": "https://arxiv.org/html/2604.07599v2",
+        "highlights": [
+          "(e.g., EGO-Planner [1], FASTER [2], HDSM [3], and SUPER [4]) achieve fast replanning but assume that once space is observed as free, it remains free, making them unsuitable for environments with moving obstacles. Second, planners that handle dynamic obstacles with soft constraints (e.g., HOPA [5], ViGO [6], FAPP [7], Risk-Aware [8], and FHD [9]) can react to moving obstacles but provide no formal safety guarantee, as collision avoidance is encouraged via penalty terms rather than enforced (see Fig. 1). Third, planners that enforce hard safety constraints in dynamic environments (e.g., CC-MPC [10], OA-MPC [11], Liu et al. [12], Stamouli et al. [13], STS [14], and IP-MPC [15]) guarantee safety only at discretized model predictive control (MPC) or sample points, leaving the trajectory potentially unsafe between time steps. While PANTHER [16] provides continuous-time safety in dynamic environments, it has only been demonstrated in open settings and the computation scales poorly with the number of obstacles. As summarized in Table I, no existing method simultaneously (1) handles spatiotemporal dynamic obstacle collision avoidance, (2) guarantees continuous-time safety, and (3) operates in dynamic unknown confined environments. To address these gaps, we introduce SANDO (Safe AutoNomous trajectory planning for Dynamic unknOwn environments), a trajectory planner that integrates a heat"
+        ],
+        "image": "https://arxiv.org/html/2604.07599v2/svg/comparisonSOTA.png",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://github.com/yixigang/mighty-planner",
+        "title": "yixigang/mighty-planner",
+        "url": "https://github.com/yixigang/mighty-planner",
+        "highlights": [
+          "# MIGHTY: Hermite Spline-based Efficient Trajectory Planning\n...\n|\n\n| **Dynamic Obstacles** | **Long Flight** |\n| ------------------------- | ------------------------- |\n | \n\n| **Fast Flight 1** | **Fast Flight 2** |\n| ------------------------- | ------------------------- |\n | \n\n| **Dynamic Env 1** | **Dynamic Env 2** |\n| ------------------------- | ------------------------- |\n | \n\n## Paper\n...\n## Additional Information\n\n \n Dependencies \n\n All dependencies are version-controlled in `mighty.repos`:\n - **ROS 2 packages**: acl-mapping, dynus_interfaces, gazebo_ros_pkgs, livox_laser_simulation_ros2, realsense_gazebo_plugin, uav_simulator\n - **DecompROS2**: Decomposition utilities (requires decomp_util to build first)\n - **Livox-SDK2**: Livox LiDAR SDK (non-ROS binary)\n - **livox_ros_driver2**: Livox ROS 2 driver (uses custom build.sh)\n \n\n \n Paper Benchmarking \n\n The simple, complex, jerk weight sweep, and reference position/velocity benchmarking is available at:\n  ```bash\n  https://github.com/kotakondo/GCOPTER\n  ```\n \n\n \n Bag Recording \n\n  ```bash\n  python3 src/mighty/scripts/bag_record.py --bag_number 3\n  ```\n \n\n \n Goal Command Example \n\n  ```bash\n  ros2 topic pub /NX01/term_goal geometry_msgs/msg/PoseStamped \"{header: {stamp: {sec: 0, nanosec: 0}, frame_id: 'map'}, pose: {position: {x: 305.0, y: 0.0, z: 3.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}\" --once"
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/kt1cmks9b7k",
+        "title": "DYNUS: Uncertainty-aware Trajectory Planner in Dynamic Unknown Environments",
+        "url": "https://doi.org/10.48550/arxiv.2504.16734",
+        "publishedDate": "2025-04-23T00:00:00.000Z",
+        "author": "Kota Kondo, Mason Peterson, Nicholas Rober, Juan Rached Viso, Jia, Lucas, Jialin Chen, et al.",
+        "highlights": [
+          "a wide range of vehicles in a diverse set of environments. The assumptions made by DYNUS are listed in Section II-E. In Section I-A, we demonstrate that DYNUS is capable of operating in a wide range of environments. Sections I-B to I-E review related work on global planning, local trajectory optimization, dynamic obstacle tracking, and exploration. We then summarize our key contributions. A. Classification of Environments Environments are classified by three criteria: (1) known vs. unknown, (2) static vs. dynamic, and (3) open vs. confined. Known environments provide agents with prior information, while unknown environments do not. Static environments have fixed obstacles, whereas dynamic environ ments could include moving ones. The primary difference is predictability: static obstacles do not change position once observed, while dynamic obstacles continuously move, making it a challenging planning environment. Finally, open environments are characterized by relatively sparse obstacle distributions, such as outdoor settings, whereas confined environments involve occlusions and narrow spaces, such as indoor settings. Table I compares the capabilities of numerous UAV trajec tory planners under these environmental assumptions. State of-the-art methods such as FASTER [3], EGO-Planner [1], RAPTOR [2], HDSM [4], and SUPER [5] are designed for unknown static environments. MADER [23]"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/kt1cmks9b7k",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "DYNUS: Uncertainty-aware Trajectory Planner in Dynamic Unknown Environments",
+              "year": 2025,
+              "date": "2025-04-23",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Kota Kondo",
+                  "id": null
+                },
+                {
+                  "name": "Mason Peterson",
+                  "id": null
+                },
+                {
+                  "name": "Nicholas Rober",
+                  "id": null
+                },
+                {
+                  "name": "Juan Rached Viso",
+                  "id": null
+                },
+                {
+                  "name": "Jia, Lucas",
+                  "id": null
+                },
+                {
+                  "name": "Jialin Chen",
+                  "id": null
+                },
+                {
+                  "name": "Harvey Merton",
+                  "id": null
+                },
+                {
+                  "name": "Jonathan P. How",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "This paper introduces DYNUS, an uncertainty-aware trajectory planner designed for dynamic unknown environments. Operating in such settings presents many challenges -- most notably, because the agent cannot predict the ground-truth future paths of obstacles, a previously planned trajectory can become unsafe at any moment, requiring rapid replanning to avoid collisions. Recently developed planners have used soft-constraint approaches to achieve the necessary fast computation times; however, these methods do not guarantee collision-free paths even with static obstacles. In contrast, hard-constraint methods ensure collision-free safety, but typically have longer computation times. To address these issues, we propose three key contributions. First, the DYNUS Global Planner (DGP) and Temporal Safe Corridor Generation operate in spatio-temporal space and handle both static and dynamic obstacles in the 3D environment. Second, the Safe Planning Framework leverages a combination of exploratory, safe, and contingency trajectories to flexibly re-route when potential future collisions with dynamic obstacles are detected. Finally, the Fast Hard-Constraint Local Trajectory Formulation uses a variable elimination approach to reduce the problem size and enable faster computation by pre-computing dependencies between free and dependent variables while still ensuring collision-free trajectories. We evaluated DYNUS in a variety of simulations, including dense forests, confined office spaces, cave systems, and dynamic environments. Our experiments show that DYNUS achieves a success rate of 100% and travel times that are approximately 25.0% faster than state-of-the-art methods. We also evaluated DYNUS on multiple platforms -- a quadrotor, a wheeled robot, and a quadruped -- in both simulation and hardware experiments.",
+              "doi": "10.48550/arxiv.2504.16734"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://ar5iv.labs.arxiv.org/html/2103.06372",
+        "title": "[2103.06372] PANTHER: Perception-Aware Trajectory Planner in Dynamic Environments",
+        "url": "https://ar5iv.labs.arxiv.org/html/2103.06372",
+        "highlights": [
+          "PANTHER, a real-time perception-aware (PA) trajectory planner for multirotor-UAVs (Unmanned Aerial Vehicles) in dynamic environments. PANTHER plans trajectories that avoid dynamic obstacles while also keeping them in the sensor field of view (FOV) and minimizing the blur to aid in object tracking. The rotation and translation of the UAV are jointly optimized, which allows PANTHER to fully exploit the differential flatness of multirotors to maximize the PA objective. Real-time performance is achieved by implicitly imposing the underactuated dynamics of the UAV through the Hopf fibration. PANTHER is able to keep the obstacles inside the FOV 7.9 and 1.5 times more than non-PA approaches and PA approaches that decouple translation and yaw, respectively. The projected velocity (and hence the blur) is reduced by 18% and 34%, respectively. This leads to average success rates three times larger than state-of-the-art approaches in multi-obstacle avoidance scenarios. The MINVO basis is used to impose low-conservative collision avoidance constraints in position and velocity space. Finally, extensive hardware experiments in unknown dynamic environments with all the computation running onboard are presented, with velocities of up to 5.8 m/s, and with relative velocities (with respect to the obstacles) of up to 6.3 m/s. The only sensors used are an IMU, a forward-facing depth camera, and a"
+        ],
+        "image": "https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2504.16734v2",
+        "title": "DYNUS: Uncertainty-aware Trajectory Planner in Dynamic ...",
+        "url": "https://arxiv.org/html/2504.16734v2",
+        "publishedDate": "2025-04-24T00:00:00.000Z",
+        "highlights": [
+          "Table I compares the capabilities of numerous UAV trajectory planners under these environmental assumptions. State-of-the-art methods such as FASTER [3], EGO-Planner [1], RAPTOR [2], HDSM [4], and SUPER [5] are designed for unknown static environments. MADER [23] handles dynamic environments but requires the future trajectories of dynamic obstacles. PANTHER [24] can operate in dynamic unknown environments, but it generates convex hulls around each obstacle, and this approach is computationally expensive and less effective in environments with many static obstacles. FHD [22] and STS [25] are the most recent works addressing dynamic unknown environments. FHD constructs a temporal Euclidean Signed Distance Field (ESDF) and plans around dynamic obstacles, while STS employs an end-to-end learning approach to navigate highly dynamic environments. However, both approaches assume a 2D environment and do not handle the challenge of planning in 3D dynamic unknown environments.\n...\n|\n| MADER [23] (2021) | No | No | 3D | Known | Both | Open |\n| EGO-Planner [1] (2021) | No | No | 3D | Unknown | Static | Both |\n| RAPTOR [2] (2021) | No | No | 3D | Unknown | Static | Both |\n| FASTER [3] (2022) | No | No | 3D | Unknown | Static | Both |\n| PANTHER [24] (2022) | No | No | 3D | Unknown | Both | Open |\n| HDSM [4] (2024) | No | No | 3D | Unknown | Static | Both |\n| SUPER [5] (2025) | No | Yes | 3D"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://github.com/thiago-jvds/socially-aware-nav-mighty",
+        "title": "thiago-jvds/socially-aware-nav-mighty",
+        "url": "https://github.com/thiago-jvds/socially-aware-nav-mighty",
+        "highlights": [
+          "# MIGHTY: Hermite Spline-based Efficient Trajectory Planning\n...\n| |\n\n| **Dynamic Obstacles** | **Long Flight** |\n| ------------------------- | ------------------------- |\n | \n\n| **Fast Flight 1** | **Fast Flight 2** |\n| ------------------------- | ------------------------- |\n | \n\n| **Dynamic Env 1** | **Dynamic Env 2** |\n| ------------------------- | ------------------------- |\n | \n\n##\n...\n## Additional Information\n\n \n Dependencies \n\n All dependencies are version-controlled in `mighty.repos`:\n - **ROS 2 packages**: acl-mapping, dynus_interfaces, gazebo_ros_pkgs, livox_laser_simulation_ros2, realsense_gazebo_plugin, uav_simulator\n - **DecompROS2**: Decomposition utilities (requires decomp_util to build first)\n - **Livox-SDK2**: Livox LiDAR SDK (non-ROS binary)\n - **livox_ros_driver2**: Livox ROS 2 driver (uses custom build.sh)\n \n\n \n Paper Benchmarking \n\n The simple, complex, jerk weight sweep, and reference position/velocity benchmarking is available at:\n  ```bash\n  https://github.com/kotakondo/GCOPTER\n  ```\n \n\n \n Bag Recording \n\n  ```bash\n  python3 src/mighty/scripts/bag_record.py --bag_number 3\n  ```\n \n\n \n Goal Command Example \n\n  ```bash\n  ros2 topic pub /NX01/term_goal geometry_msgs/msg/PoseStamped \"{header: {stamp: {sec: 0, nanosec: 0}, frame_id: 'map'}, pose: {position: {x: 305.0, y: 0.0, z: 3.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}\" --once"
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/dynus/blob/main/README.md",
+        "title": "README.md at main \u00b7 mit-acl/dynus",
+        "url": "https://github.com/mit-acl/dynus/blob/main/README.md",
+        "highlights": [
+          "- Repository: mit-acl/dynus | 67 stars | Jupyter Notebook\n- Branch: main\n...\n```md\n# DYNUS: Uncertainty-aware Trajectory Planner in Dynamic Unknown Environment #\n...\n| **Static Forest** | **Dynamic Obstacles** |\n| ------------------------- | ------------------------- |\n...\n[Robust MADER: Decentralized and Asynchronous Multiagent Trajectory Planner Robust to Communication Delay](https://github.com/mit-acl/rmader)\n...\nDYNUS has been tested on both Docker and native installations on Ubuntu 22.04 with ROS 2 Humble.\n...\n1. **`high_res_forest`** \u2013 High-resolution forest with 3D obstacles (note: Gazebo may run slowly)\n2. **`easy_forest`** \u2013 Benchmarking environment used in the paper\n3. **`office`** \u2013 Confined indoor office space\n4. **`empty`** \u2013 Open space with dynamic obstacles\n...\n- **`cave`** \u2013 Cave-like environment with YOLO-based person detection  \n- **`wheeled_robot`** \u2013 2D ground robot simulation  \n- **`quadruped`** \u2013 2D quadruped robot simulation  \n\n#### How to Run\n...\n:**\n    ```bash\n...\n0,\n...\nosec: 0}, frame_id: 'map\n...\n: {position: {x\n...\n.0, y:\n...\n0}}}\" --once\n    ```\n - **Ground Robot:**\n    ```bash\n    ros2 topic pub /NX01\n...\n_goal geometry_msgs\n...\n50\n...\n}\" --once\n...\nBag Record\n...\nVisualization Bag:**\n...\n2 bag record"
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/deep_panther/",
+        "title": "mit-acl/deep_panther",
+        "url": "https://github.com/mit-acl/deep_panther/",
+        "highlights": [
+          "# mit-acl/deep_panther\n...\n- deep-learning\n- drones\n- imitation-learning\n- motion-planning\n- multi-modality\n- obstacle-avoidance\n- planner\n- trajectory-optimization\n...\n# Deep-PANTHER: Learning-Based Perception-Aware Trajectory Planner in Dynamic Environments #\n...\n[![Deep-PANTHER: Learning-Based Perception-Aware Trajectory Planner in Dynamic Environments](./panther/imgs/deep_panther.gif)](https://www.youtube.com/watch?v=53GBjP1jFW8 \"Deep-PANTHER: Learning-Based Perception-Aware Trajectory Planner in Dynamic Environments\") \n\nDeep-PANTHER deployed on different environments. The policy in all the videos above is the same one, and was trained using an obstacle that followed a trefoil-knot trajectory. The green pyramid represents the field of view of the camera. \n\n## Citation\n...\nmit-acl\n...\n_panther\n...\na way to\n...\nbeen merged on the\n...\nWait until the terminal says `Planner initialized`. Then, you can press G (or click the option 2D Nav Goal on the top bar of RVIZ) and click any goal for the drone. By default, `simulation.launch` will use the policy Hung_dynamic_obstacles.pt (which was trained with trefoil-knot trajectories). You can change the trajectory followed by the obstacle during testing using the `type_of_obst_traj` field of the launch file.\n...\nalgorithm. Check the paper for further details"
+        ]
+      }
+    ],
+    "searchTime": 1622.3,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

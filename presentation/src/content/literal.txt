@@ -1,0 +1,999 @@
+# What each code line literally does, shown under a code panel when a line is hovered.
+# "## id" starts an excerpt (scripts/code.mjs ids). Each entry is "start of the line ⇒ reading": it applies to the next
+# line, in order, whose trimmed text starts with it. Comments, docstrings and lone brackets are read automatically.
+
+## world
+#VRML_SIM R2025a utf8 ⇒ File header: a Webots world, format R2025a, text in UTF-8.
+EXTERNPROTO ⇒ Imports the drone's model, which is defined in its own file.
+WorldInfo { ⇒ Opens the world's global settings.
+title ⇒ The world's display name.
+basicTimeStep 2 ⇒ Physics advances 2 ms per step: 500 steps per simulated second.
+FPS 30 ⇒ The window redraws at most 30 times a second.
+randomSeed 7 ⇒ Fixes Webots' random numbers, so every run is the same.
+
+## world-robots
+DEF IRONLARK_DRONE IronlarkDrone { ⇒ Places the drone in the world and names it IRONLARK_DRONE, so the observer can find it.
+translation 0 0 0.09 ⇒ Where it starts: x 0, y 0, 9 cm up, on its pad.
+name "Ironlark" ⇒ Its name inside Webots.
+controller "flight_bridge" ⇒ The program that runs as its brain: the bridge to ArduPilot.
+Robot { ⇒ A second robot, with no body: the evaluator.
+name "flight evaluator" ⇒ Its name.
+supervisor TRUE ⇒ Gives it access to the whole world, including the drone's true position.
+controller "flight_observer" ⇒ The program it runs: the observer that records ground truth.
+
+## launcher
+def flight( ⇒ Defines flight(): with or without a window, editor or not, which world, record sensors or not.
+home = webots_home(world) ⇒ Picks which Webots installation this world needs; refuses an incompatible one.
+if world == "forest": ⇒ Only for the forest world:
+built = ROOT ⇒ the folder where the built forest lives.
+if not (built ⇒ If the forest's world file is missing…
+raise RuntimeError("Forest world is not built ⇒ …stop with an error that says how to build it.
+"(or copy ⇒ (The error message continues.)
+if problems := world_problems ⇒ Compare the forest's receipt with today's code, and collect every difference.
+more = f" and ⇒ Prepare "and N more" if there are over three.
+raise RuntimeError(f"The forest world is not what ⇒ Stop, naming the first three differences…
+"Rebuild it ⇒ …and how to rebuild.
+doctor( ⇒ Check the machine has what the flight needs (Docker images, tools).
+if not headless and not os.environ ⇒ If a window is wanted but there is no display…
+raise RuntimeError("Webots R2025a needs ⇒ …stop: Webots needs an X11 display.
+"Enable XWayland ⇒ (The message continues.)
+if headless and not shutil.which ⇒ Without a window, the virtual display program xvfb-run must be installed…
+raise RuntimeError("Headless ⇒ …or stop.
+with exclusive(): ⇒ Take the flight lock. Everything indented below runs while holding it.
+check_ports() ⇒ Prove ports 5760, 9002 and 9003 are free.
+if stale := drone_stale() ⇒ Is the drone's built model out of date? If so, why?
+print(f"Building the drone ⇒ Say so…
+build_drone() ⇒ …and rebuild it.
+lockstep = build_lockstep(home) ⇒ Compile lockstep.c. lockstep now holds the compiled bytes, or None without a compiler.
+run = ROOT / "runs" ⇒ Name the run folder: runs/date-time-processnumber.
+run.mkdir(parents=True) ⇒ Create it.
+if lockstep: ⇒ If the C loop was compiled…
+(run / "flight_lockstep.so").write_bytes ⇒ …save it into the run folder.
+(run / "manifest.json").write_text( ⇒ Write manifest.json from the dictionary below…
+json.dumps( ⇒ …converted to JSON text:
+"ardupilot_commit": COMMIT ⇒ which ArduPilot version (git commit),
+"webots": "R2025a" ⇒ which Webots release,
+"webots_patches": ( ⇒ which Webots patches: taken from the renderer's own record…
+json.loads(renderer.read_text()) ⇒ …its contents…
+if (renderer := home ⇒ …if that record file exists…
+else None ⇒ …otherwise nothing,
+"estimator": "EKF3" ⇒ the estimator the autopilot uses,
+"sitl_image_id": subprocess.check_output( ⇒ the exact ArduPilot container image, asked of Docker…
+["docker", "image", "inspect" ⇒ …by running docker image inspect for the image's id…
+text=True, ⇒ (read the answer as text)
+).strip(), ⇒ (drop the trailing newline),
+"webots_clock_patch_sha256": hashlib.sha256( ⇒ a fingerprint of the ArduPilot clock patch…
+(ROOT / "docker/webots-clock.patch").read_bytes() ⇒ …computed from the patch file's bytes…
+).hexdigest(), ⇒ …written as hexadecimal text,
+"position_source": "simulated GPS" ⇒ where the autopilot's position comes from,
+"flight_loop": { ⇒ which loop flies:
+"language": "C" if lockstep else "Python" ⇒ "C" if it compiled, otherwise "Python"…
+"library_sha256" ⇒ …and the compiled library's fingerprint,
+"mission": "takeoff-hover-land" ⇒ the mission,
+"headless": headless ⇒ whether there was a window,
+"world": world ⇒ and the world.
+indent=2, ⇒ (Pretty-print with two-space indents.)
++ " ⇒ (End the file with a newline.)
+print(f"Flight logs: ⇒ Print where this run's files are.
+env = os.environ.copy() ⇒ Start from a copy of the launcher's own environment variables.
+env["WEBOTS_HOME"] ⇒ Tell the controllers where Webots is installed.
+env["PATH"] ⇒ Put the project's Python tools first on the search path.
+env["PYTHONUNBUFFERED"] ⇒ Make Python print immediately, so logs are complete even after a crash.
+env.setdefault("WEBOTS_MESH_CACHE" ⇒ Where patched Webots caches parsed meshes (unless already set).
+env["IRONLARK_RUN_DIR"] ⇒ Tell every controller the run folder.
+env.pop("IRONLARK_LOCKSTEP", None) ⇒ Remove any inherited loop setting: the Python loop flies unless…
+if lockstep: ⇒ …this run compiled the C loop,
+env["IRONLARK_LOCKSTEP"] ⇒ in which case point the bridge at it.
+if record: ⇒ If recording sensors…
+env["IRONLARK_SENSING"] = "1" ⇒ …turn sensing on in the bridge.
+else: ⇒ Otherwise…
+env["IRONLARK_FAST_START"] = "1" ⇒ …let the observer speed up the wait before take-off.
+world_path, scene_path = stage_world(run, world) ⇒ Copy the world into the run folder; get its path, and the scene file for the minimap.
+if scene_path is not None: ⇒ If there is a scene file…
+env["IRONLARK_SCENE"] ⇒ …pass it to the observer.
+(run / "controllers").symlink_to( ⇒ Link the project's controllers into the run folder, so Webots finds them beside the world.
+command = [ ⇒ The command that starts Webots:
+str(home / "webots"), ⇒ the Webots program,
+"--batch", ⇒ no dialog boxes,
+"--mode=realtime", ⇒ run at real-time speed,
+"--stdout", ⇒ its output…
+"--stderr", ⇒ …and errors to the log.
+if headless: ⇒ Without a window:
+env["QT_QPA_PLATFORM"] = ( ⇒ make Webots' window system use X11…
+"xcb" ⇒ …(xcb), what the virtual display speaks.
+preferences = Path( ⇒ Where the user's Webots preferences file is.
+private = run / "config/Cyberbotics" ⇒ A private preferences folder inside the run folder.
+private.mkdir(parents=True) ⇒ Create it.
+if preferences.is_file(): ⇒ If the user has preferences…
+shutil.copyfile(preferences ⇒ …copy them in.
+env["XDG_CONFIG_HOME"] ⇒ Point Webots at the private copy, so a run never changes the user's own.
+command = ["xvfb-run", "-a" ⇒ Run Webots inside a virtual display, without rendering the window, minimised.
+elif not editor: ⇒ With a window, unless editing…
+command.append("--fullscreen") ⇒ …open it fullscreen.
+command.append(str(world_path)) ⇒ Last: the world file to open.
+name = f"ironlark-sitl- ⇒ A unique name for this run's ArduPilot container (it includes the process number).
+ros_name = f"ironlark-ros- ⇒ And for its ROS container.
+webots = sitl = mission = ros = resources = None ⇒ Nothing started yet: all five handles empty, so cleanup knows what exists.
+with ( ⇒ Open two log files for the whole flight:
+(run / "webots.log").open("w") as webots_log ⇒ Webots' log,
+(run / "sitl.log").open("w") as sitl_log ⇒ ArduPilot's log.
+try: ⇒ Run everything below; whatever happens, the finally: block at the end runs afterwards.
+if record: ⇒ When recording:
+ros = subprocess.Popen( ⇒ start the ROS container in the background:
+ros_container( ⇒ a container for this run, given the run folder, running this shell script:
+ros_name, ⇒ (its name)
+run, ⇒ (the run folder)
+"python3 /project/ros/ironlark_bridge.py & bridge=$!; " ⇒ start the ROS bridge in the background and remember its process id;
+f"ros2 bag record -o bag ⇒ start the recorder on the named topics and remember its id;
+"trap 'kill -INT $recorder ⇒ on Ctrl+C: stop the recorder politely, wait for it to finish, then stop the bridge. Meanwhile, wait.
+stdout=(run / "ros.log").open("w") ⇒ Its output goes to ros.log…
+stderr=subprocess.STDOUT, ⇒ …errors too,
+start_new_session=True, ⇒ in its own process group, so it can be stopped as a whole.
+webots = subprocess.Popen( ⇒ Start Webots, with the command built above,
+command, ⇒ (the command)
+env=env, ⇒ with the prepared environment variables,
+stdout=webots_log, ⇒ output to webots.log,
+stderr=subprocess.STDOUT, ⇒ errors too,
+start_new_session=True, ⇒ in its own process group.
+sitl = subprocess.Popen( ⇒ Start ArduPilot's container:
+"docker", ⇒ docker
+"run", ⇒ run a container,
+"--rm", ⇒ deleted when it stops,
+"--name", ⇒ named…
+name, ⇒ …this run's SITL name,
+"--network", ⇒ on the network…
+"host", ⇒ …of this computer,
+"--user", ⇒ as user…
+f"{os.getuid()}:{os.getgid()}", ⇒ …you, so the files it writes are yours,
+"--mount", ⇒ lending it…
+f"type=bind,src={ROOT},dst=/project,readonly", ⇒ …the project folder, read-only, as /project,
+"--mount", ⇒ and…
+f"type=bind,src={run},dst=/run/ironlark", ⇒ …the run folder, writable, as /run/ironlark.
+IMAGE, ⇒ The pinned ArduPilot image.
+"/opt/ardupilot/build/sitl/bin/arducopter", ⇒ The program: ArduCopter, compiled for SITL.
+"--model", ⇒ Simulator backend:
+"webots-python", ⇒ Webots, over UDP.
+"--speedup", ⇒ Speed-up…
+"1", ⇒ …1: no speed-up.
+"--wipe", ⇒ Erase stored parameters, so every run starts the same.
+"--home", ⇒ Home position:
+"31.9500,35.9300,750,0", ⇒ latitude, longitude, altitude 750 m, heading 0.
+"--defaults", ⇒ Parameter files, in order:
+"/opt/ardupilot/Tools/autotest/default_params/copter.parm," ⇒ Copter's defaults,
+f"{UPSTREAM}/params/iris.parm,/project/config/flight.parm", ⇒ the Iris example's, then Ironlark's flight.parm.
+"--serial0", ⇒ Serial port 0…
+"tcp:5760", ⇒ …is MAVLink on TCP port 5760.
+"--serial1", ⇒ Serial port 1…
+"none", ⇒ …off;
+"--serial2", ⇒ serial port 2…
+"none", ⇒ …off.
+"--sim-address", ⇒ The simulator's address:
+"127.0.0.1", ⇒ this computer.
+stdout=sitl_log, ⇒ Output to sitl.log,
+stderr=subprocess.STDOUT, ⇒ errors too,
+start_new_session=True, ⇒ in its own process group.
+resources = Sampler( ⇒ Measure the memory and CPU of Webots and of the containers:
+containers={"sitl": name ⇒ (SITL, and ROS when recording)
+resources.start() ⇒ starting now.
+deadline = time.monotonic() + 30 ⇒ Allow 30 seconds…
+while time.monotonic() < deadline: ⇒ …and until then, repeatedly:
+if webots.poll() is not None or sitl.poll() is not None: ⇒ if Webots or ArduPilot has exited…
+raise RuntimeError( ⇒ …stop with an error.
+f"A simulator process exited. ⇒ (The message.)
+status = subprocess.run( ⇒ Ask Docker…
+["docker", "inspect", "-f", "{{.State.Running}}", name], ⇒ …whether the container is running.
+capture_output=True, ⇒ (Capture the answer…
+text=True, ⇒ …as text.)
+if status.returncode == 0 and status.stdout.strip() == "true": ⇒ If it is running…
+break ⇒ …stop waiting.
+time.sleep(0.2) ⇒ Otherwise wait 0.2 s and ask again.
+else: ⇒ If 30 s passed without that break…
+raise RuntimeError( ⇒ …stop with an error.
+"SITL container did not start ⇒ (The message.)
+ready = run / "world-ready" ⇒ The file the observer creates once the world has loaded.
+deadline = time.monotonic() + 600 ⇒ Allow 600 seconds.
+while not ready.exists(): ⇒ Until that file exists:
+if webots.poll() ⇒ if a simulator has exited…
+raise RuntimeError(f"A simulator process exited while loading ⇒ …stop;
+if time.monotonic() > deadline: ⇒ if time is up…
+raise RuntimeError(f"World did not load ⇒ …stop;
+time.sleep(0.2) ⇒ otherwise look again in 0.2 s.
+mission = subprocess.Popen( ⇒ Start the mission:
+"docker", ⇒ docker
+"exec", ⇒ run a command inside an existing container…
+name, ⇒ …the ArduPilot one:
+"python3", ⇒ Python,
+"/project/tests/flight_smoke.py", ⇒ running the mission script,
+"--output", ⇒ writing its result…
+"/run/ironlark/result.json", ⇒ …to result.json in the run folder,
+start_new_session=True, ⇒ in its own process group.
+deadline = time.monotonic() + 900 ⇒ A last-resort limit: 900 s of real time.
+while mission.poll() is None: ⇒ While the mission is still running:
+if webots.poll() ⇒ if a simulator has exited…
+raise RuntimeError( ⇒ …stop;
+f"A simulator process exited during flight ⇒ (the message)
+if record and (stream := sensing_report(run)): ⇒ if recording, and the sensor stream has already reported (only a failure ends it mid-flight)…
+raise RuntimeError(f"Sensing failed during the flight ⇒ …stop, listing what was lost;
+f"Inspect ⇒ (the message)
+if time.monotonic() > deadline: ⇒ if 900 s have passed…
+raise RuntimeError( ⇒ …stop;
+f"Flight exceeded ⇒ (the message)
+time.sleep(0.2) ⇒ otherwise check again in 0.2 s.
+if mission.returncode: ⇒ If the mission exited with an error code…
+raise RuntimeError(f"Flight check failed ⇒ …the flight failed.
+print(f"PASS: ⇒ Otherwise: PASS.
+report = json.loads( ⇒ Read the mission's result.json.
+if record: ⇒ If recording:
+stream = end_sensing( ⇒ stop the sensor stream and get its account: sent, dropped, acknowledged;
+report["sensing"] ⇒ add it, and what sensing cost in time, to the report;
+print(f"Sensing: ⇒ print the totals…
++ (f"; {cost ⇒ …and the speed relative to real time…
+if cost else ⇒ …when it was measured.
+resources.stop() ⇒ Stop measuring.
+report["resources"] ⇒ Add peak memory, CPU and GPU use to the report.
+(run / "result.json").write_text ⇒ Write the whole report back to result.json.
+ram, gpu = ⇒ Pick out the memory and GPU figures,
+parts = ⇒ format each program's memory,
+cpu = ⇒ and CPU time,
+print(f"Resources: ⇒ and print them…
+f"{gpu ⇒ (continued)
++ (f"; not measured ⇒ …noting anything that could not be measured.
+if not headless: ⇒ With a window:
+print( ⇒ print…
+"World left open ⇒ …this message,
+flush=True, ⇒ (now),
+webots.wait() ⇒ and wait until you close Webots.
+finally: ⇒ Runs however the block above ended: pass, error or Ctrl+C.
+if resources is not None: ⇒ If measuring started…
+resources.done.set() ⇒ …tell the sampler to finish.
+if ros is not None: ⇒ If ROS started:
+subprocess.run(["docker", "kill", "--signal", "INT" ⇒ send its container Ctrl+C (SIGINT), so the recorder closes the bag;
+stdout=subprocess.DEVNULL, stderr ⇒ (ignore Docker's output)
+try: ⇒ then…
+ros.wait(timeout=20) ⇒ …wait up to 20 s for it to finish;
+except subprocess.TimeoutExpired: ⇒ if it does not…
+stop_process(ros) ⇒ …stop it by force.
+stop_process(mission) ⇒ Stop the mission script.
+subprocess.run( ⇒ Run…
+["docker", "stop", "--time", "3", name], ⇒ …docker stop on the ArduPilot container, allowing it 3 s
+stdout=subprocess.DEVNULL, ⇒ (ignore its output
+stderr=subprocess.DEVNULL, ⇒ and errors).
+stop_process(sitl) ⇒ Stop the docker run process.
+stop_process(webots) ⇒ Stop Webots' whole process group.
+
+## exclusive
+@contextlib.contextmanager ⇒ Makes the function below usable with "with": code runs before and after the block.
+def exclusive(): ⇒ Defines exclusive().
+CACHE.mkdir(exist_ok=True) ⇒ Make sure the .cache folder exists.
+with (CACHE / "flight.lock").open("w") as lock: ⇒ Open the lock file (create it if needed).
+try: ⇒ Try to…
+fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB) ⇒ …take an exclusive lock on it, without waiting.
+except BlockingIOError as exc: ⇒ If someone else holds it…
+raise RuntimeError("Another Ironlark ⇒ …stop with a clear message.
+yield ⇒ Holding the lock, run the caller's block. The lock is released when the file closes.
+
+## build-lockstep
+def build_lockstep(home): ⇒ Defines build_lockstep, given the Webots installation folder.
+compiler = shutil.which("cc") or shutil.which("gcc") ⇒ Find a C compiler: cc, or else gcc.
+if compiler is None: ⇒ If there is none…
+return None ⇒ …give back nothing: the Python loop will fly.
+with tempfile.TemporaryDirectory() as scratch: ⇒ Make a temporary folder, deleted afterwards.
+library = Path(scratch, "flight_lockstep.so") ⇒ The library file to produce, inside it.
+built = subprocess.run( ⇒ Run the compiler:
+[compiler, "-O2", "-shared", "-fPIC" ⇒ optimised, as a shared library, from lockstep.c,
+"-I", str(home / "include/controller/c") ⇒ using Webots' C headers and linking Webots' controller library,
+"-o", str(library)], ⇒ writing the library file.
+capture_output=True, text=True, ⇒ (Keep its messages, as text.)
+if built.returncode: ⇒ If compiling failed…
+raise RuntimeError(f"The flight bridge's C loop does not compile ⇒ …stop the flight and show why.
+f"{built.stderr}" ⇒ (The compiler's error output.)
+return library.read_bytes() ⇒ Give back the compiled bytes.
+
+## flight-parm
+AHRS_EKF_TYPE 3 ⇒ Fly on EKF3's estimate (not the simulator's truth, which would be 10).
+EK3_ENABLE 1 ⇒ Turn EKF3 on.
+EK2_ENABLE 0 ⇒ Turn the older EKF2 off.
+EK3_SRC1_POSXY 3 ⇒ Horizontal position from GPS (source 3).
+EK3_SRC1_VELXY 3 ⇒ Horizontal velocity from GPS.
+EK3_SRC1_POSZ 1 ⇒ Height from the barometer (source 1).
+EK3_SRC1_VELZ 3 ⇒ Vertical velocity from GPS.
+EK3_SRC1_YAW 1 ⇒ Heading from the compass (source 1).
+ACRO_BAL_ROLL 0.5 ⇒ Acro-mode levelling strength on roll: 0.5.
+ACRO_BAL_PITCH 0.5 ⇒ The same on pitch.
+ATC_RAT_RLL_I 0.05 ⇒ Roll-rate integral gain: 0.05 (Copter 4.7 refuses zero).
+ATC_RAT_PIT_I 0.05 ⇒ Pitch-rate integral gain: 0.05.
+SCHED_LOOP_RATE 250 ⇒ ArduPilot's main loop: 250 times a second.
+GPS1_TYPE 1 ⇒ GPS 1: auto-detect the receiver type.
+SIM_GPS1_ENABLE 1 ⇒ Simulate GPS 1.
+FS_THR_ENABLE 0 ⇒ No radio-loss (throttle) failsafe.
+FS_GCS_ENABLE 0 ⇒ No ground-station-loss failsafe.
+LOG_DISARMED 1 ⇒ Keep logging while disarmed.
+
+## bridge
+class IrisBridge(WebotsArduVehicle): ⇒ Defines IrisBridge, based on ArduPilot's example bridge class (it inherits everything, then overrides some functions).
+_sensors = None ⇒ The sensor stream; None until first needed.
+def _after_step(self): ⇒ Called after each physics step:
+if self._sensors is None: ⇒ the first time…
+self._sensors = sensor_stream.SensorStream(self.robot) if ⇒ …create the sensor stream if sensing is turned on, else remember False;
+if self._sensors: ⇒ if there is a stream…
+self._sensors.after_step() ⇒ …let it sample this step.
+def _handle_controls(self, command): ⇒ Called with each motor command from ArduPilot:
+super()._handle_controls(tuple(max(0.0, value) ⇒ replace every negative value with 0, then let the example's code set the motors.
+def _handle_sitl(self, sitl_address="127.0.0.1", port=9002): ⇒ Replaces the example's main loop. ArduPilot is on this computer; Webots listens on port 9002.
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) ⇒ Create a UDP socket.
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) ⇒ Allow reusing the port right after a previous run.
+s.bind(("0.0.0.0", port)) ⇒ Listen on port 9002.
+print(f"Listening ⇒ Say so.
+while not select.select([s], [], [], 0)[0]: ⇒ While no packet has arrived yet:
+if self.robot.step(self._timestep) == -1: ⇒ take a physics step; if Webots is quitting…
+s.close() ⇒ …close the socket,
+self._webots_connected = False ⇒ …note the end,
+return ⇒ …and leave.
+self._after_step() ⇒ Sample sensors for this step.
+print(f"Connected ⇒ ArduPilot is there: say so.
+if os.environ.get("IRONLARK_LOCKSTEP"): ⇒ If the launcher compiled the C loop…
+self._lockstep_in_c( ⇒ …hand everything to it…
+return ⇒ …and leave once it ends.
+size = self.controls_struct_size ⇒ Otherwise, the Python loop. The motor packet's size in bytes (64).
+while True: ⇒ Forever:
+s.sendto(self._get_fdm_struct(), (sitl_address, port + 1)) ⇒ send this step's sensor packet to ArduPilot on port 9003;
+command = None ⇒ no motor command yet;
+while command is None: ⇒ until one arrives:
+if not select.select([s], [], [], 1.0)[0]: ⇒ wait up to 1 s for a packet; if none came…
+s.sendto(self._get_fdm_struct() ⇒ …send the sensor packet again…
+continue ⇒ …and go back to waiting.
+while select.select([s], [], [], 0)[0]: ⇒ While packets are waiting:
+data = s.recv(512) ⇒ read one (up to 512 bytes);
+if len(data) >= size: ⇒ if it is a whole motor packet…
+command = struct.unpack( ⇒ …turn its bytes into 16 numbers. A later packet overwrites this one.
+self._handle_controls(command) ⇒ Apply the newest command to the motors.
+if self.robot.step(self._timestep) == -1: ⇒ Take one 2 ms step; if Webots is quitting…
+break ⇒ …leave the loop.
+self._after_step() ⇒ Sample sensors for this step.
+s.close() ⇒ Close the socket.
+self._webots_connected = False ⇒ Note the end.
+print(f"Lost connection ⇒ Say so.
+def _lockstep_in_c(self, s, sitl_address, port, library): ⇒ Defines the hand-over to the C loop.
+if self._sensors is None: ⇒ If the sensor stream does not exist yet…
+self._sensors = sensor_stream ⇒ …create it (or False when sensing is off).
+after_step_type = ctypes.CFUNCTYPE(None) ⇒ Describe, for C, a function with no arguments and no result.
+after_step = after_step_type( ⇒ Wrap the stream's after_step so C can call it (an empty one when sensing is off).
+motors = (ctypes.c_int * len(self._motors)) ⇒ A C array of the four motors' device tags.
+ctypes.CDLL(library).ironlark_lockstep( ⇒ Load the compiled library and call its loop with:
+s.fileno(), sitl_address.encode() ⇒ the socket's file descriptor, ArduPilot's address, the port, the 2 ms step, the motors,
+self.gyro._tag ⇒ the gyro, accelerometer, inertial unit and GPS tags, and the sensing callback.
+s.close() ⇒ The loop returned: Webots is quitting. Close the socket.
+self._webots_connected = False ⇒ Note the end.
+print(f"Lost connection ⇒ Say so.
+vehicle = IrisBridge(motor_names= ⇒ Create the bridge for the four motors named in the drone's model. This starts everything.
+while vehicle.webots_connected(): ⇒ Then keep the program alive…
+time.sleep(0.1) ⇒ …checking every 0.1 s, until Webots disconnects.
+
+## lockstep
+typedef void (*AfterStep)(void); ⇒ Names a type: a function with no arguments and no result. The Python callback has this type.
+static void fdm( ⇒ Defines fdm(): fill a 16-number packet from four device tags.
+const double *const g = wb_gyro_get_values(gyro); ⇒ Read the gyro's three values.
+const double *const a = wb_accelerometer_get_values(accel); ⇒ Read the accelerometer's three values.
+const double *const i = wb_inertial_unit_get_roll_pitch_yaw(imu); ⇒ Read roll, pitch and yaw.
+const double *const velocity = wb_gps_get_speed_vector(gps); ⇒ Read the GPS device's velocity.
+const double *const position = wb_gps_get_values(gps); ⇒ Read the GPS device's position.
+const double *const vectors[5] ⇒ List the five readings in order.
+packet[0] = wb_robot_get_time(); ⇒ Number 0: the simulation time, in seconds.
+for (int k = 0; k < 5; ++k) { ⇒ For each of the five readings:
+packet[1 + 3 * k] = vectors[k][0]; ⇒ copy x as is,
+packet[2 + 3 * k] = -vectors[k][1]; ⇒ flip the sign of y,
+packet[3 + 3 * k] = -vectors[k][2]; ⇒ flip the sign of z.
+static void send_fdm( ⇒ Defines send_fdm(): build a sensor packet…
+WbDeviceTag gps) { ⇒ (its last argument)
+double packet[16]; ⇒ room for 16 numbers,
+fdm(packet, gyro, accel, imu, gps); ⇒ fill it,
+sendto(sock, packet, sizeof(packet), 0 ⇒ and send its 128 bytes to ArduPilot over UDP.
+static int readable(int sock, double seconds) { ⇒ Defines readable(): has a packet arrived within this many seconds?
+fd_set set; ⇒ A set of sockets to watch…
+FD_ZERO(&set); ⇒ …emptied…
+FD_SET(sock, &set); ⇒ …containing just ours.
+struct timeval timeout ⇒ The wait time, split into whole seconds and microseconds.
+return select(sock + 1, &set, NULL, NULL, &timeout) > 0; ⇒ Wait until the socket has data or time runs out; true if data.
+int ironlark_lockstep( ⇒ Defines the loop Python calls: the socket, ArduPilot's address, port, step, motors…
+int gyro, int accel, int imu, int gps, AfterStep after_step) { ⇒ …sensor tags and the sensing callback.
+struct sockaddr_in sitl; ⇒ ArduPilot's network address:
+memset(&sitl, 0, sizeof(sitl)); ⇒ cleared,
+sitl.sin_family = AF_INET; ⇒ an internet (IPv4) address,
+sitl.sin_port = htons(port + 1); ⇒ port 9003,
+inet_pton(AF_INET, sitl_address, &sitl.sin_addr); ⇒ at the given address, 127.0.0.1.
+float command[16]; ⇒ Room for the motor command: 16 numbers.
+for (;;) { ⇒ Forever:
+send_fdm(sock, &sitl, gyro, accel, imu, gps); ⇒ send this step's sensor packet;
+int received = 0; ⇒ no command yet;
+while (!received) { ⇒ until one arrives:
+if (!readable(sock, 1.0)) { ⇒ if nothing arrives within 1 s…
+send_fdm(sock, &sitl, gyro, accel, imu, gps); ⇒ …send the sensor packet again…
+continue; ⇒ …and keep waiting.
+while (readable(sock, 0.0)) { ⇒ While packets are waiting right now:
+char data[512]; ⇒ room for one,
+const ssize_t size = recv(sock, data, sizeof(data), 0); ⇒ read it;
+if (size >= (ssize_t)sizeof(command)) { ⇒ if it is a whole motor packet (64 bytes)…
+memcpy(command, data, sizeof(command)); ⇒ …copy it into command, overwriting any earlier one…
+received = 1; ⇒ …and note that a command arrived.
+for (int k = 0; k < motor_count; ++k) { ⇒ For each motor:
+const double value = command[k] > 0.0 ? (double)command[k] : 0.0; ⇒ negative or zero becomes 0;
+const double linearized = value > 0.0 ? sqrt(value) : 0.0; ⇒ take the square root;
+wb_motor_set_velocity( ⇒ set the motor's speed to that times its top speed.
+if (wb_robot_step(timestep) == -1) ⇒ Advance physics one 2 ms step; if Webots is quitting…
+return 0; ⇒ …end the loop.
+if (after_step) ⇒ If there is a sensing callback…
+after_step(); ⇒ …call it.
+
+## clock-patch
+--- a/libraries/SITL/SIM_Webots_Python.cpp ⇒ The file before the change…
++++ b/libraries/SITL/SIM_Webots_Python.cpp ⇒ …and after.
+@@ -86,14 +86,13 @@ ⇒ Where: around line 86; 14 lines become 13.
+while (socket_sitl.recv(&pkt, sizeof(pkt), 100) != sizeof(pkt)) { ⇒ Unchanged: wait 100 ms at a time for a whole sensor packet…
+send_servos(input); ⇒ Unchanged: …resending the motor packet each time.
+-        // Reset the timestamp ⇒ Removed: the comment…
+-        if (get_wall_time_us() > last_wall_time_us + WEBOTS_TIMEOUT_US) { ⇒ Removed: "if more than 5 real seconds passed…"
+-            last_timestamp = 0; ⇒ Removed: "…forget the last simulation time."
+-        } ⇒ Removed: end of that block.
++        // Rendering or pausing ⇒ Added: a comment explaining why the reset is gone.
++        // time. Keep ⇒ Added: (the comment continues).
+const double deltat = pkt.timestamp - last_timestamp; ⇒ Unchanged: time step = this packet's time minus the last.
+-    if (deltat < 0) { ⇒ Removed: the old comment on this line.
++    if (deltat < 0) { ⇒ Added: if time went backwards (Webots was reset)…
++        last_timestamp = pkt.timestamp; ⇒ Added: …count on from the new time.
+time_now_us += 1; ⇒ Unchanged: nudge ArduPilot's clock one microsecond…
+return; ⇒ Unchanged: …and skip this packet.
+
+## up-sitl
+while True: ⇒ Forever:
+readable, writable, _ = select.select([s], [s], [], 0) ⇒ ask, without waiting: is a packet waiting? can we send?
+if writable: ⇒ If we can send…
+fdm_struct = self._get_fdm_struct() ⇒ …build a sensor packet…
+s.sendto(fdm_struct, (sitl_address, port+1)) ⇒ …and send it (so it sends one on every pass).
+if readable: ⇒ If a packet is waiting:
+data = s.recv(512) ⇒ read one,
+if not data or len(data) < self.controls_struct_size: ⇒ if it is not a whole motor packet…
+continue ⇒ …skip it.
+command = struct.unpack( ⇒ Turn its bytes into numbers: the oldest waiting command, not the newest.
+self._handle_controls(command) ⇒ Apply it to the motors.
+step_success = self.robot.step(self._timestep) ⇒ Take one physics step, for this packet.
+if step_success == -1: ⇒ If Webots is quitting…
+break ⇒ …stop.
+
+## up-controls
+if self._uses_propellers: ⇒ If the motors drive propellers:
+linearized_motor_commands = [np.sqrt(np.abs(v))*np.sign(v) ⇒ square-root each command, keeping its sign: −1 stays −1, full reverse.
+if self._reversed_motors: ⇒ If some motors are mounted reversed…
+for m in self._reversed_motors: ⇒ …for each of them…
+linearized_motor_commands[m-1] *= -1 ⇒ …flip its direction.
+for i, m in enumerate(self._motors): ⇒ For each motor:
+m.setVelocity( ⇒ set its speed: the command times the motor's top speed (or a cap, if lower).
+
+## ap-servos
+void WebotsPython::send_servos( ⇒ Defines send_servos: send the motor packet to Webots.
+servo_packet pkt; ⇒ A motor packet: 16 floats.
+for (unsigned i = 0; i < 16; ++i){ ⇒ For each of the 16 outputs:
+pkt.motor_speed[i] = (input.servos[i]-1000) / 1000.0f; ⇒ PWM 1000–2000 becomes 0–1; no PWM (0) becomes −1.
+socket_sitl.sendto(&pkt, sizeof(pkt), _webots_address, _webots_port); ⇒ Send its 64 bytes to Webots, port 9002.
+
+## ap-fdm
+void WebotsPython::recv_fdm( ⇒ Defines recv_fdm: receive one sensor packet from Webots.
+fdm_packet pkt; ⇒ Room for a sensor packet: 16 doubles.
+while (socket_sitl.recv(&pkt, sizeof(pkt), 100) != sizeof(pkt)) { ⇒ Wait up to 100 ms for a whole sensor packet; while none comes:
+send_servos(input); ⇒ resend the motor packet;
+if (get_wall_time_us() > last_wall_time_us + WEBOTS_TIMEOUT_US) { ⇒ if more than 5 s of real time have passed…
+last_timestamp = 0; ⇒ …forget the last simulation time (the bug the patch removes).
+const double deltat = pkt.timestamp - last_timestamp; ⇒ Time step = this packet's time minus the last.
+if (deltat < 0) { ⇒ If time went backwards…
+time_now_us += 1; ⇒ …nudge the clock one microsecond…
+return; ⇒ …and ignore this packet.
+accel_body = Vector3f( ⇒ Take the accelerometer's three numbers…
+static_cast<float>(pkt.imu_linear_acceleration_xyz[1]), ⇒ (y)
+static_cast<float>(pkt.imu_linear_acceleration_xyz[2])); ⇒ (z)
+gyro = Vector3f( ⇒ Take the gyro's three numbers…
+static_cast<float>(pkt.imu_angular_velocity_rpy[1]), ⇒ (y)
+static_cast<float>(pkt.imu_angular_velocity_rpy[2])); ⇒ (z)
+dcm.from_euler( ⇒ Build the drone's orientation from roll, pitch, yaw…
+static_cast<float>(pkt.imu_orientation_rpy[1]), ⇒ (pitch)
+static_cast<float>(pkt.imu_orientation_rpy[2])); ⇒ (yaw)
+velocity_ef = Vector3f( ⇒ Take the velocity, as north, east, down…
+static_cast<float>(pkt.velocity_xyz[1]), ⇒ (east)
+static_cast<float>(pkt.velocity_xyz[2])); ⇒ (down)
+position = Vector3d(pkt.position_xyz[0], ⇒ Take the position directly as north…
+pkt.position_xyz[1], ⇒ …east…
+pkt.position_xyz[2]); ⇒ …down. No conversion.
+position.xy() += origin.get_distance_NE_double(home); ⇒ Shift north and east by home's offset from the origin.
+time_now_us += static_cast<uint64_t>(deltat * 1.0e6); ⇒ Advance ArduPilot's clock by the time step, in microseconds.
+if (deltat < 0.01 && deltat > 0) { ⇒ If the step is a normal small one…
+adjust_frame_time( ⇒ …tell ArduPilot the simulation's rate (500 per second).
+last_timestamp = pkt.timestamp; ⇒ Remember this packet's time for next time.
+
+## frames
+def enu_to_ned(v): ⇒ Defines enu_to_ned for a vector v.
+x, y, z = v ⇒ Take its three parts.
+return (y, x, -z) ⇒ North = y, east = x, down = −z.
+def flu_to_frd(v): ⇒ Defines flu_to_frd.
+x, y, z = v ⇒ Take its three parts.
+return (x, -y, -z) ⇒ Forward = x, right = −y, down = −z.
+def quaternion_multiply(a, b): ⇒ Defines the product of two quaternions: rotation b, then rotation a.
+ax, ay, az, aw = a ⇒ The first's four numbers.
+bx, by, bz, bw = b ⇒ The second's.
+return (aw * bx ⇒ The standard formula: new x…
+aw * by ⇒ …new y…
+aw * bz ⇒ …new z…
+aw * bw ⇒ …new w.
+def axis_angle_to_quaternion(rotation): ⇒ Defines the conversion from Webots' axis-and-angle.
+x, y, z, angle = rotation ⇒ Take axis x, y, z and the angle.
+norm = math.sqrt(x * x + y * y + z * z) or 1.0 ⇒ The axis's length (1 if it is all zeros).
+s = math.sin(angle / 2) / norm ⇒ sin(half the angle), divided by that length.
+return (x * s, y * s, z * s, math.cos(angle / 2)) ⇒ The quaternion: axis × sin(angle/2), then cos(angle/2).
+CAMERA_LINK_TO_OPTICAL = ⇒ The fixed rotation from the camera's FLU frame to its optical frame.
+ENU_TO_NED = ⇒ ENU to NED as a rotation: 180° about the line between x and y.
+FLU_TO_FRD = ⇒ FLU to FRD as a rotation: 180° about x.
+def attitude_enu_flu_to_ned_frd(q): ⇒ Defines the attitude conversion.
+return quaternion_multiply(quaternion_multiply(ENU_TO_NED, q), FLU_TO_FRD) ⇒ World rotation on the left, body rotation on the right.
+
+## smoke-wait
+def poll(self): ⇒ Defines poll(): one round of talking to ArduPilot.
+now = time.monotonic() ⇒ The real time now.
+if now - self.last_heartbeat >= 1: ⇒ If a second has passed since our last heartbeat…
+self.connection.mav.heartbeat_send( ⇒ …send one, saying "I am a ground station"…
+mavutil.mavlink.MAV_AUTOPILOT_INVALID ⇒ …"and not an autopilot".
+self.last_heartbeat = now ⇒ Remember when.
+message = self.connection.recv_match(blocking=True, timeout=0.2) ⇒ Wait up to 0.2 s for a message.
+if message and message.get_type() != "BAD_DATA": ⇒ If a valid one came:
+self.messages[message.get_type()] = message ⇒ keep it as the latest of its type,
+boot = getattr(message, "time_boot_ms", None) ⇒ its time field, if it has one;
+if boot is not None: ⇒ if so…
+self.sim_time = boot / 1000 ⇒ …that, in seconds, is now the script's simulated time;
+self.log.write( ⇒ log the message as one JSON line;
+if message.get_type() == "STATUSTEXT": ⇒ if it is a text message from ArduPilot…
+print(f"  ArduPilot: ⇒ …print it.
+return message ⇒ Give back the message (or None).
+def expired(self, sim_start, wall_start, timeout): ⇒ Defines expired(): has a wait run out?
+if self.sim_time is not None and sim_start is not None ⇒ If more than timeout simulated seconds have passed…
+return True ⇒ …yes.
+return time.monotonic() - wall_start > max(4 * timeout, 60) ⇒ Otherwise, only if over 4× the timeout (at least 60 s) of real time has passed.
+def wait(self, description, predicate, timeout=30): ⇒ Defines wait(): poll until a message passes the test, or time out (30 s unless told).
+sim_start, wall_start = self.sim_time, time.monotonic() ⇒ Note both clocks at the start.
+while not self.expired(sim_start, wall_start, timeout): ⇒ Until time runs out:
+message = self.poll() ⇒ get a message;
+if sim_start is None: ⇒ if the simulated start was unknown…
+sim_start = self.sim_time ⇒ …use the first simulated time seen;
+if message and predicate(message): ⇒ if this message passes the test…
+return message ⇒ …done: give it back.
+raise RuntimeError(f"Timeout: {description}") ⇒ Time ran out: fail, saying what was awaited.
+
+## smoke-command
+def command(self, command, *params): ⇒ Defines command(): send a MAVLink command with up to seven parameters.
+self.connection.mav.command_long_send( ⇒ Send a COMMAND_LONG…
+self.connection.target_system, self.connection.target_component, ⇒ …to the autopilot…
+command, 0, *(list(params) + [0] * (7 - len(params)))) ⇒ …the command number, then the parameters, padded with zeros to seven.
+ack = self.wait(f"command acknowledgement {command}", ⇒ Wait up to 10 s for…
+lambda m: m.get_type() == "COMMAND_ACK" and m.command == command, 10) ⇒ …an acknowledgement of this command.
+if ack.result != mavutil.mavlink.MAV_RESULT_ACCEPTED: ⇒ If it was not accepted:
+deadline = time.monotonic() + 0.5 ⇒ for half a second…
+while time.monotonic() < deadline: ⇒ …keep…
+self.poll() ⇒ …listening;
+status = self.messages.get("STATUSTEXT") ⇒ take the latest text message,
+detail = f": {status.text}" if status else "" ⇒ use it as the reason if there is one,
+raise RuntimeError(f"Command {command} rejected ⇒ and fail with it.
+def mode(self, value): ⇒ Defines mode(): change flight mode.
+self.command(mavutil.mavlink.MAV_CMD_DO_SET_MODE, ⇒ Send command 176, set mode…
+mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED, value) ⇒ …using ArduPilot's own mode numbers: this one.
+self.wait(f"mode {value}", ⇒ Then wait for a heartbeat that reports the new mode.
+
+## smoke-connect
+def connect(self): ⇒ Defines connect().
+self.event("CONNECTING") ⇒ Write the state CONNECTING to flight-state.json.
+deadline = time.monotonic() + 45 ⇒ Allow 45 seconds.
+while time.monotonic() < deadline: ⇒ Until then:
+try: ⇒ try to…
+self.connection = mavutil.mavlink_connection("tcp:127.0.0.1:5760", ⇒ …connect to ArduPilot's MAVLink port…
+source_system=255, retries=0) ⇒ …as system 255, trying once;
+break ⇒ connected: stop trying.
+except OSError: ⇒ Refused (nobody listening yet)?
+time.sleep(0.5) ⇒ Wait half a second and try again.
+if self.connection is None: ⇒ Never connected?
+raise RuntimeError("SITL did not expose ⇒ Fail.
+heartbeat = self.wait("autopilot heartbeat" ⇒ Wait up to 45 s for ArduPilot's heartbeat.
+self.connection.target_system = heartbeat.get_srcSystem() ⇒ Talk to the system that sent it…
+self.connection.target_component = heartbeat.get_srcComponent() ⇒ …and its component.
+self.connection.mav.request_data_stream_send( ⇒ Ask the autopilot…
+self.connection.target_system, self.connection.target_component, ⇒ (that one)
+mavutil.mavlink.MAV_DATA_STREAM_ALL, 10, 1) ⇒ …to send every status stream, 10 times a second, starting now.
+self.connection.mav.param_request_read_send(self.connection.target_system, ⇒ Ask for the value of…
+self.connection.target_component, b"AHRS_EKF_TYPE", -1) ⇒ …the parameter AHRS_EKF_TYPE, by name.
+estimator = self.wait("EKF3 configuration" ⇒ Wait for the answer…
+and m.param_id == "AHRS_EKF_TYPE") ⇒ …about that parameter.
+if estimator.param_value != 3: ⇒ If it is not 3…
+raise RuntimeError("Expected EKF3 ⇒ …refuse to continue.
+
+## smoke-execute
+def execute(self): ⇒ Defines execute(): the whole mission.
+self.connect() ⇒ Connect and check the estimator.
+self.event("WAITING_FOR_POSITION") ⇒ State: waiting for position.
+self.wait("GPS fix", lambda m: m.get_type() == "GPS_RAW_INT" and m.fix_type >= 3, 60) ⇒ Wait up to 60 s for a 3D GPS fix.
+self.wait("EKF position", ⇒ Wait up to 60 s for an estimator status…
+and m.flags & 16 and not m.flags & 128, 60) ⇒ …with bit 16 set and bit 128 clear.
+self.wait("local position", ⇒ Wait for a local position message.
+self.mode(4) ⇒ Switch to GUIDED.
+self.event("ARMING") ⇒ State: arming.
+self.command(mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 1) ⇒ Command 400, parameter 1: arm.
+self.wait("armed", ⇒ Wait for a heartbeat…
+and m.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED) ⇒ …with the armed bit set.
+self.command(mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 3) ⇒ Command 22: take off; parameter 7, the height: 3 m.
+self.event("TAKING_OFF") ⇒ State: taking off.
+self.wait("3 metre altitude", ⇒ Wait up to 45 s for a position report…
+and 2700 <= m.relative_alt <= 3400, 45) ⇒ …with height above home between 2.7 and 3.4 m.
+self.event("HOVERING") ⇒ State: hovering.
+start = None ⇒ No hover under way yet.
+hovered = False ⇒ Not yet hovered 5 s.
+sim_start, wall_start = self.sim_time, time.monotonic() ⇒ Note both clocks.
+while not self.expired(sim_start, wall_start, 25): ⇒ For up to 25 simulated seconds:
+message = self.poll() ⇒ get a message;
+if not message or message.get_type() != "GLOBAL_POSITION_INT": ⇒ if it is not a position report…
+continue ⇒ …ignore it.
+altitude = message.relative_alt / 1000 ⇒ Height above home, millimetres to metres.
+if not 2.5 <= altitude <= 3.5: ⇒ Outside 2.5–3.5 m?
+start = None ⇒ The hover is broken; start over…
+continue ⇒ …and keep listening.
+if start is None: ⇒ Inside the band, and no hover under way?
+start = message.time_boot_ms ⇒ It starts now.
+if message.time_boot_ms - start >= 5000: ⇒ If it has lasted 5000 ms…
+hovered = True ⇒ …it counts…
+break ⇒ …stop waiting.
+if not hovered: ⇒ If 25 s passed without a 5 s hover…
+raise RuntimeError("Could not sustain ⇒ …fail.
+self.event("LANDING") ⇒ State: landing.
+self.mode(9) ⇒ Switch to LAND.
+self.wait("landed and disarmed", ⇒ Wait up to 60 s for a heartbeat…
+and not m.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED, 60) ⇒ …with the armed bit clear.
+self.event("EVALUATING") ⇒ State: evaluating.
+truth = [json.loads(line) ⇒ Read ground_truth.jsonl, one sample per line.
+autopilot_time = self.messages.get("SYSTEM_TIME") ⇒ The last time report from ArduPilot.
+if autopilot_time is None: ⇒ If there was none…
+raise RuntimeError("No autopilot clock ⇒ …fail.
+measurements = judge(truth, autopilot_time.time_boot_ms / 1000) ⇒ Judge the flight on the true path.
+self.event("COMPLETED") ⇒ State: completed.
+return measurements ⇒ Give back the measurements.
+
+## judge
+def judge(truth, autopilot_seconds): ⇒ Defines judge(): the true path, and ArduPilot's last time in seconds.
+if not truth: ⇒ If there is no path at all…
+raise RuntimeError("No independent ⇒ …fail.
+times = [sample["time"] for sample in truth] ⇒ The list of sample times.
+gaps = [(a, b) for a, b in zip(times, times[1:]) if b - a > 0.1 + 1e-6] ⇒ Every pair of neighbouring samples more than 0.1 s apart.
+if times[0] > 0.2 or gaps: ⇒ If it starts late or has any gap:
+first = f", the first from ⇒ describe the first gap,
+raise RuntimeError(f"The Webots trajectory does not cover ⇒ and fail.
+f"{len(gaps)} gaps{first}") ⇒ (The message continues.)
+clock_difference = abs(autopilot_seconds - times[-1]) ⇒ How far apart the two clocks' last times are.
+if clock_difference > 1: ⇒ Over a second?
+raise RuntimeError(f"Autopilot/Webots clock mismatch ⇒ Fail.
+heights = [sample["position"][2] for sample in truth] ⇒ The heights (the third position number, z).
+peak = max(heights) ⇒ The highest.
+hover, entered = 0.0, None ⇒ Longest hover so far: 0. Current stay began: not yet.
+for at, height in zip(times, heights): ⇒ Go through the samples in time order:
+if not 2.5 <= height <= 3.5: ⇒ if outside the band…
+entered = None ⇒ …the current stay is over…
+continue ⇒ …next sample.
+entered = at if entered is None else entered ⇒ Inside: if a stay is not under way, it began now.
+hover = max(hover, at - entered) ⇒ Keep the longest stay so far.
+start_xy = truth[0]["position"][:2] ⇒ The starting x and y.
+drift = max(math.hypot( ⇒ The largest horizontal distance from the start…
+sample["position"][1] - start_xy[1]) for sample in truth) ⇒ …over every sample.
+if not 2.5 <= peak <= 4: ⇒ Peak outside 2.5–4 m?
+raise RuntimeError(f"Physical takeoff height ⇒ Fail.
+if hover < 5: ⇒ No 5 s hover?
+raise RuntimeError(f"No physical 5-second hover ⇒ Fail.
+if not -0.2 <= heights[-1] <= 0.2: ⇒ Last height not within 0.2 m of the ground?
+raise RuntimeError(f"Drone did not physically land ⇒ Fail.
+if drift > 1.5: ⇒ Wandered over 1.5 m?
+raise RuntimeError(f"Excessive horizontal drift ⇒ Fail.
+return {"peak_height_m": peak ⇒ All passed: give back the measurements…
+"max_horizontal_drift_m": drift ⇒ …(continued).
+
+## observer
+robot = Supervisor() ⇒ This controller is a supervisor.
+drone = robot.getFromDef("IRONLARK_DRONE") ⇒ Find the drone by its DEF name.
+destination = os.environ.get("IRONLARK_RUN_DIR") ⇒ The run folder, from the environment.
+if destination is None: ⇒ If not started by the launcher…
+raise SystemExit("Start this world through ⇒ …stop, saying how to start it.
+scene_path = os.environ.get("IRONLARK_SCENE") ⇒ The scene file for the minimap, if any.
+world_view = None ⇒ No minimap yet.
+if scene_path: ⇒ If there is one…
+from minimap import WorldView ⇒ …load the minimap code…
+world_view = WorldView(robot, scene_path, destination) ⇒ …and create it.
+(Path(destination) / "world-ready").touch() ⇒ Create the empty file world-ready.
+fast_start = os.environ.get("IRONLARK_FAST_START") == "1" ⇒ Was fast start requested?
+flight_state = Path(destination) / "flight-state.json" ⇒ Where the mission writes its state.
+if fast_start: ⇒ If fast start:
+children = robot.getRoot().getField("children") ⇒ the world's top-level objects;
+world_info = next(children.getMFNode(i) for i in range(children.getCount()) ⇒ find the one that is…
+if children.getMFNode(i).getTypeName() == "WorldInfo") ⇒ …WorldInfo;
+fps = world_info.getField("FPS") ⇒ its frame-rate field;
+world_fps = fps.getSFFloat() ⇒ remember the value;
+fps.setSFFloat(10) ⇒ set 10 frames a second;
+robot.simulationSetMode(Supervisor.SIMULATION_MODE_FAST) ⇒ run as fast as possible.
+with (Path(destination) / "ground_truth.jsonl").open("w", buffering=1) as stream: ⇒ Open ground_truth.jsonl, every line written through at once.
+while robot.step(100) != -1: ⇒ Every 100 ms of simulated time, until Webots quits:
+if fast_start and flight_state.exists(): ⇒ if still fast and the mission has written a state…
+state = json.loads(flight_state.read_text()).get("state") ⇒ …read it;
+if state not in ("CONNECTING", "WAITING_FOR_POSITION"): ⇒ if it is past the wait…
+fps.setSFFloat(world_fps) ⇒ …restore the frame rate,
+robot.simulationSetMode(Supervisor.SIMULATION_MODE_REAL_TIME) ⇒ …real time,
+fast_start = False ⇒ …and stop checking.
+position = drone.getPosition() ⇒ The drone's true position.
+stream.write(json.dumps({"time": robot.getTime(), "position": position, ⇒ Write one line: time, position…
+"velocity": drone.getVelocity()}) + " ⇒ …and true velocity.
+if world_view: ⇒ If there is a minimap…
+world_view.update(position, drone.getOrientation()) ⇒ …move the drone on it.
+
+## sensors-json
+"lidar": { ⇒ The LiDAR's settings:
+"name": "lidar", ⇒ its device name,
+"frame_id": "lidar_link", ⇒ the frame its points are in,
+"model": ⇒ what it imitates: 360° around, 59° up and down (−7° to +52°), 0.1 to 40 m;
+"translation": [ ⇒ where it sits on the drone (x, y, z, metres):
+0.0, ⇒ (x)
+0.0, ⇒ (y)
+0.083 ⇒ (z: 8.3 cm up)
+"rotation": [ ⇒ its rotation (axis x, y, z, then angle):
+0, ⇒ (axis x)
+0, ⇒ (axis y)
+1, ⇒ (axis z)
+0 ⇒ (angle 0: not rotated)
+"rate_hz": 10, ⇒ 10 scans a second,
+"horizontal_resolution": 900, ⇒ 900 columns all around (every 0.4°),
+"layers": 32, ⇒ 32 rings,
+"field_of_view": 6.283185, ⇒ 360° horizontally (2π radians),
+"vertical_field_of_view": 1.826966, ⇒ 104.7° vertically for the 56 rendered layers,
+"tilt_angle": 0.0, ⇒ no tilt (Webots misplaces points when tilted),
+"min_range": 0.1, ⇒ nearest: 10 cm,
+"max_range": 40.0, ⇒ farthest: 40 m,
+"noise": 0.02, ⇒ range noise: 2 cm,
+"render_layers": 56, ⇒ layers Webots renders; the top 32 are kept.
+
+## stream-init
+def period(rate_hz): ⇒ Defines period(): a rate's time between samples.
+ms = int(round(1000.0 / rate_hz)) ⇒ Milliseconds per sample.
+if ms % self.step_ms: ⇒ If that is not a whole number of steps…
+raise ValueError( ⇒ …refuse it.
+return ms ⇒ Give back the period.
+imu, lidar, camera = ⇒ The three sensors' settings from sensors.json.
+self.noise = random.Random(imu.get("seed", 0)) ⇒ A random generator from a fixed seed.
+self.accel_noise, self.gyro_noise = ⇒ The two noise sizes (σ).
+self.imu_period = period(imu["rate_hz"]) ⇒ IMU period: 4 ms.
+self.accelerometer = robot.getDevice( ⇒ Find the accelerometer…
+self.gyro = robot.getDevice( ⇒ …the gyro…
+self.attitude = robot.getDevice( ⇒ …and the inertial unit.
+for device in (self.accelerometer, self.gyro, self.attitude): ⇒ For each…
+device.enable(self.imu_period) ⇒ …switch it on at that period.
+self.lidar_period = period(lidar["rate_hz"]) ⇒ LiDAR period: 100 ms.
+self.lidar = robot.getDevice(lidar["name"]) ⇒ Find the LiDAR,
+self.lidar.enable(self.lidar_period) ⇒ switch it on,
+self.lidar.enablePointCloud() ⇒ and ask for 3D points, not just distances.
+self.camera_period = period(camera["rate_hz"]) ⇒ Camera period: 50 ms.
+self.camera = robot.getDevice(camera["name"]) ⇒ Find the camera…
+self.camera.enable(self.camera_period) ⇒ …and switch it on.
+
+## stream-put
+def _put(self, message): ⇒ Defines _put(): hand a message to the sending thread.
+with self.lock: ⇒ One at a time (the stream is shared between threads):
+if self.ended: ⇒ if the stream has ended…
+return ⇒ …do nothing;
+try: ⇒ try to…
+self.queue.put_nowait(message) ⇒ …add it to the queue without waiting;
+self.queued += 1 ⇒ count it.
+except queue.Full: ⇒ Queue full?
+self.dropped += 1 ⇒ Count a drop (and the run will fail).
+
+## stream-step
+def after_step(self): ⇒ Defines after_step(): called after every physics step.
+if self.ended: ⇒ If the stream has ended…
+return ⇒ …do nothing.
+now_ms = None ⇒ Time not read yet.
+try: ⇒ Catch any error from here on:
+now_ms = int(round(self.robot.getTime() * 1000)) ⇒ the simulation time in whole milliseconds;
+if now_ms % 100 == 0 and (self.run / "sensing-end").exists(): ⇒ every 100 ms, if the launcher has created sensing-end…
+self._end(None if self.started else ⇒ …end the stream (a failure if ROS never connected);
+elif self.started: ⇒ otherwise, once ROS is connected…
+self._sample(now_ms) ⇒ …sample this step.
+except Exception as error: ⇒ Any error:
+traceback.print_exc() ⇒ print where it happened,
+at = "" if now_ms is None else ⇒ note at what time,
+self._end(f"{type(error).__name__} while sampling ⇒ end the stream as a failure.
+def _sample(self, now_ms): ⇒ Defines _sample().
+stamp = now_ms * 1_000_000 ⇒ The timestamp in nanoseconds.
+if now_ms % 5000 == 0: ⇒ Every 5 s:
+print(f"sensing: ⇒ print progress, with the wall time…
+f"at {now_ms ⇒ …(continued).
+self._put(protocol.pack(protocol.CLOCK, stamp)) ⇒ Every step: a CLOCK message.
+if now_ms % self.imu_period == 0: ⇒ Every 4 ms:
+q = self.attitude.getQuaternion() ⇒ orientation as a quaternion;
+gyro = [v + self.noise.gauss(0.0, self.gyro_noise) ⇒ gyro values plus noise;
+accel = [v + self.noise.gauss(0.0, self.accel_noise) ⇒ accelerometer values plus noise;
+values = (*q, *gyro, *accel) ⇒ the ten numbers together;
+self._put(protocol.pack(protocol.IMU, stamp ⇒ send an IMU message;
+truth = (*self.gps.getValues() ⇒ true position, orientation and velocity from the noiseless devices;
+self._put(protocol.pack(protocol.TRUTH ⇒ send a TRUTH message.
+if now_ms % self.lidar_period == 0: ⇒ Every 100 ms:
+count = min(self.lidar.getNumberOfPoints(), ⇒ how many points to keep: all of them, or at most…
+self.config["lidar"]["layers"] * self.lidar.getHorizontalResolution()) ⇒ …32 rings × 900 columns = 28,800;
+pointer = self._wb.wb_lidar_get_point_cloud(self.lidar._tag) ⇒ where the points are in Webots' memory;
+if not (count and pointer): ⇒ if there are none…
+raise RuntimeError("the LiDAR returned no points") ⇒ …fail;
+points = ctypes.string_at(pointer, count * protocol.LIDAR_POINT_BYTES) ⇒ copy 28,800 × 20 bytes in one call;
+self._put(protocol.pack(protocol.LIDAR ⇒ send a LIDAR message: the count, then the points.
+if now_ms % self.camera_period == 0: ⇒ Every 50 ms:
+image = self.camera.getImage() ⇒ the camera's pixels;
+size = protocol.SIZE.pack(self.camera.getWidth(), self.camera.getHeight()) ⇒ width and height as two small numbers;
+self._put(protocol.pack(protocol.IMAGE ⇒ send an IMAGE message: size, then the pixels.
+
+## protocol
+MAGIC = b"IRLK" ⇒ Four letters that start every message, to detect a stream out of step.
+HEADER = struct.Struct("<4sBxxxqI") ⇒ The 20-byte header: 4 letters, 1-byte kind, 3 padding bytes, 8-byte time, 4-byte length.
+CLOCK = 1 ⇒ Kind 1: clock. No payload.
+IMU = 2 ⇒ Kind 2: IMU, 10 doubles.
+LIDAR = 3 ⇒ Kind 3: LiDAR: a count, then the points.
+IMAGE = 4 ⇒ Kind 4: image: width, height, then pixels.
+TRUTH = 5 ⇒ Kind 5: ground truth, 10 doubles.
+VECTOR10 = struct.Struct("<10d") ⇒ Layout of ten doubles (80 bytes).
+COUNT = struct.Struct("<I") ⇒ Layout of one 4-byte count.
+SIZE = struct.Struct("<HH") ⇒ Layout of two 2-byte numbers: width, height.
+ACK = struct.Struct("<Q") ⇒ Layout of the 8-byte acknowledgement count.
+LIDAR_POINT_BYTES = 20 ⇒ Each LiDAR point is 20 bytes.
+def pack(kind, time_ns, payload=b""): ⇒ Defines pack(): make one message.
+return HEADER.pack(MAGIC, kind, time_ns, len(payload)) + payload ⇒ The header, then the payload.
+def read_exact(stream, size): ⇒ Defines read_exact(): read exactly size bytes from a socket.
+data = bytearray() ⇒ Start empty.
+while len(data) < size: ⇒ Until there are enough:
+chunk = stream.recv(size - len(data)) ⇒ read what is missing (TCP may hand over less);
+if not chunk: ⇒ nothing means the other side closed…
+raise EOFError ⇒ …so report end of stream;
+data += chunk ⇒ add what arrived.
+return bytes(data) ⇒ Give back the bytes.
+def read_message(stream): ⇒ Defines read_message().
+magic, kind, time_ns, length = HEADER.unpack(read_exact(stream, HEADER.size)) ⇒ Read 20 bytes and split the header.
+if magic != MAGIC: ⇒ If it does not start with IRLK…
+raise ValueError("stream out of sync") ⇒ …the stream is out of step: fail.
+return kind, time_ns, read_exact(stream, length) ⇒ Read the payload and give back all three.
+def finish(stream): ⇒ Defines finish(): end a stream.
+stream.shutdown(socket.SHUT_WR) ⇒ Close our sending side (the reader sees end of stream).
+return ACK.unpack(read_exact(stream, ACK.size))[0] ⇒ Read the reader's 8-byte count and give it back.
+
+## ros-qos
+def reliable(depth): ⇒ Defines reliable(): delivery rules for a topic…
+return QoSProfile(depth=depth, reliability=ReliabilityPolicy.RELIABLE) ⇒ …RELIABLE, with a waiting line of this depth.
+self.clock = self.create_publisher(Clock, "/clock", reliable(20000)) ⇒ /clock, line of 20,000.
+self.imu = self.create_publisher(Imu, "/imu/data", reliable(10000)) ⇒ /imu/data, 10,000.
+self.points = self.create_publisher(PointCloud2, "/lidar/points", reliable(200)) ⇒ /lidar/points, 200.
+self.image = self.create_publisher(Image, "/camera/image_raw", reliable(200)) ⇒ /camera/image_raw, 200.
+self.camera_info = self.create_publisher(CameraInfo ⇒ /camera/camera_info, 200.
+self.truth_pose = self.create_publisher(PoseStamped ⇒ /ground_truth/pose, 10,000.
+self.truth_velocity = self.create_publisher(Vector3Stamped ⇒ /ground_truth/velocity, 10,000.
+latched = QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE, ⇒ Rules for /tf_static: keep 1, reliable…
+durability=DurabilityPolicy.TRANSIENT_LOCAL) ⇒ …and kept for late subscribers.
+self.static_tf = self.create_publisher(TFMessage, "/tf_static", latched) ⇒ /tf_static.
+self.static_published = False ⇒ Not published yet.
+
+## ros-message
+elif kind == protocol.LIDAR: ⇒ If the message is a LiDAR scan:
+(count,) = protocol.COUNT.unpack_from(payload) ⇒ read the point count;
+msg = PointCloud2() ⇒ a new ROS point-cloud message;
+msg.header.stamp, msg.header.frame_id = header_stamp ⇒ its time and frame (lidar_link);
+msg.height, msg.width = 1, count ⇒ one row of count points;
+msg.fields = self.point_fields ⇒ each point's fields: x, y, z, ring, time;
+msg.is_bigendian, msg.is_dense = False, False ⇒ byte order little-endian; may contain infinite (missed) points;
+msg.point_step = protocol.LIDAR_POINT_BYTES ⇒ 20 bytes per point;
+msg.row_step = count * protocol.LIDAR_POINT_BYTES ⇒ bytes in the row;
+msg.data = array.array("B", payload[protocol.COUNT.size:]) ⇒ the point bytes, unchanged, as a byte array;
+self.points.publish(msg) ⇒ publish on /lidar/points.
+elif kind == protocol.IMAGE: ⇒ If the message is an image:
+width, height = protocol.SIZE.unpack_from(payload) ⇒ read width and height;
+camera = self.config["camera"] ⇒ the camera's settings;
+msg = Image() ⇒ a new ROS image message;
+msg.header.stamp, msg.header.frame_id = header_stamp, camera ⇒ its time and the optical frame;
+msg.height, msg.width, msg.encoding, msg.step = ⇒ size, pixel format bgra8, 4 bytes per pixel per row;
+msg.data = array.array("B", payload[protocol.SIZE.size:]) ⇒ the pixel bytes, unchanged;
+self.image.publish(msg) ⇒ publish on /camera/image_raw.
+info = CameraInfo() ⇒ A camera-description message:
+info.header = msg.header ⇒ same time and frame,
+info.width, info.height, info.distortion_model = ⇒ size, and the standard distortion model (with zero distortion);
+focal = width / 2.0 / math.tan(camera["field_of_view"] / 2.0) ⇒ focal length in pixels: 320 / tan(45°) = 320;
+cx, cy = width / 2.0, height / 2.0 ⇒ the image centre;
+info.k = ⇒ the camera matrix (focal lengths and centre);
+info.d = [0.0] * 5 ⇒ no distortion;
+info.r = ⇒ no rectifying rotation;
+info.p = ⇒ the projection matrix;
+self.camera_info.publish(info) ⇒ publish on /camera/camera_info.
+
+## ros-serve
+def serve(node, address): ⇒ Defines serve(): receive the controller's stream.
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) ⇒ A TCP socket.
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) ⇒ Allow reusing the port at once.
+server.bind(address) ⇒ Claim the stream's port.
+server.listen(1) ⇒ Wait for connections.
+node.get_logger().info(f"waiting ⇒ Log that.
+while rclpy.ok(): ⇒ While ROS is running:
+connection, _ = server.accept() ⇒ accept the controller's connection;
+node.get_logger().info("controller connected") ⇒ log it;
+received, started = 0, time.monotonic() ⇒ count from 0, note the start time.
+try: ⇒ Then:
+while True: ⇒ forever:
+node.on_message(*protocol.read_message(connection)) ⇒ read one message and publish it;
+received += 1 ⇒ count it;
+if received % 5000 == 0: ⇒ every 5000…
+rate = received / (time.monotonic() - started) ⇒ …work out the rate…
+node.get_logger().info(f"{received} messages ⇒ …and log it.
+except EOFError: ⇒ The controller closed its side:
+node.get_logger().info(f"controller finished ⇒ log the total;
+try: ⇒ try to…
+connection.sendall(protocol.ACK.pack(received)) ⇒ …send the count back as 8 bytes;
+except OSError: ⇒ if the controller is already gone…
+pass ⇒ …nothing to do.
+except Exception: ⇒ Any other error:
+node.get_logger().error(f"controller stream failed ⇒ log it (closing without a count tells the controller).
+connection.close() ⇒ Close this connection.
+
+## completeness
+def completeness(stamps, periods, heights): ⇒ Defines completeness(): each topic's timestamps, their periods, and the true heights.
+problems = [] ⇒ No problems yet.
+for topic in TOPICS: ⇒ For each of the eight topics:
+if not stamps.get(topic): ⇒ if it has no messages…
+problems.append(f"{topic}: no messages") ⇒ …that is a problem.
+clock = stamps.get("/clock") ⇒ The clock's timestamps.
+for topic, period in periods.items(): ⇒ For each regular topic and its period (ns):
+series = stamps.get(topic) ⇒ its timestamps;
+if not series or not clock: ⇒ if it or the clock is empty…
+continue ⇒ …already reported; skip.
+steps = [b - a for a, b in zip(series, series[1:])] ⇒ The gaps between neighbouring timestamps.
+if any(step != period for step in steps): ⇒ If any gap is not exactly one period:
+missing = sum(step // period - 1 for step in steps if step > period) ⇒ count the messages missing from big gaps,
+problems.append(f"{topic}: {missing} missing ⇒ report them…
+f"out of order or repeated ⇒ …and gaps that were too small.
+if not 0 <= series[0] - clock[0] < period or not 0 <= clock[-1] - series[-1] < period: ⇒ If the topic starts or ends more than a period away from the clock…
+problems.append(f"{topic}: covers ⇒ …report both spans.
+f"the clock ⇒ (continued)
+if heights and not (heights[0] <= GROUND_M and max(heights) >= CLIMB_M and heights[-1] <= GROUND_M): ⇒ If the heights do not start low, climb high and end low…
+problems.append(f"the flight is not all there ⇒ …report it.
+f"last ⇒ (continued)
+return problems ⇒ Give back the list (empty means complete).
+
+## fit-wall
+def fit_wall(points): ⇒ Defines fit_wall() for the wall's points (x, y, z).
+n = len(points) ⇒ How many.
+sy, sz = sum(p[1] for p in points), sum(p[2] for p in points) ⇒ Sums of y and of z.
+m = [[n, sy, sz], [sy, sum(p[1] ** 2 ⇒ The three equations' left sides: sums of y², y·z, z²…
+[sz, sum(p[1] * p[2] ⇒ …(third row).
+v = [sum(p[0] for p in points) ⇒ Their right sides: sums of x, x·y, x·z.
+a, b, c = solve3(m, v) ⇒ Solve for a, b, c (Cramer's rule).
+angle = math.degrees(math.acos(1.0 / math.sqrt(1.0 + b * b + c * c))) ⇒ The plane's tilt from facing straight along x, in degrees.
+distance = a + b * sy / n + c * sz / n ⇒ The plane's x at the points' centre.
+residual = math.sqrt(sum((p[0] - (a + b * p[1] + c * p[2])) ** 2 for p in points) / n) ⇒ The RMS distance of the points from the plane (along x).
+return distance, angle, residual ⇒ Give back all three.
+
+## replay-digests
+def digests(bag): ⇒ Defines digests(): fingerprints of a recording.
+import rosbag2_py ⇒ Load ROS's bag library…
+from bag_reader import open_bag ⇒ …and the project's bag opener.
+reader = open_bag(bag) ⇒ Open the bag.
+reader.set_filter(rosbag2_py.StorageFilter(topics=TOPICS)) ⇒ Read only the eight topics.
+out = {} ⇒ Fingerprints per topic.
+while reader.has_next(): ⇒ For every message, in order:
+topic, data, _ = reader.read_next() ⇒ its topic and stored bytes;
+out.setdefault(topic, []).append(hashlib.sha256(data).digest()) ⇒ add its sha256 to that topic's list.
+return out ⇒ Give back the lists.
+
+## losses
+def sensing_losses(report): ⇒ Defines sensing_losses(): what the stream's account says was lost.
+losses = [report["failure"]] if report["failure"] else [] ⇒ Start with the failure, if any.
+if report["dropped"]: ⇒ Any drops?
+losses.append(f"{report['dropped']} messages dropped ⇒ A loss.
+if report["sent"] < report["queued"]: ⇒ Fewer sent than queued?
+losses.append(f"{report['queued'] - report['sent']} queued ⇒ A loss.
+if report["acknowledged"] is not None and report["acknowledged"] != report["sent"]: ⇒ The bridge's count differs from what was sent?
+losses.append(f"the ROS bridge read ⇒ A loss.
+elif report["acknowledged"] is None and not report["failure"]: ⇒ No count at all, and no failure to explain it?
+losses.append("the ROS bridge never acknowledged ⇒ A loss.
+return losses ⇒ Give back the list (empty: nothing lost).

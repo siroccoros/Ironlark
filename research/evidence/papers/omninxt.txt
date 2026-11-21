@@ -1,0 +1,476 @@
+                                                     OmniNxt: A Fully Open-source and Compact Aerial Robot
+                                                             with Omnidirectional Visual Perception
+                                                           Peize Liu1 , Chen Feng1,† , Yang Xu2 , Yan Ning1 , Hao Xu1,† , and Shaojie Shen1
+
+
+
+
+arXiv:2403.20085v1 [cs.RO] 29 Mar 2024
+                                         Fig. 1: The system overview of OmniNxt. The hardware architecture includes: Multi-fisheye camera set (camera), Nxt-FC
+                                         (flight controller and IMU), and Nvidia Jeston Orin NX (onboard computation). The software framework consists of two
+                                         critical components: Omni-VINS (Sec. III-D) and Omni-Depth (Sec. III-E).
+
+                                            Abstract— Adopting omnidirectional Field of View (FoV)                                        I. I NTRODUCTION
+                                         cameras in aerial robots vastly improves perception ability,
+                                         significantly advancing aerial robotics’s capabilities in inspec-             In recent years, remarkable advancements in open-source
+                                         tion, reconstruction, and rescue tasks. However, such sensors              aerial robotics platforms have led to a surge in practical ap-
+                                         also elevate system complexity, e.g., hardware design, and cor-
+                                         responding algorithm, which limits researchers from utilizing              plications, e.g., exploration [1], reconstruction [2], and rescue
+                                         aerial robots with omnidirectional FoV in their research. To               [3]. However, it becomes evident that existing platforms, like
+                                         bridge this gap, we propose OmniNxt, a fully open-source aerial            FLA [4], MRS [5], and Agilicious [6], are challenging for
+                                         robotics platform with omnidirectional perception. We design a             effectively performing these tasks in increasingly complex
+                                         high-performance flight controller Nxt-FC and a multi-fisheye              and dynamic environments due to their limited FoV.
+                                         camera set for OmniNxt. Meanwhile, the compatible software
+                                         is carefully devised, which empowers OmniNxt to achieve                       Contrary to platforms with limited FoV, the early de-
+                                         accurate localization and real-time dense mapping with limited             velopment of aerial robots with omnidirectional FoV by
+                                         computation resource occupancy. We conducted extensive real-               Gao et al. [7] demonstrates the potential of omnidirectional
+                                         world experiments to validate the superior performance of                  FoV in performing the above tasks more robustly and effi-
+                                         OmniNxt in practical applications. All the hardware and
+                                                                                                                    ciently. As proved by Zhang et al. [8] and Wang et al. [9],
+                                         software are open-access at3 , and we provide docker images
+                                         of each crucial module in the proposed system. Project page:               the omnidirectional FoV improves the localization accuracy
+                                         https://hkust-aerial-robotics.github.io/OmniNxt.                           in challenging environments. Additionally, omnidirectional
+                                                                                                                    FoV enables minimizing the indirect-controlled yaw rotation
+                                            1 Department of Electronic and Computer Engineering, The Hong Kong
+                                                                                                                    [10] during the flight [10], which enhances the energy
+                                         University of Science and Technology, Hong Kong, China.
+                                            2 Division of Emerging Interdisciplinary Areas, The Hong Kong Univer-   efficiency of downstream tasks like autonomous navigation.
+                                         sity of Science and Technology, Hong Kong, China.                             However, the lack of open-source omnidirectional FoV
+                                            Email: {pliuan,cfengag,yxuew,yningaa,hxubc}@ust.hk,
+                                         eeshaojie@ust.hk
+                                                                                                                    platforms can be attributed to the following challenges. (1)
+                                            † Corresponding Authors                                                 Sensor configuration: The standard way to achieve omni-
+                                            3 https://github.com/HKUST-Aerial-Robotics/OmniNxt                      directional FoV [7] is using the multi-fisheye camera set.
+Unlike off-the-shelf camera modules, this set requires sub-
+stantial efforts in structural design, hardware development,
+and meticulous calibration. (2) Algorithm development: To
+comprehensively leverage the benefits offered by the omni-
+directional FoV, all algorithms, i.e., localization, mapping,
+planner, and controller should be adapted for properly ex-
+ploiting the increased information. (3) System integration:
+Extensive testing and optimization of each component are
+essential to ensure stable and reliable performance within
+systems constrained by size and computational resources.
+System latency, resource occupancy, and overall performance
+                                                                 Fig. 2: Typical structures of omnidirectional FoV. Cameras
+should be carefully considered and optimized for robust and
+                                                                 in the UpDown structure are on the top and bottom of
+stable functionality in real-world scenarios.
+                                                                 the platform, facing upwards and downwards. The Corner
+   To tackle these challenges and ensure platforms are
+                                                                 structure places cameras on the corners of a plane, covering
+broadly applicable to the research community, COPE criteria
+                                                                 an omnidirectional view.
+have been distilled from existing works and anticipated future
+challenges to guide the platform design.                           2) An open-source and real-time omnidirectional percep-
+  • Compact: At the hardware level, sensor components                 tion framework: It consists of two principal compo-
+    should be compact to minimize the size and weight                 nents, Omni-VINS and Omni-Depth. The former pro-
+    of the platform, thereby improving maneuverability.               vides accurate VIO, while the latter facilitates omnidi-
+    Additionally, critical software modules should consume            rectional dense mapping. Both are devised as resource-
+    minimal system resources, allowing a flexible environ-            efficient modules (See Fig. 1), which pave the way for
+    ment for further tasks and development.                           advanced development in downstream tasks.
+  • Open-source: All hardware and software should be
+                                                                   3) Extensive real-world experiments are conducted to
+    open-source, which facilitates cohesive reproduction,             evaluate the proposed system thoroughly. Experiments
+    development, and enhancement by the community.                    demonstrate that OmniNxt achieves outperforming lo-
+  • Perceptive: Comprehensive information about the sur-
+                                                                      calization accuracy and dependable point cloud quality.
+    roundings and low-noise measurement should be per-                Moreover, autonomous navigation tests in a cluttered
+    ceived by sensors such as cameras and IMU. On the                 indoor environment validate the practicality of the
+    other hand, corresponding algorithms should be capable            proposed platform. Experiments also verify the adapt-
+    of effectively processing and utilizing the input from            ability of OmniNxt, highlighting its compatibility with
+    sensors to improve the system’s robustness and stability.         a range of sensors and its ease of modification to suit
+  • Extendable: The hardware should be developed to allow
+                                                                      diverse applications.
+    seamless interchange and migration across platforms,                             II. R ELATED W ORKS
+    thus amplifying the utility of the present design. In        A. Omnidirectional Visual Inertial Odometry
+    parallel, the software should be modular and easily
+    updatable to expedite the validation of emerging algo-          According to Zhang et al. [8], the FoV and the placement
+    rithms and adaptation for subsequent applications.           of the camera directly impact the odometry accuracy in
+                                                                 different scenarios. An adequately installed camera with ex-
+   Following the COPE criteria, we introduce OmniNxt, the        tended FoV enhances the effectiveness of feature extraction
+first fully open-source aerial robotics platform with omni-      and tracking, contributing to improved odometry accuracy
+directional visual perception. OmniNxt boasts a compact          compared with limited FoV. To realize the omnidirectional
+size with exceptional computational resources. Thanks to         FoV, existing works commonly adopt two typical configu-
+our meticulous development, we endow OmniNxt with an             rations in structure: UpDown and Corner (Fig. 2). In the
+expansive perception range and efficient resource consump-       UpDown structure, cameras usually feature 250◦ to 360◦
+tion. Thorough evaluations demonstrate the effectiveness         FoV, while the Corner structure usually utilizes three or
+and advanced performance in real-world applications. The         more cameras with 180◦ to 210◦ FoV. Compared with the
+contributions of our system can be summarized as follows:        Corner structure, the UpDown structure suffers more from
+  1) An open-source and compact hardware platform with           image distortions, while the Corner structure involves more
+     omnidirectional FoV: We develop a coin-size yet high-       complex calibration.
+     performance flight controller Nxt-FC, which provides           Corresponding to the evaluation in [8], systems based on
+     500 Hz low-noise IMU data for the visual inertial           UpDown structure, such as the one proposed by Wang et al.
+     odometry (VIO). In addition, we develop a multi-            [9], demonstrate higher odometry accuracy in indoor envi-
+     fisheye camera set to support omnidirectional percep-       ronments. This can be attributed to the greater probability of
+     tion. This set also offers synchronized images to VIO,      feature extraction and tracking in less distorted areas (center)
+     where camera drivers and calibration tools are also         of the images. However, their performance tends to be less
+     provided.                                                   favorable in outdoor settings. This discrepancy arises from
+Fig. 3: Platforms comparison. The platforms are compared based on their FoV and the ratio of onboard computation power to
+the product of size and weight. A higher value on the vertical axis indicates the platform’s ability to perceive the surrounding
+environment more comprehensively. On the horizontal axis, a higher value represents a greater computational power available
+within a smaller size and weight, indicating a stronger capability of the platform to support downstream tasks.
+
+TABLE I: A comparison of different available consumer and research platforms. We evaluate them in hardware dimensions,
+weight, sensor types, perception information types, perception range, and extendability. HW: hardware. SW: software.
+                              Compact             Open-source                        Perceptive                       Extendable
+       Platforms
+                             HW           SW      HW     SW     Visual Info   Geometry Info     Sensor Type    FoV    HW    SW
+                                                                                               Multi-fisheye
+   DJI MAVIC 3T [11]    380mm 920g         -       %      %         !              !                           360◦   %      %
+                                                                                                camera set
+                                                                                               Multi-fisheye
+    Skydio X10 [12]    ≈380mm 2110g        -       %      %         !              !                           360◦   %      %
+                                                                                                camera set
+                                                                                                Camera &
+        FLA [4]        450mm ≈2500g       Low      !      !         !              !                           ≈90◦   !      !
+                                                                                                2D-LiDAR
+                                                                                                Camera &
+        MRS [5]        450mm ≈1500g       Low      !      !         !              !                           ≈90◦   !      !
+                                                                                                3D-LiDAR
+    LIO Racing
+               [13]    330mm ≈1300g      Median    %      %         %              !            3D-LiDAR       ≈70◦   %      !
+      Drone
+      Agilicious [6]    330mm ≈775g       High     !      !         !              !          Stereo camera    ≈90◦   %      !
+      Fast-250 [14]    250mm ≈1000g      Median    !      !         !              !          Stereo camera    ≈90◦   %      !
+                                                                                               Multi-fisheye
+    OmniNxt(Ours)       88.92mm 660g     High      !      !         !              !                           360◦   !      !
+                                                                                                camera set
+
+
+the fact that features are more likely to be extracted and       categorized into direct and indirect methods.
+tracked in the greater distorted areas (margin) when the
+                                                                    Most direct methods, such as OmniMVS [17], employ
+system performs outdoors, subsequently introducing more
+                                                                 neural networks to obtain dense depth information directly
+noise into the estimation of system status.
+                                                                 from the raw images. However, these methods often strug-
+   Works like Omnidirectional DSO [15], based on Corner
+                                                                 gle with generalization across different cameras and can
+structure, achieve higher accuracy in both scenarios because
+                                                                 hardly meet the real-time requirement on resource-limited
+of the less distorted image input. However, compared with
+                                                                 platforms.
+the feature-based method like VINS [16], the direct method
+is unsuitable for agile maneuvering platforms due to its            On the other hand, the indirect methods aim to transfer
+sensitivity to motion blur and changes in image illumination.    the raw images into multiple pairs of stereo images captured
+                                                                 by the virtual pinhole cameras (See Sec. III-E). Gao et al.
+B. Omnidirectional Depth Estimation                              [7] leverage semi-global matching (SGBM) to obtain a dense
+   Retrieving dense depth information from multiple images       depth estimation on resource-limited platforms. While Xie et
+captured by fisheye cameras is challenging due to the signif-    al. [18] employ a CNN to obtain a denser depth estimation.
+icant distortions. Existing solutions to this problem can be     Our approach is similar to [18], but we achieve real-time
+inference speed on resource-limited platforms while main-
+taining a more flexible structure in realization (Sec. III-E).
+C. Available Platforms
+   Numerous research groups have made valuable contribu-
+tions to the community by sharing their design. The design
+of these platforms varies greatly depending on the research
+topics they address. Based on the COPE criteria, TABLE. I
+provides an overview of currently accessible platforms.
+   Existing platforms like FLA [4] and MRS [5] are designed
+for data collection and autonomous navigation in open areas.
+These platforms share a similar solution, utilizing a PX4
+[19] based flight controller, a CPU-only onboard computer,
+mono or stereo cameras, and LiDAR. However, achieving              Fig. 4: The calibration pipeline of multi-fisheye camera set.
+compactness and lightweight in their design is challenging         The numbers indicate the calibration sequence. The letter on
+due to the introduction of LiDAR to obtain dense map.              the top left of each box corresponds to the camera index in
+On the other hand, the platform, which is designed for             Fig. 5.B
+aggressive planning and control, prioritizes maximizing the
+                                                                     •   Planner: Based on the Omni-VINS and Omni-Depth,
+thrust weight ratio (TWR). One notable platform in this
+                                                                         this module generates the trajectory toward the goal
+category is Agilicious [6]. Different from those platforms
+                                                                         position following the aerial robotic dynamics. (Sec. III-
+mentioned above, Agilicous [6] achieves compactness and
+                                                                         F)
+lightweight by adopting a cramped hardware design, which
+                                                                      • Controller: The trajectory generated from the planner
+allows the platform to have high TWR but makes it hard to
+                                                                         is converted to a low-level attitude command by this
+integrate additional sensors. This limitation poses challenges
+                                                                         module and then executed by the flight controller. (Sec.
+in accessing a comprehensive surrounding environment, lim-
+                                                                         III-F)
+iting its applicability to future tasks. Besides, commercial
+platforms like DJI MAVIC 3T [11] and SKYDIO X10                    The perception modules (Omni-VINS, Omni-Depth, and
+[12] are not open-source, hindering further development and        related hardware drivers) in OminNxt occupy 27% CPU and
+algorithm validation. Their large dimensions and weight also       40% GPU onboard resources, sparing sufficient resources for
+limit the range of applications.                                   the downstream tasks.
+
+                 III. O MNI N XT P LATFORM                         B. Nxt-FC
+A. System Overview                                                    The lack of open-source hardware options in most avail-
+                                                                   able flight controllers presents a significant challenge in fur-
+   OmniNxt is designed to be a general open-source aerial          ther development and adaptation on various platforms. To ad-
+robotics platform. Therefore, we strictly follow the COPE          dress this issue, we design and open-source a flight controller
+criteria in hardware and software design.                          named Nxt-FC with compact dimensions of 27mm×33mm.
+   As shown in Fig. 1, OmniNxt consists of three key               Our flight controller is based on open-source autonomous
+components in hardware: First, We use Nvidia Jetson Orin           pilot firmware PX4 [19]. We develop a high-frequency raw
+NX for the onboard computer, which has an 8-core CPU               IMU data stream for robust and accurate VIO. Detailed
+running at 2.0 GHz and a GPU with 1024 CUDA cores. CPU             information is available on our project page.
+and GPU share the unified 16G RAM. Second, we adopt
+a multi-fisheye camera set to capture the omnidirectional          C. Multi-fisheye Camera Set Calibration
+image at 20 Hz. All four cameras are synchronized by one              Calibrating all four fisheye cameras’ intrinsic and extrin-
+camera triggering the other three. Last, to further enhance        sic parameters together results in a complex optimization
+the robustness of OmniNxt, we develop a low-noise flight           problem, thus increasing processing time and lowering the
+controller, which provides 500 Hz low-noise IMU data.              success rate. To address this issue, our pipeline utilizes
+Besides, the software framework of OmniNxt can be divided          tartankalibr [20] in fisheye cameras calibrations and kalibr-
+into the following four parts, each serving a specific function:   toolbox [21] [22] in virtual pinhole cameras calibrations. The
+   • Omni-VINS: This module combines the high-frequency            calibration process is illustrated in Fig. 4.
+      IMU measurements (500 Hz) and the omnidirectional               Initially, we calibrate the intrinsic parameters of each
+      image (20 Hz) to generate accurate VIO, which is             fisheye camera. Once the projection error of each camera
+      crucial for mapping, planning, and control modules.          is less than 0.5 pixels, we proceed to calibrate the extrinsic
+      (Sec. III-D)                                                 parameters between adjacent cameras as well as between
+   • Omni-Depth: This module performs real-time omnidi-            cameras and IMU.
+      rectional dense point cloud generation by processing the        After having established the intrinsic and extrinsic pa-
+      omnidirectional image with its virtual-stereo frontend       rameters of the multi-fisheye camera set, we undistort the
+      and multi-stream-inference backend. (Sec. III-E)             image based on the cylindrical camera model (Sec. III-D)
+to generate virtual stereo pairs (Fig. 5.C) and calibrate both
+intrinsic and extrinsic parameters of virtual stereo cameras.
+The transformation between fisheye and virtual stereo cam-
+eras is further explained in Sec. III-E.
+   Our pipeline reduces the calibration time by concurring the
+calibration process and raises the success rate by allowing the
+calibration process to resume from the failed case quickly.
+
+
+D. Omni-VINS
+
+   Omni-VINS is optimized for onboard real-time perfor-
+mance based on our previous work D2 SLAM [23]. The
+                                                                                  Fig. 5: Illustration of virtual-stereo frontend. A: the Z axis
+significant distortion in fisheye images poses challenges in
+                                                                                  of virtual cameras (Orange and Blue) and the fisheye camera
+feature extraction and feature tracking, particularly when
+                                                                                  (Black). B: the placement of four fisheye cameras. C: shows
+using CNN-based methods that are trained with images gath-
+                                                                                  the virtual stereo pairs.
+ered by the pinhole camera. To address this issue, we employ                                (
+                                                                                                                                        2
+the MEI model [24] for the intrinsic parameters of raw                                 min ∥rp − Hp X ∥ +
+                                                                                                            2
+                                                                                                                 X
+                                                                                                                       rB (ẑbbk+1
+                                                                                                                               k
+                                                                                                                                   , X ) bk +
+fisheye cameras and radial-tangential models to formulate                               X
+                                                                                                                       K∈B
+                                                                                                                                    Pb
+                                                                                                                                      k+1
+the distortion. First, We undistort the fisheye camera image                                                           )
+with the cylindrical camera model. The cylindrical camera
+                                                                                       X              c        2
+                                                                                                rC (ẑl j , X ) P cj                         (3)
+model [25] can be written as:                                                         (l,j)∈C
+                                                                                                                   l
+
+
+                  
+                 u      fϕ            0    u0
+                                              
+                                                  ϕ
+                                                                                 We use Ceres Solver [28] for solving this least squares
+                v  =  0            fy   v0  Y /ρ ,                          problem.
+                 1       0            0    1      1                         (1)   E. Omni-Depth
+                     ϕ = atan2(X, Z),                                                Omni-Depth is designed with a modular structure consist-
+                         p                                                        ing of a virtual-stereo frontend and a multi-stream-inference
+                     ρ = X 2 + Z 2,
+                                                                                  backend to ensure the generalization in various stereo-
+                                                                                  matching techniques.
+where fϕ and fy are the focal length. This model offers
+                                                                                     The virtual-stereo frontend is demonstrated in Fig. 5.C,
+the advantage of representing virtual cameras with adjustable
+                                                                                  where the fisheye camera images are undistorted into two
+FoV and rotations relative to the original camera.
+                                             ◦                                    perpendicularly placed virtual cylindrical cameras. The FoV
+   In our implementation, we set fϕ to 190W (W is the width                       of virtual cameras is set to 100◦ . The extrinsic parameters
+of the image) to eliminate the unexposed margin of the
+                                                                                  of the virtual pinhole cameras can be defined as follows:
+image. To ensure the consistency of the undistorted image,                                         vcam                            
+we set fy equal to fϕ .                                                                            Rf isheye 0 Rf isheye tf isheye
+                                                                                       Tvcam =                                          ,
+   We then perform feature extraction and tracking based                                               0       1      0           1
+on the cylindrical undistorted image. Omni-VINS heritages                                                  1                                (4)
+                                                                                       Rvcam
+                                                                                         f isheye = Ry (− π),
+                                                                                               l
+
+the hybrid feature extraction strategy developed in D2 VINS                                                4
+[23] but changes the tracking method from Superglue [26]                                                 1
+                                                                                       Rvcam
+                                                                                         f isheye = Ry ( π),
+                                                                                               r
+
+to Lucas-Kanade (LK) [27] method to minimize the GPU                                                     4
+occupancy and accelerates the matching process. We perform                        where vcaml represents the left virtual camera, while vcamr
+feature tracking in both previous and latest frames and among                     represents the right one. Since the FoV of these two virtual
+adjacent cameras’ frames.                                                         cameras is close to the standard pinhole camera, we can
+   Our previous works [16] and [7] have thoroughly formu-                         calibrate them with the pinhole camera model.
+lated the visual-inertial problem. The full state vector in the                      In the backend of Omni-Depth, we employ CNN to
+sliding window is defined as:                                                     estimate the disparity of each virtual stereo pair because of
+                                                                                  its more robust performance in the textureless environment.
+  X = [x0 , x1 , ..., xm , xbC0 , xbC1 , ..., xbCn , λ0 , λ1 , ..., λl ],         The Omni-Depth is flexible in accommodating different
+                                                                                  CNN models in the backend. This allows easy adaptation
+  xi = [pW     W     W b b
+         bi , vbi , qbi , ba , bg ], k ∈ [0, m],                            (2)
+                                                                                  to meet various platforms’ accuracy and inference speed
+ xbcj = [pbcj , qcbj ], j ∈ [0, n],                                               requirements. See Sec. IV-B for the implementation details.
+
+where m is the total number of keyframes, λi is the inverse                       F. Planner and Controller
+depth of the ith feature from its first observation, and n is                        Combining precise and reliable odometry from Omni-
+the number of fisheye cameras. The visual inertial odometry                       VINS and dense point cloud from Omni-Depth, OmniNxt
+problem in Omni-D2 VINS is defined as:                                            offers extensive support for various tasks. Benefited from The
+Fig. 6: Omni-VINS evaluation. Infinity, Circle, and Random are the three testing trajectories. W/O means flight without
+rotating the yaw to the speed direction. gt is the ground truth. W means flight while the yaw direction follows the speed
+direction. The data collection platform and testing environment are shown in Hardware settings. (Sec. IV-A)
+
+omnidirectional perception, yaw rotation can be minimized
+during the flight, which simplifies the scheme of the trajec-
+tory planning in autonomous navigation (Sec. IV-C ) while
+increasing the accuracy of VIO (Sec. IV-A). The command
+from the tasks level is fed into the controller module and then
+converted into the desired attitude command in MAVROS
+format. For efficient control, We utilize the open-source Px4-
+Controller [14].
+
+                     IV. E XPERIMENTS
+   We conduct a comprehensive analysis of OmniNxt’s per-
+formance in VIO accuracy (Sec. IV-A) and omnidirectional          Fig. 7: HITNET inference speed. Batch 1: The inference time
+dense map quality (Sec. IV-B) in the real world. In Sec. IV-C,    of one group of data. Batch 4: The inference time of four
+we demonstrate OmniNxt’s ability to autonomously navigate         groups of data concatenated on batch dimension. Stream 4:
+in a narrow indoor environment. In Sec. IV-D, we also adapt       The inference time of four groups of data in multi-stream.
+OmniNxt with other common visual sensors to ensure its
+compatibility.
+                                                                  to VIO because of the black wall on the right. The testing
+A. Omni-VINS Evaluation                                           trajectories and environment are illustrated in Fig. 6.
+   We respectively equip OmniNxt with the multi-fisheye
+                                                                     Omni-VINS and Stereo-VINS are configured with the
+camera set and Intel D435 [29] stereo camera to compare
+                                                                  same feature extraction and tracking numbers. The sliding
+the VIO accuracy of omnidirectional VINS (Omni-VINS)
+                                                                  window size is set to be 10. Both use good-feature-to-
+and limited-FoV VINS (Stereo-VINS). The ground truth
+                                                                  track features and the LK method for tracking. The extrinsic
+is collected by Opti-Track. In this evaluation, we design
+                                                                  parameters of the camera and IMU in Stereo-VINS are
+three trajectories: Infinity, Cirecle, and Random. In Infinity
+                                                                  calibrated by Kalibr [22].
+and Cirecle cases, OmniNxt follows the trajectory in two
+manners. One moves without rotating the yaw to the speed             Omni-VINS benefits from the omnidirectional FoV,
+direction, and another moves while the yaw follows the speed      achieving more robust and accurate VIO in all cases. For
+direction. In the Random case, the human pilot controls           the root mean squared error (RMSE) of absolute trajectory
+the robots, randomly performing dashing, spinning, and            error (ATE), see TABLE. II (Our evaluate method and tools
+hovering. Our test environment poses significant challenges       based on EVO [30]).
+Fig. 8: Omni-Depth evaluation. A: the point cloud collected by LIVOX Mid360. B: the testing environment. C and D:
+the detailed point cloud generated from the virtual stereo pair DA and CD (grid is 1m) as illustrated in Fig. 5.C. E: The
+overview of the point cloud generated from Omni-Depth. (Sec. IV-B)
+
+
+
+
+Fig. 9: Real-world autonomous navigation tests. Left: OmniNxt autonomously flies without rotating the yaw to the speed
+direction. Right: the executed trajectory and voxel map. (Sec. IV-C)
+TABLE II: Localization accuracy comparison (metric:
+                                                                  rently. Subsequently, the total inference time decreased from
+RMSE).
+                                                                  200 ms to 62 ms. Fig. 7 demonstrates the inference speed of
+                 Omni-VINS   Stereo-VINS    Trajectory Length     HINTET in different manners. The Omni-Depth can run at
+ Infinity(W)      0.084m        0.110m            70.1m           15 Hz onboard, providing a real-time dense map. The bias
+ Infinity(W/O)    0.043m        0.052m            70.1m
+ Circle(W)        0.086m        0.268m            60.2m
+                                                                  of the dense map is around 10 cm. (See Fig. 8E)
+ Circle(W/O)      0.025m        0.050m            43.0m
+ Random(W)        0.098m        0.460m            60.0m           C. Real-world Autonomous Navigation Tests
+                                                                     To demonstrate the practicability of OmniNxt, we conduct
+                                                                  autonomous navigation tests in a cluttered indoor environ-
+B. Real-time Depth Estimation                                     ment. Specifically, we modify the trajectory generation strat-
+   In practice, we use the pre-trained HITNET [31] model          egy in ego-planner [32] by removing the yaw angle trajectory
+with the input dimension (BWHC) 1×320×240×2 in the                optimization thanks to the omnidirectional perception. This
+backend to balance the estimation quality and inference           modification enhances the accuracy of localization (as shown
+speed. We accelerate the inference by utilizing Tensor Core       in Sec.IV-A) and improves the quality of the dense map
+and FP16 quantization. The inference time of one virtual          by reducing the image blur caused by yaw rotation. This
+stereo drops from 160 ms to 50 ms. Since Omni-Depth               improvement ultimately enhances the efficiency and safety of
+involves four sets of inferences for each frame, the sequential   trajectory planning. For the experiment, we set the maximum
+execution of these inferences last 200ms. To address this,        speed to 1.0 m/s and the maximum acceleration to 0.6 m/s2 .
+we explore two approaches to parallelize the inference pro-       We represent the surrounding environments with volumetric
+cedure. Firstly, we concatenate the four groups of input data     mapping. All the modules are running onboard. (See Fig. 9)
+along the batch dimension, resulting in an input dimension
+of 4×320×240×2. However, this approach does not improve           D. Adaptation of OmniNxt
+the inference time. Then, we adopt NVIDIA multi-stream,              OmniNxt boasts sophisticated hardware designs that fa-
+which allows four sets of inference to be executed concur-        cilitate the swift interchange of visual sensors. Presently, we
+offer two additional versions of sensor configurations: Stereo                [9] Z. Wang, K. Yang, H. Shi, P. Li, F. Gao, and K. Wang, “LF-VIO:
+(Intel D435 [29]) and RGB-D (Intel L515 [33]), as depicted                        A Visual-Inertial-Odometry Framework for Large Field-of-View Cam-
+                                                                                  eras with Negative Plane,” in 2022 IEEE/RSJ International Conference
+in Fig. 10. We have conducted real-world flight experiments                       on Intelligent Robots and Systems (IROS), 2022.
+to demonstrate their practicality (Stereo in Sec. IV-A, and                  [10] D. Mellinger and V. Kumar, “Minimum snap trajectory generation
+RGB-D in H2 -Mapping [34]). Detailed information is avail-                        and control for quadrotors,” in 2011 IEEE International Conference
+                                                                                  on Robotics and Automation, 2011, pp. 2520–2525.
+able on our project page.                                                    [11] DJI.      [Online].      Available:     https://enterprise.dji.com/zh-tw/
+                                                                                  mavic-3-enterprise/
+                                                                             [12] SKYDIO. [Online]. Available: https://www.skydio.com/x10/
+                                                                             [13] D. He, W. Xu, N. Chen, F. Kong, C. Yuan, and F. Zhang, “Point-
+                                                                                  LIO: Robust High-Bandwidth Light Detection and Ranging Inertial
+                                                                                  Odometry,” Advanced Intelligent Systems, vol. 5, no. 7, p. 2200459,
+                                                                                  2023.
+                                                                             [14] Fast-LAB. [Online]. Available: https://github.com/ZJU-FAST-Lab/
+                                                                                  Fast-Drone-250
+                                                                             [15] H. Matsuki, L. von Stumberg, V. Usenko, J. Stückler, and D. Cre-
+                                                                                  mers, “Omnidirectional DSO: Direct Sparse Odometry with Fisheye
+Fig. 10: OmniNxt carries different types of visual sensors.                       Cameras,” CoRR, vol. abs/1808.02775, 2018.
+Here, we demonstrate the installation of omnidirectional,                    [16] T. Qin, P. Li, and S. Shen, “Vins-mono: A robust and versatile monoc-
+stereo, and RGB-D cameras.                                                        ular visual-inertial state estimator,” IEEE Transactions on Robotics,
+                                                                                  vol. 34, no. 4, pp. 1004–1020, 2018.
+            V. C ONCLUSION AND F UTURE W ORK                                 [17] C. Won, J. Ryu, and J. Lim, “End-to-End Learning for Omnidirec-
+                                                                                  tional Stereo Matching with Uncertainty Prior,” IEEE Transactions
+   In this paper, we present OmniNxt, a fully open-source and                     on Pattern Analysis and Machine Intelligence (PAMI), 2020.
+compact aerial robotics platform with omnidirectional visual                 [18] S. Xie, D. Wang, and Y. Liu, “Omnividar: Omnidirectional depth
+perception. OmniNxt demonstrates exceptional performance                          estimation from multi-fisheye images,” in 2023 IEEE/CVF Conference
+                                                                                  on Computer Vision and Pattern Recognition (CVPR). Los Alamitos,
+in localization and dense mapping, with limited size and                          CA, USA: IEEE Computer Society, jun 2023, pp. 21 529–21 538.
+onboard computational resources. We develop Nxt-FC, a                        [19] L. Meier, D. Honegger, and M. Pollefeys, “Px4: A node-based
+coin-size yet high-performance flight controller, which is                        multithreaded open source robotics framework for deeply embedded
+                                                                                  platforms,” 2015 IEEE International Conference on Robotics and
+general to the community. Besides, a multi-fisheye cam-                           Automation (ICRA), pp. 6235–6240, 2015.
+era set is designed to support omnidirectional perception.                   [20] B. P. Duisterhof, Y. Hu, S. H. Teng, M. Kaess, and S. Scherer,
+Based on our devised hardware, we also propose a real-                            “TartanCalib: Iterative Wide-Angle Lens Calibration using Adaptive
+                                                                                  SubPixel Refinement of AprilTags,” 2022.
+time omnidirectional perception framework, including Omni-                   [21] P. Furgale, J. Rehder, and R. Siegwart, “Unified temporal and spatial
+VINS and Omni-Depth. Comprehensive real-world exper-                              calibration for multi-sensor systems,” in 2013 IEEE/RSJ International
+iments demonstrated the superiority and practicability of                         Conference on Intelligent Robots and Systems, 2013, pp. 1280–1286.
+                                                                             [22] J. Rehder, J. Nikolic, T. Schneider, T. Hinzmann, and R. Siegwart,
+OmniNxt. In the future, we aim to improve the capability                          “Extending kalibr: Calibrating the extrinsics of multiple IMUs and of
+of omnidirectional visual perception to enable exceptional                        individual axes,” in 2016 IEEE International Conference on Robotics
+performance in increasingly demanding environments.                               and Automation (ICRA), 2016, pp. 4304–4311.
+                                                                             [23] H. Xu, P. Liu, X. Chen, and S. Shen, “D2 SLAM: Decentralized
+                            R EFERENCES                                           and Distributed Collaborative Visual-inertial SLAM System for Aerial
+                                                                                  Swarm,” 2023.
+ [1] B. Zhou, Y. Zhang, X. Chen, and S. Shen, “FUEL: Fast UAV                [24] C. Mei and P. Rives, “Single view point omnidirectional camera
+     Exploration using Incremental Frontier Structure and Hierarchical            calibration from planar grids,” in Proceedings 2007 IEEE International
+     Planning,” 2020.                                                             Conference on Robotics and Automation, 2007, pp. 3945–3950.
+ [2] C. Feng, H. Li, J. Jiang, X. Chen, S. Shen, and B. Zhou, “FC-Planner:   [25] E. Plaut, E. B. Yaacov, and B. E. Shlomo, “3D Object Detection from
+     A Skeleton-guided Planning Framework for Fast Aerial Coverage of             a Single Fisheye Image Without a Single Fisheye Training Image,”
+     Complex 3D Scenes,” arXiv preprint arXiv:2309.13882, 2023.                   2021.
+ [3] E. Lygouras, A. Gasteratos, K. Tarchanidis, and A. Mitropoulos,         [26] P.-E. Sarlin, D. DeTone, T. Malisiewicz, and A. Rabinovich, “Super-
+     “ROLFER: A fully autonomous aerial rescue support system,” Mi-               Glue: Learning Feature Matching with Graph Neural Networks,” 2020.
+     croprocessors and Microsystems, vol. 61, pp. 32–42, 2018.               [27] B. Lucas and T. Kanade, “An iterative image registration technique
+ [4] K. Mohta, M. Watterson, Y. Mulgaonkar, S. Liu, C. Qu, A. Makineni,           with an application to stereo vision (ijcai),” vol. 81, 04 1981.
+     K. Saulnier, K. Sun, A. Zhu, J. Delmerico, K. Karydis, N. Atanasov,     [28] S. Agarwal, K. Mierle, and T. C. S. Team, “Ceres Solver,” 10 2023.
+     G. Loianno, D. Scaramuzza, K. Daniilidis, C. J. Taylor, and V. Kumar,        [Online]. Available: https://github.com/ceres-solver/ceres-solver
+     “Fast, autonomous flight in GPS-denied and cluttered environments,”     [29] INTEL.       [Online].    Available:    https://www.intelrealsense.com/
+     Journal of Field Robotics, vol. 35, no. 1, pp. 101–120, 2018.                depth-camera-d435/
+ [5] T. Baca, M. Petrlik, M. Vrba, V. Spurny, R. Penicka, D. Hert,           [30] M. Grupp, “evo: Python package for the evaluation of odometry and
+     and M. Saska, “The MRS UAV System: Pushing the Frontiers of                  SLAM.” https://github.com/MichaelGrupp/evo, 2017.
+     Reproducible Research, Real-world Deployment, and Education with        [31] V. Tankovich, C. Häne, Y. Zhang, A. Kowdle, S. Fanello, and
+     Autonomous Unmanned Aerial Vehicles,” Journal of Intelligent and             S. Bouaziz, “HITNet: Hierarchical Iterative Tile Refinement Network
+     Robotic Systems, vol. 102, no. 1, Apr. 2021.                                 for Real-time Stereo Matching,” 2023.
+ [6] P. Foehn, E. Kaufmann, A. Romero, R. Penicka, S. Sun, L. Bauersfeld,    [32] X. Zhou, Z. Wang, H. Ye, C. Xu, and F. Gao, “EGO-Planner: An
+     T. Laengle, G. Cioffi, Y. Song, A. Loquercio, and D. Scaramuzza, “Ag-        ESDF-free Gradient-based Local Planner for Quadrotors,” 2020.
+     ilicious: Open-source and open-hardware agile quadrotor for vision-     [33] INTEL.       [Online].    Available:    https://www.intelrealsense.com/
+     based flight,” Science Robotics, vol. 7, no. 67, p. eabl6259, 2022.          lidar-camera-l515/
+ [7] W. Gao, K. Wang, W. Ding, F. Gao, T. Qin, and S. Shen, “Autonomous      [34] C. Jiang, H. Zhang, P. Liu, Z. Yu, H. Cheng, B. Zhou, and S. Shen,
+     aerial robot using dual-fisheye cameras,” Journal of Field Robotics,         “H2 -mapping: Real-time dense mapping using hierarchical hybrid
+     vol. 37, no. 4, pp. 497–514, 2020.                                           representation,” IEEE Robotics and Automation Letters, vol. 8, no. 10,
+ [8] Z. Zhang, H. Rebecq, C. Forster, and D. Scaramuzza, “Benefit of              pp. 6787–6794, 2023.
+     large field-of-view cameras for visual odometry,” in 2016 IEEE
+     International Conference on Robotics and Automation (ICRA), 2016,
+     pp. 801–808.
+

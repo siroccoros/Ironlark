@@ -1,0 +1,150 @@
+{
+  "query": {
+    "query": "\"px4_fast_planner\" github",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "ba9fa3b1e92702f83bc58ad0ee9d2478",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/mzahana/px4_fast_planner",
+        "title": "mzahana/px4_fast_planner: Integration of Fast-Planner ...",
+        "url": "https://github.com/mzahana/px4_fast_planner",
+        "highlights": [
+          "# mzahana/px4_fast_planner\n...\nIntegration of Fast-Planner with PX4 autopilot for multi-rotor fast navigation with obstacle avoidance\n...\n# px4_fast_planner\n...\nIntegration of [Fast-Planner](https://github.com/HKUST-Aerial-Robotics/Fast-Planner) with [PX4](https://github.com/PX4/Firmware) for planning real-time collision-free and obstacle-free trajectories in bounded environment. This allows you to fly a multi-rotor drone ( equipped with a PX4 autopilot, depth camera, and on-board computer) autonomously while avoiding obstacles.\n...\nThis packges provides installation and launch files required for running PX4 with Fast-Planner through [mavros_controllers](https://github.com/Jaeyoung-Lim/mavros_controllers.git) package. A modified vresion of [Fast-Planner](https://github.com/mzahana/Fast-Planner) (for Ubuntu 18 + ROS Melodic) is used.\n...\n```sh\ncd ~/catkin_ws/src\ngit clone https://github.com/mzahana/px4_fast_planner.git\n```\n...\nThe `setup.sh` script install PX4 v1.10.1, `mavros_controllers` package, and modified `Fast-Planner` package.\n...\nYou can setup the system inside a docker container that already has Ubuntu 18 + ROS Melodic + PX4 frimware v1.10.1. Use [this repository](https://github.com/mzahana/containers) to setup docker and required container, then install setup px4_fast_planner as mentioned above.\n...\n```sh\nroslaunch px4_fast_planner px4_fast_planner.launch\n```"
+        ]
+      },
+      {
+        "id": "https://github.com/beomsu7/Fast-Planner",
+        "title": "beomsu7/Fast-Planner",
+        "url": "https://github.com/beomsu7/Fast-Planner",
+        "highlights": [
+          "# beomsu7/Fast-Planner\n...\nA Robust and Efficient Trajectory Planner for Quadrotors\n...\n- Stars: 13\n- Forks: 2\n- Watchers: 13\n- Open issues: 4\n- License: GNU General Public License v3.0\n- Default branch: px4-version(sitl-and-real)\n- Created: 2021-05-13T00:26:06Z\n- Fork: yes\n...\n# Todo list(for me)\ntake off height is 1m, mayb add param to change this(/plan_manage/script/trajectory_msg_converter_~.py) \n\n# Fast-Planner for px4\n...\nThe orignal fast planner is https://github.com/HKUST-Aerial-Robotics/Fast-Planner \nin may case the main algorithm and concept is same but edited for px4 sitl and real flight\n...\nThis is simple \n(1) user - Set the destination \n(2) kino or topo planner gonna make the trajectory \n(3) pub the trajectory to mavros as /mavros/setpoint_raw/local \n(4) then px4 gonna fly \n\n \n\nIn my case, I used https://github.com/mzahana/px4_fast_planner\nand this one use 'movros_controllers', which was unstable in my drone\n...\n- cd ~/catkin_ws/src # in my case 'catkin_ws' and 'PX4-Autopilot' is located in HOME\n- git clone https://github.com/beomsu7/Fast-Planner \n- cd .. && catkin build && source devel/setup.bash\n- cd Fast-Planner\n...\nsolution was change the topic from /mavros/setpoint_raw/local to /mavros\n...\nsetpoint_position/local \n>\n...\nyou changes it,\n...\n> \n> the way to change\n...\ntopic is edit the /Fast-Planner/fast_planner/plan_manage/launch/px\n...\n_sitl_k\n...\n>"
+        ]
+      },
+      {
+        "id": "https://github.com/rongbohou/px4_fast_planner",
+        "title": "rongbohou/px4_fast_planner",
+        "url": "https://github.com/rongbohou/px4_fast_planner",
+        "highlights": [
+          "# rongbohou/px4_fast_planner\n...\n- Stars: 19\n- Forks: 1\n- Watchers: 19\n- Open issues: 0\n- License: MIT License\n- Default branch: dev\n- Created: 2023-11-21T06:38:52Z\n...\n# px4_fast_planner\n...\nIntegration of [ego-planner-swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm.git) with [PX4](https://github.com/PX4/Firmware) for planning real-time collision-free and obstacle-free trajectories in bounded environment. This allows you to fly a multi-rotor drone ( equipped with a PX4 autopilot, depth camera, and on-board computer) autonomously while avoiding obstacles.\n\n#\n...\n```sh\ncd ~/catkin_ws/src\ngit clone https://github.com/rongbohou/px4_fast_planner.git\n```\n...\n```sh\ncd ~/catkin_ws\nsource ./src/px4_fast_planner/setup_env.sh\nroslaunch px4_fast_planner px4_ego_planner.launch\n```"
+        ]
+      },
+      {
+        "id": "https://github.com/mzahana/px4_fast_planner/issues/12",
+        "title": "px4_fast_planner.launch fails to Start \u00b7 Issue #12",
+        "url": "https://github.com/mzahana/px4_fast_planner/issues/12",
+        "publishedDate": "2020-10-04T00:00:00.000Z",
+        "highlights": [
+          "# px4_fast_planner.launch fails to Start\n...\n- State: closed\n- Author: mjs513\n- Created: 2020-10-04T17:44:22Z\n- Updated: 2020-10-10T16:00:32Z\n- Repository: mzahana/px4_fast_planner\n- Number: #12\n...\nBy way of warning really new to ROS, linux and the rest and am trying to get this to work. Anyway, when I do `roslaunch px4_fast_planner px4_fast_planner.launch` it goes through starting but then exits due to errors: \n```\r\n\r\nroslaunch px4_fast_planner px4_fast_planner.launch\r\n... logging to /home/ubuntu/.ros/log/9e7b489c-0668-11eb-8cf3-dca632bd9293/roslaunch-ubuntu-4619.log\n...\nChecking log directory for disk usage. This may take\n...\nwhile.\n...\nPress Ctrl-C to interrupt\n...\nparam' tag in <include\n...\nin <include\n...\ninclude> tag\n...\n**mjs513\n...\n20-\n...\n> This is the resuts of cmake:\n> ```\n> Command \"python setup.py egg_info\" failed with error code 1 in /tmp/pip-build-my1vz4nl/pandas/\n> \n> \n> \n> ubuntu@ubuntu:~/catkin_ws/src/px4_fast_planner/install$ ./setup.sh\n...\n> Do you want to build PX4 v1.1\n...\n.1? (y) for simulation (n) if setting this up on on-barod computer \n> y\n...\n> PX4 v1.1\n...\nbe built \n> ./setup.sh: line 31: catkin: command not found\n> ./setup.sh: line 32: catkin: command not found\n> ./setup\n...\nsh: line 33: catkin: command not found\n...\n> Collecting pandas>=0.21 (from -r /home/ubuntu/catkin_ws/src/px4_fast_planner/install/px4_requirements.txt (line 8))"
+        ]
+      },
+      {
+        "id": "https://github.com/Dieptranivsr/drone_extend",
+        "title": "Dieptranivsr/drone_extend",
+        "url": "https://github.com/Dieptranivsr/drone_extend",
+        "highlights": [
+          "drone_extend is an extension of px4_fast_planner. This repository is a version of px4_fast_planner with D435i Depth Camera.\n...\n`drone_extend` is an extension simulation of [px4_fast_planner](https://github.com/mzahana/px4_fast_planner). This repository is a version of `px4_fast_planner` with `D435i Depth Camera`.\n...\n$ roslaunch"
+        ]
+      },
+      {
+        "id": "https://github.com/mzahana/px4_fast_planner/issues/4",
+        "title": "Resource not found: The following package was not found in <arg default=\"$(find mavlink_sitl_gazebo)/worlds/empty.world\" name=\"world\"/>: mavlink_sitl_gazebo",
+        "url": "https://github.com/mzahana/px4_fast_planner/issues/4",
+        "highlights": [
+          "- State: closed\n- Author: Muzaib95Anjum\n- Created: 2020-07-06T16:30:08Z\n- Updated: 2022-10-20T21:22:00Z\n- Repository: mzahana/px4_fast_planner\n- Number: #4\n...\n> @Muzaib95Anjum looks like you did not includ PX4 SITL packages on the path. Did you do the setup using the `setup.sh` script in the [install](https://github.com/mzahana/px4_fast_planner/tree/master/install) folder? It already does that for you and the necessary lines in your `.bashrc` file\n...\n> Also make sure that the end of your `.bashrc` looks like the following\n> ```sh\n> source /opt/ros/melodic/setup.bash\n> source /home/arrow/catkin_ws/devel/setup.bash\n> source ~/Firmware/Tools/setup_gazebo.bash ~/Firmware ~/Firmware/build/px4_sitl_default\n> export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/Firmware\n> export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/Firmware/Tools/sitl_gazebo\n> export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins\n> export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/arrow/catkin_ws/src/px4_fast_planner/models\n> ```\n...\n> you need to also have\n> ```sh\n> export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/Firmware\n> export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/Firmware/Tools/sitl_gazebo\n> ```\n...\n~/Firmware\n...\n~/Firmware ~/Firmware/build\n...\n_PATH:~/Firmware\n...\n~/Firmware\n...\n/catkin\n...\nws/src/px"
+        ]
+      },
+      {
+        "id": "https://discuss.px4.io/t/mavros-posix-sitl-launch-is-neither-a-launch-file-in-package-px4-nor-is-px4-a-launch-file-name/30522",
+        "title": "[mavros_posix_sitl.launch] is neither a launch file in package [px4] nor is [px4] a launch file name - Dronecode Forum | Open Source Drone Development",
+        "url": "https://discuss.px4.io/t/mavros-posix-sitl-launch-is-neither-a-launch-file-in-package-px4-nor-is-px4-a-launch-file-name/30522",
+        "publishedDate": "2023-01-23T16:10:05.000Z",
+        "highlights": [
+          "#### Resource not found: The following package was not found in: mavlink_sitl_gazebo \n\n opened 04:30PM - 06 Jul 20 UTC \n\n closed 07:10PM - 06 Jul 20 UTC \n\nAfter following all the instructions when i run roslaunch px4_fast_planner px4_f\u2026 ast_planner.launch. i get the errors: Resource not found: The following package was not found in: mavlink_sitl_gazebo ROS path [0]=/opt/ros/melodic/share/ros ROS path [1]=/home/muzaib/catkin_ws/src ROS path [2]=/opt/ros/melodic/share ROS path [3]=/home/muzaib/Firmware The traceback for the exception was written to the log file\n...\npx4_sitl_default\n...\n/build/px4_sitl\n...\nware/Tools/sitl_gazebo/models\n...\n_LIBRARY_PATH /home/syuant\n...\n_workspace/devel/lib:/opt\n...\netic/lib:/home\n...\nsitl_default/build_\n...\nbut I need to do some modification to run it , like below screenshot The reason is the latest PX4-autopilot change its `gazebo` folder name into `gazebo-classic`\n...\n```auto\nsource Tools/simulation/gazebo-classic/setup_gazebo.bash $(pwd) $(pwd)/build/px4_sitl_default\nexport ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)\nexport ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/simulation/gazebo-classic/sitl_gazebo-classic\n\n```\n...\nmavros_"
+        ],
+        "image": "https://discuss.px4.io/uploads/default/optimized/2X/8/89f36d3dd7a6a4890e898f2b326a914018a0b364_2_1024x90.png"
+      },
+      {
+        "id": "https://github.com/Han-0107/Real_UAV",
+        "title": "Han-0107/Real_UAV",
+        "url": "https://github.com/Han-0107/Real_UAV",
+        "highlights": [
+          "# Fast-Planner for px4\n...\nThe orignal fast planner is https://github.com/HKUST-Aerial-Robotics/Fast-Planner \nin may case the main algorithm and concept is same but edited for px4 sitl and real flight\n...\nThis is simple \n(1) user - Set the destination \n(2) kino or topo planner gonna make the trajectory \n(3) pub the trajectory to mavros as /mavros/setpoint_raw/local \n(4) then px4 gonna fly \n\n \n\nIn my case, I used https://github.com/mzahana/px4_fast_planner\nand this one use 'movros_controllers', which was unstable in my drone\n...\n- cd ~/catkin_ws/src # in my case 'catkin_ws' and 'PX4-Autopilot' is located in HOME\n- git clone https://github.com/beomsu7/Fast-Planner \n- cd .. && catkin build && source devel/setup.bash\n- cd Fast-Planner\n...\n> if drone arms but not takes off then, I'm not sure but my solution was change the topic from /mavros/setpoint_raw/local to /mavros/setpoint_position/local \n> if you changes it, then the topic doesn't care about acc and vel, only position\n> \n> the way to change the setpoint topic is edit the /Fast-Planner/fast_planner/plan_manage/launch/px4_sitl_kino_replan.launch\n> from \n> to"
+        ]
+      },
+      {
+        "id": "https://github.com/mzahana/px4_fast_planner/issues/17",
+        "title": "How can we use it on real quadcopter? \u00b7 Issue #17",
+        "url": "https://github.com/mzahana/px4_fast_planner/issues/17",
+        "publishedDate": "2021-05-11T00:00:00.000Z",
+        "highlights": [
+          "- State: open\n- Author: atmaca11\n- Created: 2021-05-11T13:20:24Z\n- Updated: 2021-06-09T14:58:55Z\n- Repository: mzahana/px4_fast_planner\n- Number: #17\n...\n> > https://github.com/beomsu7\n...\nFast-Planner\n...\n> Screencast\n...\n-18-2021 0\n...\n3_50 AM.webm\n> \n> Hi\uff0cI want to do some experiments on real drone\n...\nt265 and d435i, then i dowanload your project https://github.com/beomsu7/Fast-Planner on my onboard computer but the step seems not clearly.Could u make it clearly?And have u launched the other launch.files?Did\n...\nuse vison_to_mavros package?Hope for your reply.\n...\nclearly is hard\n...\n, I used px4\n...\n> >\n...\n> > And could u tell me\n...\nbridge_mavros\n...\n> > Sincerely,hope for your reple.Thanks a lot.\n> \n> aha I didn't know that cause I'm github beginner\n> Actually terminal one is for ssh to xavier nx(onboard pc) on drone, terminal two is to launch the main launch file, terminal three is to send destination\n> \n> and the sequence of .launch is simple, if you can't understand, that means you need little bit ros study\n> or you can ask specific part of file\n> \n> bridge_mavros.launch is from px4 VIO, and it is just sending t265 odom data to px4 with mavros\n...\n, and it is just sending\n...\nand px4\n...\nthe main ."
+        ]
+      },
+      {
+        "id": "https://github.com/yinhaolin-bot/drone_extend",
+        "title": "yinhaolin-bot/drone_extend",
+        "url": "https://github.com/yinhaolin-bot/drone_extend",
+        "highlights": [
+          "drone_extend is an extension of px4_fast_planner. This repository is a version of px4_fast_planner with D435i Depth Camera.\n...\n`drone_extend` is an extension simulation of [px4_fast_planner](https://github.com/mzahana/px4_fast_planner). This repository is a version of `px4_fast_planner` with `D435i Depth Camera`.\n...\n```mermaid\ngraph LR\n  drone_extend --> px4_\n...\n_planner;\n  drone_extend --> fast_planner;"
+        ]
+      },
+      {
+        "id": "https://github.com/mzahana/px4_fast_planner/issues/35",
+        "title": "while launching gazebo file",
+        "url": "https://github.com/mzahana/px4_fast_planner/issues/35",
+        "highlights": [
+          "- State: open\n- Author: EhrazImam\n- Created: 2021-10-22T15:02:38Z\n- Updated: 2022-11-10T15:51:51Z\n- Repository: mzahana/px4_fast_planner\n- Number: #35\n...\n/fast_planner_node/bspline\n...\nlimit_vel\n...\n3.0\n...\n/fast_planner_node/fsm\n...\nfsm/thresh_no_replan:\n...\n2.0\n...\n* /fast_planner_node\n...\nfsm/thresh_replan: 1.5\n...\nfsm/way\n...\n0_x\n...\nwaypoint0_y\n...\n0 \n *\n...\nfsm/waypoint1\n...\nfsm/waypoint2_x\n...\n0 \n *\n...\nplanner_node\n...\n2_y:\n...\n0 \n * /fast_planner\n...\n/fsm\n...\nwaypoint2_z:\n...\n1.0 \n *\n...\nfsm/waypoint_num:\n...\n2 \n *\n...\nclearance_threshold:\n...\n2 \n *\n...\n_distance:\n...\n5 \n * /\n...\n/manager/dynamic_environment:\n...\n* /\n...\nnode/manager/local_segment_length: 6.0 \n * /\n...\nplanner_node\n...\nmanager/max_acc: 2.0 \n *\n...\nmanager/max_\n...\nerk: 4.0 \n * /fast\n...\nmanager/max_vel: 3.0 \n * /\n...\nnode/manager/use_geometric\n...\n*\n...\nuse_kinodynamic_path:\n...\n*\n...\nmanager/use\n...\n*\n...\nmanager/use\n...\n*\n...\n4\n...\n*\n...\n*\n...\n3867\n...\n*\n...\n969\n...\nlidarlite"
+        ]
+      },
+      {
+        "id": "https://github.com/sebnem-byte/UAV-Navigation-in-Dense-Forest/blob/main/README.md",
+        "title": "README.md",
+        "url": "https://github.com/sebnem-byte/UAV-Navigation-in-Dense-Forest/blob/main/README.md",
+        "highlights": [
+          "[Fast Plan\n...\n](https://github.com/HKUST-Aerial-Robotics/Fast-Planner\n...\n. \n[State Manager](resources/statemanager.pdf) \n\n# Integration with PX4, Geometric Controller and Fast Planner \n[PX4 Fast Planner](https://github.com/mzahana/px4_fast_planner)\n...\nMzahana, Integration of Fast-Planner with PX4 autopilot for multi-rotor fast navigation with obstacle avoidance.\n\nThis is a really helpful implementation for understanding TF frames needed by fast-planner and integration of the geometric controller. \n\n#\n...\n```\nroslaunch orb_slam3_ros euroc_stereo_E2ES.launch\n```\n\n3.) Run the Goal sender \n\n```\nrosrun px4_fast_planner GoalSender.py \n```"
+        ]
+      },
+      {
+        "id": "https://github.com/mzahana/px4_fast_planner/issues/11",
+        "title": "ERROR: cannot launch node of type [px4/px4]: Cannot locate node of type [px4] in package [px4]. Make sure file exists in package path and permission is set to executable (chmod +x)",
+        "url": "https://github.com/mzahana/px4_fast_planner/issues/11",
+        "highlights": [
+          "- State: closed\n- Author: RoboDD\n- Created: 2020-08-11T10:12:12Z\n- Updated: 2020-08-11T13:09:32Z\n- Repository: mzahana/px4_fast_planner\n- Number: #11\n...\nHi, \n \nIt seems that px4 node cannot be launched. \n \n```\n...\n: cannot launch node of type [px4/px4]: Cannot locate node of type [px4] in package [px4]. Make sure file exists in package path and permission is set to executable (chmod +x)\r\n```\n...\n```\n...\n> @mzahana Sure. I followed this #4 issue and made some changes. \n> \n> ```\n> \n> source ~/Documents/mza_px4_fast_plan_ws/devel/setup.bash\n> source ~/Firmware/Tools/setup_gazebo.bash ~/Firmware ~/Firmware/build/px4_sitl_default\n> export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/Firmware\n> export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/Firmware/Tools/sitl_gazebo\n> export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins\n> export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/ziniu/Documents/mza_px4_fast_plan/src/px4_fast_planner/models\n> export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/.gazebo/models\n> ```\n> \n\n- mzahana mentioned\n\n- mzahana subscribed\n...\nis my log.\n> \n> [log_7f2b74.zip](https://github.com/mzahana/px4_fast_planner/files/5056431/log_7f2b74.zip)\n...\n> The issue above may caused by user`s permission, Now I have a solution:\n> \n> - Start a new terminal\n> ```\n> no_sim=1 make px4_sitl_default gazebo\n> ```\n> Then px4 node work correctly."
+        ]
+      },
+      {
+        "id": "https://github.com/mzahana/px4_fast_planner/issues/34",
+        "title": "ERROR: cannot launch node of type [geometric_controller/geometric_controller_node]: geometric_controller",
+        "url": "https://github.com/mzahana/px4_fast_planner/issues/34",
+        "highlights": [
+          "- State: open\n- Author: Long-Wu-code\n- Created: 2021-10-22T06:16:31Z\n- Updated: 2021-11-25T18:24:16Z\n- Repository: mzahana/px4_fast_planner\n- Number: #34\n...\n[14]=/home/long/ObsAvoid/src/Fast-Planner/uav_simulator/Utils/multi_map_server \nROS path [15]=/home/long/ObsAvoid/src/Fast-Planner/uav_simulator/Utils/rviz_plugins \nROS path [16]=/home/long/ObsAvoid/src/Fast-Planner/uav_simulator/so3_control \nROS path [17]=/home/long/ObsAvoid/src/Fast-Planner/uav_simulator/so3_disturbance_generator \nROS path [18]=/home/long/ObsAvoid/src/Fast-Planner/fast_planner/traj_utils \nROS path [19]=/home/long/ObsAvoid/src/Fast-Planner/fast_planner/plan_manage \nROS path [20]=/home/long/ObsAvoid/src/Fast-Planner/uav_simulator/Utils/uav_utils \nROS path [21]=/home/long/ObsAvoid/src/Fast-Planner/uav_simulator/so3_quadrotor_simulator \nROS path [22]=/home/long/ObsAvoid/src/Fast-Planner/uav_simulator/Utils/waypoint_generator \nROS path [23]=/home/long/PX4_Avoidance/src/avoidance/avoidance \nROS path [24]=/home/long/PX4_Avoidance/src/avoidance/global_planner \nROS path [25]=/home/long/PX4_Avoidance/src/avoidance/local_planner \nROS path [26]=/home/long/PX4_Avoidance/src/avoidance/safe_landing_planner \nROS path [27]=/opt/ros/melodic/share \nROS path [28]=/home/long/PX4/Firmware \nROS path\n...\n> You may try\n> ```\n> $ catkin build geometric_controller\n> ```\n> in the terminal."
+        ]
+      },
+      {
+        "id": "https://github.com/Dieptranivsr/esdf_planner",
+        "title": "Dieptranivsr/esdf_planner",
+        "url": "https://github.com/Dieptranivsr/esdf_planner",
+        "publishedDate": "2021-12-12T10:32:41.000Z",
+        "highlights": [
+          "# Repository: Dieptranivsr/esdf_planner\n...\nseparate esdf package in fast_planner\n...\n# esdf_planner\n...\nseparate [fast_planner](https://github.com/HKUST-Aerial-Robotics/Fast-Planner) into esdf package\n\n \n\n## Initialize Px4 (Get GPS data)\n...\n```shell\n$ roslaunch esdf_planner px4_esdf_planner.launch\n```\n...\n```shell\n$ roslaunch px4_fast_planner mavros.launch\n```\n...\n```shell\n$ roslaunch px4_fast_planner geometric_controller.launch\n```"
+        ]
+      }
+    ],
+    "searchTime": 869.8,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

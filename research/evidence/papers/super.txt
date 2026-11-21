@@ -1,0 +1,1164 @@
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+AUTONOMOUS VEHICLES                                                                                                                   Copyright © 2025 The
+                                                                                                                                      Authors, some rights
+Safety-­assured high-­speed navigation for MAVs                                                                                       reserved; exclusive
+                                                                                                                                      licensee American
+                                                                                                                                      Association for the
+Yunfan Ren†, Fangcheng Zhu†, Guozheng Lu, Yixi Cai, Longji Yin, Fanze Kong, Jiarong Lin,                                              Advancement of
+Nan Chen, Fu Zhang*                                                                                                                   Science. No claim to
+                                                                                                                                      original U.S.
+Micro air vehicles (MAVs) capable of high-­speed autonomous navigation in unknown environments have the poten-                        Government Works
+tial to improve applications like search and rescue and disaster relief, where timely and safe navigation is critical.
+However, achieving autonomous, safe, and high-­speed MAV navigation faces systematic challenges, necessitating
+reduced vehicle weight and size for high-­speed maneuvering, strong sensing capability for detecting obstacles at a
+distance, and advanced planning and control algorithms maximizing flight speed while ensuring obstacle avoid-
+ance. Here, we present the safety-­assured high-­speed aerial robot (SUPER), a compact MAV with a 280-­millimeter
+wheelbase and a thrust-­to-­weight ratio greater than 5.0, enabling agile flight in cluttered environments. SUPER
+uses a lightweight three-­dimensional light detection and ranging (LIDAR) sensor for accurate, long-­range obstacle
+detection. To ensure high-­speed flight while maintaining safety, we introduced an efficient planning framework
+that directly plans trajectories using LIDAR point clouds. In each replanning cycle, two trajectories were generated:
+one in known free spaces to ensure safety and another in both known and unknown spaces to maximize speed.
+Compared with baseline methods, this framework reduced failure rates by 35.9 times while flying faster and with
+half the planning time. In real-­world tests, SUPER achieved autonomous flights at speeds exceeding 20 meters per
+second, successfully avoiding thin obstacles and navigating narrow spaces. SUPER represents a milestone in au-
+
+
+
+
+                                                                                                                                                              Downloaded from https://www.science.org on January 29, 2025
+tonomous MAV systems, bridging the gap from laboratory research to real-­world applications.
+
+
+
+INTRODUCTION                                                                    notable results in terms of flight speed and agility. Song et al. (5) used
+Birds have long captivated humans with their exceptional flight capa-           reinforcement learning (RL) techniques to achieve flight speeds ex-
+bilities to navigate at high speeds through cluttered environments,             ceeding 30 m/s on a human-­made racing track, using external com-
+with remarkably low failure rates. Similarly, micro air vehicles (MAVs),        puting for control and a motion capture system for state feedback.
+among the most agile machines created by humans (1), hold the po-               Foehn et al. (6) proposed a strategy based on progress optimization
+tential to achieve bird-­like high-­speed agile flights. The rapid and safe     to compute a time-­optimal trajectory offline and track the trajectory
+arrival of MAVs at their destinations is a critical factor for successfully     with an onboard computer, whereas Romero et al. proposed a
+deploying MAVs in practical applications. Being fast implies that an            sample-­based online planning approach (7) and used model predic-
+MAV is able to reach designated locations in a timely manner, en-               tive contouring control (8) to track the trajectory, achieving high-­
+abling rapid response in time-­critical missions like search and rescue         speed racing flights greater than 18 m/s. Kaufmann et al. (9),
+(2) or disaster relief (3, 4). Being safe means that the MAV could detect       following a similar RL approach, combined onboard sensing and
+and avoid obstacles on the way without a collision failure. In this work,       computation to surpass the performance of champion-­level human
+we explore how to endow MAVs with bird-­like capabilities, relying              pilots in racing missions. Despite achieving notable flight speed and
+solely on onboard sensing and computational units, to achieve safe              agility, these methods depend on external sensing (such as a motion
+and high-­speed flights in unknown environments (Movie 1).                      capture system) (5–8), external computation during actual flights
+    Achieving safety-­assured, high-­speed flights in unknown environ-          (5), or offline training (5, 6, 9). Moreover, these methods assume a
+ments is a complex task that necessitates a holistic system design.             fixed, known environment (such as the racing track) (5–9), where
+First, to execute aggressive maneuvers that avoid previously unknown            the control policy is exhaustively trained for the best performance.
+obstacles during high-­speed flights, the MAV must have high agility,           Their applicability to unknown environments is not clear.
+characterized by its compact size and high thrust-­to-­weight ratio                 Autonomous flights in unknown environments using only on-
+(TWR). Second, the MAV must have a long detection range to pro-                 board sensing and computation have been extensively investigated
+vide sufficient reaction time for avoiding obstacles at high speeds.            in the literature. The first set of approaches prioritizes flight speed
+Moreover, such detection ability should be achieved with lightweight,           (10–17). Escobar-­Alvarez et al. adopted an expansion rate (ER)–
+compact sensors to not degrade the MAV’s agility. Last, the MAV has             based method to achieve high-­speed flight ranging from 6 to 19 m/s
+to carefully balance flight speed with safety in its trajectory planning.       in a relatively open area (17), using visual sensors and a single-­line
+Flight speed and safety are two mutually conflicting factors, and their         time-­of-­flight (TOF) light detection and ranging (LIDAR) sensor.
+balance has to be achieved efficiently with the limited computation             Loquercio et al. (16) used imitation learning to enable autonomous
+power onboard the MAV.                                                          flight under challenging conditions, using an end-­to-­end approach
+    Several existing works have focused on addressing the challenges            and achieving a maximum speed exceeding 10 m/s.
+in autonomous drone racing applications (5–9) and have achieved                     Another approach is the Bubble planner proposed by Ren et al. (13),
+                                                                                which used receding horizon corridors for trajectory optimization, re-
+                                                                                sulting in a maximum speed of 13.7 m/s in complex environments. An
+Department of Mechanical Engineering, University of Hong Kong, Pokfulam, Hong   inherent issue with these works is their exclusive focus on flight speed at
+Kong, China.
+†These authors contributed equally to this work.                                the expense of safety guarantees. To maximize flight speed, existing works
+*Corresponding author. Email: fuzhang@​hku.​hk                                  (10–15, 17) all assume that the unknown regions caused by occlusions or
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                       1 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+                                                                                      In addition to the planning strategy, the sensing capability on-
+                                                                                  board the MAV plays another crucial role in achieving high-­speed
+                                                                                  flights. Existing works on autonomous MAV navigation (14–16, 18–
+                                                                                  21, 23) often used vision sensors for localization and obstacle per-
+                                                                                  ception. Vision sensors suffer from several limitations, such as
+                                                                                  limited sensing range (typically 3 to 5 m), low dynamic range (24),
+                                                                                  and susceptibility to strong motion blur. These factors severely re-
+                                                                                  strict the attainable flight speeds and level of safety. Moreover, the
+                                                                                  performance of vision-­based systems is affected by lighting condi-
+                                                                                  tions, thereby imposing additional constraints on their practicality
+                                                                                  in real-­world applications where insufficient illumination or large
+                                                                                  illumination variations are present.
+                                                                                      In this work, we present a safety-­assured high-­speed aerial robot
+                                                                                  (SUPER) to fulfill the task of safe, high-­speed flights in unknown
+                                                                                  environments (Fig. 1 and Movie 1). The primary sensing modality
+                                                                                  of SUPER is a three-­dimensional (3D) LIDAR sensor delivering a
+Movie 1. Overview of the proposed SUPER system. SUPER demonstrates its abil-      70-­m sensing range at centimeter-­level accuracy, all within a com-
+ity to safely navigate through unknown, cluttered environments at high speeds;    pact form factor and lightweight configuration (25). With all sens-
+avoid thin obstacles like power lines; and perform robustly in various scenarios, ing, computing, and other necessary components onboard (see the
+including object tracking and autonomous exploration.
+                                                                                  system breakdown in Supplementary Methods), SUPER achieves a
+
+
+
+
+                                                                                                                                                            Downloaded from https://www.science.org on January 29, 2025
+                                                                                  TWR exceeding 5.0 [versus 0.87 for an F35 fighter aircraft at gross
+limited sensor field of view (FOV) are free of obstacles during trajectory weight (26)] and a compact size, with a 280-­mm wheelbase [versus
+planning. Such an optimistic trajectory poses a risk of colliding with hid- 380 mm for that of DJI Mavic 3 (27)], which enables agile flights in
+den obstacles in the unknown region, particularly in cluttered environ- cluttered environments. To achieve high-­speed flights while ensur-
+ments with frequent occlusions given that high-­speed flights require ing safety, we adopted the two-­trajectory planning strategy pro-
+sufficient space to decelerate. Similarly, the learning-­based approach in posed in (28) and planned two trajectories in each replanning cycle:
+(16) does not incorporate safety considerations into its control policy, re- one in known free space to ensure safety and the other in both
+sulting in a low overall success rate (~50 to 80%) when the flight speed known free space and unknown space to boost flight speed. We im-
+exceeds 10 m/s. These limitations in success rate and the absence of safety proved the computation efficiency of the two-­trajectory strategy by
+guarantees restrict the deployment of these methods (10–16) in real-­ one order of magnitude by redesigning the planning and mapping
+world applications.                                                               modules. For mapping, we proposed a method to distinguish known
+     Alternatively, there are approaches that prioritize flight safety. free spaces directly on LIDAR points, which fundamentally enables
+The first stream of methods focuses on enhancing flight safety in a the use of a more efficient point cloud map in the two-­trajectory
+safety-­aware manner (18–20). Quan et al. (18) and Wang et al. (19) strategy. For trajectory planning, we used a differentiable trajectory
+achieved safety awareness by actively slowing down the MAV when parameterization, specifically the minimum control effort (MINCO)
+approaching unknown spaces, whereas Zhou et al. (20) maximized method (29), to improve the efficiency of trajectory optimization
+the visibility to unknown spaces on the trajectory. Although these and to optimize switching time between the two trajectories. The
+methods could enhance flight safety, they compromise flight speed. improved computation efficiency and optimally determined switch-
+Field experiments reported in safety-­aware methods (18–20) indi- ing time improved the attainable flight speeds and success rate as
+cate that their designs are rather conservative and cannot fully use demonstrated in the benchmark comparison. Last, the point cloud
+the MAV agility, leading to a flight speed of no more than 5 m/s. map effectively retained measurements on thin objects and repre-
+Moreover, these methods rely on various heuristic strategies for sented the environments at centimeter-­level accuracy, allowing the
+safety awareness and lack a rigorous safety guarantee. Another cat- unmanned aerial vehicle (UAV) to avoid thin obstacles and navigate
+egory of methods adopts safety-­assured strategies that confine the through tight spaces. The robustness of SUPER against small objects,
+trajectory completely within known free spaces (21, 22). Although cluttered environments, and lighting variations expanded its opera-
+they offer a guaranteed level of safety, the safety-­assured methods tion envelope in both natural and artificial environments, enabling
+(21, 22) tend to be even more conservative in flight speed, especially round-­the-­clock operations spanning both daytime and night-
+in cluttered environments. Such conservatism was partially over- time. As a result, SUPER represents a milestone in transitioning
+come in Faster by Tordesillas et al. (23), which plans an additional high-­speed autonomous navigation from laboratory settings to real-­
+trajectory in both unknown and known free space alongside the tra- world applications.
+jectory in the known free space. This two-­trajectory planning strat-
+egy has notably improved flight speed, achieving a fast flight of
+greater than 8 m/s, several times faster than those reported in prior RESULTS
+works (21, 22), without losing the guarantee of safety. However, Overview of SUPER
+Faster suffers from high computation delay because it uses a compu- We have demonstrated the safe and high-­speed flight capabilities of
+tationally expensive occupancy grid map (OGM) to identify known SUPER through extensive simulations and real-­world experiments.
+free spaces and mixed-­integer quadratic programming (MIQP) for In more than 1000 simulated flights, the planning module of SUPER
+trajectory optimization. The high computation delay severely limits reduced the failure rate by 35.9 to 95.8 times compared with the
+the flight speed and success rate.                                                state-­of-­the-­art baseline methods while achieving notably higher
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                    2 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+
+   A
+                                                                                                                                                       Safety
+                                                     Solid-state LiDAR
+                                                                                                   LiDAR FOV
+                                                      (Livox Mid 360)                                                                                  Safety-assured
+                                                                                                                                                                                           Speed in
+                                                                                                         Onboard                                                                           Autonomous
+                                                                                                         Computing                                                                         Flights
+                                                                                                                                                         Optimistic
+                                                                                                         Power
+                                                       Onboard Computer                                                                                                                    m/s)
+                                                                                                                            High                                                     (20
+                                                         (Intel NUC 12)                                                                                                       High
+                                                                                                                                                                   /s)
+                                                                                                                                             Low              (3m
+                                                                                                                                                        Low
+           SUPER (Ours)                                      Flight Controller                                                                    m)      a
+                                                                  (PX4)                                                                      (0        Sm
+                                                                                                                                               .4              1
+                                                                                                                                                          ll (
+                        Size: 280 mm         TWR: > 5.0                                                                                  Me
+                                                                                                                                           diu
+                                                                                                                                                              .0)
+                                                                                                                                              m
+
+            ZJU Swarm                              Commercial Drone                         Agilicious                                 m)                           La
+                                                                                                                                                                         rg
+                                                                                                                                   0.1                                   e(
+                                                                                                                                   o(                                     5.0 )
+                                                                                                                        Size   Mi cr
+                                                                                                                        (Wheelbase)                                             TWR
+       Size: 110 mm TWR: 2.4               Size: 380 mm TWR: 2.3                   Size: 250 mm    TWR: > 5.0
+
+
+
+
+                                                                                                                                                                                                             Downloaded from https://www.science.org on January 29, 2025
+   B(i)                                                                                                                                                                                           B(ii)
+
+
+
+
+                                                                                           ts        Avo
+                                                                                      gh                 id
+                                                                                   Fli                        ing
+                                                                               d                                    T
+                                                                       -sp                                             n
+                                                                          ee                                        hi
+                                                                    Hig                                                     re s
+                                                                       h                                                 Wi
+
+  B(iii)                                                                                                                                                                                          B(iv)
+                                                                          r
+                                                                    Clutte
+                                                                                                                          ht
+                                                                                                                         Nig
+                                                                       ed                                           at
+                                                                          En  vi
+                                                                                                                   tio
+                                                                                                                    n
+                                                                                ro
+                                                                                  nm
+                                                                                     ents                   v i ga
+                                                                                                         Na
+
+
+
+
+Fig. 1. Overview of the proposed autonomous aerial system. (A) Radar chart comparing SUPER with other state-­of-­the-­art autonomous aerial robots, including the palm-­
+sized autonomous MAV (ZJU Swarm) (35), the open-­source agile quadrotor platform (Agilicious) (33), and a representative commercial drone (27). For Agilicious, we obtained the
+data from its best performance in onboard autonomous flights as reported in (16). For the commercial drone, we obtained its size, TWR, and the maximum flight speed allowed
+by its APAS from the official manufacturer’s website (27). The onboard computation power and safety strategy are not publicly disclosed and hence are not shown. (B) Demon-
+stration of SUPER in real-­world flights. (i) High-­speed flights in the wild; (ii) avoidance of thin electrical wires; (iii) navigation through cluttered environments; (iv) flights at night.
+
+
+
+average flight speeds. The performance of SUPER in real-­world sce-                                collision free, and the environment was completely unknown before
+narios has also been validated with a substantial number of field                                  the flight, requiring SUPER to detect and avoid those obstacles in
+tests. In all experiments, SUPER was tasked to reach a goal position                               the environment in an online manner. In these real-­world tests,
+with fully onboard perception, planning, and control. The line con-                                SUPER achieved a speed of 20 m/s in unknown, unstructured envi-
+necting the goal and the MAV’s current position was usually not                                    ronments and maintained a 100% success rate across eight different
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)      29 January 2025                                                                                                                                   3 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+trials (Fig. 1B, i). Moreover, SUPER outperformed advanced com-              Both systems demonstrated successful detection and tracking of the
+mercial MAVs regarding flight safety against small obstacles and             target throughout the entire task, ensuring a fair comparison for
+adaptability to environments of high clutter and low lighting condi-         their navigation capabilities.
+tions. In particular, SUPER was able to detect and avoid thin objects,           The tracking trajectories of both MAVs are presented in Fig.
+such as power lines and tree branches, in the wild (Fig. 1B, ii) and         4A. In the beginning stage where the target is in open areas, the
+navigate through extremely cluttered environments (Fig. 1B, iii),            commercial drone and SUPER can achieve a comparable tracking
+even at night (Fig. 1B, iv). SUPER was also successfully applied in          performance. After the target entered the first wooded area, the
+object tracking, autonomous exploration, and waypoint navigation             commercial drone failed to track the target and stopped in front of
+missions (see Fig. 2), demonstrating its robustness and versatility in       the woods (position A in Fig. 4, A and C, i). A likely reason is that
+real-­world scenarios. Video recordings of some flights are supplied         the visual navigation used by the commercial drone had a limited
+in Movie 1.                                                                  map resolution and accuracy (typically tens of centimeters), which
+                                                                             necessitated more conservative collision-­free trajectories to enhance
+Safe high-­speed navigation in unknown environments                          safety. Subsequently, the target exited the first wooded area and ran
+We tested the flight speed of SUPER in an unknown forest environ-            toward the second one. The commercial drone successfully resumed
+ment (see Fig. 3 and movie S1). The environment covered an area of           tracking by finding a path detouring the wooded area (the orange
+around 280 by 90 m2 and featured trees of varying thicknesses and            line between positions A and B in Fig. 4A). However, after the target
+diverse natural vegetation (Fig. 3A, i). We conducted eight experi-          entered the second wooded area with a higher density, the commer-
+ments at different times of day, creating a wide range of lighting con-      cial drone failed the tracking mission completely and disengaged
+ditions from normal bright day to completely dark night (Fig. 3A, ii         from the automatic tracking mode (Fig. 4D, i) for the same reason
+to v). We also set different maximum speed constraints across the            mentioned above. In contrast, SUPER planned its trajectory directly
+
+
+
+
+                                                                                                                                                         Downloaded from https://www.science.org on January 29, 2025
+eight experiments, ranging from 5 to 20 m/s. In all experiments,             on LIDAR point clouds with centimeter-­level accuracy, enabling it
+SUPER started from position ps and was assigned to reach four way-           to navigate through small corridors in cluttered environments. As a
+points p1~p4 sequentially, where p4 coincides with ps (Fig. 3B, i).          consequence, SUPER exhibited smooth and consistent target track-
+The four waypoints guided the MAV to experience areas of different           ing throughout the entire mission, successfully navigating both wooded
+obstacle densities (Fig. 3B, ii to iv).                                      areas without a stop encountered by the commercial drone (Fig. 4,
+    SUPER succeeded in all eight experiments, achieving a 100%               C, ii and D, ii). The tracking processes of the commercial drone and
+success rate. Figure 3C illustrates the speed distribution in the eight      SUPER in this experiment are shown in movie S2.
+experiments along with the maximum speed constraints. SUPER
+reached a maximum flight speed of 20 m/s in tests 6 to 8. Moreover,          Avoiding thin objects
+tests 6 to 8 were conducted during daytime, dusk, and nighttime,             Thin objects, such as power lines and tree branches, present challenges
+respectively, with the same maximum speed limit of 20 m/s. SUPER             for MAVs during field missions because of their abundance in the
+consistently demonstrated high performance in these three experi-            wild and difficulties in detection. To validate SUPER’s ability to avoid
+ments, demonstrating the robustness of our system to variations              small objects, we conducted a series of quantitative experiments and
+under lighting conditions. Besides high-­speed flights, SUPER was            compared its performance with that of a commercial drone (27). As
+able to adapt to different speeds and consistently met the speed con-        shown in Fig. 5, we selected four thin wires of different diameters: 30,
+straints in all experiments. Figure 3D presents the distribution of          20, 11, and 2.5 mm (Fig. 5A). The wires were hung between two trees
+position tracking errors in the eight experiments. SUPER exhibited           ~3 m apart. To test the ability to avoid the thin wires, the MAV started
+an average tracking error of 0.13 m, even at a speed of 20 m/s, show-        at a position 4 m away on one side of the wire, with the target position
+casing high tracking precision and ensuring stable performance dur-          4 m away on the opposite side. Because the commercial drone does
+ing high-­speed flights.                                                     not accept waypoint commands, we used joysticks to command it to
+                                                                             fly from the start position to the target. To test whether the commer-
+Navigation in cluttered environments                                         cial drone is able to detect and avoid the thin wires on the flight path,
+To validate SUPER’s navigation capability in complex environments,           we switched on its Advanced Pilot Assistance System (APAS) during
+we commanded it to track a person jogging in a dense wooded envi-            the flight. The flight speed was ~2 to 3 m/s, which was also set as the
+ronment (Fig. 4A). The person passed two wooded areas sequen-                speed constraint for SUPER for a fair comparison.
+tially: The first area had a relatively sparse distribution of trees (Fig.       The experimental results are shown in Fig. 5. In the case of the
+4C), and the second one presented a higher density where the                 30-­mm wire, both SUPER and the commercial drone successfully
+tracked person had to lower her body to pass through (Fig. 4D). We           avoided the wire and reached the target position (Fig. 5, B, i and C,
+compared SUPER’s tracking and navigation performance with a                  i). However, in the experiments with the thinner wires with diame-
+state-­of-­the-­art commercial product (27) by conducting two sepa-          ters of 20, 11, and 2.5 mm, the commercial drone failed to detect and
+rate experiments. In both experiments, the tracked person followed           avoid them. Consequently, it crashed on the wire and caused the
+roughly the same route and speed. Considering that the commercial            wire to swing (Fig. 5B, ii to iv). The commercial drone’s failure to
+drone has a larger size than SUPER (0.31 m versus 0.21 m in radius),         detect thin wires may be attributed to challenges in accurately com-
+we increased SUPER’s size to 0.32 m by adding four sticks on each            puting disparities and generating depth images for navigation with
+arm to ensure a fair comparison (Fig. 4B). For target detection and          the vision-­based navigation system. In contrast, SUPER reached its
+tracking, the commercial drone used a visual recognition technique           target position successfully in all four experiments, avoiding even
+that is not available in SUPER. To work around this problem, the tar-        the thinnest 2.5-­mm wire (Fig. 5C, i to iv). The exceptional obstacle
+get wore a high-­reflectivity vest, which can be easily detected in          avoidance capability is attributed to both the LIDAR sensor and our
+LIDAR point clouds on the basis of the point reflectivity measurements.      planning module: The LIDAR sensor provides point measurements
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                  4 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+          A(i)                                    B(i)                                    C(i)                                    D(i)
+
+
+
+
+          A(ii)                                   B(ii)                                   C(ii)                                   D(ii)
+
+
+
+
+          E(i)                                                              E(ii)                                        E(iii)
+
+
+
+
+                                                                                                                                                                                   Downloaded from https://www.science.org on January 29, 2025
+          F(i)                                                                          F(ii)
+
+
+
+
+          F(iii)                                                F(iv)                                             F(v)
+
+
+
+
+Fig. 2. Additional applications of SUPER. Examples of object tracking including (A) tracking of a person running in a dense forest, (B) a dark indoor scene, (C) a large
+scene, and (D) a car moving on a hilly village road. (A)(i) and (D)(i) show the point cloud maps, which were synthesized from online LIDAR measurements after the flights
+were completed, with trajectories of the target and the MAV being colored in blue and red, respectively. (A)(ii) and (D)(ii) show snapshots in either third-­person or first-­
+person view during the experiments. (E) (i) Autonomous exploration experiment in a 50 m–by–60 m area with the executed trajectory of SUPER shown in the white path.
+(ii and iii) Snapshots of the scene and the corresponding reconstruction results, respectively. (F) Example of waypoint navigation. (i) The MAV starting from ps visited 11
+waypoints, p1 ∼ p11, sequentially. The MAV trajectory is color coded on the basis of time. (ii) Time-­lapse image composition capturing the changes in the environments
+and the flight trajectories of the MAV. The black artifacts are caused by the two persons moving randomly in the area, and the MAV trajectory is highlighted in blue. (iii to v)
+MAV flight trajectories at locations traveled by moving persons. SUPER can use the spaces previously traversed by moving objects.
+
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                                          5 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+
+  A(i)                                                                                           A(ii)                                              Test 1   A(iii)             Test 6
+
+
+
+
+                                 28
+                                   0m                                                            A(iv)                                              Test 7   A(v)               Test 8
+
+                                                                              m
+                                                                      90
+
+  B(ii)                                      B(i)                                                                                                                              TEST 1
+                                                                                                                                                                               TEST 2
+                                                                                                                                                                               TEST 3
+                                                                                                                                                                               TEST 4
+                                                                    B(ii)                                                                                                      TEST 5
+                                                                                                                                                                               TEST 6
+                                                                                                                                                                               TEST 7
+                                                                                                                                                                               TEST 8
+
+
+
+
+                                                                                                                                                                                             Downloaded from https://www.science.org on January 29, 2025
+ B(iii)                                                    B(iii)
+
+
+
+
+                                                                                                 B(iv)
+
+
+
+ B(iv)
+
+
+
+
+  C                                                                                                                           D
+
+                                        Maximum Speed
+
+
+
+
+   Distribution of Speed [m/s]                                                                                         Position Control Error [m]
+
+
+
+
+                                                        Test Number                                                                                              Test Number
+
+Fig. 3. Safe high-­speed navigation in unknown environments. (A) Bird’s-­eye view of the experiment environment. (ii to v) Four representative lighting conditions from
+four of the eight experiment tests. Specifically, (ii) was captured during test 1, and (iii to v) were captured in tests 6 to 8, respectively. (B) (i) The executed trajectories during
+the eight tests are shown in curves with different colors. In all eight tests, the MAV flew through the waypoints ps, p1, p2, and p3 sequentially and stopped at position p4.
+Overlaid with the trajectories is the point cloud map, which is synthesized offline with point measurements collected during the flight. (ii to iv) Three detailed views of the
+environment on flight paths. (C and D) Violin plots illustrating the distribution of flight speed and position tracking error across the eight tests. The shape of the violin plot
+represents the density of the data distribution, with the white point indicating the mean value. The black error bar represents the SD. The data for these plots were ob-
+tained by uniformly sampling 2000 data points from the flight data of each test.
+
+
+on these thin objects (Fig. 5D), and the point cloud map in our plan-                        Evaluation of safety, success rate, and efficiency
+ning module effectively retains these points for trajectory planning.                        We evaluated the performance of SUPER’s planning module through
+The robustness of SUPER when faced with small objects further                                a series of controlled experiments conducted in simulation. The
+strengthens its safety for real-­world missions. A video illustration of                     testing environments consisted of a set of randomly generated 3D
+this experiment is shown in movie S3.                                                        forest-­like scenarios at a fixed size of 110 m by 20 m (Fig. 6A). These
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)     29 January 2025                                                                                                                    6 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+  A                                                                                                                           B
+                                                                                                 Target
+                                                                                         SUPER (Ours)
+                                                D                             Commercial drone (approx.)
+
+
+
+                                         B
+                                                                                                        C                                              SUPER (Ours)
+
+
+
+
+                                                                               A
+                                                                                                    C
+                                                                                                                                                     Commercial Drone
+
+
+  C(i)                                                                                  C(ii)
+
+
+
+
+                                                                                                                                                                                  Downloaded from https://www.science.org on January 29, 2025
+  D(i)                                                                                  D(ii)
+
+
+
+
+Fig. 4. Navigation in cluttered environments. (A) Trajectories of the target, the commercial drone, and SUPER during the target tracking experiment. After starting from
+            target                                                                                     target
+position ps , the target passed sequentially through two wooded areas and ended at position pg . The commercial drone tracked the target closely until the target
+entered the first wooded area, where the commercial drone failed to find a collision-­free path to track the object and stopped at position A. Once the target exited the first
+wooded area, the commercial drone resumed tracking by finding a path detouring the wooded area. However, the commercial drone failed the tracking mission again
+and stopped at position B when the target entered the second wooded area. In contrast, SUPER tracked the target well without stopping throughout the whole process.
+The point cloud map is synthesized offline with point measurements collected online during the flight of SUPER. (B) SUPER with extended size and the commercial drone
+(27). (C) Tracking of the target when she entered the first wooded area. The commercial drone failed to track the target because of the tight spaces, whereas SUPER could
+track the object closely. (D) Tracking of the target when she entered the second wooded area. The commercial drone failed the tracking again, whereas SUPER was able
+to fly through the tight space where the person being tracked had to lower her body to pass through.
+
+scenarios encompassed six distinct obstacle densities ranging from                       (23). The implementation details of these four planners are summa-
+3.1 to 6.5 in terms of the traversability (30). Traversability is a metric               rized in table S1. Each planner was evaluated 18 times in each map,
+describing the obstacle density normalized by the robot’s size, spe-                     with maximum velocity varying from 1 to 18 m/s. The maximum
+cifically its maximum radius (r = 0.2 m in our simulation), where a                      acceleration was fixed at 20 m/s2 for all experiments. In each experi-
+higher traversability corresponds to a less challenging obstacle avoid-                  ment, a planner was given a goal 100 m away from the start position,
+ance task. For each scenario, the positions and inclination angles of                    and the experiment terminated at any of the three conditions. A “suc-
+the obstacles were randomly generated. To ensure diversity, we used                      ceed” occurs when the MAV reaches the goal without any collisions
+different random seeds to generate 10 different maps for each density,                   and satisfies all kinematic constraints, including velocity and accel-
+resulting in a total of 60 distinct maps for evaluation. We bench-                       eration. A “collision” happens when the MAV collides with obstacles
+marked the performance of SUPER with three state-­of-­the-­art base-                     during the flight. An “unfinished” outcome is recorded if, in any re-
+line planners: Bubble planner, an optimistic planning strategy (13);                     planning cycle before reaching the goal, the planner fails to return a
+Raptor, a safety-­aware method (20); and Faster, a safety-­assured method                trajectory within 30 s.
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                                          7 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+
+
+
+                 A(i)                               B(i)                                                  C(i)
+
+
+
+
+                 A(ii)                              B(ii)                                                 C(ii)
+
+
+
+
+                                                                                                                                                                                Downloaded from https://www.science.org on January 29, 2025
+                 A(iii)                             B(iii)                                                C(iii)
+
+
+
+
+                 A(iv)                              B(iv)                                                 C(iv)
+
+
+
+
+                 D
+
+
+
+
+Fig. 5. Demonstration of thin object avoidance. (A) (i to iv) Four thin wires of varying diameters were used in the experiments. (B) (i to iv) Time-­lapse images capturing
+the flights of DJI Mavic 3. It successfully avoided the thin wire of 30-­mm diameter but failed to avoid wires with smaller diameters. The collision of the commercial drone
+caused the wire to swing, leading to some artifacts in the time-­lapse images despite only one actual wire being present in each experiment. (C) (i to iv) Time-­lapse images
+capturing the flights of SUPER. It successfully avoided all four types of thin wires. (D) Point cloud view of SUPER when facing a 2.5-­mm thin wire. The wire was seen in the
+current scan measurements (white points) and more evident in the accumulated point cloud (colored points).
+
+
+
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                                        8 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+
+
+
+                                                                                                                                                                            Downloaded from https://www.science.org on January 29, 2025
+
+
+
+
+Fig. 6. Evaluation of safety, success rate, and efficiency. (A) Benchmarking environments with varying traversability. (B) Flight results of the benchmarked methods in
+1080 experiments. (C) Distributions of the ratio of switching to backup trajectories for SUPER and Faster at varying obstacle densities, with each distribution computed
+from 180 tests. The white points represent the mean values, and the error bars indicate the SDs. (D) Success rate of the benchmarked methods at different obstacle densi-
+ties and flight speeds. Empty columns indicate that the corresponding combination of speed and density was not achieved. (E) Time consumption of the benchmarked
+methods, with squares representing the mean values and error bars indicating the SDs of the total computation time. Each mean and SD was computed from 180 tests.
+
+
+
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                                    9 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+    We evaluated the safety of all benchmarked methods in Fig. 6B in           parameters and can be solved efficiently. In contrast, the MIQP prob-
+terms of the safe rate, which is the ratio of both succeed and unfinished      lem solved in Faster for trajectory optimization is a nondifferentiable
+cases over all experiments. Across all 1080 experiments with varying           and hard to solve, taking a computation time of up to 41 ms. Con-
+flight speed and obstacle density, SUPER had no collision or infeasible        sequently, Bubble and SUPER took the least total computation time
+trajectory, achieving a perfect safe rate. Faster (23) is a safety-­assured    (8 to 44 ms for Bubble and 10 to 47 ms for SUPER). The slightly
+method in principle because of the planning of a backup trajectory in          higher time consumption of SUPER when compared with Bubble is
+each replan cycle, similar to SUPER. However, we found that its back-          due to the planning of an extra backup trajectory. Raptor took 67 to
+up trajectory was not constrained in the map region, where the un-             83 ms, and Faster took 67 to 91 ms; both were higher than SUPER.
+known and occupied information is available, causing collisions when
+the map was not updated in time. The collision rate of Faster reached          Applications
+12.78%, leading to an overall safe rate of 87.22%. Bubble (13) achieved        We demonstrated the use of SUPER in three representative applica-
+a safe rate of 68.80%; the remaining 31.20% of collision cases were            tions: object tracking, autonomous exploration of unknown spaces,
+caused by its optimistic planning strategy that treats unknown spaces          and waypoint navigation in changing environments (movie S4). In
+as free. Regarding Raptor (20), it suffered from a collision rate of 38.33%,   object tracking, we commanded SUPER to track an object by repeat-
+which was primarily due to the planned trajectory frequently violating         edly assigning its local planning goal as a position behind the object.
+kinodynamic constraints during high-­speed flights. These trajectories         We conducted extensive experiments to evaluate SUPER’s perfor-
+are challenging for the simulated MAV to track, resulting in collisions        mance in tracking both a person and a car, as depicted in Fig. 2 (A to
+with obstacles. Consequently, the overall safe rate was merely 61.67%. To      D). In all experiments, the target object was attached with a sheet of
+sum up, SUPER outperformed other benchmarked methods by achiev-                high reflectivity, enabling reliable detection within the LIDAR point
+ing safe flights in all experiments, highlighting its exceptional safety-­     cloud based on reflectivity measurements. The target was then tracked
+
+
+
+
+                                                                                                                                                           Downloaded from https://www.science.org on January 29, 2025
+assured property.                                                              using a simple constant velocity mode. The results show that SUPER
+    Besides safety, whether the MAV achieved the task (for example,            successfully tracked the target and avoided all obstacles in all ex-
+reaching the goal) and at which speed it achieved the task are also            periments, regardless of variations in target speeds (ranging from 1
+important. We analyzed the success rate, the ratio of succeed over all         to 8 m/s), different indoor and outdoor environments, light condi-
+tests, and the flight speed of all benchmarked methods in Fig. 6D. SUPER       tions of daytime and nighttime, and different scene scales. In the
+achieved the highest average flight speed across almost all obstacle den-      application of autonomous exploration, the MAV was commanded
+sities while maintaining a nearly perfect success rate of 99.63% (Fig.         to explore an unknown space. To fulfill this task, a global planner
+6B). In contrast, Faster (23) had lower average speeds because of the          named Bubble Explorer (32) first generated a set of waypoints on-
+short mapping range. Moreover, Faster formulated the trajectory                line. These waypoints were expected to observe the maximum un-
+optimization as an MIQP, which, on the one hand, had difficulties in           known spaces at the minimum cost (such as the total flight distance).
+finding high-­speed trajectories that require intricate temporal opti-         Then, SUPER was used as a local planner to reach these waypoints
+mization and, on the other hand, was time consuming (Fig. 6E). The             while ensuring obstacle avoidance. In the experiment, SUPER navi-
+high computation time limited the planning horizon of both explor-             gated to all of the waypoints without a collision failure and explored
+atory and backup trajectories. Because both trajectories terminate at          the entire 3000-­m2 environment within 120 s.
+zero speed at each replan, the short planning horizon caused low-­                 Figure 2 (E, i to iii), presents snapshots of the scene and the map-
+speed trajectories. Frequent timeouts in the MIQP also forced the              ping results after the exploration. Last, we tested the flight capability
+MAV to execute backup trajectories (Fig. 6C) more often, which fur-            of SUPER in changing environments (Fig. 2F). A typical problem
+ther reduced the overall flight speeds. Bubble (13), an optimistic             for planning methods based on point clouds is that they falsely view
+planning strategy, and Raptor (20), a safety-­aware planning method,           spaces passed by moving objects as being occupied because of the
+had occasionally higher flight speeds than SUPER at certain obstacle           points collected on the moving object. SUPER implemented a time-­
+densities but at the cost of a lower success rate. In sum, SUPER re-           decaying point cloud map (Materials and Methods) and could hence
+duced the mission failure rate by 35.9 to 95.8 times compared with             avoid such a problem. In the experiment, the MAV starting from ps
+the other benchmarked methods while flying at higher or compa-                 was commanded to fly through a sequence of waypoints (from p1 to
+rable speeds.                                                                  p11; see Fig. 2F, i); meanwhile, two people were moving randomly in
+    We analyzed the time consumption of all benchmarked methods                the same area (Fig. 2F, ii). SUPER successfully arrived at all way-
+as shown in Fig. 6E. Each method has its computation time broken               points using the free spaces left by the moving objects without a
+into mapping and trajectory planning, which further breaks down                collision with the moving object or static obstacles in the environ-
+into the front end and back end. SUPER and Bubble exhibited min-               ments. These results underscored the superior navigation capabili-
+imal time overhead for mapping (1 to 5 ms) because of their direct             ties of SUPER in complex unknown environments.
+planning on point clouds, which can be obtained from LIDAR raw
+measurements with minimal processing, such as rigid transforma-
+tion. Faster used an OGM, which has to enumerate a large number                DISCUSSION
+of map grids traversed by all points contained in a LIDAR scan,                Autonomous aerial robots
+leading to a mapping time of up to 47 ms. Raptor used a Euclidean              SUPER is designed for high-­speed navigation in unknown environ-
+signed distance field (ESDF) map, which is built from OGM by fur-              ments by relying solely on its onboard sensing and computation. Agil-
+ther calculating the distance information of each grid (31), hence             ity and onboard computation are, therefore, two important factors.
+consuming an even longer time of 69 ms. For trajectory planning,               SUPER has a size of 280 mm and a TWR of 5.0, which characterizes
+SUPER, Bubble, and Raptor parameterized the trajectories by poly-              its high agility. The onboard computer of SUPER is an Intel NUC 12
+nomials or B-­splines, which are differentiable to the trajectory              equipped with a 12-­core 4.7-­GHz central processing unit (CPU),
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                  10 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+providing sufficient computation power for efficient, online optimi-         performance even under low-­light conditions, such as nighttime,
+zation of both exploratory trajectories, attaining high-­speed flights       surpassing visual sensors’ capabilities in these scenarios.
+and backup trajectories and ensuring safety. The high agility and                Using 3D LIDAR sensors for MAV navigation is not new. For
+onboard computation power have enabled SUPER to achieve high-­               example, several works (10, 11, 40–42) used the VLP-­16 on multiro-
+speed flights of greater than 20 m/s in unknown cluttered environ-           tor UAVs, and other works (29, 43–45) used the Ouster OS1-­128
+ments without a collision failure. The safety-­assured and high-­speed       (46). A crucial problem among these works lies in their LIDAR sen-
+flying capability of SUPER places itself in a unique position among          sors. Existing LIDAR sensors are bulky, heavy, and costly: The prior
+existing autonomous aerial robots (Fig. 1A). Agilicious (33) exhibits        two factors necessitate a UAV of a large size (wheelbase of 330 to 1133
+a high TWR of greater than 5.0 and a size similar to SUPER, but its          mm) and low TWR [for example, typically around 2.0 (11, 29, 40, 41, 43–
+imitation learning–based planning (16) achieves a lower flight speed         45, 47, 48)], which restrict the agility of the UAV. The high cost of
+of 10 m/s and lacks a safety guarantee, yielding a low success rate in       LIDAR sensors has also prevented the wider adoption of them in UAV
+high-­speed flights (around 60% at 10 m/s). Moreover, the onboard            navigation, not even to speak of the high-­speed agile flights that pose
+computing unit, an Nvidia TX2 (34) with a four-­core 1.9-­GHz CPU,           a much higher risk to the system. The reported flight speeds of exist-
+has limited computational power, which restricts the potential ap-           ing LIDAR-­based UAVs were merely 2 to 5 m/s (40, 41, 44). Zhang
+plication of Agilicious for more computationally demanding tasks,            et al. (10, 11, 42) achieved a flight speed of 10 m/s with a LIDAR-­
+such as autonomous exploration. On the other hand, ZJU Swarm                 based UAV, but their UAV was large (wheelbase of 1133 mm), heavy
+(35) concentrates on designing small-­size and lightweight autono-           (more than 13 kg), and was only demonstrated in a static, sparsely
+mous MAVs for swarm applications, achieving an impressive size of            wooded environment (for example, the distance between obstacles
+a 110-­mm wheelbase with a weight less than 300 g. However, this             was more than 10 m) with very smooth flights. Our SUPER is en-
+design has a low TWR (only 2.4) and limited onboard computation              abled by the rapid recent advancements in LIDAR technology,
+
+
+
+
+                                                                                                                                                              Downloaded from https://www.science.org on January 29, 2025
+resources because of weight constraints, leading to a maximum speed          which have enabled the commercialization and mass production of
+of merely 3 m/s in autonomous flights (35). Being a representative           solid-­state LIDARs with orders of magnitude–lower cost and weight.
+commercial MAV (27), it has a larger wheelbase of 380 mm com-                SUPER used a Livox MID360 LiDAR sensor (25), which features a
+pared with SUPER, and its relatively low TWR (only 2.3) further              weight of 265 g, size of 65 mm by 65 mm by 60 mm (length by width
+restricts its ability to perform high-­speed flights in cluttered envi-      by height), and a power consumption of around 6.3 W. Although the
+ronments. The commercial drone has an APAS, which can detect                 LIDAR sensor is still larger and heavier and consumes more power
+and avoid potential obstacles on the flight path. The maximum flight         than typical depth camera sensors [for example, the RealSense
+speed supported by APAS of the commercial drone is 15 m/s (27),              D435i (49) weighs only 72 g with a size of 90 mm by 25 mm by 25 mm
+which is still lower than the speed attained by SUPER in autono-             and 1.6-­W power consumption], given a compact design of air-
+mous flights.                                                                frame, SUPER has achieved a wheelbase of only 280 mm, which is
+                                                                             even smaller than state-­of-­the-­art visual-­based MAVs such as the
+LIDAR-­based MAV navigation                                                  DJI Mavic 3 (380-­mm wheelbase). Furthermore, SUPER achieves a
+SUPER used a 3D LIDAR sensor to achieve its high-­speed naviga- TWR exceeding 5.0, surpassing the typical ratio of around 2.0 for
+tion. Compared with cameras that have been widely used in academic existing LIDAR-­based UAVs. The compact size and high TWR of
+research (14–16, 18–21, 23) and commercial MAVs (27, 36), LIDAR SUPER lead to an agility that is seldom observed in existing works.
+sensors provide key advantages that are crucial to enhance the flight            Although LIDAR sensors provide a superior sensing ability over
+speed, safety, and efficiency of MAV navigation. First, LIDAR sen- depth sensors in terms of range, resolution, and accuracy, leveraging
+sors provide direct, accurate (centimeter-­level), and long-­range (tens to the LIDAR measurements to achieve safe, high-­speed flights is still
+hundreds of meters) depth measurements. The long-­range measure- challenging, requiring a carefully designed map that truthfully repre-
+ments allow the MAV to perceive and avoid obstacles far ahead, sents the environments as measured by the LIDAR sensor. One main-
+hence enabling a high-­speed flight, and the accurate measurements stream approach in existing autonomous systems (12, 14, 15, 20, 23, 40)
+allow the MAV to fly through small spaces in cluttered environ- uses OGMs (50, 51) or ESDF maps (31). However, these maps are
+ments. In contrast, visual approaches estimate depths on the basis of computationally demanding because of the ray-­casting or distance
+disparity and triangulation (37), which is computationally demand- field update processes. They are also incapable of mapping small thin
+ing, and the accuracy decreases quadratically with the measuring dis- objects because of the limited spatial resolution in the ray-­casting process
+tance. The state-­of-­the-­art visual sensors, such as Intel RealSense (38), (see fig. S5). Another choice is the point cloud map (10, 11, 13, 41, 42, 52),
+have an effective measuring range of merely 3 to 5 m. Second, LIDAR which is much more efficient to maintain and can effectively retain
+sensors measure 3D points at an extremely high frequency, from point measurements on small thin objects because of the avoidance
+hundreds of thousands to millions of hertz. Using such high-­ of ray-­casting. However, one inherent issue with a point cloud
+frequency measurements would allow us to estimate extremely fast map is the difficulty in distinguishing known free space and un-
+MAV motions (39), where traditional RGB or RGB-­D cameras could known space. Therefore, existing point cloud–based planning meth-
+suffer from severe motion blur because of the long exposure time and ods (10, 11, 13, 41, 42, 52) often treat the unknown area as free, which
+low dynamic range. Third, LIDAR sensors use TOF for depth mea- cannot ensure avoidance of occluded obstacles, and have exhibited
+suring, enabling them to detect thin objects with diameters below low success rates in cluttered environments. We proposed a method
+even 1 cm. In contrast, visual-­based (including RGB, RGB-­D, and (theorem 1 in Supplementary Methods) that distinguishes known
+event camera–based) approaches prove inadequate in detecting free spaces directly from the point cloud map, allowing SUPER to
+typical thin objects like power lines because of the challenges of plan a backup trajectory ensuring safe flights. Consequently, SUPER
+accurately computing disparities for such objects. Last, because of has achieved higher flight speeds and success rates than previous
+their active measuring mechanism, LIDAR sensors exhibit reliable LIDAR-­based navigation methods (13, 42) (see Supplementary
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                     11 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+Methods for a benchmark comparison). The accurate and high-­               SUPER’s trajectory optimization required only half the computation
+resolution point map also enabled SUPER to avoid thin obstacles in         time of Faster while adhering to all constraints. Another key differ-
+the wild and navigate through tight spaces safely. Last, outdated          ence between Faster and SUPER is the determination of switching
+points caused by moving objects or LIDAR false measurements pres-          time between backup and exploratory trajectories. Faster determines
+ent another problem for point cloud maps. We addressed this prob-          the switching time heuristically before the backup trajectory optimi-
+lem using a spatiotemporal sliding mechanism, which has enabled            zation on the basis of a wild assumption that the backup trajectory
+SUPER to use the areas traversed by moving objects.                        would decelerate along the exploratory trajectory. In contrast, SUPER
+                                                                           optimizes the switching time along with the backup trajectory
+Safety-­assured high-­speed trajectory planning                            optimization. The optimized switching time in SUPER is usually
+SUPER achieved high-­speed and safe planning by calculating two            much larger than the heuristically determined one in Faster, reducing
+trajectories at each time: an exploratory trajectory in both known         the flight time on the backup trajectory and the chance of switching
+free spaces and unknown spaces and a backup trajectory in known            to it (fig. S6).
+free spaces only. This two-­trajectory strategy was first proposed in
+Faster (23, 28). SUPER adopted such a two-­trajectory strategy but         Limitations and future directions
+had completely different designs for sensing, mapping, and plan-           At the hardware level, the emergence of smaller and lighter LIDAR
+ning, which are optimized for higher flight speeds, success rates, and     sensors with longer sensing ranges and denser point clouds may
+computation efficiency. Ultimately, SUPER achieved flight speeds           open up new opportunities for autonomous aerial systems. Although
+exceeding 20 m/s in the unknown wild using only its onboard sens-          the LIDAR adopted by SUPER is much smaller and lighter than pre-
+ing and computing devices.                                                 vious ones, it remains larger and heavier than visual sensors, limiting
+    From sensing, Faster (23) used a depth camera (38) for obstacle        the potential for further miniaturization of the MAV platform. This
+
+
+
+
+                                                                                                                                                     Downloaded from https://www.science.org on January 29, 2025
+detection. The depth camera has a measuring range of merely 3 to 5 m,      restricts the MAV’s ability to operate in more confined spaces (such
+which limits the attainable flight speeds of the system. Moreover,         as narrow corridors with widths of less than 0.5 m). Adopting lighter
+Faster used an external motion capture system for state estimation,        LIDAR sensors could also enhance the TWR of the drone, thereby
+restricting its application in real-­world environments that are often     improving its agility further. In addition, the sensing range and point
+uninstrumented. In contrast, SUPER used a lightweight LIDAR sen-           cloud density of LIDAR sensors can be further improved. Longer
+sor (25), which offers up to 70-­m depth measurements, enabling detec-     sensing ranges and denser point clouds can provide more detailed
+tion and avoidance of obstacles at a distance. The long-­range detection   environmental information, which could enable SUPER to avoid
+capability constituted the base for high-­speed flights achieved in this   thinner objects at higher speeds. The aerodynamic design of the
+work. SUPER further used the LIDAR measurements for state estima-          drone can also be further optimized. The current SUPER system only
+tion, using our in-­house developed LIDAR-­inertial odometry, FAST-­       considers aerodynamic drag effects at the software level by identify-
+LIO2 (39). Consequently, the system relies completely on onboard           ing drag coefficients and compensating it in the control module.
+devices and is adaptable to unknown environments without any prior         However, with careful aerodynamics reducing air resistance, the
+instrumentation, such as Global Navigation Satellite System (GNSS)–        drone’s flight speed and stability could be increased even further.
+denied environments.                                                          At the algorithmic level, although SUPER has demonstrated
+    A key requirement for the two-­trajectory strategy used in Faster      the ability to handle dynamic obstacles, the current implementation
+(23) and SUPER is to distinguish known free spaces of the envi-            does not actively detect moving objects or predict their movement,
+ronment. Faster (23) uses OGMs to maintain such information.               limiting its flight capability in highly dynamic environments. By ac-
+However, updating OGM is rather computationally expensive be-              tively identifying the moving objects (53) and predicting their mo-
+cause of the ray-­casting operations (50). To constrain the overall        tion, the planning module could generate smoother, safer trajectories,
+computation time for real-­time operation, Faster updates only 5 m         enhancing flight safety and reducing energy consumption. In addi-
+of the OGM, attaining an average computation time of 47 ms. The            tion, further parallelization of the SUPER software implementation
+limited mapping distance further constrains the planning hori-             and leveraging hardware accelerators, such as GPUs (graphics pro-
+zon, leading to short trajectories that have rather low flight speeds.     cessing units), could enhance the system’s efficiency, reduce latency,
+In contrast, SUPER distinguishes known free spaces directly on             and further improve flight speed.
+LIDAR point clouds (Materials and Methods), eliminating the                   In the future, SUPER holds potential across a wide range of
+time-­consuming OGMs while retaining the full range of LIDAR               applications. Its key strengths lie in its emphasis on flight safety,
+points up to 70 m. The resultant map updating time is merely 1             high-­speed capabilities, and relatively low computational demands.
+to 5 ms.                                                                   These features could progress various autonomous drone applica-
+    For planning, Faster formulates the optimization of both explor-       tions, including autonomous exploration, logistics transportation,
+atory and backup trajectories into MIQP problems. MIQP is nondif-          infrastructure inspection, and search and rescue operations, where
+ferentiable and often hard to solve, leading to a high computation         the ability to reach destinations safely and promptly is crucial. An-
+time, occasional constraint violation, and local minimum trajecto-         other standout attribute of SUPER is its robustness, versatility, and
+ries with limited speeds. The high computation time, on the one            scalability. It can operate in diverse, unstructured environments
+hand, causes frequent timeouts that trigger the MAV to switch to           and is adaptable to all lighting conditions, enabling continuous,
+backup trajectories of lower speeds and, on the other hand, limits the     round-­the-­clock operation. From both hardware and software per-
+planning horizon that also constrains the flight speeds. In contrast,      spectives, SUPER effectively addresses the challenges of navigation
+SUPER parameterizes the trajectory as multistage polynomials (Ma-          in complex real-­world environments, offering valuable insights for
+terials and Methods) following (29), in which spatiotemporal pa-           advancing autonomous robots from laboratory settings to real-­
+rameters could be efficiently optimized using gradient methods.            world applications.
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                            12 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+MATERIALS AND METHODS                                                                 (position, velocity, and attitude) at a frequency of 200 Hz and with a
+Agile LIDAR-­based MAV platform                                                       latency of less than 1 ms. It also produces world-­frame registered
+The design objective of SUPER is to achieve a high TWR while min-                     point clouds at a scan rate of 50 Hz, with around 4000 points per
+imizing its size. After a thorough investigation, we finalized the de-                scan, resulting in a total of about 200,000 points per second at a la-
+sign of SUPER, as depicted in Fig. 7A. The platform has a takeoff                     tency of less than 10 ms.
+weight of 1.5 kg and a compact wheelbase measuring only 280 mm.                           For the mapping module, we propose a point cloud–based spa-
+For the motors, we selected the T-­Motor F90 type (54), with each                     tiotemporal sliding point cloud map to represent the occupied spac-
+motor capable of generating a maximum thrust of 23.6 N. This con-                     es of the environment. To prevent increasingly densified points over
+figuration results in a maximum total thrust of 94.4 N and an esti-                   time accumulation, we downsampled the points in the map using a
+mated ideal TWR of ~6.3. Because of factors like airflow interference                 uniform grid data structure. This structure divides the space into
+and blockage, the actual TWR is slightly above 5.0, enabling highly                   uniform grids with a resolution of 0.05 to 0.3 m and retains only the
+agile maneuvers. For computation, the MAV is equipped with a                          center point of each occupied grid cell. Also, to prevent overlarge
+flight control unit (FCU) running PX4 Autopilot (55) and an Intel                     maps that are not necessary for local planning, we only maintained
+NUC onboard computer that features a 12-­core 4.7-­GHz i7-­1270P                      a local map of 50 to 100 m around the MAV using a zero-­copy map
+CPU. For sensing, the MAV equipped a lightweight 3D LIDAR (25)                        sliding strategy following our previous work (51). Furthermore, a
+enabling object detection at ranges exceeding 70 m with a rapid                       well-­known problem of a point cloud map is that LIDAR points be-
+point rate of 200,000 Hz. The MAV also equipped an IMU on the                         longing to both the static environment and moving objects in past
+FCU, providing acceleration and angular rate measurements at a                        locations are considered to be occupied straightly, which will falsely
+frequency of 200 Hz. The LIDAR point clouds and IMU measure-                          classify the space traveled by moving objects as occupied. To address
+ments are input to the navigation software, which consists of a                       this issue, a temporal sliding strategy was used to cull points outside
+
+
+
+
+                                                                                                                                                                            Downloaded from https://www.science.org on January 29, 2025
+LIDAR-­based perception module performing state estimation and                        a temporal window td. Specifically, within each grid cell, we tracked
+obstacle mapping, a planning module for generating safety-­assured                    the time thit when it was last hit by a LIDAR point. If at current time
+and high-­speed trajectories, and a controller to track the planned                   tc, the Δt = tc − thit was less than a threshold td, the grid cell was
+trajectories, all running on the onboard computer (Fig. 7). The out-                  considered occupied; otherwise, it was considered free.
+puts of the trajectory tracking controller are the desired angular ve-                    The point cloud map was constructed as follows. Upon the arrival
+locity (consisting of pitch, roll, and yaw rate) and thrust acceleration,             of a new LIDAR scan, we located the grid cells hit by new points and
+which are tracked by the lower-­level controllers running on the FCU.                 updated their thit as the timestamp of the new point in it. On the
+                                                                                      other hand, to reduce the latency for map updates, we used a lazy-­
+LIDAR-­based perception                                                               update strategy for the outdated map grids, which are culled only
+The perception module (Fig. 7B) consists of two main parts: state es-                 when they are queried by the trajectory planning module. The resul-
+timation and mapping. The state estimation part is based on our in-­                  tant computational complexity of map update depends solely on the
+house designed LIDAR-­inertial odometry, FAST-­LIO2 (39), which                       number of LIDAR points in a scan while being independent of the
+provides low-­latency nine–degrees of freedom state estimation                        sensing range. Consequently, the proposed mapping module can
+
+
+
+
+Fig. 7. System overview of SUPER. (A) Hardware configuration of SUPER. (B) Perception module comprises two components: state estimation and mapping. (C) The
+planning module is a safety-­assured planner based on point cloud maps. The planned trajectory includes an exploratory trajectory e, which spans both known free space
+and unknown space, and a backup trajectory b, which starts from a state on e and lies entirely within known free space. Part of e and the entirety of b form the com-
+mitted trajectory c, which is then executed by the MAV. (D) The control module is an accurate and efficient OMMPC.
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                                   13 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+effectively leverage the extended sensing range of LIDAR to accom-        Flight corridor generation in configuration space
+plish long-­range updates. In contrast, volume mapping methods            We represent both exploratory and backup corridors as a set of over-
+such as OGMs (50) or ESDF-­based maps (31) have to update all grid        lapping polyhedra and extract them directly from LIDAR point
+cells in the measuring range, leading to a much higher computation        cloud inputs to enhance the computation efficiency. For the explor-
+load and short mapping range, typically around 5 to 10 m.                 atory corridor, the objective is to find a set of overlapping polyhedra
+                                                                          that connect the start points ps to the goal position pg. To achieve
+Safety-­assured high-­speed trajectory planning                           this, we first use an A* path search algorithm (57) to find a collision-­
+Framework overview                                                        free path  connecting pc and pg (Fig. 8B, i); the resulting path con-
+To achieve safe and high-­speed trajectory planning, we used a two-­      sists of a set of discrete positions with a step equal to the map
+trajectory planning strategy where two trajectories are planned at        resolution (such as 0.1 m). Then, we search for a series of line seg-
+each replan cycle (Fig. 7C). The first trajectory, called the explor-     ments along the path  by repeatedly finding the furthest visible
+atory trajectory e : pc → pg, which expands from the MAV current         point from the end of the last line segment. Specifically, starting
+position pc to a goal position pg. With the aim to achieve high-­speed    from pc, the first point of , we find the furthest point s1 that is vis-
+flight, the exploratory trajectory treats unknown space as free and is    ible from pc and form a line segment (pc, s1). Then, starting from s1,
+planned in both known free spaces and unknown spaces. The sec-            we find its furthest visible point s2 and form the line segment (s1, s2).
+ond trajectory, referred to as the backup trajectory b : ps → pl, be-    This process is repeated until the goal position pg is visible (Fig. 8B,
+gins from a position ps on the exploratory trajectory at time ts and      ii). Last, each of the found line segments is used as a seed for convex
+ends at a position pl with zero speed. With the aim to ensure safe        decomposition, which extracts a polyhedron that contains the seed
+flights, the backup trajectory and the segment of the exploratory tra-    but not any obstacle points input to it (Fig. 8B, iii).
+jectory from pc to ps must remain in known free spaces. In cases               The convex decomposition has to be performed in the robot con-
+
+
+
+
+                                                                                                                                                      Downloaded from https://www.science.org on January 29, 2025
+where the whole exploratory trajectory is already in the known free       figuration space to consider the UAV size. Existing methods, such as
+spaces (for example, when the MAV is in close proximity to the            the fast iterative regional inflation (FIRI) method (58), the regional
+goal), no backup trajectory needs to be planned. Last, the commit-        inflation with line search method (40), or their predecessor the it-
+ted trajectory c : pc → ps → pl consists of the exploratory trajectory   erative regional inflation with semidefinite programming method
+from pc to ps and the backup trajectory from ps to pl. The committed      (59), address robot size through point inflation or plane shrinkage.
+trajectory is then transmitted to the control module for execution.       We introduce a new method for the convex decomposition in con-
+    The two trajectories above are replanned at a constant frequency      figuration space, termed configuration-­space iterative regional in-
+of 10 Hz. At each replan, we determine the goal position pg used for      flation (CIRI). CIRI inherits the iterative optimization process and
+exploratory trajectory planning from the goal position G specified        the efficient second-­order cone program–based maximum inscribed
+externally, such as the next waypoint to pursue in a waypoint navi-       ellipsoid volume algorithm from the prior work FIRI (58). It distin-
+gation task and the next viewpoint in an exploration task. Specifi-       guishes itself from previous works (59, 40, 58) by directly operating
+cally, if the distance between the current MAV position pc and the        on input point clouds and extracting polyhedra in the MAV config-
+goal position G exceeds the planning horizon H, we project G onto         uration space without prior map inflation (3, 12, 60) or polyhedral
+a sphere centered at pc with a radius of H to obtain pg; otherwise, pg    shrinking (40, 61). In addition, CIRI uses a plane adjustment strat-
+is set to G. A replan is considered successful if both the exploratory    egy to ensure that the polyhedron generated in the configuration
+and backup trajectories are generated successfully or if an explor-       space also contains the line seed. Compared with point inflation and
+atory trajectory that remains entirely within known free spaces is        plane shrinkage strategies used in existing methods (62, 58), the
+generated. Upon a successful replan, a new committed trajectory is        polyhedron obtained by CIRI achieves a larger volume in less com-
+formed and updated to the control module. Otherwise, the replan is        putation time while ensuring a complete containment of line seed in
+considered to have failed, and the MAV would execute the last com-        the configuration space (see fig. S8). Details of the CIRI method are
+mitted trajectory. Given that the last committed trajectory remains       provided in the Supplementary Materials.
+in the known free space, executing it would ensure collision avoid-       Backup corridor generation
+ance and guarantee flight safety, even at planning failure.               Leveraging CIRI, we can efficiently generate exploratory corridors
+    Both the exploratory and backup trajectories are planned via          directly from LIDAR point clouds. However, generating backup
+corridor-­constrained trajectory optimization. The method consists        corridors, which indicate known free spaces, from point clouds is
+of generating a flight corridor and then optimizing a smooth trajec-      challenging because of the lack of information regarding known and
+tory within the corridor (Fig. 8A). The flight corridor represents        unknown areas. To overcome this limitation, we introduce a meth-
+collision-­free spaces from the start position to the goal position by    od that unifies the generation of exploratory and backup corridors
+a series of convex shapes, such as cubes (56), balls (13, 41), and        within the same CIRI framework, relying solely on point cloud data
+polyhedra (40, 23, 12). In our two-­trajectory planning framework,        and eliminating the need for ray cast–based occupancy mapping.
+two polyhedra corridors need to be generated: the exploratory cor-        Our approach leverages the dense and high-­precision depth mea-
+ridor, which encompasses both known free spaces and unknown               surements obtained from LIDAR sensors and is fundamentally
+spaces, and the backup corridor, which encompasses only known             based on theorem 1 (see Supplementary Methods), which states that
+free spaces. Then, the exploratory and backup trajectories are            a polyhedron  extracted by CIRI will lie in the known free space if
+planned by optimizing two smooth trajectories in the respective           the input point cloud makes a sufficiently dense depth image and
+flight corridors. In the following sections, we will present how to       the input seed contains the current position pc. This is because  is
+generate exploratory and backup corridors directly on LIDAR               convex, ensuring that it satisfies the convexity condition of theorem
+point clouds and how to optimize smooth trajectories within the           1. It also does not contain any points from the input point cloud (or
+respective corridors.                                                     the depth image ), fulfilling the requirement to exclude points
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                             14 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+
+
+
+                                                                                                                                                                                 Downloaded from https://www.science.org on January 29, 2025
+
+
+
+
+Fig. 8. Two-­trajectory planning strategy. (A) Illustration of the corridor-­based trajectory generation method that involves generating a corridor, represented by a series
+of overlapping polyhedra Pi, and then optimizing a smooth trajectory within the corridor. The trajectory, which begins at p0 and terminates at pg, is parameterized by a
+multistage polynomial trajectory through the intermediate position qi connecting consecutive trajectory segments and the time duration Ti for each segment. ai denotes
+the centers of the overlapping regions between two adjacent polyhedra. (B) The exploratory trajectory generation process includes (i) an A*-­based path search, (ii) line
+seed generation, (iii) and convex decomposition followed by trajectory optimization. (C) The backup corridor generation process involves (i) searching for a seed on the
+exploratory trajectory, (ii) convex decomposition, and (iii) optionally cutting the corridor on the basis of the LIDAR field of view. (D) Effect of switching times ts and the
+corresponding switching position ps between the exploratory and backup trajectories. The switching time ts is optimized within the constraint tc < ts < to.
+
+
+from the map, and includes the seed, ensuring that the current posi-                    that the backup corridor, which is extracted by the CIRI algorithm
+tion pc is within the corridor as required. As a result, this polyhe-                   and should contain the seed (pc, s), is aligned with the exploratory
+dron can serve as the backup corridor.                                                  trajectory and can hence contain a substantial portion of the explor-
+   On the basis of theorem 1, the detailed process is illustrated in Fig.               atory trajectory. Meanwhile, considering that practical LIDAR sen-
+8C. For the seed, we select the line segment that starts from the MAV’s                 sors are not infinitely dense, to make a sufficiently dense depth image,
+current position, pc, and ends at the furthest point s on the explor-                   we accumulate recent LIDAR scans (for example, 1 to 2 s) and input
+atory trajectory e that is visible from pc (Fig. 8C, i). The purpose is                them to CIRI, along with the line seed (pc, s), to obtain a convex
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)   29 January 2025                                                                                                        15 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+polytope  (Fig. 8C, ii). The area within the generated polytope  is                              ‖ ̇p‖22 ≤ vmax
+                                                                                                              2
+                                                                                                                  , ‖ ̈p‖22 ≤ amax
+                                                                                                                               2
+                                                                                                                                                  (5)
+guaranteed to be known free according to theorem 1. If the LIDAR
+has a limited FOV, the intersection between the polytope  obtained                                                           [      ]
+by CIRI and a convex subset of the LIDAR FOV region can be used                                pi (t) ∈ i , ∀ i ∈ [1, M], t ∈ 0, Ti              (6)
+(Fig. 8C, iii). This intersection forms another polyhedron within the
+known free space. Moreover, the first polytope of the exploratory cor-       where ρT > 0 is the weight used to penalize the total flight time to
+ridor must also be intersected with the MAV’s FOV to ensure that the         achieve high flight speed and ρu > 0 is the penalty weight for the soft
+initial portion of the exploratory trajectory lies in known free space,      penalty term. Constraint Eq. 5 guarantees compliance with kinody-
+thereby enhancing the feasibility of the backup trajectory optimiza-         namic constraints, whereas constraint Eq. 6 constrains the position
+tion. A detailed method for selecting the convex subset of the FOV           trajectory within the flight corridor. The term  in the objective
+and an analysis of the FOV’s influence are provided in the Supple-           function is defined as
+mentary Materials.
+Trajectory optimization                                                                                    M
+                                                                                                           ∑       (             )
+Given the exploratory and backup corridors generated in the previ-                                   =          μ ‖         ‖2                  (7)
+                                                                                                                     ‖qi − ai ‖2
+ous section, we consider how to optimize smooth trajectories within                                        i=1
+them. For exploratory trajectory generation, optimizing high-­               where ai is the center location of the overlapping area between i
+speed trajectories is challenging because it requires not only spatial       and i+1. This term is used to prevent the trajectory from being too
+optimization of the trajectory shape but also temporal optimiza-             proximate to the boundaries of the flight corridor, which is often
+tion for
+      [ time] allocation. The objective is to find a smooth trajectory       where the obstacles are located. Maintaining a distance from obsta-
+p(t): 0, tM → ℝ3 that minimizes the flight duration tM and control           cles would enhance the visibility of the onboard sensor and hence
+
+
+
+
+                                                                                                                                                         Downloaded from https://www.science.org on January 29, 2025
+efforts represented by the sth order derivative ||p(s) ||2 (s = 4 in this    allows generation of larger known free flight corridors for backup
+work) while satisfying all kinodynamic and collision avoidance con-          trajectory planning. μ is a C2 continuous barrier function as illus-
+straints. The dynamic constraints encompass maximum speed and
+                                                                             trated in fig. S9. We chose μ to be a larger value (such as 0.5) to make
+acceleration limitations, and collision avoidance is achieved through
+                                                                             the penalty softer. This choice ensures that the intermediate point qi
+positional constraints enforced by flight corridors. Considering the
+                                                                             is attracted toward ai while allowing for some flexibility and avoid-
+composition of the flight corridors, we parameterize the trajectory
+                                                                             ing excessive constraints on the optimization problem. To solve the
+as a multistage polynomial as proposed in (29). Specifically, given
+                                                                             optimization problem in Eq. 2, we adopted the method in (29),
+the exploratory corridor e composed of M consecutively over-
+                                                                             which reformulates the constrained problem into an unconstrained
+lapped polyhedra i, both the trajectory p(t) and the flight duration
+                                                                             one. Because of the differentiability of the trajectory (and hence the
+tM are divided into M segments, where the ith (i = 1, 2, ⋯ , M ) seg-
+                                                                             objective and constraints in Eqs. 2 through 6) to the optimization
+ment pi(t) has a duration Ti and is contained in the polyhedra i
+                                                                             variables Q and T, the unconstrained optimization problem can be
+(Fig. 8A). Two consecutive trajectory segments pi(t) and pi+1(t) con-
+                                                                             solved efficiently using a gradient-­based method, the limited-­memory
+nect at position qi ∈ ℝ3 and are continuous up to the (s − 1)th order
+                                                                             Broyden-­Fletcher-­Goldfarb-­Shanno (L-­BFGS) solver (63). The solved
+derivative. Then, given the initial state s0 = p(0:s−1) (0)(, which
+                                                                ) is the     exploratory trajectory is denoted as e (t).
+current MAV state, and the terminal state sf = p(0:s−1) tM , which is
+                                                                                 The backup trajectory should start from an initial state s0(that
+                                                                                                                                                ) lies
+the front-­end path end position with zero derivatives, the ith poly-
+                                                                             on the exploratory trajectory e (t) at time ts [where s0 = e ts ] and
+nomial( trajectory )can be parameterized by (the intermediate       point
+                                                              )              end at a terminal position pl in(the known ) free space with zero speed
+Q = q1 , … , qM−1 and time allocation T = T1 , … , TM as follows:
+                                                                             and acceleration [where sf = pl , 0, ⋯ ]. To maximize the average
+                    (             )         [     ]                          flight speed, it is desirable to minimize the proportion of executing
+         pi (t) = Ci Q, T, s0 , sf β(t), t ∈ 0, Ti , i = 1, 2, ⋯ , M   (1)   the backup trajectory because it is typically a deceleration trajectory
+                                                                             due to the zero termination speed. That being said, the switching
+                                                                             time ts from the exploratory trajectory should be as late as possible
+where β(t) = [1, t, …, t2s−1]T is the basis function and Ci is the coef-
+                                                                             so that the MAV can spend more time on the high-­speed explor-
+ficient matrix of the polynomial that can be obtained from Q and T
+                                                                             atory trajectory. In case of replanning failure or timeout, the late
+by solving a linear system (29). Moreover, Ci [and hence the trajec-
+                                                                             switching time also allows more attempts for the planning module
+tory pi(t)] is differentiable to both Q and T with the partial differen-
+                                                                             to replan new trajectories to minimize the chance of executing the
+tiation derived in (29).
+                                                                             backup trajectory. On the other hand, ts cannot be arbitrarily large.
+    With the parameterization in Eq. 1, the trajectory optimization is
+                                                                             A ts that is too large will cause the starting point of the backup tra-
+then formulated as
+                                                                             jectory ps to be too close to the boundary of the backup corridor,
+                               tM
+                                    ‖ (s) ‖2                                 which may render the backup trajectory optimization problem in-
+                   min              ‖p (t)‖ dt + ρT tM + ρu           (2)   feasible (Fig. 8D).
+                    Q,T �0          ‖     ‖2
+                                                                                 To determine the best switching time ts, we optimized it along
+                                            (             )                  with the backup trajectory b (t). We adopted the same formulation
+                       s. t.        p(t) = C Q, T, s0 , sf β(t)        (3)   as in the exploratory trajectory optimization (Eq. 2) but replaced the
+                                                                             corridor constraints with the backup corridor b to ensure that the
+                                              ∑M                             whole backup trajectory lies in the known free space. We also re-
+                                       tM =         Ti                 (4)   placed the cost item  with  = −ts to maximize the switching
+                                              i=1                            time ts. In addition to modification of the objective function and
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)     29 January 2025                                                                               16 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+constraints, two additional optimization variables are added: the              distribution, including its density and range. The kernel density es-
+switching time ts and the terminal position pl. The terminal position          timate f̂(x) was calculated as
+pl replaces the goal position pg in Eq. 2 and should be determined
+within the optimization because the MAV could rest at any position                                                    1 ∑
+                                                                                                                         n    (x −x )
+                                                                                                             ̂
+                                                                                                             f (x) =        K      i
+                                                                                                                                                                          (10)
+in the known free space. Moreover, because the backup trajectory                                                     nh i=1      h
+lies within the backup corridor, the start point ps should lie in the back-
+up corridor as well, necessitating an additional constraint tc < ts < to,      where n is the number of data points, xi is the data point, h is the
+where tc is the current time and to is the time when the exploratory           bandwidth parameter, and K is the kernel function (a Gaussian ker-
+trajectory exits the backup corridor, respectively (see Fig. 8D). To           nel was used in our analysis). In each violin plot, the width corre-
+eliminate the inequality constraints in the optimization, we param-            sponds to the density of data points at different values, and the central
+eterize ts as another variable η ∈ ℝ as follows:                               dot represents the mean value. The error bars, which indicate the SD,
+                                (         )                                    are shown alongside the mean to convey the data’s variability.
+                                                 1
+                           t s = t o − tc             + tc              (8)       Box plots, used in fig. S8, summarize the data distribution by dis-
+                                              1 + e−η                          playing the median and interquartile range (IQR). The whiskers ex-
+where η is completely unconstrained (see fig. S10). As a result, the           tend to 1.5 times the IQR, and data points beyond this range were
+complete optimization variables are (Q, T, pl, ts). Combining the              considered outliers and are not shown in the plots.
+fact that the trajectory pi(t) is differentiable to the Q, T, the initial
+state s0, and the terminal   ) sf containing pl [as proven in (29)]
+                          ( state                                              Supplementary Materials
+and the fact that s0 = e ts is differentiable to ts (and hence η), the        The PDF file includes:
+whole optimization problem containing the objective and con-                   Supplementary Methods
+
+
+
+
+                                                                                                                                                                                   Downloaded from https://www.science.org on January 29, 2025
+straints is differentiable and can hence be solved by the gradient             Figs. S1 to S13
+method, the L-­BFGS solver (63), again.                                        Table S1
+                                                                               References (66–75)
+
+On-­manifold model predictive controller                                       Other Supplementary Material for this manuscript includes the following:
+The position trajectory p(t) generated by the planning module is then          Movies S1 to S4
+transmitted to the control module for tracking (Fig. 7D). The position
+trajectory is first transformed into a state trajectory s(t) on the basis of   REFERENCES AND NOTES
+the differential flatness of the MAV subject to drag effects (64). Then,        1. J. Verbeke, J. D. Schutter, Experimental maneuverability and agility quantification for
+to accurately track this state trajectory at high speeds, we implement             rotary unmanned aerial vehicle. Int. J. Micro Air Veh. 10, 3–11
+                                                                                   (2018).
+an on-­manifold model predictive control (OMMPC) developed in                   2.	B. Mishra, D. Garg, P. Narang, V. Mishra, Drone-­surveillance for search and rescue in
+our previous work (65). The method linearizes the quadrotor system                 natural disaster. Comput. Commun. 156, 1–10 (2020).
+by mapping its states from the state manifold to the local coordinates          3. S. M. S. M. Daud, M. Y. P. M. Yusof, C. C. Heo, L. S. Khoo, M. K. C. Singh, M. S. Mahmood,
+of each point along the trajectory s(t), leading to a linearized system            H. Nawawi, Applications of drone in disaster management: A scoping review. Sci. Justice
+                                                                                   62, 30–42 (2022).
+that is minimally parameterized while avoiding kinematic singulari-
+                                                                                4.	B. Rabta, C. Wankmüller, G. Reiner, A drone fleet model for last-­mile distribution in
+ties, allowing the MAV to perform aggressive maneuvers with large                  disaster relief operations. Int. J. Disaster Risk Reduct. 28, 107–112
+attitude angles, such as banked turns at sharp corners. The linearized             (2018).
+system is a linear time-­varying system, which is then controlled by a          5. Y. Song, A. Romero, M. Müller, V. Koltun, D. Scaramuzza, Reaching the limit in
+usual MPC. To enhance the control accuracy, we further consider the                autonomous racing: Optimal control versus reinforcement learning. Sci. Robot. 8,
+                                                                                   eadg1462 (2023).
+rotor drag compensation in the control. Detailed derivations of the             6. P. Foehn, A. Romero, D. Scaramuzza, Time-­optimal planning for quadrotor waypoint
+OMMPC with rotor drag compensation and a quantitative analysis of                  flight. Sci. Robot. 6, eabh1221 (2021).
+the compensation effectiveness are provided in Supplementary Meth-              7.	A. Romero, R. Penicka, D. Scaramuzza, Time-­optimal online replanning for agile
+ods and fig. S13.                                                                  quadrotor flight. IEEE Robot. Autom. Lett. 7, 7730–7737 (2022).
+                                                                                8.	A. Romero, S. Sun, P. Foehn, D. Scaramuzza, Model predictive contouring control for
+                                                                                   time-­optimal quadrotor flight. IEEE Trans. Robot. 38, 3340–3356
+Statistical analysis                                                               (2022).
+We used three types of statistical analyses: error bars, violin plots,          9.	E. Kaufmann, L. Bauersfeld, A. Loquercio, M. Müller, V. Koltun, D. Scaramuzza,
+and box plots. Error bars were used to represent the SD around the                 Champion-­level drone racing using deep reinforcement learning. Nature 620, 982–987
+mean, reflecting the variability in the data. The SD σ was calculated as           (2023).
+                                                                               10. J. Zhang, R. G. Chadha, V. Velivela, S. Singh, P-­cal: Pre-­computed alternative lanes for
+                            √                                                      aggressive aerial collision avoidance, paper presented at the 12th International
+                            √        n                                             Conference on Field and Service Robotics (FSR), Tokyo, Japan, 31 August 2019.
+                            √ 1 ∑      (      )2
+                          σ=√            x −μ                           (9)    11. J. Zhang, R. G. Chadha, V. Velivela, S. Singh, P-­cap: Pre-­computed alternative paths to
+                              n − 1 i=1 i                                          enable aggressive aerial maneuvers in cluttered environments, in 2018 IEEE/RSJ
+                                                                                   International Conference on Intelligent Robots and Systems (IROS) (IEEE, 2018),
+                                                                                   pp. 8456–8463.
+where n is the number of data points, xi is each data point, and μ is          12. Y. Ren, S. Liang, F. Zhu, G. Lu, F. Zhang, Online whole-­body motion planning for quadrotor
+the mean value.                                                                    using multi-­resolution search, in 2023 IEEE International Conference on Robotics and
+   Violin plots, used in Figs. 3 and 6 and fig. S12, were used to il-              Automation (ICRA) (IEEE, 2023), pp. 1594–1600.
+lustrate the distribution of various performance metrics (e.g., flight         13. Y. Ren, F. Zhu, W. Liu, Z. Wang, Y. Lin, F. Gao, F. Zhang, Bubble planner: Planning highspeed
+                                                                                   smooth quadrotor trajectories using receding corridors, in 2022 IEEE/RSJ International
+speed, trajectory tracking error, and the ratio of backup trajectory               Conference on Intelligent Robots and Systems (IROS) (IEEE, 2022), pp. 6332–6339.
+execution) across multiple tests. These plots combine features of error        14. X. Zhou, Z. Wang, H. Ye, C. Xu, F. Gao, Ego-­planner: An esdf-­free gradient-­based local
+bars and kernel density estimates, providing a depiction of the data’s             planner for quadrotors. IEEE Robot. Autom. Lett. 6, 478–485 (2020).
+
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)    29 January 2025                                                                                                       17 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+15.	H. Ye, X. Zhou, Z. Wang, C. Xu, J. Chu, F. Gao, Tgk-­planner: An efficient topology guided              44. P. De Petris, H. Nguyen, M. Dharmadhikari, M. Kulkarni, N. Khedekar, F. Mascarich,
+    kinodynamic planner for autonomous quadrotors. IEEE Robot. Autom. Lett. 6, 494–501                          sK. Alexis, Rmf-­owl: A collision-­tolerant flying robot for autonomous subterranean
+    (2020).                                                                                                     exploration, in 2022 International Conference on Unmanned Aircraft Systems (ICUAS) (IEEE,
+16.	A. Loquercio, E. Kaufmann, R. Ranftl, M. Müller, V. Koltun, D. Scaramuzza, Learning                         2022), pp. 536–543.
+    high-­speed flight in the wild. Sci. Robot. 6, eabg5810 (2021).                                         45. Y. Cai, F. Kong, Y. Ren, F. Zhu, J. Lin, F. Zhang, Occupancy grid mapping without raycasting
+17.	H. D. Escobar-­Alvarez, N. Johnson, T. Hebble, K. Klingebiel, S. A. Quintero, J. Regenstein,                for high-­resolution LiDAR sensors. IEEE Trans. Robot. 40, 172–192
+    N. A. Browning, R-­advance: Rapid adaptive prediction for vision-­based autonomous                          (2023).
+    navigation, control, and evasion. J. Field Robot. 35, 91–100 (2018).                                    46.	Ouster, Ouster OS1-­128 sensor (2024); https://ouster.com/products/scanning-­lidar/
+18.	L. Quan, Z. Zhang, X. Zhong, C. Xu, F. Gao, Eva-­planner: Environmental adaptive                            os1-­sensor.
+    quadrotor planning, in 2021 IEEE International Conference on Robotics and Automation                    47. DJI, DJI Matrice 300 RTK (2024); https://enterprise.dji.com/zh-­tw/matrice-­300.
+    (ICRA) (IEEE, 2021), pp. 398–404.                                                                       48.	LiDAR USA, LiDAR USA surveyor 32 (2024); https://lidarusa.com/.
+19.	L. Wang, Y. Guo, Speed adaptive robot trajectory generation based on derivative property                49.	Intel, Product Family D400 Series Datasheet (2024); https://intelrealsense.com/download/
+    of b-­spline curve. IEEE Robot. Autom. Lett. 8, 1905–1911 (2023).                                           21345/?tmstv=1697035582.
+20.	B. Zhou, J. Pan, F. Gao, S. Shen, Raptor: Robust and perception-­aware trajectory                       50.	A. Hornung, K. M. Wurm, M. Bennewitz, C. Stachniss, W. Burgard, Octomap: An efficient
+    replanning for quadrotor fast flight. IEEE Trans. Robot. 37, 1992–2009 (2021).                              probabilistic 3d mapping framework based on octrees. Autonom. Robot. 34, 189–206
+21.	H. Oleynikova, Z. Taylor, R. Siegwart, J. Nieto, Safe local exploration for replanning in                   (2013).
+    cluttered unknown environments for microaerial vehicles. IEEE Robot. Autom. Lett. 3,                    51. Y. Ren, Y. Cai, F. Zhu, S. Liang, F. Zhang, Rog-­map: An efficient robocentric occupancy grid
+    1474–1481 (2018).                                                                                           map for large-­scene and high-­resolution lidar-­based motion planning. arXiv:2302.14819
+22. S. Liu, M. Watterson, S. Tang, V. Kumar, High speed navigation for quadrotors with limited                  [cs.RO] (2023).
+    onboard sensing, in 2016 IEEE International Conference on Robotics and Automation (ICRA)                52. F. Kong, W. Xu, Y. Cai, F. Zhang, Avoiding dynamic small obstacles with onboard sensing
+    (IEEE, 2016), pp. 1484–1491.                                                                                and computation on aerial robots. IEEE Robot. Autom. Lett. 6, 7869–7876
+23. J. Tordesillas, B. T. Lopez, M. Everett, J. P. How, Faster: Fast and safe trajectory planner for            (2021).
+    navigation in unknown environments. IEEE Transact. Robot. 38, 922–938 (2021).                           53.	H. Wu, Y. Li, W. Xu, F. Kong, F. Zhang, Moving event detection from LiDAR point streams.
+24.	E. Mueggler, H. Rebecq, G. Gallego, T. Delbruck, D. Scaramuzza, The event-­camera dataset                   Nat. Commun. 15, 345 (2024).
+    and simulator: Event-­based data for pose estimation, visual odometry, and slam. Int. J.                54.	T-­MOTOR, T-­MOTOR F90 series racing drone motor specifications (2024); https://store.
+
+
+
+
+                                                                                                                                                                                                                    Downloaded from https://www.science.org on January 29, 2025
+    Robot. Res. 36, 142–149 (2017).                                                                             tmotor.com/goods-­1064-­F90.html.
+25.	Livox Technology Company Limited, Livox Mid-­360 User Manual (2023); https://livoxtech.                 55. Dronecode Foundation, PX4: Open source autopilot for drone developers (2024);
+    com/mid-­360.                                                                                               https://px4.io.
+26. Wikipedia, Lockheed Martin F-­35 Lightning II stealth multirole combat aircraft (2024);                 56. J. Chen, K. Su, S. Shen, Real-­time safe trajectory generation for quadrotor flight in
+    https://en.wikipedia.org/wiki/Lockheed_Martin_F-­35_Lightning_II.                                           cluttered environments, in 2015 IEEE International Conference on Robotics and Biomimetics
+27. DJI, DJI Mavic 3 (2024); https://dji.com/mavic-­3.                                                          (ROBIO) (IEEE, 2015), pp. 1678–1685.
+28. J. Tordesillas, B. T. Lopez, J. P. How, Faster: Fast and safe trajectory planner for flights in         57. P. Hart, N. Nilsson, B. Raphael, A formal basis for the heuristic determination of minimum
+    unknown environments, in 2019 IEEE/RSJ International Conference on Intelligent Robots                       cost paths. IEEE Trans. Syst. Sci. Cybern. 4, 100–107 (1968).
+    and Systems (IROS) (IEEE, 2019), pp. 1934–1940.                                                         58. Q. Wang, Z. Wang, C. Xu, F. Gao, Fast iterative region inflation for computing large 2-­d/3-­d
+29. Z. Wang, X. Zhou, C. Xu, F. Gao, Geometrically constrained trajectory optimization for                      convex regions of obstacle-­free space. arXiv:2403.02977 [cs.RO] (2024).
+    multicopters. IEEE Trans. Robot. 38, 3259–3278 (2022).                                                  59. R. Deits, R. Tedrake, Computing large convex regions of obstacle-­free space through
+30.	C. Nous, R. Meertens, C. De Wagter, G. De Croon, Performance evaluation in obstacle                         semidefinite programming, in Algorithmic Foundations of Robotics XI: Selected
+    avoidance, in 2016 IEEE/RSJ International Conference on Intelligent Robots and Systems                      Contributions of the Eleventh International Workshop on the Algorithmic Foundations of
+    (IROS) (IEEE, 2016), pp. 3614–3619.                                                                         Robotics (Springer, 2015), pp. 109–124.
+31.	L. Han, F. Gao, B. Zhou, S. Shen, Fiesta: Fast incremental Euclidean distance fields for                60.	L. Yin, F. Zhu, Y. Ren, F. Kong, F. Zhang, Decentralized swarm trajectory generation
+    online motion planning of aerial robots, in 2019 IEEE/RSJ International Conference on                       for lidar-­based aerial tracking in cluttered environments, in 2023 IEEE/RSJ
+    Intelligent Robots and Systems (IROS) (IEEE, 2019), pp. 4423–4430.                                          International Conference on Intelligent Robots and Systems (IROS) (IEEE, 2023),
+32.	B. Tang, Y. Ren, F. Zhu, R. He, S. Liang, F. Kong, F. Zhang, Bubble explorer: Fast uav                      pp. 9285–9292.
+    exploration in large-­scale and cluttered 3D-­environments using occlusion-­free spheres.               61. J. Ji, N. Pan, C. Xu, F. Gao, Elastic tracker: A spatio-­temporal trajectory planner for flexible
+    arXiv:2304.00852 [cs.RO] (2023).                                                                            aerial tracking, in 2022 International Conference on Robotics and Automation (ICRA) (IEEE,
+33. P. Foehn, E. Kaufmann, A. Romero, R. Penicka, S. Sun, L. Bauersfeld, T. Laengle, G. Cioffi,                 2022), pp. 47–53.
+    Y. Song, A. Loquercio, D. Scaramuzza, Agilicious: Open-­source and open-­hardware agile                 62. S. Liu, N. Atanasov, K. Mohta, V. Kumar, Search-­based motion planning for quadrotors
+    quadrotor for vision-­based flight. Sci. Robot. 7, eabl6259 (2022).                                         using linear quadratic minimum time control, in 2017 IEEE/RSJ International Conference on
+34.	NVIDIA Corporation, Nvidia Jetson TX2 embedded AI computing device (2024); https://                         Intelligent Robots and Systems (IROS) (IEEE, 2017), pp. 2872–2879.
+    developer.nvidia.com/embedded/jetson-­tx2.                                                              63. ZJU FAST Lab, LBFGS-­Lite: A header-­only L-­BFGS unconstrained optimizer (Github, 2024);
+35. X. Zhou, X. Wen, Z. Wang, Y. Gao, H. Li, Q. Wang, T. Yang, H. Lu, Y. Cao, C. Xu, F. Gao, Swarm              https://github.com/ZJU-­FAST-­Lab/LBFGS-­Lite.
+    of micro flying robots in the wild. Sci. Robot. 7, eabm5954 (2022).                                     64. M. Faessler, A. Franchi, D. Scaramuzza, Differential flatness of quadrotor dynamics subject
+36. Skydio 2 Plus Enterprise, An intelligent flying robot powered by AI (2024); https://skydio.                 to rotor drag for accurate tracking of high-­speed trajectories. IEEE Robot. Autom. Lett. 3,
+    com/skydio-­2-­plus-­enterprise.                                                                            620–626 (2017).
+37.	A. Harmat, M. Trentini, I. Sharf, Multi-­camera tracking and mapping for unmanned aerial                65. G. Lu, W. Xu, F. Zhang, On-­manifold model predictive control for trajectory tracking on
+    vehicles in unstructured environments. J. Intell. Robot. Syst. 78, 291–317 (2015).                          robotic systems. IEEE Trans. Ind. Electron. 70, 9192–9202 (2022).
+38.	Intel, Intel RealSense Depth Camera D435i (2024); https://intelrealsense.com/                           66.	A. Koubaa, Ed., Robot Operating System (ROS): The Complete Reference (Volume 1), vol. 625
+    depth-­camera-­d435i.                                                                                       of Studies in Computational Intelligence (Springer, 2017).
+39. W. Xu, Y. Cai, D. He, J. Lin, F. Zhang, Fast-­lio2: Fast direct lidar-­inertial odometry. IEEE Trans.   67. W. Liu, Y. Ren, F. Zhang, Integrated planning and control for quadrotor navigation in
+    Robot. 38, 2053–2073 (2022).                                                                                presence of suddenly appearing objects and disturbances. IEEE Robot. Autom. Lett. 9,
+40. S. Liu, M. Watterson, K. Mohta, K. Sun, S. Bhattacharya, C. J. Taylor, V. Kumar, Planning                   899–906 (2023).
+    dynamically feasible trajectories for quadrotors using safe flight corridors in 3-­d complex            68.	C. Toumieh, A. Lambert, Voxel-­grid based convex decomposition of 3D space for safe
+    environments. IEEE Robot. Autom. Lett. 2, 1688–1695 (2017).                                                 corridor generation. J. Intell. Robot. Syst. 105, 87 (2022).
+41. F. Gao, W. Wu, W. Gao, S. Shen, Flying on point clouds: Online trajectory generation and                69. X. Zhong, Y. Wu, D. Wang, Q. Wang, C. Xu, F. Gao, Generating large convex polytopes
+    autonomous navigation for quadrotors in cluttered environments. J. Field Robot. 36,                         directly on point clouds. arXiv:2010.08744 [cs.RO] (2020).
+    710–733 (2019).                                                                                         70.	C. D. Toth, J. O’Rourke, J. E. Goodman, Handbook of Discrete and Computational Geometry
+42. J. Zhang, C. Hu, R. G. Chadha, S. Singh, Falco: Fast likelihood-­based collision avoidance                  (CRC Press, 2017).
+    with extension to human-­guided navigation. J. Field Robot. 37, 1300–1313 (2020).                       71. D. Eberly, Distance from a point to an ellipse, an ellipsoid, or a hyperellipsoid (Geometric
+43. D. Cheng, F. C. Ojeda, A. Prabhu, X. Liu, A. Zhu, P. C. Green, R. Ehsani, P. Chaudhari,                     Tools, 2013); https://geometrictools.com/Documentation/DistancePointEllipseEllipsoid.
+    V. Kumar, TreeScope: An agricultural robotics dataset for lidar-­based mapping of trees in                  pdf.
+    forests and orchards, in 2024 IEEE International Conference on Robotics and Automation                  72. Z. Wang, “A geometrical approach to multicopter motion planning,” thesis, Zhejiang
+    (ICRA) (IEEE, 2024), pp. 14860–14866.                                                                       University, Hangzhou, China (2022).
+
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)            29 January 2025                                                                                                                                18 of 19
+S c i e n c e R o b o t i c s | R e s e a r c h Ar t i c l e
+
+73. Y. Cui, D. Sun, K.-­C. Toh, On the r-­superlinear convergence of the KKT residuals generated   whereas G.L. and Y.R. implemented the control module with the assistance of N.C. The
+    by the augmented lagrangian method for convex composite conic programming. Math.               experiments were designed by Y.R. and F. Zhu and conducted by Y.R., F. Zhu, G.L., N.C., and F.K.
+    Program. 178, 381–415 (2019).                                                                  Y.R. and J.L. performed all data analyses. The manuscript was written by Y.R. and F. Zhang, with
+74. W. Wu, mockamap, https://github.com/HKUST-­Aerial-­Robotics/mockamap.                          input and advice from all authors. F. Zhang provided funding for the research and supervised
+75. Dronecode Foundation, PX4 software in the loop simulation with Gazebo (2024); https://         the project. Competing interests: The authors declare that they have no competing interests.
+    docs.px4.io/v1.12/en/simulation/gazebo.html.                                                   Data and materials availability: The data and source code supporting the conclusions of this
+                                                                                                   study are available at https://doi.org/10.5281/zenodo.14528604 and https://github.com/
+Acknowledgments                                                                                    hku-­mars/SUPER.
+Funding: This work was supported by the Hong Kong Research Grants Council (RGC) General
+Research Fund (GRF) 17204523 and a DJI donation. Author contributions: The research was            Submitted 13 February 2024
+initiated by Y.R. and F. Zhang. Y.R. was responsible for the design and manufacture of the UAV     Accepted 23 December 2024
+prototype, as well as the implementation of the planning modules for the UAV, with assistance      Published 29 January 2025
+from G.L. and L.Y. F. Zhu and Y.C. were responsible for implementing the perception model,         10.1126/scirobotics.ado6187
+
+
+
+
+                                                                                                                                                                                                      Downloaded from https://www.science.org on January 29, 2025
+
+
+
+
+Ren et al., Sci. Robot. 10, eado6187 (2025)       29 January 2025                                                                                                                        19 of 19
+

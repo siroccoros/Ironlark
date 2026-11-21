@@ -1,0 +1,486 @@
+{
+  "query": {
+    "query": "open source UAV vision language navigation benchmark OpenFly AirVLN CityNav TravelUAV real world obstacle avoidance",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "f134ed6bc37ae8876c4e8cbcf5270ab4",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/prince687028/TravelUAV",
+        "title": "prince687028/TravelUAV",
+        "url": "https://github.com/prince687028/TravelUAV",
+        "highlights": [
+          "## README\n\n \n Towards Realistic UAV Vision-Language Navigation: Platform, Benchmark, and Methodology \n\n \n\n \n \n \n \n\n \n\n## Contents\n...\n- **2025-05-22:** We release UAV-Flow, the first real-world benchmark for language-conditioned UAV imitation learning. (project page: https://prince687028.github.io/UAV-Flow)\n- **2025-01-25:** Paper, project page, code, data, envs and models are all released.\n...\nThis work presents **_TOWARDS REALISTIC UAV VISION-LANGUAGE NAVIGATION: PLATFORM, BENCHMARK, AND METHODOLOGY_**. We introduce a UAV simulation platform, an assistant-guided realistic UAV VLN benchmark, and an MLLM-based method to address the challenges in realistic UAV vision-language navigation.\n...\nDownload the simulator environments for various maps from [here](https://huggingface.co/datasets/wangxiangyu0814/TravelUAV_env).\n...\nyou find this project useful,\n...\nconsider citing: [paper](https\n...\nabs/2410.\n...\n7087):\n...\n```\n@misc{wang2\n...\n4realisticu\n...\ntitle={Towards Realistic UAV Vision-Language Navigation: Platform, Benchmark, and Methodology\n...\nauthor\n...\nyu Wang and\n...\nlin Yang and Ziq\n...\nHohin Kwan\n...\nYue Liao and Si Liu},\n      year={\n...\neprint\n...\n2410.07087},\n      archive\n...\n7087\n...\nThis repository is partly based on [AirVLN](https://github.com/AirVLN/AirVLN) and [LLaMA-VID](https://github.com/dvlab-research/LLaMA-VID) repositories."
+        ]
+      },
+      {
+        "id": "https://github.com/1st2024/OpenFly-Platform",
+        "title": "1st2024/OpenFly-Platform",
+        "url": "https://github.com/1st2024/OpenFly-Platform",
+        "highlights": [
+          "OpenFly: A Comprehensive Platform for Aerial Vision-Language Navigation\n...\nOpenFly is an innovative platform designed to advance research in outdoor aerial Vision-Language Navigation (VLN) by providing a highly automated toolchain for data collection and a large-scale benchmark dataset. It includes 100k diverse flight trajectories, high-quality visual data generated using cutting-edge rendering techniques, and OpenFly-Agent, a keyframe-aware VLN model, all of which will be open-sourced to support the community.\n...\npoint cloud generation\n...\n:\n * We utilized\n...\nby [this project](https\n...\n/MatrixCity), using depth maps and\n...\npoint clouds according to [this\n...\nMatrixCity/\n...\n/main/\n...\n/rgbd\n...\nAirSim:\n * We traversed the simulated environment through\n...\ngrid, collected lidar point clouds, and transformed the coordinates to the world coordinate system. Finally\n...\nwe merged all the point clouds to obtain the point cloud of\n...\nentire scene. \n You can adjust\n...\nscanning range *MapBound* and interval *LidarDelta* in\n...\ncorresponding configs/env_airsim_xx.yaml.\n    ```bash\n    #\n...\nreturn to the ./\n...\nFly-Platform directory\u200b\n    conda activate openfly\n    bash scripts/toolchain/pcdgen_tool.sh env_xx_xxx #such as env_airsim\n...\n3\n...\n```bash\n    #\n...\n\u200b\n...\nggen_tool"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2502.18041v3",
+        "title": "OpenFly: A Versatile Toolchain and Large-scale Benchmark for Aerial Vision-Language Navigation",
+        "url": "https://arxiv.org/html/2502.18041v3",
+        "highlights": [
+          "VLN has been extensively studied, whereas outdoor aerial VLN remains underexplored. The potential reason is that outdoor aerial view encompasses vast areas, making data collection more challenging, which results in a lack of benchmarks. To address this problem, we propose OpenFly, a platform comprising a versatile toolchain and large-scale benchmark for aerial VLN. Firstly, we develop a highly automated toolchain for data collection, enabling automatic point cloud acquisition, scene semantic segmentation, flight trajectory creation, and instruction generation. Secondly, based on the toolchain, we construct a large-scale aerial VLN dataset with 100k trajectories, covering diverse heights and lengths across 18 scenes. The corresponding visual data are generated using various rendering engines and advanced techniques, including Unreal Engine, GTA V, Google Earth, and 3D Gaussian Splatting (3D GS). All data exhibit high visual quality. Particularly, 3D GS supports real-to-sim rendering, further enhancing the realism of the dataset. Thirdly, we propose OpenFly-Agent, a keyframe-aware VLN model, which takes language instructions, current observations, and historical keyframes as input, and outputs flight actions directly. Extensive analyses and experiments are conducted, showcasing the superiority of our OpenFly platform and OpenFly-Agent. The toolchain, dataset, and codes will be"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://github.com/EmbodiedCity/CityNavAgent.code",
+        "title": "EmbodiedCity/CityNavAgent.code",
+        "url": "https://github.com/EmbodiedCity/CityNavAgent.code",
+        "highlights": [
+          "Aerial vision-and-language navigation (VLN) \u2014 requiring drones to interpret natural language instructions and navigate complex urban environments \u2014 emerges as a critical embodied AI challenge that bridges human-robot interaction, 3D spatial reasoning, and real-world deployment.\n...\nAlthough existing ground VLN agents achieved notable results in indoor and outdoor settings, they struggle in aerial VLN due to the absence of predefined navigation graphs and the exponentially expanding action space in long-horizon exploration. In this work, we propose \\textbf{CityNavAgent}, a large language model (LLM)-empowered agent that significantly reduces the navigation complexity for urban aerial VLN. \nSpecifically, we design a hierarchical semantic planning module (HSPM) that decomposes the long-horizon task into sub-goals with different semantic levels. The agent reaches the target progressively by achieving sub-goals with different capacities of the LLM. Additionally, a global memory module storing historical trajectories into a topological graph is developed to simplify navigation for visited targets.\n...\nExtensive benchmark experiments show that our method achieves state-of-the-art performance with significant improvement. Further experiments demonstrate the effectiveness of different modules of CityNavAgent for aerial VLN in continuous city environments."
+        ]
+      },
+      {
+        "id": "https://github.com/buaa-colalab/TravelUAV",
+        "title": "buaa-colalab/TravelUAV",
+        "url": "https://github.com/buaa-colalab/TravelUAV",
+        "publishedDate": "2025-02-19T00:00:00.000Z",
+        "highlights": [
+          "## README\n\n \n Towards Realistic UAV Vision-Language Navigation: Platform, Benchmark, and Methodology \n\n \n\n \n \n \n \n \n\n## Contents\n...\nThis work presents **_TOWARDS REALISTIC UAV VISION-LANGUAGE NAVIGATION: PLATFORM, BENCHMARK, AND METHODOLOGY_**. We introduce a UAV simulation platform, an assistant-guided realistic UAV VLN benchmark, and an MLLM-based method to address the challenges in realistic UAV vision-language navigation.\n...\nDownload the simulator environments for various maps from [here](https://huggingface.co/datasets/wangxiangyu0814/TravelUAV_env).\n...\nrunning the simulations, ensure the AirSim environment server is properly configured.\n...\n_dict`\n...\nAirVLNS\n...\nyou find this project useful,\n...\nconsider citing: [paper\n...\nhttps://arxiv.org/abs/2410.07087):\n...\n```\n@misc{wang2024realisticuavvisionlanguagenavigation,\n      title={Towards Realistic UAV Vision-Language Navigation: Platform, Benchmark, and Methodology},\n      author={Xiangyu Wang and Donglin Yang and Ziqin Wang and Hohin Kwan and Jinyu Chen and Wenjun Wu and Hongsheng Li and Yue Liao and Si Liu},\n      year={2024},\n      eprint={2410.07087},\n      archivePrefix={arXiv},\n      primaryClass={cs.CV},\n      url={https://arxiv.org/abs/2410.07087},\n}\n...\nThis repository is partly based on [AirVLN](https://github.com/AirVLN/AirVLN) and [LLaMA-VID](https://github.com/dvlab-research/LLaMA-VID) repositories."
+        ]
+      },
+      {
+        "id": "https://github.com/nopride03/AirNav",
+        "title": "nopride03/AirNav",
+        "url": "https://github.com/nopride03/AirNav",
+        "highlights": [
+          "# \ud83d\uddfa\ufe0f AirNav: A Large-Scale Real-World UAV Vision-and-Language Navigation Dataset with Natural and Diverse Instructions\n...\nTo address these challenges, we propose AirNav, a large-scale UAV VLN benchmark based on real urban aerial images, which provides natural and diverse instructions. Additionally, we introduce the AirVLN-R1, which combines Supervised Fine-Tuning and Reinforcement Fine-Tuning strategies to significantly enhance performance and generalization ability. The feasibility of the model has been validated through real-world tests. Our dataset and code are open-source and available for community use.\n...\n%) | SPL(%) | Checkpoints |\n...\n| ----------------- | ----- | ----- | ------ | ------ | --------------------------------------------------- |\n...\n08 | [\n...\n://huggingface.co/dpairnav/\n...\n.48 | 17.06 | 4.03\n...\n[\ud83d\udcbe](https://huggingface.co/dpairnav/AirNavCMA) |\n | pi0-vln-lora | 147.5 | 5.28 | 13.93 | 4.60 | [\ud83d\udcbe](https://huggingface.co/dpairnav/pi0-vln-lora) |\n | uninavid | 131.2 | 15.89 | 34.25 | 14.18 | [\ud83d\udcbe](https://huggingface.co/dpairnav/uninavid) |\n | Qwen2.5-VL-7B SFT | 48.3 | 39.56 | 52.41 | 38.53 | [\ud83d\udcbe](https://huggingface.co/dpairnav/AirNavSFT) |\n | Qwen2.5-VL-7B RL | 165.8 | 2.31 | 4.39 | 2.03 | [\ud83d\udcbe](https://huggingface.co/dpairnav/AirNavRL) |\n | AirVLN-R1 | 40.0 | 51.75 | 62.29 | 50.57 | [\ud83d\udcbe](https://huggingface.co/dpairnav/AirVLN-R1) |"
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/y05z509hxj1",
+        "title": "AerialVLN: Vision-and-Language Navigation for UAVs",
+        "url": "https://doi.org/10.48550/arxiv.2308.06735",
+        "publishedDate": "2023-08-13T00:00:00.000Z",
+        "author": "Shubo Liu, Hongsheng Zhang, Yuankai Qi, Peng Wang, Yaning Zhang, Qi Wu",
+        "highlights": [
+          ". First, AerialVLN has a larger action space. Compared to conventional ground VLN [2, 7, 19, 20, 28] , AerialVLN requires intelligent agents to additionally take actions such as \"rise up\" and \"pan down\" into consideration. Moreover, multirotors can move left/right without turning its head. Second, the outdoor environments of AerialVLN are much bigger and more complex. AerialVLN covers a large variety of city-level scenes. An intelligent agent is required to distinguish referred buildings/objects by their spatial relationship from a bird-view as shown in Figure 1 . Although the TouchDown [7] task is also devised for outdoor navigation, its environments are static, while ours are interactive and dynamic. For example, our agent can land on a building, and the weather and illumination conditions can dynamically change in the environment. Third, to mimic multirotor flying in real life, our Aeri-alVLN has a much longer path than ground VLNs. On average, our AerialVLN involves a path length of 661.8 units * . There are about 9.7 referred objects in one instruction on average, which is more than 2.6 times as many as in the R2R dataset [2] . Fourth, intelligent agents must learn to avoid getting stuck on objects in 3D space. This is more challenging than avoiding obstacles when navigating on the ground as in VLN-CE [19] because agents have to estimate the 3D shapes of obstacles and the"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/y05z509hxj1",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "AerialVLN: Vision-and-Language Navigation for UAVs",
+              "year": 2023,
+              "date": "2023-08-13",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 1,
+              "authors": [
+                {
+                  "name": "Shubo Liu",
+                  "id": null
+                },
+                {
+                  "name": "Hongsheng Zhang",
+                  "id": null
+                },
+                {
+                  "name": "Yuankai Qi",
+                  "id": null
+                },
+                {
+                  "name": "Peng Wang",
+                  "id": null
+                },
+                {
+                  "name": "Yaning Zhang",
+                  "id": null
+                },
+                {
+                  "name": "Qi Wu",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Recently emerged Vision-and-Language Navigation (VLN) tasks have drawn significant attention in both computer vision and natural language processing communities. Existing VLN tasks are built for agents that navigate on the ground, either indoors or outdoors. However, many tasks require intelligent agents to carry out in the sky, such as UAV-based goods delivery, traffic/security patrol, and scenery tour, to name a few. Navigating in the sky is more complicated than on the ground because agents need to consider the flying height and more complex spatial relationship reasoning. To fill this gap and facilitate research in this field, we propose a new task named AerialVLN, which is UAV-based and towards outdoor environments. We develop a 3D simulator rendered by near-realistic pictures of 25 city-level scenarios. Our simulator supports continuous navigation, environment extension and configuration. We also proposed an extended baseline model based on the widely-used cross-modal-alignment (CMA) navigation methods. We find that there is still a significant gap between the baseline model and human performance, which suggests AerialVLN is a new challenging task. Dataset and code is available at https://github.com/AirVLN/AirVLN.",
+              "doi": "10.48550/arxiv.2308.06735"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/r3nvrtkswkq",
+        "title": "Towards Realistic UAV Vision-Language Navigation: Platform, Benchmark, and Methodology",
+        "url": "https://doi.org/10.48550/arxiv.2410.07087",
+        "publishedDate": "2024-10-09T00:00:00.000Z",
+        "author": "Xiangyu Wang, Donglin Yang, Ziqin Wang, H Lee Kwan, Jinyu Chen, Wenjun Wu, et al.",
+        "highlights": [
+          "1: Comparison of existing VLN datasets based on the DoF of navigation action space and dataset scale. Our UAV dataset incorporates 6 DoF trajectories for realistic VLN tasks. Ntraj and Nvocab represent the number of collected trajectories and vocabulary size, respectively. Dataset DoF Kinematics Ntraj Nvocab Traj Len. Intr Len. Actions Environment R2R - \u2717 7189 3.1K 10 29 5 Matterport3D TouchDown 2 \u2717 9326 5K 310 90 35 Google Street View LANI 2 \u2717 6000 2.3K 16 57 116 CHALET AVDN 3 \u2717 6269 3.3K 144 89 7 xView AerialVLN 4 \u2717 8446 4.5K 661 83 204 AirSim CityNav 4 \u2717 32637 6.6K 545 26 - SensatUrban Ours 6 \u2713 12149 10.8K 255 104 264 OpenUAV platform, regularly recording UAV states during annotation and asynchronously collecting addi tional sensor data to obtain navigation trajectories. We utilize GPT-4 to generate target descriptions and follow up with manual quality checks to generate high-quality navigation instructions, which result in a total of approximately 12k trajectory-instruction pairs. The high maneuverability of UAVs and the complex aerial environments pose significant challenges for UAV object search task relying solely on descriptive instructions. To support UAV to accom plish such tasks, we enhance UAV navigation capabilities by providing additional information and accordingly propose the UAV-Need-Help benchmark. As shown in Fig. 1, we establish an assistant"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/r3nvrtkswkq",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Towards Realistic UAV Vision-Language Navigation: Platform, Benchmark, and Methodology",
+              "year": 2024,
+              "date": "2024-10-09",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 3,
+              "authors": [
+                {
+                  "name": "Xiangyu Wang",
+                  "id": null
+                },
+                {
+                  "name": "Donglin Yang",
+                  "id": null
+                },
+                {
+                  "name": "Ziqin Wang",
+                  "id": null
+                },
+                {
+                  "name": "H Lee Kwan",
+                  "id": null
+                },
+                {
+                  "name": "Jinyu Chen",
+                  "id": null
+                },
+                {
+                  "name": "Wenjun Wu",
+                  "id": null
+                },
+                {
+                  "name": "Hongsheng Li",
+                  "id": null
+                },
+                {
+                  "name": "Yue Liao",
+                  "id": null
+                },
+                {
+                  "name": "Si Liu",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Developing agents capable of navigating to a target location based on language instructions and visual information, known as vision-language navigation (VLN), has attracted widespread interest. Most research has focused on ground-based agents, while UAV-based VLN remains relatively underexplored. Recent efforts in UAV vision-language navigation predominantly adopt ground-based VLN settings, relying on predefined discrete action spaces and neglecting the inherent disparities in agent movement dynamics and the complexity of navigation tasks between ground and aerial environments. To address these disparities and challenges, we propose solutions from three perspectives: platform, benchmark, and methodology. To enable realistic UAV trajectory simulation in VLN tasks, we propose the OpenUAV platform, which features diverse environments, realistic flight control, and extensive algorithmic support. We further construct a target-oriented VLN dataset consisting of approximately 12k trajectories on this platform, serving as the first dataset specifically designed for realistic UAV VLN tasks. To tackle the challenges posed by complex aerial environments, we propose an assistant-guided UAV object search benchmark called UAV-Need-Help, which provides varying levels of guidance information to help UAVs better accomplish realistic VLN tasks. We also propose a UAV navigation LLM that, given multi-view images, task descriptions, and assistant instructions, leverages the multimodal understanding capabilities of the MLLM to jointly process visual and textual information, and performs hierarchical trajectory generation. The evaluation results of our method significantly outperform the baseline models, while there remains a considerable gap between our results and those achieved by human operators, underscoring the challenge presented by the UAV-Need-Help task.",
+              "doi": "10.48550/arxiv.2410.07087"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/43brp31j2wj",
+        "title": "AirNav: A Large-Scale Real-World UAV Vision-and-Language Navigation Dataset with Natural and Diverse Instructions",
+        "url": "http://arxiv.org/abs/2601.03707",
+        "publishedDate": "2026-01-07T00:00:00.000Z",
+        "author": "Hengxing Cai, Yijie Rao, Huang, Ligang, Zanyang Zhong, Jinhan Dong, Jingjun Tan, et al.",
+        "highlights": [
+          "Dataset Size Sub-goals Instruction Naturalness Vocabulary Size |\n| --- | --- |\n| LANI AVDN AerialVLN CityNav OpenUAV OpenFly | (Misra et al., 2018) Virtual 2 DoF 6,000 Yes Medium 2.3K (Fan et al., 2022) Real-world 3 DoF 3,064 Yes Medium 3.3K (Liu et al., 2023) Virtual 4 DoF 8,446 Yes Medium 4.5K (Lee et al., 2024) Real-world 4 DoF 32,637 No N/A 6.4K (Wang et al., 2024) Virtual 6 DoF 12,149 No N/A 10.8K (Gao et al., 2025) Virtual + Real-world 4 DoF 100k Yes Medium 15.6K AirNav (Ours) Real-world 4 DoF 143k Yes High 20.7K |\n...\nmodel general ization performance under real-world conditions. CityNav (Lee et al., 2024) is a large-scale dataset sourced from real-world aerial imagery of urban environments, offering strong realism in terms of visual texture and scene diversity. However, its in structions mainly focus on target descriptions and do not include intermediate navigation processes, which limits its effectiveness in evaluating mod els\u2019 spatial reasoning and step-by-step navigation capabilities. OpenUAV (Wang et al., 2024) is built on a high fidelity simulation platform that supports 6-DoF flight and multi-view perception. Its instructions are generated by LLMs and subsequently refined by human annotators, resulting in task settings that are closer to real navigation requirements. Nonethe less, the dataset remains dependent on virtual envi ronments, and its overall scale is"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/43brp31j2wj",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "AirNav: A Large-Scale Real-World UAV Vision-and-Language Navigation Dataset with Natural and Diverse Instructions",
+              "year": 2026,
+              "date": "2026-01-07",
+              "type": "article",
+              "language": null,
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Hengxing Cai",
+                  "id": null
+                },
+                {
+                  "name": "Yijie Rao",
+                  "id": null
+                },
+                {
+                  "name": "Huang, Ligang",
+                  "id": null
+                },
+                {
+                  "name": "Zanyang Zhong",
+                  "id": null
+                },
+                {
+                  "name": "Jinhan Dong",
+                  "id": null
+                },
+                {
+                  "name": "Jingjun Tan",
+                  "id": null
+                },
+                {
+                  "name": "Wenhao Lu",
+                  "id": null
+                },
+                {
+                  "name": "Renxin Zhong",
+                  "id": null
+                },
+                {
+                  "name": "Lu, Wenhao",
+                  "id": null
+                },
+                {
+                  "name": "Zhong, Renxin",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Existing UAV vision-and-language navigation (VLN) benchmarks rarely provide realistic aerial scenes, natural process-level instructions, and sufficient scale simultaneously, making it difficult to systematically train and evaluate UAV VLN agents under realistic settings. To address this, we propose extbf{AirNav}, a large-scale benchmark built on real urban aerial data, comprising 137K navigation samples with natural and diverse instructions generated via a human--LLM collaborative pipeline with 10 user personas. We conduct a systematic evaluation of representative approaches on AirNav, ranging from traditional models to multimodal large language models (MLLMs), under unified metrics with open-source implementations. We further propose extbf{AirVLN-R1}, trained via supervised fine-tuning (SFT) and reinforcement fine-tuning (RFT), achieving state-of-the-art performance with a 51.82\\% success rate on the test-unseen split. Real-world experiments on a physical UAV platform provide preliminary evidence of sim-to-real transferability, and our dataset and code are publicly available.",
+              "doi": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2410.07087",
+        "title": "Towards Realistic UAV Vision-Language Navigation: Platform, Benchmark, and Methodology",
+        "url": "https://arxiv.org/html/2410.07087",
+        "highlights": [
+          "outperform the baseline models, while there remains a considerable gap between our results and those achieved by human operators, underscoring the challenge presented by the UAV-Need-Help task. The project homepage can be accessed at https://prince687028.github.io/OpenUAV.\n...\nVision-Language Navigation Datasets. UAV VLN is an emerging task recently formed from the expansion of outdoor VLN tasks. Table 1 presents a comparison between representative VLN datasets. Beginning with indoor navigation, R2R dataset (Anderson et al., 2018) establishes a foundation for grounded VLN. Inspiring works (Vasudevan et al., 2020; Zhu et al., 2021; Chen et al., 2019; Misra et al., 2018) such as TOUCHDOWN, LANI have employed verbal navigation instructions to address the challenges of outdoor long-range navigation. Moving beyond ground-level navigation, AVDN (Fan et al., 2022) collects aerial navigation trajectories with human dialogues. AerialVLN (Liu et al., 2023b) and CityNav (Lee et al., 2024) propose VLN for UAVs and collect aerial trajectory datasets of discrete 4-DOF UAV action. In previous datasets, UAV trajectories were collected by simply modifying the UAV\u2019s position, which significantly deviates from real UAV flights. Based on our platform, we collect a target-oriented realistic UAV VLN dataset with continuous 6-DOF trajectories to enhance the realism of UAV navigation tasks."
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/r3nvrtkswkq",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Towards Realistic UAV Vision-Language Navigation: Platform, Benchmark, and Methodology",
+              "year": 2024,
+              "date": "2024-10-09",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 3,
+              "authors": [
+                {
+                  "name": "Xiangyu Wang",
+                  "id": null
+                },
+                {
+                  "name": "Donglin Yang",
+                  "id": null
+                },
+                {
+                  "name": "Ziqin Wang",
+                  "id": null
+                },
+                {
+                  "name": "H Lee Kwan",
+                  "id": null
+                },
+                {
+                  "name": "Jinyu Chen",
+                  "id": null
+                },
+                {
+                  "name": "Wenjun Wu",
+                  "id": null
+                },
+                {
+                  "name": "Hongsheng Li",
+                  "id": null
+                },
+                {
+                  "name": "Yue Liao",
+                  "id": null
+                },
+                {
+                  "name": "Si Liu",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Developing agents capable of navigating to a target location based on language instructions and visual information, known as vision-language navigation (VLN), has attracted widespread interest. Most research has focused on ground-based agents, while UAV-based VLN remains relatively underexplored. Recent efforts in UAV vision-language navigation predominantly adopt ground-based VLN settings, relying on predefined discrete action spaces and neglecting the inherent disparities in agent movement dynamics and the complexity of navigation tasks between ground and aerial environments. To address these disparities and challenges, we propose solutions from three perspectives: platform, benchmark, and methodology. To enable realistic UAV trajectory simulation in VLN tasks, we propose the OpenUAV platform, which features diverse environments, realistic flight control, and extensive algorithmic support. We further construct a target-oriented VLN dataset consisting of approximately 12k trajectories on this platform, serving as the first dataset specifically designed for realistic UAV VLN tasks. To tackle the challenges posed by complex aerial environments, we propose an assistant-guided UAV object search benchmark called UAV-Need-Help, which provides varying levels of guidance information to help UAVs better accomplish realistic VLN tasks. We also propose a UAV navigation LLM that, given multi-view images, task descriptions, and assistant instructions, leverages the multimodal understanding capabilities of the MLLM to jointly process visual and textual information, and performs hierarchical trajectory generation. The evaluation results of our method significantly outperform the baseline models, while there remains a considerable gap between our results and those achieved by human operators, underscoring the challenge presented by the UAV-Need-Help task.",
+              "doi": "10.48550/arxiv.2410.07087"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/bc9462vtgwk",
+        "title": "Openfly: A comprehensive platform for aerial vision-language navigation",
+        "url": "https://doi.org/10.48550/arxiv.2502.18041",
+        "publishedDate": "2025-02-25T00:00:00.000Z",
+        "author": "Yunpeng Gao, Chen\u2010Hui Li, Zhongrui You, Junli Liu, Zhen Li, Pengan Chen, et al.",
+        "highlights": [
+          "2.1 Vision-Language Navigation Datasets Numerous datasets have been proposed to accelerate the VLN task. R2R [3] focuses on evaluat ing agents in unseen buildings and provides discrete navigation options. RxR [4] provides a more densely annotated VLN dataset. TouchDown [1] and REVERIE [2] have each contributed a dataset from real-life environments, which requires a ground-based agent to follow instructions and find a target object. CVDN [5] presents a cooperative VLN dataset where agents can access the history of human cooperation for inference. All the above datasets are graph-based, where navigable points are predefined. LANI [7] and VLN-CE [6] propose the VLN task in continuous outdoor/indoor environ ments, enabling agents to move freely to any unobstructed point. Recently, a few works have tried to construct VLN datasets for aerial space. ANDH [20] establishes a dialogue-based aerial VLN dataset with bird-view images. CityNav [21] builds on the point cloud data from SensatUrban [22] and linguistic annotations from CityRefer [23], which requires a real-world 2D map to help locate specific landmarks in the instruction. AerialVLN [17] and OpenUAV [18] integrate AirSim and UE to create VLN scenes where pilots can control UAVs to generate various trajectories.\n...\n-based 7 Matterport3D TouchDown [1] 9326 5.0K 313.9\n...\n90 graph-based\n...\n2 DoF 56 Matterport3D LANI [7] 6000 2.3K"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/bc9462vtgwk",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Openfly: A comprehensive platform for aerial vision-language navigation",
+              "year": 2025,
+              "date": "2025-02-25",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Yunpeng Gao",
+                  "id": null
+                },
+                {
+                  "name": "Chen\u2010Hui Li",
+                  "id": null
+                },
+                {
+                  "name": "Zhongrui You",
+                  "id": null
+                },
+                {
+                  "name": "Junli Liu",
+                  "id": null
+                },
+                {
+                  "name": "Zhen Li",
+                  "id": null
+                },
+                {
+                  "name": "Pengan Chen",
+                  "id": null
+                },
+                {
+                  "name": "Qizhi Chen",
+                  "id": null
+                },
+                {
+                  "name": "Zhonghan Tang",
+                  "id": null
+                },
+                {
+                  "name": "Liansheng Wang",
+                  "id": null
+                },
+                {
+                  "name": "Penghui Yang",
+                  "id": null
+                },
+                {
+                  "name": "Yiwen Tang",
+                  "id": null
+                },
+                {
+                  "name": "Yuhang Tang",
+                  "id": null
+                },
+                {
+                  "name": "Shuai Liang",
+                  "id": null
+                },
+                {
+                  "name": "Zhu, Songyi",
+                  "id": null
+                },
+                {
+                  "name": "Ziqin Xiong",
+                  "id": null
+                },
+                {
+                  "name": "Yifei Su",
+                  "id": null
+                },
+                {
+                  "name": "Xinyi Ye",
+                  "id": null
+                },
+                {
+                  "name": "Jianan Li",
+                  "id": null
+                },
+                {
+                  "name": "Yan Ding",
+                  "id": null
+                },
+                {
+                  "name": "Dong Wang",
+                  "id": null
+                },
+                {
+                  "name": "Xuanyi Li",
+                  "id": null
+                },
+                {
+                  "name": "Zhigang Wang",
+                  "id": null
+                },
+                {
+                  "name": "Bin Zhao",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Vision-Language Navigation (VLN) aims to guide agents by leveraging language instructions and visual cues, playing a pivotal role in embodied AI. Indoor VLN has been extensively studied, whereas outdoor aerial VLN remains underexplored. The potential reason is that outdoor aerial view encompasses vast areas, making data collection more challenging, which results in a lack of benchmarks. To address this problem, we propose OpenFly, a platform comprising various rendering engines, a versatile toolchain, and a large-scale benchmark for aerial VLN. Firstly, we integrate diverse rendering engines and advanced techniques for environment simulation, including Unreal Engine, GTA V, Google Earth, and 3D Gaussian Splatting (3D GS). Particularly, 3D GS supports real-to-sim rendering, further enhancing the realism of our environments. Secondly, we develop a highly automated toolchain for aerial VLN data collection, streamlining point cloud acquisition, scene semantic segmentation, flight trajectory creation, and instruction generation. Thirdly, based on the toolchain, we construct a large-scale aerial VLN dataset with 100k trajectories, covering diverse heights and lengths across 18 scenes. Moreover, we propose OpenFly-Agent, a keyframe-aware VLN model emphasizing key observations during flight. For benchmarking, extensive experiments and analyses are conducted, evaluating several recent VLN methods and showcasing the superiority of our OpenFly platform and agent. The toolchain, dataset, and codes will be open-sourced.",
+              "doi": "10.48550/arxiv.2502.18041"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/ASGO-MM/AirVLN/blob/main/README.md",
+        "title": "README.md",
+        "url": "https://github.com/ASGO-MM/AirVLN/blob/main/README.md",
+        "highlights": [
+          "Recently emerged Vision-and-Language Navigation (VLN) tasks have drawn significant attention in both computer vision and natural language processing communities. Existing VLN tasks are built for agents that navigate on the ground, either indoors or outdoors. However, many tasks require intelligent agents to carry out in the sky, such as UAV-based goods delivery, traffic/security patrol, and scenery tour, to name a few. Navigating in the sky is more complicated than on the ground because agents need to consider the flying height and more complex spatial relationship reasoning. To fill this gap and facilitate research in this field, we propose a new task named AerialVLN, which is UAV-based and towards outdoor environments. We develop a 3D simulator rendered by near-realistic pictures of 25 city-level scenarios. Our simulator supports continuous navigation, environment extension and configuration. We also proposed an extended baseline model based on the widely-used cross-modal-alignment (CMA) navigation methods. We find that there is still a significant gap between the baseline model and human performance, which suggests AerialVLN is a new challenging task.\n...\n3D Simulator**: 25 city-level scenarios with lifelike imagery.\n- **Cross-Modal Alignment Model**: Advanced navigation using vision and language.\n- **Extensible Framework**: Add new environments and configurations easily.\n-"
+        ]
+      },
+      {
+        "id": "https://openreview.net/forum?id=rUvCIvI4eB",
+        "title": "Towards Realistic UAV Vision-Language Navigation",
+        "url": "https://openreview.net/forum?id=rUvCIvI4eB",
+        "highlights": [
+          "Verifying your browser | OpenReview\n\n# Verifying your browser\n\n## Complete the check below to continue to OpenReview\n\nPlease complete the verification above.\n\nHave an OpenReview account? Sign in to skip this check.\n\nVerifying your browser | OpenReview\n# Verifying your browser\n## Complete the check below to continue to OpenReview\nPlease complete the verification above.\nHave an OpenReview account? [Sign in](/login?redirect=/forum?id=rUvCIvI4eB) to skip this check."
+        ]
+      },
+      {
+        "id": "https://proceedings.iclr.cc/paper_files/paper/2026/file/a6fcfd15cd01e4a550808c3e01f5583d-Paper-Conference.pdf",
+        "title": "OpenFly",
+        "url": "https://proceedings.iclr.cc/paper_files/paper/2026/file/a6fcfd15cd01e4a550808c3e01f5583d-Paper-Conference.pdf",
+        "highlights": [
+          ". TouchDown (Chen et al., 2019) and REVERIE (Qi et al., 2020) have each contributed a dataset from real-life environments, which re quires a ground-based agent to follow instructions and find a target object. CVDN (Thomason et al., 2019) presents a cooperative VLN dataset where agents can access the history of human coopera tion for inference. All the above datasets are graph-based, where navigable points are predefined. LANI (Misra et al., 2018) and VLN-CE (Krantz et al., 2020) propose the VLN task in continuous outdoor/indoor environments, enabling agents to move freely to any unobstructed point. Recently, a few works have tried to construct VLN datasets for aerial space. ANDH (Fan et al., 2022) estab lishes a dialogue-based aerial VLN dataset with bird-view images. CityNav (Lee et al., 2024) builds on the point cloud data from SensatUrban (Hu et al., 2022) and linguistic annotations from CityRe fer (Miyanishi et al., 2023), which requires a real-world 2D map to help locate specific landmarks in the instruction. AerialVLN (Liu et al., 2023), OpenUAV (Wang et al., 2024a) and CityNav Agent (Zhang et al., 2025) integrate AirSim and UE to create VLN scenes where pilots can control UAVs to generate various trajectories.\n...\nrange from 50m to 500m. We use a Q250 airframe as a real agent, carrying an NVIDIA Jetson Xavier NX running Ubuntu 18.04 as the onboard computer. In the"
+        ]
+      },
+      {
+        "id": "https://github.com/SHAILAB-IPEC/OpenFly-Platform",
+        "title": "SHAILAB-IPEC/OpenFly-Platform",
+        "url": "https://github.com/SHAILAB-IPEC/OpenFly-Platform",
+        "highlights": [
+          "OpenFly is an innovative platform designed to advance research in outdoor aerial Vision-Language Navigation (VLN) by providing a highly automated toolchain for data collection and a large-scale benchmark dataset. It includes 100k diverse flight trajectories, high-quality visual data generated using cutting-edge rendering techniques, and OpenFly-Agent, a keyframe-aware VLN model, all of which will be open-sourced to support the community.\n...\npoint cloud generation\n...\nUE:\n * We\n...\nthe dataset provided by [\n...\nsuper/MatrixCity),\n...\ndepth maps and pose information, and synthesized point clouds according to [this\n...\n](https://\n...\nsuper/MatrixCity/\n...\n/main/\n...\n/rgbd\n...\nAirSim:\n * We traversed the simulated environment through\n...\ngrid, collected lidar point clouds, and transformed the coordinates to the world coordinate system\n...\nwe merged all the point clouds to obtain the point cloud of\n...\n.\n...\nscanning range *MapBound* and interval *\n...\nidarDelta* in the corresponding configs/env_airsim_xx.yaml.\n    ```bash\n    #\u200b return to the\n...\nFly-Platform directory\u200b\n    conda activate openfly\n    bash scripts/toolchain/pcdgen_tool\n...\nenv_xx_xxx #such as env\n...\n```bash\n...\nfor finetuning\n...\navailable at [\n...\n/IPEC\n...\ntree/main"
+        ]
+      }
+    ],
+    "searchTime": 1239.8,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "query": {
+    "query": "Open source drone navigation released code 2025 2026 AVOID-MPC MIGHTY DYNUS SANDO LA-Planner AERO-MPPI real flights",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "918acd4aadf0b5d4c5a301f3eb0cdc7f",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/mit-acl/mighty",
+        "title": "mit-acl/mighty",
+        "url": "https://github.com/mit-acl/mighty",
+        "highlights": [
+          "# MIGHTY: Hermite Spline-based Efficient Trajectory Planning\n...\n**Accepted to the IEEE Robotics and Automation Letters (RA-L)**\n\n \n\n**Multi-Agent Trajectory Planning** \u2014 multiple aerial agents arranged on a circle swap to diametrically opposite positions, avoiding one another in real time:\n\n \n\n| **Trajectory** | **Forest** |\n| ------------------------- | ------------------------- |\n | |\n\n| **Dynamic Obstacles** | **Long Flight** |\n| ------------------------- | ------------------------- |\n | \n\n| **Fast Flight 1** | **Fast Flight 2** |\n| ------------------------- | ------------------------- |\n | \n\n| **Dynamic Env 1** | **Dynamic Env 2** |\n| ------------------------- | ------------------------- |\n | \n\n## Paper\n...\n```bibtex\n@ARTICLE{kondo2026mighty,\n  author={Kondo, Kota and Wu, Yuwei and Kumar, Vijay and How, Jonathan P.},\n  journal={IEEE Robotics and Automation Letters}, \n  title={MIGHTY: Hermite Spline-based Efficient Trajectory Planning}, \n  year={2026},\n  volume={},\n  number={},\n  pages={1-8},\n  keywords={Anisotropic;Central Processing Unit;Filters;Radio access networks;Regional area networks;Location awareness;Mobile communication;Communication systems;High frequency;Indoor environment;Aerial Systems: Perception and Autonomy;Motion and Path Planning;Trajectory Optimization;Hermite Splines;Unmanned Aerial Vehicles},\n  doi={10.1109/LRA.2026.3681187}\n}\n```\n...\n(x8"
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/sando",
+        "title": "mit-acl/sando",
+        "url": "https://github.com/mit-acl/sando",
+        "highlights": [
+          "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments\n...\n**Submitted to the IEEE Transactions on Robotics (T-RO)**\n\n \n \n Spatiotemporal SFC \n Hardware Heatmap \n \n \n Sim Interactive \n Sim Static \n \n \n Sim Dynamic \n Hardware Single Dynamic \n \n \n Hardware Multiple Dynamic \n Hardware Dynamic + Static \n \n \n\nSANDO plans safe, dynamically-feasible trajectories for UAVs in environments with both static and dynamic obstacles, including previously unseen ones detected at runtime via onboard sensors.\n...\n| `interactive` | Click goals in RViz, drone navigates around obstacles | RViz-only |\n...\n| `static` | Pre-defined static forest | Gazebo |\n...\n| `dynamic` | Known dynamic obstacles | RViz-only |\n| `unknown_dynamic` | Unknown obstacles detected via pointcloud | Gazebo |\n...\n1. **Sensor Input** \u2014 Point cloud subscriptions update the voxel grid\n2. **HGP Manager** (`include/hgp/`) \u2014 Heat map-based global planner: voxel map, A* with heat costs, convex decomposition into safety corridors\n...\n3. **SANDO Core** (`include/sando/sando.hpp`) \u2014 Planning orchestrator with state machine (YAWING \u2192 TRAVELING \u2192 GOAL_SEEN \u2192 GOAL_REACHED)\n4. **Gurobi Solver** (`include/sando/gurobi_solver.hpp`) \u2014 Local trajectory optimization using Hermite spline parameterization with dynamic factor adaptation\n...\n5. **SANDO Node** (`src/sando/sando_node.cpp`) \u2014 ROS 2 node wrapper"
+        ]
+      },
+      {
+        "id": "https://github.com/SJTU-ViSYS-team/avoid-mpc",
+        "title": "SJTU-ViSYS-team/Avoid-MPC",
+        "url": "https://github.com/SJTU-ViSYS-team/avoid-mpc",
+        "highlights": [
+          "# SJTU-ViSYS-team/Avoid-MPC\n...\nMapless Collision-Free Flight via MPC using Dual KD-Trees in Cluttered Environments(IROS 2025)\n...\nDefault branch: main\n...\n-05-07T04:18:30Z\n...\n# Mapless Collision-Free Flight via MPC using Dual KD-Trees in Cluttered Environments\n...\nIn this work, we propose a novel **mapless** method for collision-free flight without constructing explicit 3D maps or generating collision-free trajectories. Instead, we use **Model Predictive Control (MPC)** to directly generate safe control actions from sparse waypoints and point cloud data obtained from a depth camera.\n...\nOur approach introduces a **dual KD-tree** mechanism:\n...\n- The **Obstacle KD-Tree** identifies nearby obstacles for real-time avoidance.\n- The **Edge KD-Tree** provides a strong initial guess to the MPC solver, helping it escape local minima.\n...\nWe validate our method through both simulation and real-world experiments. Our results show that it:\n...\n- Outperforms traditional mapping-based approaches;\n- Surpasses imitation learning-based methods;\n- Achieves speeds of up to **12 m/s in simulation** and **6 m/s in real-world** scenarios.\n...\nRelease a simulation version based on [\n...\nmare](https://github.com/uzh-rpg/flightmare) to support richer visual-physical interaction scenarios\n...\n] Develop a ROS\n...\n2 compatible version to enable broader integration with modern robotic platforms"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2511.10822v3",
+        "title": "MIGHTY: Hermite Spline-based Efficient Trajectory Planning",
+        "url": "https://arxiv.org/html/2511.10822v3",
+        "highlights": [
+          "Hard-constraint trajectory planners often rely on commercial solvers and demand substantial computational resources. Existing soft-constraint methods achieve faster computation, but either (1) decouple spatial and temporal optimization or (2) restrict the search space. To overcome these limitations, we introduce MIGHTY, a Hermite spline-based planner that performs spatiotemporal optimization while fully leveraging the continuous search space of a spline. In simulation, MIGHTY achieves a 9.3% reduction in computation time and a 13.1% reduction in travel time over state-of-the-art baselines, with a 100% success rate. In hardware, MIGHTY completes multiple high-speed flights up to 6.7 m/s in a cluttered static environment and long-duration flights with dynamically added obstacles.\n...\nVideo: https://youtu.be/Pvb-VPUdLvg Code: https://github.com/mit-acl/mighty.git\n...\nExtensive Hardware Experiments: Long-duration and high-speed flights, and dynamic obstacle avoidance scenarios using a LiDAR-based perception and localization system. MIGHTY achieves collision-free flights and a top speed of $6.7\u00a0m6.7\\text{\\,}\\mathrm{m}$ in high-speed flight experiments.\n...\nA*, then\n...\nFC) [10] for local optimization. The intermediate waypoints for A* are projected from the\n...\nlocal occupancy map\n...\nfor A*\n...\n\\text{\\\n...\n}\\mathrm{m}\\mathrm{s\n...\nms"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg"
+      },
+      {
+        "id": "https://github.com/XinChen-stars/AERO_MPPI",
+        "title": "XinChen-stars/AERO_MPPI",
+        "url": "https://github.com/XinChen-stars/AERO_MPPI",
+        "highlights": [
+          "[ICRA-2026] AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation\n...\n## README\n\n \n AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation \n 2026 IEEE International Conference on Robotics and Automation \n\n Xin Chen,\n Rui Huang,\n Longbin Tang,\n Lin Zhao \n\n -->\n \n[![Conference](https://img.shields.io/badge/ICRA-2026-red.svg)](https://www.ieee-ras.org/conferences-workshops/fully-sponsored/icra)\n[![IsaacSim](https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg)](https://docs.isaacsim.omniverse.\n...\nLab-2.3\n...\n-silver.svg)](https\n...\nac-sim\n...\n](https://img\n...\n**AERO-MPPI** is a **GPU-accelerated trajectory planner for quadrotors** based on the **Model Predictive Path Integral (MPPI)** framework.\n\nKey features:\n...\n* \ud83d\udee0\ufe0f **Native integration with Isaac Sim / Isaac Lab**\n* \ud83c\udfaf **Anchor-guided trajectory ensembles** for escaping local minima\n* \u26a1 **Warp-accelerated MPPI enabling thousands of trajectory rollouts across 1000+ parallel environments**\n\n \n \n \n\n ```bibtex\n@inproceedings{chen2026aero,\n  title={AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation},\n  author={Xin Chen, Rui Huang, Longbin Tang, Lin Zhao},\n  booktitle={2026 IEEE International Conference on Robotics and Automation (ICRA)},\n  year={2026}\n} -->"
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/ysvxkwlv0jy",
+        "title": "AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation",
+        "url": "https://doi.org/10.48550/arxiv.2509.17340",
+        "publishedDate": "2025-09-22T00:00:00.000Z",
+        "author": "Xin Chen, Rui Huang, Longbin Tang, Lin Zhao",
+        "highlights": [
+          ". Conventional mapping\u2013planning\u2013control pipelines incur high computational cost and propagate estimation errors. We present AERO-MPPI, a fully GPU-accelerated framework that unifies perception and planning through an anchor-guided ensemble of Model Predictive Path Integral (MPPI) optimizers. Specifically, we design a multi-resolution LiDAR point-cloud representa tion that rapidly extracts spatially distributed \u201canchors\u201d as look-ahead intermediate endpoints, from which we construct polynomial trajectory guides to explore distinct homotopy path classes. At each planning step, we run multiple MPPI instances in parallel and evaluate them with a two-stage multi-objective cost that balances collision avoidance and goal reaching. Imple mented entirely with NVIDIA Warp GPU kernels, AERO-MPPI achieves real-time onboard operation and mitigates the local minima failures of single-MPPI approaches. Extensive simula tions in forests, verticals, and inclines demonstrate sustained reliable flight above 7 m/s, with success rates above 80% and smoother trajectories compared to state-of-the-art baselines. Real-world experiments on a LiDAR-equipped quadrotor with NVIDIA Jetson Orin NX 16G confirm that AERO-MPPI runs in real time onboard and consistently achieves safe, agile, and robust flight in complex cluttered environments. The code will be open-sourced upon acceptance of the paper."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/ysvxkwlv0jy",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation",
+              "year": 2025,
+              "date": "2025-09-22",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Xin Chen",
+                  "id": null
+                },
+                {
+                  "name": "Rui Huang",
+                  "id": null
+                },
+                {
+                  "name": "Longbin Tang",
+                  "id": null
+                },
+                {
+                  "name": "Lin Zhao",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Agile mapless navigation in cluttered 3D environments poses significant challenges for autonomous drones. Conventional mapping-planning-control pipelines incur high computational cost and propagate estimation errors. We present AERO-MPPI, a fully GPU-accelerated framework that unifies perception and planning through an anchor-guided ensemble of Model Predictive Path Integral (MPPI) optimizers. Specifically, we design a multi-resolution LiDAR point-cloud representation that rapidly extracts spatially distributed \"anchors\" as look-ahead intermediate endpoints, from which we construct polynomial trajectory guides to explore distinct homotopy path classes. At each planning step, we run multiple MPPI instances in parallel and evaluate them with a two-stage multi-objective cost that balances collision avoidance and goal reaching. Implemented entirely with NVIDIA Warp GPU kernels, AERO-MPPI achieves real-time onboard operation and mitigates the local-minima failures of single-MPPI approaches. Extensive simulations in forests, verticals, and inclines demonstrate sustained reliable flight above 7 m/s, with success rates above 80% and smoother trajectories compared to state-of-the-art baselines. Real-world experiments on a LiDAR-equipped quadrotor with NVIDIA Jetson Orin NX 16G confirm that AERO-MPPI runs in real time onboard and consistently achieves safe, agile, and robust flight in complex cluttered environments. Code is available at https://github.com/XinChen-stars/AERO_MPPI.",
+              "doi": "10.48550/arxiv.2509.17340"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/sjtu-visys-team/avoid-mpc",
+        "title": "SJTU-ViSYS-team/Avoid-MPC",
+        "url": "https://github.com/sjtu-visys-team/avoid-mpc",
+        "highlights": [
+          "# SJTU-ViSYS-team\n...\nAvoid-MPC\n...\nMapless Collision-Free Flight via MPC using Dual KD-Trees in Cluttered Environments(IROS 2025)\n...\n130\n...\n- Forks: 7\n...\n- Open issues: 2\n...\n- Default branch: main\n...\n202\n...\n-05-07T04:18:30Z\n...\n# Mapless Collision-Free Flight via MPC using Dual KD-Trees in Cluttered Environments\n...\nIn this work, we propose a novel **mapless** method for collision-free flight without constructing explicit 3D maps or generating collision-free trajectories. Instead, we use **Model Predictive Control (MPC)** to directly generate safe control actions from sparse waypoints and point cloud data obtained from a depth camera.\n...\n- The **Obstacle KD-Tree** identifies nearby obstacles for real-time avoidance.\n- The **Edge KD-Tree** provides a strong initial guess to the MPC solver, helping it escape local minima.\n...\nWe validate our method through both simulation and real-world experiments. Our results show that it:\n...\n- Outperforms traditional mapping-based approaches;\n- Surpasses imitation learning-based methods;\n- Achieves speeds of up to **12 m/s in simulation** and **6 m/s in real-world** scenarios.\n...\n- [ ] Release a simulation version based on [Flightmare](https://github.com/uzh-rpg/flightmare) to support richer visual-physical interaction scenarios\n...\n- [ ] Develop a ROS 2 compatible version to enable broader integration with modern robotic platforms"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2604.07599v1",
+        "title": "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments",
+        "url": "https://arxiv.org/html/2604.07599v1",
+        "highlights": [
+          "e.g., EGO-Planner [38], FASTER [30], HDSM [31], and SUPER [25]) achieve fast replanning but assume that once space is observed as free, it remains free, making them unsuitable for environments with moving obstacles. Second, planners that handle dynamic obstacles with soft constraints (e.g., HOPA [9], ViGO [36], FAPP [19], Risk-Aware [40], and FHD [7]) can react to moving obstacles but provide no formal safety guarantee, as collision avoidance is encouraged via penalty terms rather than enforced (see Fig. 1). Third, planners that enforce hard safety constraints in dynamic environments (e.g., CC-MPC [15], OA-MPC [11], Liu et al. [18], Stamouli et al. [28], STS [24], and IP-MPC [34]) guarantee safety only at discretized model predictive control (MPC) or sample points, leaving the trajectory potentially unsafe between time steps. While PANTHER [29] provides continuous-time safety in dynamic environments, it has only been demonstrated in open settings and the computation scales poorly with the number of obstacles. As summarized in Table I, no existing method simultaneously (1) handles spatiotemporal dynamic obstacle collision avoidance, (2) guarantees continuous-time safety, and (3) operates in dynamic unknown confined environments. To address these gaps, we introduce SANDO (Safe AutoNomous trajectory planning for Dynamic unknOwn environments), a trajectory planner that integrates a"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2509.17340v1",
+        "title": "AERO-MPPI: Anchor-Guided Ensemble Trajectory ...",
+        "url": "https://arxiv.org/html/2509.17340v1",
+        "publishedDate": "2025-09-22T00:00:00.000Z",
+        "highlights": [
+          "drones. Conventional mapping\u2013planning\u2013control pipelines incur high computational cost and propagate estimation errors. We present AERO-MPPI, a fully GPU-accelerated framework that unifies perception and planning through an anchor-guided ensemble of Model Predictive Path Integral (MPPI) optimizers. Specifically, we design a multi-resolution LiDAR point-cloud representation that rapidly extracts spatially distributed \u201canchors\u201d as look-ahead intermediate endpoints, from which we construct polynomial trajectory guides to explore distinct homotopy path classes. At each planning step, we run multiple MPPI instances in parallel and evaluate them with a two-stage multi-objective cost that balances collision avoidance and goal reaching. Implemented entirely with NVIDIA Warp GPU kernels, AERO-MPPI achieves real-time onboard operation and mitigates the local-minima failures of single-MPPI approaches. Extensive simulations in forests, verticals, and inclines demonstrate sustained reliable flight above 7 m/s, with success rates above 80% and smoother trajectories compared to state-of-the-art baselines. Real-world experiments on a LiDAR-equipped quadrotor with NVIDIA Jetson Orin NX 16G confirm that AERO-MPPI runs in real time onboard and consistently achieves safe, agile, and robust flight in complex cluttered environments. The code will be open-sourced upon acceptance of the paper."
+        ],
+        "image": "https://arxiv.org/html/2509.17340v1/figures/avoidance2.png"
+      },
+      {
+        "id": "https://techxplore.com/news/2026-05-source-framework-drones-dodge-obstacles.html",
+        "title": "Open-source framework lets drones dodge obstacles in ...",
+        "url": "https://techxplore.com/news/2026-05-source-framework-drones-dodge-obstacles.html",
+        "publishedDate": "2026-05-19T00:00:00.000Z",
+        "highlights": [
+          "Researchers from MIT and the University of Pennsylvania developed a new trajectory-planning system that tackles both challenges at once. Their technique enables a UAV to react to obstacles in milliseconds while staying on a smooth flight path that minimizes travel time.\n...\nNamed MIGHTY, the open-source system does not require proprietary software packages that can cost hundreds of thousands of dollars. It could be more readily deployed in a wider variety of real-world settings.\n...\nWith MIGHTY, Kondo and his colleagues developed an open-source system that produces high-quality, smooth trajectories while reacting to obstacles in real-time, and which runs fast enough for flight using only onboard components.\n...\nInstead, MIGHTY uses a mathematical technique, called a Hermite spline, that optimizes the travel time and flight path together, in a single step, to form a smooth trajectory that can be precisely controlled.\n...\nThis enables MIGHTY to react in real-time to unknown obstacles while keeping the trajectory smooth and minimizing travel time. The system utilizes the UAV's onboard components, which is important for applications where a robot might travel far from a base station.\n...\nWhen they tested the system on real robots, it reached a speed of 6.7 meters per second while avoiding every obstacle that appeared in its path.\n...\n026"
+        ],
+        "image": "https://scx2.b-cdn.net/gfx/news/2026/new-research-enables-a.jpg"
+      },
+      {
+        "id": "https://dronexl.co/2026/05/28/mit-penn-mighty-open-source-drone-planner/",
+        "title": "MIT And Penn Open-Source MIGHTY, A Drone Motion Planner That Cuts Out Six-Figure Commercial Software",
+        "url": "https://dronexl.co/2026/05/28/mit-penn-mighty-open-source-drone-planner/",
+        "publishedDate": "2026-05-28T00:00:00.000Z",
+        "author": "H. Kesteloo     Jul 30",
+        "highlights": [
+          "Researchers at MIT and the University of Pennsylvania have released MIGHTY, an open-source motion planner that lets drones react to obstacles in milliseconds using only onboard sensors and compute. The system, detailed in a paper accepted to IEEE Robotics and Automation Letters and announced by MIT, jointly optimizes flight path and travel time in a single computational step. In simulated tests, it ran in about 90 percent of the time required by state-of-the-art methods while reaching its destination roughly 15 percent faster. In hardware tests, drones running MIGHTY hit speeds of 6.7 meters per second, or about 24 km/h (15 mph), through cluttered environments with obstacles added on the fly. The headline detail is the licensing model. Existing high-performance motion planners often depend on commercial solvers that can cost hundreds of thousands of dollars. MIGHTY is free, runs on Ubuntu 22.04 with ROS 2 Humble, and requires no proprietary dependencies.\n...\nThe arXiv version of the paper reports a 9.3 percent reduction in computation time, a 13.1 percent reduction in travel time, and a 100 percent success rate against two state-of-the-art baselines in simulation. The code is live on the lab\u2019s GitHub repository.\n...\nwithin a few years. PX4, ArduPilot, and parts of the ROS 2 navigation toolchain all carry DNA from earlier academic releases. MIGHTY is the next one to watch."
+        ],
+        "image": "https://cdn.dronexl.co/wp-content/uploads/2026/05/img_0778.jpg"
+      },
+      {
+        "id": "https://github.com/mit-acl/mighty/blob/main/README.md",
+        "title": "README.md at main \u00b7 mit-acl/mighty",
+        "url": "https://github.com/mit-acl/mighty/blob/main/README.md",
+        "highlights": [
+          "```md\n# MIGHTY: Hermite Spline-based Efficient Trajectory Planning\n...\n**Multi-Agent Trajectory Planning** \u2014 multiple aerial agents arranged on a circle swap to diametrically opposite positions, avoiding one another in real time:\n...\nMIGHTY: Hermite Spline-based Efficient Trajectory Planning is available at [https://arxiv.org/abs/2511.10822](https://arxiv.org/abs/2511.10822)!\n...\n```bibtex\n@ARTICLE{kondo2026mighty,\n  author={Kondo, Kota and Wu, Yuwei and Kumar, Vijay and How, Jonathan P.},\n  journal={IEEE Robotics and Automation Letters}, \n  title={MIGHTY: Hermite Spline-based Efficient Trajectory Planning}, \n  year={2026},\n  volume={},\n  number={},\n  pages={1-8},\n  keywords={Anisotropic;Central Processing Unit;Filters;Radio access networks;Regional area networks;Location awareness;Mobile communication;Communication systems;High frequency;Indoor environment;Aerial Systems: Perception and Autonomy;Motion and Path Planning;Trajectory Optimization;Hermite Splines;Unmanned Aerial Vehicles},\n  doi={10.1109/LRA.2026.3681187}\n}\n```\n...\nAdditional Information\n\n \n Dependencies \n\n All dependencies are version-controlled in `mighty.repos`:\n - **ROS 2 packages**: acl-mapping, dynus_interfaces, gazebo_ros_pkgs, livox_laser_simulation_ros2, realsense_gazebo_plugin, uav_simulator\n - **\n...\ncompROS2**: Decomposition utilities (requires decomp_util to build first)\n - **Liv\n...\n-SDK2"
+        ]
+      },
+      {
+        "id": "https://www.alphaxiv.org/abs/2509.17340",
+        "title": "AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation | alphaXiv",
+        "url": "https://www.alphaxiv.org/abs/2509.17340",
+        "publishedDate": "2026-03-21T00:00:00.000Z",
+        "author": "Lin Zhao",
+        "highlights": [
+          "Agile mapless navigation in cluttered 3D environments poses significant challenges for autonomous drones. Conventional mapping-planning-control pipelines incur high computational cost and propagate estimation errors. We present AERO-MPPI, a fully GPU-accelerated framework that unifies perception and planning through an anchor-guided ensemble of Model Predictive Path Integral (MPPI) optimizers. Specifically, we design a multi-resolution LiDAR point-cloud representation that rapidly extracts spatially distributed \"anchors\" as look-ahead intermediate endpoints, from which we construct polynomial trajectory guides to explore distinct homotopy path classes. At each planning step, we run multiple MPPI instances in parallel and evaluate them with a two-stage multi-objective cost that balances collision avoidance and goal reaching. Implemented entirely with NVIDIA Warp GPU kernels, AERO-MPPI achieves real-time onboard operation and mitigates the local-minima failures of single-MPPI approaches. Extensive simulations in forests, verticals, and inclines demonstrate sustained reliable flight above 7 m/s, with success rates above 80% and smoother trajectories compared to state-of-the-art baselines. Real-world experiments on a LiDAR-equipped quadrotor with NVIDIA Jetson Orin NX 16G confirm that AERO-MPPI runs in real time onboard and consistently achieves safe, agile, and robust flight in"
+        ],
+        "image": "https://api.alphaxiv.org/open-graph/v1/paper/2509.17340.png"
+      },
+      {
+        "id": "https://www.alphaxiv.org/abs/2604.07599",
+        "title": "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments | alphaXiv",
+        "url": "https://www.alphaxiv.org/abs/2604.07599",
+        "publishedDate": "2026-04-24T00:00:00.000Z",
+        "author": "Jonathan P. How",
+        "highlights": [
+          "SANDO is a safe trajectory planner for 3D dynamic unknown environments, where obstacle locations and motions are unknown a priori and a collision-free plan can become unsafe at any moment, requiring fast replanning. Existing soft-constraint planners are fast but cannot guarantee collision-free paths, while hard-constraint methods ensure safety at the cost of longer computation. SANDO addresses this trade-off through three contributions. First, a heat map-based A* global planner steers paths away from high-risk regions using soft costs, and a spatiotemporal safe flight corridor (STSFC) generator produces time-layered polytopes that inflate obstacles only by their worst-case reachable set at each time layer, rather than by the worst case over the entire horizon. Second, trajectory optimization is formulated as a Mixed-Integer Quadratic Program (MIQP) with hard collision-avoidance constraints, and a variable elimination technique reduces the number of decision variables, enabling fast computation. Third, a formal safety analysis establishes collision-free guarantees under explicit velocity-bound and estimation-error assumptions. Ablation studies show that variable elimination yields up to 7.4x speedup in optimization time, and that STSFCs are critical for feasibility in dense dynamic environments. Benchmark simulations against state-of-the-art methods across standardized static"
+        ],
+        "image": "https://api.alphaxiv.org/open-graph/v1/paper/2604.07599.png"
+      },
+      {
+        "id": "https://github.com/uzh-rpg/high_mpc",
+        "title": "uzh-rpg/high_mpc: Policy Search for Model Predictive ...",
+        "url": "https://github.com/uzh-rpg/high_mpc",
+        "highlights": [
+          "# uzh-rpg/high_mpc\n...\nPolicy Search for Model Predictive Control with Application to Agile Drone Flight\n...\n## Policy Search for Model Predictive Control with Application to Agile Drone Flight\n\n \n\n![High_MPC_Demo](docs/gifs/prompc.gif)\n...\nPolicy Search and Model Predictive Control (MPC) are two different paradigms for robot control: policy search has the strength of automatically learning complex policies using experienced data, while MPC can offer optimal control performance using models and trajectory optimization. An open research question is how to leverage and combine the advantages of both approaches. In this work, we provide an answer by using policy search for automatically choosing high-level decision variables for MPC, which leads to a novel policy-search-for-model-predictive-control framework. Specifically, we formulate the MPC as a parameterized controller, where the hard-to-optimize decision variables are represented as high-level policies. Such a formulation allows optimizing policies in a self-supervised fashion. We validate this framework by focusing on a challenging problem in agile drone flight: flying a quadrotor through fast-moving gates. Experiments show that our controller achieves robust and real-time control performance in both simulation and the real world. The proposed framework offers a new perspective for merging learning and control."
+        ]
+      }
+    ],
+    "searchTime": 842.7,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

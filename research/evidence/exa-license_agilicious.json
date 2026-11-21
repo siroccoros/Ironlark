@@ -1,0 +1,151 @@
+{
+  "query": {
+    "query": "Agilicious license academic use non commercial access source code agilib agiros",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "beefcf213f5d3a8ad28d2ea671c49138",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://agilicious.readthedocs.io/en/latest/license.html",
+        "title": "License \u2014 agilicious 0.0.1 documentation",
+        "url": "https://agilicious.readthedocs.io/en/latest/license.html",
+        "highlights": [
+          "This is a legal agreement (hereinafter referred to as the AGREEMENT) between\nyou (hereinafter referred to as the LICENSEE) and the University of Zurich, R\u00e4mistrasse\n...\n71, CH-8006 Z\u00fcrich (hereinafter referred to as UZH) pertaining to the right to use\nthe software product \u201cAgilicious\u201d (hereinafter referred to as \u201cSOFTWARE\u201d) for academic,\nnon- commercial purposes only. By downloading or using the SOFTWARE you acknowledge\nthat you have read the AGREEMENT, understand it and agree to be bound by its terms and\nconditions.\n...\n(ii) LICENSEE wishes to obtain a non-exclusive, non-transferable and royalty-free\n license of the SOFTWARE for academic, non-commercial purposes only as specified\n in this AGREEMENT.\n...\n1 Grant/Scope of License\n 1.1 UZH hereby grants to LICENSEE a non-exclusive, non-transferable, royalty-free\n license to use the SOFTWARE for internal academic, non- commercial purposes only.\n 1.2 UZH will not provide any services or support in connection with the SOFTWARE\n or technical support within the scope of this AGREEMENT.\n...\nwhich (a) is not undertaken for any direct\n or indirect for-profit purposes, and (b) is not intended to produce works,\n services, or data for commercial use.\n 2.2 The sale, lease or rental of any portion of the SOFTWARE or any IMPROVEMENTS\n and/or the use of any portion of the SOFTWARE or any IMPROVEMENTS in any service\n or good sold or"
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/agilicious",
+        "title": "uzh-rpg/agilicious: Agile flight done right!",
+        "url": "https://github.com/uzh-rpg/agilicious",
+        "highlights": [
+          ", agile quadrotor\n...\nGroup (RPG)](http://rpg.\n...\n.ch/) of\n...\nUniversity of Zurich. Ag\n...\ndescribed in this [\n...\n/docs/\n...\nAgilicious is split in two parts, *agilib* and *agiros*.\n...\n*agilib* contains base classes and module implementations providing the base functionality necessary for agile flight.\nIt contains controllers, estimators, and logic, but with minimal dependencies (mainly [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)).\nIt allows users to integrate Agilicious into their own infrastructure and can easily be extended with new modules.\n...\nMeanwhile, *agiros* provides bindings to common [ROS](https://www.ros.org) interfaces, which make it easy and quick to set up and get flying, both in simulation and real world.\n...\nThe official license file can be found [here](https://rpg.ifi.uzh.ch/docs/Agilicious_LICENSE_AGREEMENT_ACADEMIC_USE.pdf).\n\nTo request access for collaboration, please go [here](https://agilicious.readthedocs.io/en/latest/index.html)"
+        ]
+      },
+      {
+        "id": "https://rpg.ifi.uzh.ch/docs/Agilicious_LICENSE_AGREEMENT_ACADEMIC_USE.pdf",
+        "title": "SOFTWARE LICENSE AGREEMENT",
+        "url": "https://rpg.ifi.uzh.ch/docs/Agilicious_LICENSE_AGREEMENT_ACADEMIC_USE.pdf",
+        "author": "greinerh",
+        "highlights": [
+          "This is a legal agreement (hereinafter referred to as the AGREEMENT) between you (hereinafter re ferred to as the LICENSEE) and the University of Zurich, R\u00e4mistrasse 71, CH-8006 Z\u00fcrich (hereinafter referred to as UZH) pertaining to the right to use the software product \u201cAgilicious\u201d (hereinafter referred to as \u201cSOFTWARE\u201d) for academic, non- commercial purposes only. By downloading or using the SOFT WARE you acknowledge that you have read the AGREEMENT, understand it and agree to be bound by its terms and conditions.\n...\nIntroduction \n(i) UZH has developed the SOFTWARE under the lead of Prof. Dr. Davide Scaramuzza (hereinafter \nreferred to as the PRINCIPAL INVESTIGATOR). SOFTWARE means the collection of computer code \nin all forms including, without limitation, both source code and binary code. \n(ii) LICENSEE wishes to obtain a non-exclusive, non-transferable and royalty-free license of the SOFT \nWARE for academic, non-commercial purposes only as specified in this AGREEMENT. \nIn consideration of the above premises LICENSEE agrees as follows: \n1 Grant/Scope of License \n1.1 UZH hereby grants to LICENSEE a non-exclusive, non-transferable, royalty-free license to use the \nSOFTWARE for internal academic, non- commercial purposes only. \n\n1\n...\n, or data \nfor commercial use. \n2.2 The sale, lease or rental of any portion of the SOFTWARE or any IMPROVEMENTS and/or the \nuse of"
+        ]
+      },
+      {
+        "id": "https://form.jotform.com/230332943688361",
+        "title": "Agilicious Request",
+        "url": "https://form.jotform.com/230332943688361",
+        "highlights": [
+          "Agilicious Request"
+        ],
+        "image": "https://www.jotform.com/uploads/rpg_uzh/form_files/Render6_logo.63dd04e2c3a8d1.86284386.jpg"
+      },
+      {
+        "id": "https://github.com/uzh-rpg/agilicious/blob/main/README.md",
+        "title": "README.md",
+        "url": "https://github.com/uzh-rpg/agilicious/blob/main/README.md",
+        "highlights": [
+          "ch/) of\n...\nAgilicious is split in two parts, *agilib* and *agiros*.\n...\n*agilib* contains base classes and module implementations providing the base functionality necessary for agile flight.\nIt contains controllers, estimators, and logic, but with minimal dependencies (mainly [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)).\nIt allows users to integrate Agilicious into their own infrastructure and can easily be extended with new modules.\n...\nMeanwhile, *agiros* provides bindings to common [ROS](https://www.ros.org) interfaces, which make it easy and quick to set up and get flying, both in simulation and real world.\n...\nThe official license file can be found [here](https://rpg.ifi.uzh.ch/docs/Agilicious_LICENSE_AGREEMENT_ACADEMIC_USE.pdf).\n...\nTo request access for collaboration, please go [here](https://agilicious.readthedocs.io/en/latest/index.html)"
+        ]
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/en/latest/introduction.html",
+        "title": "",
+        "url": "https://agilicious.readthedocs.io/en/latest/introduction.html",
+        "highlights": [
+          "Agilicious is split in two parts, _agilib_ and _agiros_.\n...\n_agilib_ contains base classes and module implementations providing the base functionality necessary for agile flight. It contains controllers, estimators, and logic, but with minimal dependencies (mainly [Eigen](http://eigen.tuxfamily.org/index.php?title=Main%5FPage)). It allows users to integrate Agilicious into their own infrastructure and can easily be extended with new modules. Meanwhile, _agiros_ provides bindings to common [ROS](https://www.ros.org) interfaces, which make it easy and quick to set up and get flying, both in simulation and real world."
+        ]
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/en/latest/setup/getting_started.html",
+        "title": "",
+        "url": "https://agilicious.readthedocs.io/en/latest/setup/getting_started.html",
+        "highlights": [
+          "Getting Started \u2014 agilicious 0.0.1 documentation\n...\nGetting Started\uf0c1\n...\nIf you use ROS, simply clone agilicious into your `catkin` workspace and `catkin build`:\n...\n```\ncd catkin_ws/src # Create new catkin workspace.\ngit clone https://github.com/catkin/catkin_simple\ngit clone git@github.com:uzh-rpg/agilicious.git\ncatkin build\n\n```\n...\nIf you want to use the library standalone, you can always:\n...\n```\ncd agilib/build\ncmake ..\nmake\n\n```\n...\nIt is highly recommended to run agilicious inside a docker container, instructions are available in Dockerized Build.\n...\nFor launching simulations you need ROS. Once your compilation using `catkin build` has been successful, you can then source your catkin workspace and launch two different types of simulation:\n...\n- Agisim simulation, by running the command `roslaunch agiros agisim.launch`. This simulation environment has been written by us and supports different levels of complexity. These levels of complexity can be configured in the file `agiros/agiros/parameters/simulation.yaml`, where, for example, if we would comment the lines with \u201cModelRotorSimple\u201d and uncomment the lines with \u201cModelRotorBEM\u201d, then a BEM simulation will be launched.\n...\n- Gazebo RotorS simulation, by running the command `roslaunch agiros simulation.launch`"
+        ],
+        "image": "https://user-images.githubusercontent.com/21340299/174614805-ece87b54-f6a0-460c-8b33-06cb253161aa.png"
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/en/latest/integration/ros.html",
+        "title": "",
+        "url": "https://agilicious.readthedocs.io/en/latest/integration/ros.html",
+        "highlights": [
+          "Our software is split in two parts, called `agilib` and `agiros`. `agilib` is the implementation of the entire library with all its functionalities, while `agiros` serves as an interface layer between `agilib` and ROS.\n...\nThe user can be referred to the file `agiros/agiros/ros_pilot.cpp` where the interface for subscription and publication is written. For example, some of the most representative (but not only) commands are:\n...\nThe function of the ROS interface is to take these commands (or any command that might be implemented by the user) and send it downstream to `agilib`."
+        ]
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/_/downloads/en/latest/pdf/",
+        "title": "Release 0.0.1 Robotics and Perception Group (UZH)",
+        "url": "https://agilicious.readthedocs.io/_/downloads/en/latest/pdf/",
+        "publishedDate": "2023-04-17T00:00:00.000Z",
+        "author": "Robotics and Perception Group (UZH)",
+        "highlights": [
+          "| License for Academic This is a legal agreement (hereinafter you (hereinafter referred to as the LICENSEE) 71, CH-8006 Z\u00fcrich (hereinafter referred the software product \u201cAgilicious\u201d (hereinafter non- commercial purposes only. By downloading that you have read the AGREEMENT, understand | Non-commercial Use referred to as the AGREEMENT) between and the University of Zurich, R\u00e4mistrasse to as UZH) pertaining to the right to use referred to as \u201cSOFTWARE\u201d) for academic, or using the SOFTWARE you acknowledge it and agree to be bound by its terms and |\n...\n(ii) LICENSEE wishes to obtain a non-exclusive, non-transferable and royalty-free \nlicense of the SOFTWARE for academic, non-commercial purposes only as specified \nin this AGREEMENT.\n...\n. \n2 Permitted Use and Restrictions \n2.1 LICENSEE agrees that it will use the SOFTWARE, and any modifications, \nimprovements, or derivatives to SOFTWARE that LICENSEE may create (collectively, \n\"IMPROVEMENTS\") solely for its own internal, academic, non-commercial \npurposes. The terms \"academic, non-commercial\", as used in this Agreement, mean \nacademic or other scholarly research which (a) is not undertaken for any direct \nor indirect for-profit purposes, and (b) is not intended to produce works, \nservices, or data for commercial use. \n2.2 The sale, lease or rental of any portion of the SOFTWARE or any IMPROVEMENTS \nand/or the use of any"
+        ]
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/en/latest/index.html",
+        "title": "",
+        "url": "https://agilicious.readthedocs.io/en/latest/index.html",
+        "highlights": [
+          "Agilicious is\n...\nframework tailored to autonomous\n...\nagile quadrotor flight\n...\nhas been developed and\n...\nAgilicious is described\n...\nit provides high thrust\n...\nagility, onboard\n...\nAgilicious offers\n...\nour lab,\n...\ndrone racing scenarios\n...\nVideo), vision-based acrob\n...\nRSS20 Kaufmann\n...\nVideo), obstacle avoidance\n...\nunstructured environments using solely onboard perception\n...\nquercio, Video\n...\nand hardware-in-\n...\nsimulation in virtual-reality environments. Thanks to its versatility\n...\nbelieve that Agilicious supports the next generation of scientific and industrial quadrotor research\n...\nAgilicious allows to seamlessly develop, test, reproduce and benchmark control algorithms such as Non-linear Model Predictive Control (MPC), differential-flatness-based control (DFBC) and INDI (Incremental Non-linear Dynamic Inversion) (TRO 2\n...\n22, Sun, Video). Agilicious also includes our state-of-the-art, high-fidelity simulator, which uses Blade Element Momentum (BEM) theory for the propeller model and provides accurate estimates of the quadcopter\u2019s aerodynamic characteristics across the flight envelope (RSS 2021, Bauersfeld, Video).\n...\n- License\n- Papers to cite if you use Agilicious\n- Dependencies"
+        ]
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/en/main/",
+        "title": "",
+        "url": "https://agilicious.readthedocs.io/en/main/",
+        "highlights": [
+          "**Agilicious** is a co-designed hardware and software framework tailored to autonomous, agile quadrotor flight, which has been developed and used since 2016 at the [Robotics and Perception Group (RPG)](https://rpg.ifi.uzh.ch/) of the University of Zurich. Agilicious\n...\ndescribed in this [Science Robotics 2\n...\nh.ch\n...\nFFoehn\n...\nit provides high thrust\n...\nhardware-in\n...\nINDI (Incremental Non\n...\nDynamic Inversion\n...\nhttps://rpg\n...\ndocs/Arxiv21\n...\n5FMPC%5FSun\n...\nVideo](https://www\n...\nwatch?v=XpuRpKHp\n...\nalso includes our state-of-the-art, high-fidelity simulator, which uses Blade Element Momentum (BEM) theory for the propeller model and provides accurate estimates of the quadcopter\u2019s aerodynamic characteristics across\n...\nflight envelope ([RSS 2\n...\n1, Bauersfeld\n...\n.ifi.\n...\nFBauersfeld\n...\nv=Nze1wlfmzTQ\n...\n* [License](https://agilicious.readthedocs.io/en/license.html)\n* [Papers to cite if you use Agilicious](https://agilicious.readthedocs.io/en/credits.html)\n* [Dependencies](https://agilicious.readthedocs.io/en/dependencies.html)"
+        ]
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/en/latest/",
+        "title": "Agilicious: Open-Source and Open-Hardware Agile Quadrotor for Vision-Based Flight \u2014 agilicious 0.0.1 documentation",
+        "url": "https://agilicious.readthedocs.io/en/latest/",
+        "highlights": [
+          "2022 paper. It is completely open-source and open-hardware and supports both model-based and neural-network-based controllers. Also, it provides high thrust-to-weight and torque-to-inertia ratios for agility, onboard vision sensors, GPU-accelerated compute hardware for real-time perception and neural-network inference, a real-time flight controller, and a versatile software stack. In contrast to existing frameworks, Agilicious offers a unique combination of flexible software and high-performance hardware. Agilicious has been used in over 30 scientific papers at our lab, including trajectory tracking for drone racing scenarios at up to 5g and 70km/h (SciRob21_Foehn, Video), vision-based acrobatic flight (RSS20 Kaufmann, Video), obstacle avoidance in both structured and unstructured environments using solely onboard perception (SciRob21_Loquercio, Video), and hardware-in-the-loop simulation in virtual-reality environments. Thanks to its versatility, we believe that Agilicious supports the next generation of scientific and industrial quadrotor research. Agilicious allows to seamlessly develop, test, reproduce and benchmark control algorithms such as Non-linear Model Predictive Control (MPC), differential-flatness-based control (DFBC) and INDI (Incremental Non-linear Dynamic Inversion) (TRO 2022, Sun, Video). Agilicious also includes our state-of-the-art, high-fidelity simulator,"
+        ],
+        "image": "https://user-images.githubusercontent.com/17403970/174497361-aa212d77-7036-4f36-840d-c48cab492ac2.gif"
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/en/latest/credits.html",
+        "title": "",
+        "url": "https://agilicious.readthedocs.io/en/latest/credits.html",
+        "highlights": [
+          "* [](https://agilicious.readthedocs.io/en/latest/index.html)\n* Papers to cite if you use Agilicious\n...\n* [ Edit on GitHub](https://github.com/uzh-rpg/agilicious/blob/main/docs/credits.rst)\n...\n# Papers to cite if you use Agilicious[\uf0c1](#papers-to-cite-if-you-use-agilicious \"Permalink to this heading\")\n...\nIf you use the code in the academic context, please cite:\n...\n* Philipp Foehn, Elia Kaufmann, Angel Romero, Robert Penicka, Sihao Sun, Leonard Bauersfeld, Thomas Laengle, Giovanni Cioffi, Yunlong Song, Antonio Loquercio, Davide Scaramuzza, \n[\u201cAgilicious: Open-Source and Open-Hardware Agile Quadrotor for Vision-Based Flight\u201d](https://rpg.ifi.uzh.ch/docs/ScienceRobotics22%5FFoehn.pdf), \nAAAS Science Robotics, 2022, \n[Video](https://www.youtube.com/watch?v=fNYxPLyJ5YY), [Bibtex](https://agilicious.readthedocs.io/en/latest/miscellaneous/references/Foehn2022science.bib)\n...\nAdditionally, please cite the following papers for the specific extensions you make use of:\n...\n* Sihao Sun, Angel Romero, Philipp Foehn, Elia Kaufmann, Davide Scaramuzza, \n[\u201cA Comparative Study of Nonlinear MPC and Differential-Flatness-based Control for Quadrotor Agile Flight\u201d](https://rpg.ifi.uzh.ch/docs/Arxiv21%5FMPC%5FSun.pdf), \nIEEE Transactions on Robotics, 2022, \n[Video](https://www\n...\n.com/watch?v=XpuRpKHp%5FBk),"
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/agilicious/blob/main/docs/setup/getting_started.rst",
+        "title": "docs/setup/getting_started.rst",
+        "url": "https://github.com/uzh-rpg/agilicious/blob/main/docs/setup/getting_started.rst",
+        "highlights": [
+          "- Branch: main\n- Repository: uzh-rpg/agilicious\n...\nIf you use ROS, simply clone agilicious into your :code:`catkin` workspace and :code:`catkin build`::\n\n cd catkin_ws/src # Create new catkin workspace.\n git clone https://github.com/catkin/catkin_simple\n git clone git@github.com:uzh-rpg/agilicious.git\n catkin build\n...\nIf you want to use the library standalone, you can always::\n\n cd agilib/build\n cmake ..\n make\n...\nIt is highly recommended to run agilicious inside a docker container, instructions are available in :ref\n...\nref-dockerized`.\n...\nFor launching simulations you need\n...\n. Once your compilation\n...\n:code:`catkin\n...\n,\nyou can\n...\nsource your catkin workspace and launch two different types of simulation\n...\n- Agisim simulation, by running the command :code:`roslaunch agiros agisim.launch`. This simulation environment has been written by us and supports different levels of complexity. These levels of complexity can be configured in the file :code:`agiros/agiros/parameters/simulation.yaml`, where, for example, if we would comment the lines with \"ModelRotorSimple\" and uncomment the lines with \"ModelRotorBEM\", then a BEM simulation will be launched. \n- Gazebo RotorS simulation, by running the command :code:`roslaunch agiros simulation.launch`\n...\nEverything is structured in\n...\nThe most important of\n...\nis used. Here"
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/agilicious/blob/main/docs/integration/ros.rst",
+        "title": "docs/integration/ros.rst",
+        "url": "https://github.com/uzh-rpg/agilicious/blob/main/docs/integration/ros.rst",
+        "highlights": [
+          "- Branch: main\n- Repository: uzh-r\n...\nOur software is split in two parts, called :code:`agilib` and :code:`agiros`. :code:`agilib` is the implementation of the entire library with all its functionalities, while :code:`agiros` serves as an interface layer between :code:`agilib` and ROS.\n...\nThe user can be referred to the file :code:`agiros/agiros/ros_pilot.cpp` where the interface for subscription and publication is written.\n...\nThe function of the ROS interface is to take these commands (or any command that might be implemented by the user) and send it downstream to :code:`agilib`."
+        ]
+      }
+    ],
+    "searchTime": 1508,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

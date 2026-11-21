@@ -1,0 +1,159 @@
+{
+  "query": {
+    "query": "open source quadrotor control RAPTOR rl-tools acados geometric MPC differential flatness rpg_quadrotor_control safe-control-gym",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "bded98bb46772000f5e8921c3f1a6519",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/rl-tools/raptor",
+        "title": "GitHub - rl-tools/raptor: A Foundation Policy for Quadrotor Control",
+        "url": "https://github.com/rl-tools/raptor",
+        "publishedDate": "2025-04-22T23:23:39.000Z",
+        "highlights": [
+          "# Repository: rl-tools/raptor\n...\nA Foundation Policy for Quadrotor Control\n...\n- Stars: 208\n- Forks: 28\n- Watchers: 7\n- Open issues: 7\n- License: MIT License (MIT)\n- Topics: foundation-models, quadrotor, reinforcement-learning\n- Default branch: master\n- Homepage: https://raptor.rl.tools\n- Created: 2025-04-22T23:23:39Z\n- Last push: 2026-05-14T01:30:16Z\n- Contributors: 1 (top: jonas-eschmann)\n...\nNote that the poicy is trained for control at 100 Hz. While it can handle deviations from that, we expect best results around the nominal value. The control can be run at higher frequencies using the technique implemented in the L2F inference executor: `rl_tools/inference/applications/l2f/c_backend.h` by just advancing the latent state of the network every N steps as described later in this document.\n...\n, 1\n...\nusing T =\n...\nstatic auto& policy() {\n        return r\n...\n::actor::module\n...\n}\n...\nINTERMEDIATE\n...\nMake sure to configure the control interval properly. The `CONTROL_INTERVAL_NATIVE_NS` should always be $10$ ms because the foundation policy was trained at $100$ Hz. The policy can be run at higher frequencies, though (e.g. $400$ Hz) in which case the native state progression in the policy is only triggered every $4$ steps as signified by `FORCE_SYNC_NATIVE`."
+        ]
+      },
+      {
+        "id": "https://github.com/learnsyslab/safe-control-gym/",
+        "title": "learnsyslab/safe-control-gym",
+        "url": "https://github.com/learnsyslab/safe-control-gym/",
+        "highlights": [
+          "PyBullet CartPole and Quadrotor environments\u2014with CasADi symbolic a priori dynamics\u2014for learning-based control and RL\n...\nPhysics-based CartPole and Quadrotor [Gym](https://gym.openai.com) environments (using [PyBullet](https://pybullet.org/wordpress/)) with symbolic *a priori* dynamics (using [CasADi](https://web.casadi.org)) for **learning-based control**, and model-free and model-based **reinforcement learning** (RL).\n...\nYou may need to separately install [`acados`](https://github.com/acados/acados) for fast MPC implementations.\n...\n- [Linear MPC](https://github.com/learnsyslab/safe-control-gym/blob/main/safe_control_gym/controllers/mpc/linear_mpc.py)\n...\n-MPC](https://github\n...\ncom/learnsyslab/safe-control-gym/blob/main/safe_control_gym/controllers/mpc/gp_mpc.py)\n...\n](https://github.com/learnsyslab/safe-control-gym/blob/main/safe_control_gym\n...\n](https://github.com/learnsyslab/safe-control-gym/blob/main/safe_control_gym/controllers/\n...\n/ppo.py)\n...\n- [DDP\n...\n](https://github.com/learnsyslab/safe-control-gym/blob/main/safe_control_gym/controllers/\n...\n- [Safety\n...\n](https://github.com/learnsyslab/safe-control-gym/tree/main/safe_control\n...\n- [RARL](https://github.com/learnsyslab/safe-control-gym/blob/main/safe_control_gym/controllers/rarl/rarl.py)\n- [RAP](https://github.com/learnsyslab/safe-control-gym/blob/main/safe_control_gym/controllers/rarl/rap.py)"
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/rpg_quadrotor_control",
+        "title": "RPG Quadrotor Control - GitHub",
+        "url": "https://github.com/uzh-rpg/rpg_quadrotor_control",
+        "publishedDate": "2017-12-15T16:51:51.000Z",
+        "highlights": [
+          "# Repository: uzh-r\n...\nrpg_quadrotor_control\n...\nQuadrotor control framework developed by the Robotics and Perception Group\n...\n# RPG Quadrotor Control\n...\nThis repository contains a complete framework for flying quadrotors based on control algorithms developed by the [Robotics and Perception Group](http://www.ifi.uzh.ch/en/rpg.html).\n...\nWe also provide some utility to command a quad\n...\nwith a gamepad through our framework as well as some calibration routines to compensate for varying battery voltage.\n...\nis summarized in\n...\ntheory document](https://github.com/uzh-rpg/rpg_quadrotor_control/blob/master/documents/theory_and_math/theory_and_math.pdf) contained in this repository as well as in our [RA-L18 Paper](http://rpg.ifi.uzh.ch/docs/RAL18_Faessler.pdf) with a technical report attached for further details as well as in our [RA-L17 Paper](http://rpg.ifi.uzh.ch/docs/RAL17_Faessler.pdf\n...\nThis repository makes use of some basic functionalities from the [rpg_\n...\nrotor_common](https\n...\ncom/uzh-rpg/r\n...\ncommon) repository and when working with real hardware, the GPIO and ADC functionalities\n...\nsingle_board_io](https://github.com/uzh\n...\nboard_io\n...\nrepository might come in handy.\n...\nM. Faessler, A. Franchi, and D. Scaramuzza, \n\"**Differential Flatness of Quadrotor Dynamics Subject to Rotor Drag for Accurate Tracking of High-Speed Trajectories**,\"\n...\n\u2013626"
+        ]
+      },
+      {
+        "id": "https://raptor.rl.tools/",
+        "title": "RAPTOR: A Foundation Policy for Quadrotor Control - RLtools",
+        "url": "https://raptor.rl.tools/",
+        "highlights": [
+          "RAPTOR: A Foundation Policy for Quadrotor Control\n...\nNo gamepad connected (please press button or move axis to connect)\n...\no/2 + p*\n...\n/20 *\n...\nThis web app allows you to torture the foundation policy using different quadrotor models, reference trajectories and disturbances. You can reset the episodes by pressing \"Sample Initial States\". You can simulate step-by-step using \"Pause on Reset\" and then \"Step\" throught the episode. The \"X Offset\" spreads out the quadrotors (click it to change to Y/Z offset). You can drag the sidebar next to the 3D view to reveal the menu for loading dynamics parameters. You can select one of the presets in the dropdown as well as load parameters from disk, following the l2f json format. The last row allows you to perturb dynamics parameters based on a simple formula (hover over the formula input for a description of the variables). \n\n#### Reproducing Oscillations Caused by Linear Velocity Feedback Delays\n...\nYou can actually reproduce the finding of the oscillations on the non-EKF-based quadrotors (Section 2.4.1) by replacing `LinearVelocity` with `LinearVelocityDelayed(2)` and loading dynamics parameters of a quadrotor with a thrust-to-weight ratio > 2 (any one except of the Crazyflie). You can just paste `Position.OrientationRotationMatrix.LinearVelocityDelayed(2).AngularVelocityDelayed(0).ActionHistory(1)` and hit \"Sample Initial States\"."
+        ],
+        "image": "https://raptor.rl.tools/blob/logo.svg"
+      },
+      {
+        "id": "https://hybrid-robotics.berkeley.edu/publications/CDC2013.pdf",
+        "title": "[PDF] Geometric Control and Differential Flatness of a Quadrotor UAV with a ...",
+        "url": "https://hybrid-robotics.berkeley.edu/publications/CDC2013.pdf",
+        "highlights": [
+          "evolve either on SE(3) \u00d7 S 2, or SE(3) \u00d7 R3, depending on if the cable is taut or not. We show that the quadrotor with cable-suspended load system is a differentially-flat hybrid system. This enables dynamic trajectory generation that also handles the case when the tension in the cable goes to zero. The main result of this paper is the development of a geometric controller design for tracking outputs specified by (a) the quadrotor attitude, (b) the load attitude, and (c) the load position. The controller for tracking the quadrotor attitude and load attitude exhibits almost-global exponential stability, while the load position control exhibits almost-global exponential attractivity. In a companion paper [7], we extend the control results developed here to the case of multiple quadrotors. In par ticular, the case of n\n...\nWe have presented a coordinate-free development of the dynamics of a quadrotor with a cable suspended load, and have shown that this system is a differentially-flat hybrid system. The flatness property has been utilized to design nominal trajectories. A nonlinear geometric control design is presented, that enables tracking of either the quadrotor attitude, the load attitude or the position of the load. Almost global exponential stability for the load attitude tracking, and almost global exponential attractivity of the load position tracking is demonstrated."
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/rpg_mpc/blob/master/README.md",
+        "title": "README.md at master \u00b7 uzh-rpg/rpg_mpc",
+        "url": "https://github.com/uzh-rpg/rpg_mpc/blob/master/README.md",
+        "highlights": [
+          "This MPC is intended to be used with https://github.com/uzh-rpg/rpg_quadrotor_control.\n...\nIt is available with the extension to be used as a \"Perception Aware Model Predictive Controller\" (**PAMPC**).\n...\nThe RPG MPC repository provides packages that are intended to be used with [RPG Quadrotor Control](\n...\n/uzh-rpg/rpg_quadrotor_control\n...\nand [ROS](http://www.ros.org/). \nThis code has been tested with ROS kinetic on Ubuntu 16.04.\n...\nThis work depends on the ACADO Toolkit, developed by the Optimization in Engineering Center (OPTEC) under supervision of Moritz Diehl. Licensing detail can be found on the [ACADO licensing page](http://acado.github.io/licensing.html). It is released under GNU Lesser General Public License as published by the Free Software Foundation, version 3.\n...\nThe whole MPC is based on ACADO (http://acado.github.io/).\n...\nACADO's C++ interface is used to describe the quadrotor model and parameters for transcription into a quadratic program, which is then solved with qpOASES (https://projects.coin-or.org/qpOASES). To compile and run, none of these dependencies are needed, since the generated code is already included in this repository. To modify the model and solver options, please install ACADO from http://acado.github.io/install_linux.html.\n...\non the previous `mpc_solver` and `mpc_wrapper`,\n...\nwith minimal effort."
+        ]
+      },
+      {
+        "id": "https://docs.px4.io/main/en/neural_networks/raptor",
+        "title": "RAPTOR: A Neural Network Module for Adaptive Quadrotor Control | PX4 Guide (main)",
+        "url": "https://docs.px4.io/main/en/neural_networks/raptor",
+        "highlights": [
+          "RAPTOR is a tiny reinforcement-learning based neural network module for quadrotor control that can be used to control a wide variety of quadrotors without retuning.\n...\nRAPTOR fills this gap and demonstrates a\n...\nThe RAPTOR control policy is an end-to-end policy that takes position, orientation, linear velocity and angular velocity as inputs and outputs motor commands (`actuator_motors`). To integrate it into PX4 we use the external mode registration facilities in PX4 (which also works well for internal modes as demonstrated in `mc_nn_control`). Because of this architecture the `mc_raptor` module is completely decoupled from all other PX4 logic.\n...\n- Tiny neural network (just 2084 parameters) => minimal CPU usage\n- Easily maintainable \n\n- Simple CMake setup\n- Self-contained (no interference with other modules)\n- Single, simple and well-maintained dependency (RLtools)\n- Loading neural network parameters from SD card \n\n- Minimal flash usage (for possible inclusion into default build configurations)\n- Easy development: Train new neural network and just upload it via MAVLink FTP without requiring to re-flash the firmware\n- Tested on 10+ different real platforms (including flexible frames, brushed motors)\n- Actively developed and maintained\n...\nTo enable the `mc_raptor` module in other platforms, just add `CONFIG_MODULES_MC_RAPTOR=y` and `CONFIG_LIB_RL_TOOLS=y`"
+        ],
+        "image": "https://docs.px4.io/main/og-image.png"
+      },
+      {
+        "id": "https://github.com/SWUST-ICAA/px4nmpc",
+        "title": "SWUST-ICAA/px4nmpc",
+        "url": "https://github.com/SWUST-ICAA/px4nmpc",
+        "highlights": [
+          "Nonlinear Model Predictive Control for PX4 Quadrotors\n...\n`px4nmpc` is a lightweight ROS 2 NMPC controller for PX4 quadrotors.\nIt uses CasADi + ACADOS for offline solver generation and runs as a pure C++ ROS 2 node at runtime.\n...\nimplementation targets a standard Quad-X airframe with 4 motors and has been verified in `PX4 SITL + gz_x500`.\n...\n- Nonlinear MPC for PX4 multicopters\n\n- ACADOS + CasADi offline code generation\n\n- Pure C++ ROS 2 runtime node\n\n- Internal optimization in physical motor thrust, final output mapped to `0~1` throttle\n\n- Hover when no trajectory is available\n\n- Built-in Python planner with `circle`, `figure_eight`, `tilted_circle`, and `tilted_figure_eight`\n...\n- `controller`: control rate and horizon\n- `mission`: takeoff height and trajectory timeout\n- `vehicle`: mass, inertia, arm length, yaw moment coefficient\n- `motors`: maximum thrust and thrust-to-throttle mapping\n- `weights`: NMPC cost weights\n- `planner`: trajectory type, geometry, and publish rate\n...\n- The controller currently targets Quad-X only\n- The controller keeps the existing PX4 `/fmu/in/*` direct interface and `NED/FRD` convention\n- The runtime node uses physical motor thrust internally and only performs throttle normalization at the final actuator output\n- The current setup is verified in simulation first, and is structured for later migration to real hardware and multi-vehicle use"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2509.11481v2",
+        "title": "RAPTOR: A Foundation Policy for Quadrotor Control - arXiv",
+        "url": "https://arxiv.org/html/2509.11481v2",
+        "publishedDate": "2026-04-06T00:00:00.000Z",
+        "highlights": [
+          ", like driving a new car. In contrast, modern robotic control systems, like neural network policies trained using Reinforcement Learning (RL), are highly specialized for single environments. Because of this overfitting, they are known to break down even under small differences like the Simulation-to-Reality (Sim2Real) gap and require system identification and retraining for even minimal changes to the system. In this work, we present RAPTOR, a method for training a highly adaptive foundation policy for quadrotor control. Our method enables training a single, end-to-end neural-network policy to control a wide variety of quadrotors. We test $10$ different real quadrotors from $32\\ \\mathrm{g}$ to $2.4\\ \\mathrm{kg}$ that also differ in motor type (brushed vs. brushless), frame type (soft vs. rigid), propeller type (2/3/4-blade), and flight controller (PX4/Betaflight/Crazyflie/M5StampFly). We find that a tiny, three-layer policy with only $2084$ parameters is sufficient for zero-shot adaptation to a wide variety of platforms. The adaptation through in-context learning is made possible by using a recurrence in the hidden layer. The policy is trained through our proposed Meta-Imitation Learning algorithm, where we sample $1000$ quadrotors and train a teacher policy for each of them using RL. Subsequently, the $1000$ teachers are distilled into a single, adaptive student policy. We"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://www.dynsyslab.org/wp-content/papercite-data/pdf/greeff-iros18.pdf",
+        "title": "[PDF] Flatness-Based Model Predictive Control for Quadrotor Trajectory ...",
+        "url": "https://www.dynsyslab.org/wp-content/papercite-data/pdf/greeff-iros18.pdf",
+        "publishedDate": "2018-10-01T00:00:00.000Z",
+        "author": "Melissa Greeff, Angela P. Schoellig",
+        "highlights": [
+          "978-1-5386-8093-3/18/$31.00 \u00a92018 IEEE 6740 tial\n...\ntracking performance over feedback linearization for a ball-plate experiment. Given its robustness advantages, our proposed approach, shown in Fig. 1, couples feedforward linearization with MPC. The contributions of this paper are three-fold. Firstly, we propose a novel Flatness-based Model Predictive Control (FMPC) architecture that couples feedback MPC with feed forward linearization. Practical advantages (in particular, an ability to account for known input delays and improved robustness to model parameter uncertainty) over MPC+FBL are demonstrated in simulation in Section VI. Secondly, we implement our FMPC architecture on a quadrotor UAV, accounting for inner-loop dynamics and known input time delays. Finally, in Section VII-C we demonstrate promising results for FMPC as an outer-loop controller of a quadrotor UAV with improved trajectory tracking performance over NMPC and LMPC. II. PROBLEM STATEMENT Consider a system with a continuous-time, nonlinear model of the form: \u02d9x(t) = f(x(t), u(t)), x(0) = x0, y(t) = h(x(t))\n...\n| z\u00a8| < 0.5; | x\u00a8| \u2264 7; | y\u00a8| \u2264 7; \u03c8 \u2208 [0, \u03c0]} . Time Delay Compensation: To compensate for the time delay in the z-direction in (12), both LMPC and NMPC output z\u02d9cmd(t+td). As described in Section V, FMPC feeds forward zd(t + td), z\u02d9d(t + td), z\u00a8d(t + td),... z d(t + td) through the"
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/acmpc_public",
+        "title": "uzh-rpg/acmpc_public",
+        "url": "https://github.com/uzh-rpg/acmpc_public",
+        "publishedDate": "2025-11-10T17:50:29.000Z",
+        "highlights": [
+          ", we expose the benefits of the proposed approach: it achieves better out-of-distribution behaviour, better robustness to changes in the quadrotor\u2019s dy- namics and improved sample efficiency. Additionally, we conduct an empirical analysis using a quadrotor platform that reveals a relationship between the critic\u2019s learned value function and the cost function of the differentiable MPC, providing a deeper understanding of the interplay between the critic\u2019s value and the MPC cost functions. Finally, we validate our method in a drone racing task on different tracks, in both simulation and the real world. Our method achieves the same superhuman performance as state-of-the-art model-free RL, showcasing speeds of up to 21 m/s. We\n...\nThis repository offers an implementation of Actor-Critic Model Predictive Control (ACMPC) for agile quadrotor flight, built on top of Differentiable Model Predictive Control and integrated with Stable-Baselines3.\n...\n- A quadrotor dynamics model (`diff_mpc_drones/drone.py`), which implements the forward dynamics of a quadrotor model and its jacobians\n- An MPC \u201cenvironment\u201d wrapper (`diff_mpc_drones/il_env.py`)\n- Training modules that plug both MPC and MLP policies into Stable-Baselines3 policies (`training_modules/`)\n...\n- `mpc.pytorch` \u2013 differentiable MPC solver\n - `stable-baselines3` \u2013 RL library (fork with small modifications for ACMPC)"
+        ]
+      },
+      {
+        "id": "https://github.com/evannsmc/nmpc_acados_px4",
+        "title": "evannsmc/nmpc_acados_px4",
+        "url": "https://github.com/evannsmc/nmpc_acados_px4",
+        "highlights": [
+          "My NMPC controller package for PX4-based Quadrotor deployment. To be used with other PX4 Quadrotor packages I've developed (see Readme file).\n...\nA ROS 2 Nonlinear Model Predictive Controller (NMPC) for quadrotors using the [Acados](https://docs.acados.org/) solver. Formulates the tracking problem with an error-based cost in Euler angle representation and uses `atan2`-based yaw wrapping for correct angular error computation.\n...\n1. **Model** \u2014 9D state `[x, y, z, vx, vy, vz, roll, pitch, yaw]` with 4D input `[thrust, p, q, r]`\n2. **Error-based cost** \u2014 the stage cost penalizes `[position_err, velocity_err, euler_err, input_err]` (13D); the terminal cost drops the input term (9D)\n3. **Wrapped yaw error** \u2014 uses `atan2(sin(yaw - yaw_ref), cos(yaw - yaw_ref))` to avoid discontinuities at +/-pi\n4. **Acados solver** \u2014 generates and compiles C code for the QP sub-problems, enabling real-time MPC\n...\nWhen the `fig8_contraction` trajectory is selected, the node computes a differential-flatness feedforward over the full NMPC horizon at each control step, using the same approach as the contraction controller.\n...\nannsmc/quad_platforms\n...\n](https://\n...\n.com/evannsmc\n...\n[px4\n...\nmsgs](https://github\n...\ncom/evannsmc/px4_msgs/tree/\n...\n16_minimal\n...\n16)\n...\n://docs.acados.org/)\n...\n- SciPy"
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/rl-tools/raptor",
+        "title": "GitHub - rl-tools/raptor: A Foundation Policy for Quadrotor Control \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/rl-tools/raptor",
+        "publishedDate": "2025-04-22T00:00:00.000Z",
+        "author": "rl-tools",
+        "highlights": [
+          "GitHub - rl-tools/raptor: A Foundation Policy for Quadrotor Control \u00b7 GitHub\n...\n# A Foundation Policy for Quadrotor Control\n\n \n\n## Usage\n...\nNote that the poicy is trained for control at 100 Hz. While it can handle deviations from that, we expect best results around the nominal value. The control can be run at higher frequencies using the technique implemented in the L2F inference executor: `rl_tools/inference/applications/l2f/c_backend.h` by just advancing the latent state of the network every N steps as described later in this document.\n...\n{\n...\n= rlt\n...\ncheckpoint::actor::\n...\nTEST = rlt::\n...\n::actor::TYPE::template CHANGE\n...\nTI, 1>::template CHANGE_\n...\nLENGTH<TI\n...\n= ACTOR\n...\nTYPE_ORIGINAL::template CHANGE_BATCH_\n...\n, 1\n...\nusing T = typename POLICY::SPEC::T;\n...\nstatic auto& policy() {\n        return rlt::\n...\n::actor::module;\n    }\n    static constexpr TI ACTION_HISTORY\n...\nMEDIATE_NS\n...\n* 1\n...\nNATIVE_NS\n...\nto configure the control interval properly. The `CONTROL_INTERVAL_NATIVE_NS\n...\nshould always be \n\n$10$\n\n ms because the foundation policy was trained at\n...\n$100$\n\n Hz. The policy can be run at higher frequencies, though (e.g.\n...\n$400$\n\n Hz) in which case the native state progression in the policy is only triggered every \n\n$4$\n\n steps\n...\nsignified by `FORCE_\n...\nNATIVE`."
+        ],
+        "image": "https://opengraph.githubassets.com/337810c9af916d13eb86abce34df033056ad0800fddd7163a51fdf5fb4af22e2/rl-tools/raptor"
+      },
+      {
+        "id": "https://www.ifi.uzh.ch/en/rpg/software_datasets/rpg_quadrotor_control.html",
+        "title": "RPG Quadrotor Control Framework | Department of Informatics - IFI UZH",
+        "url": "https://www.ifi.uzh.ch/en/rpg/software_datasets/rpg_quadrotor_control.html",
+        "highlights": [
+          "This open-source software contains a complete framework for flying quadrotors based on control algorithms developed by the Robotics and Perception Group. We also provide an interface to the RotorS Gazebo plugins to use our algorithms in simulation. Together with the provided simple trajectory generation library, this can be used to test our sofware in simulation only. We also provide some utility to command a quadrotor with a gamepad through our framework as well as some calibration routines to compensate for varying battery voltage. Finally, we provide an interface to communicate with flight controllers used for First-Person-View racing. The theory behind the included algorithms is summarized in the theory document contained in the main repository as well as in our RA-L18 Paper (PDF, 3 MB) with a technical report attached for further details as well as in our RA-L17 Paper (PDF, 1 MB). The main rpg_quadrotor_control repository makes use of some basic functionalities from the rpg_quadrotor_common repository and when working with real hardware, the GPIO and ADC functionalities in the rpg_single_board_io repository might come in handy. In our Wiki you find installation instructions and documentation on how to use the framework and how to replicate one of our very powerful quadrotors.\n...\nM. Faessler, A. Franchi, and D. Scaram\n...\nRA-L), 2018\n...\nPDF (PDF, 3 MB"
+        ],
+        "image": "https://www.ifi.uzh.ch/ifi/dam/jcr:bdc54850-5a97-4f63-9b3f-74ebd13e069b/RAL18_Faessler_thumb.jpg"
+      },
+      {
+        "id": "https://github.com/learnsyslab/mimo_fmpc_socp",
+        "title": "learnsyslab/mimo_fmpc_socp",
+        "url": "https://github.com/learnsyslab/mimo_fmpc_socp",
+        "highlights": [
+          ", a property of many\n...\nor (iii) is tailored to specific platforms\n...\nIn contrast, our approach uses a system extension and block-diagonal cost formulation to control general multi-input, nonlinear, affine systems\n...\nFurthermore, it satisfies input and half-space flat state constraints and guarantees probabilistic Lyapunov decrease using only two sequential convex optimizations. We show that our approach performs similarly to, but is multiple times more efficient than, a Gaussian process model predictive controller in simulated and real experimental quadrotor tracking tasks.\n...\nThis code is based on [safe-control-gym](https://github.com/utiasDSL/safe-control-gym/). The GP implementation with affine kernel is based on [fmpc_socp](https://github.com/utiasDSL/fmpc_socp)\n...\nThe MPC solver used in our experiments is `ACADOS`. `ACADOS` is a very specialized and efficient open-source MPC solver. To install the `ACADOS` python interface, please follow these [instructions](https://docs.acados.org/python_interface/index.html).\n...\nThe MPC for all test cases is implemented using [CasADi](https://web.casadi.org) and [ACADOS](https://docs.acados.org/). Controllers can use either:\n...\nCasADi with IPOPT\n...\nThe dynamics simulation uses the **symbolic model** of the 2D quadrotor. The safe-control-gym PyBullet physics simulation is **not used** for the paper experiments."
+        ]
+      }
+    ],
+    "searchTime": 1925.8,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

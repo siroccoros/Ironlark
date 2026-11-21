@@ -1,0 +1,60 @@
+repositories:
+  # ROS 2 dependencies (build with colcon in mighty_ws)
+  # Provides global_mapper_ros. The pin must be at least e87600a: the ground
+  # robot's launch file loads global_mapper_ros/cfg/sim_ground_robot.yaml, which
+  # does not exist before that commit. With the older 0d3875d pin the mapper
+  # starts with no parameter file at all —
+  #     Parameter file path is not a file: .../cfg/sim_ground_robot.yaml
+  #     Failed to find parameter: occupancy_grid.min_occupied_neighbors
+  # — publishes no occupancy grid, and the ground robot therefore finds no
+  # frontiers and never moves. Native workspaces did not show this because their
+  # checkout was already ahead of the pin.
+  acl-mapping:
+    type: git
+    url: https://gitlab.com/mit-acl/lab/acl-mapping.git
+    version: e87600aaadb31a59ee8edf23833c2f2ce88bf1b3
+  dynus_interfaces:
+    type: git
+    url: https://github.com/kotakondo/dynus_interfaces.git
+    version: 628a682c6a12b07fb2be7cffb4782ccdfe5b323d
+  gazebo_ros_pkgs:
+    type: git
+    url: https://github.com/kotakondo/gazebo_ros_pkgs.git
+    version: ed1f7b886971d7bf898e6e0f59c622df929c0521
+  livox_laser_simulation_ros2:
+    type: git
+    url: https://github.com/kotakondo/livox_laser_simulation_ros2.git
+    version: 2f0024c1aebae0ad5d54e70672af824e8fd37dba
+  # MPC controller for the ground robot. onboard_mighty.launch.py requires it
+  # whenever use_ground_robot is set, so without this entry the ground-robot
+  # simulation cannot start at all — get_package_share_directory('mpc') raises
+  # PackageNotFoundError. UAV sims are unaffected (the launch file guards them).
+  mpc:
+    type: git
+    url: https://github.com/kotakondo/mpc.git
+    version: 46b71febf3c68a743e22e95d8429ee6ddc913100
+  realsense_gazebo_plugin:
+    type: git
+    url: https://github.com/kotakondo/realsense_gazebo_plugin.git
+    version: 8c357e69da2160f54328db70915bd9b28eb975bf
+  uav_simulator:
+    type: git
+    url: https://github.com/kotakondo/uav_simulator.git
+    version: d4e953b716789bbb2a687eb4a49fe85d58bc03bc
+
+  # Decomp (built in decomp_ws — decomp_util first, then the rest)
+  DecompROS2:
+    type: git
+    url: https://github.com/kotakondo/DecompROS2.git
+    version: a2bc42ed46bf934323994706f17af8a3883860ea
+
+  # Livox dependencies (special build — Livox-SDK2 cmake-installed,
+  # livox_ros_driver2 built in livox_ws via its own build.sh)
+  livox_ros_driver2:
+    type: git
+    url: https://github.com/kotakondo/livox_ros_driver2.git
+    version: 274aad204b5dfce15c648e88dfd375fa5d7b3026
+  Livox-SDK2:
+    type: git
+    url: https://github.com/Livox-SDK/Livox-SDK2.git
+    version: 6a940156dd7151c3ab6a52442d86bc83613bd11b

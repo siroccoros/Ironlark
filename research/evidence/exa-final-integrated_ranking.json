@@ -1,0 +1,152 @@
+{
+  "query": {
+    "query": "Open source drone autonomy reproducible integrated system Fast-Drone-250 CERLAB OmniNxt MRS AirStack NTNU source code components hardware limitations",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "782dabc82d33fe48e5dca76106b7b79c",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/ntnu-arl/unified_autonomy_stack",
+        "title": "ntnu-arl/unified_autonomy_stack",
+        "url": "https://github.com/ntnu-arl/unified_autonomy_stack",
+        "highlights": [
+          "# ntnu-arl/unified_autonomy_stack\n...\nThe Unified Autonomy Stack: Toward a Blueprint for Generalizable Robot Autonomy\n...\n- Stars: 186\n- Forks: 13\n- Watchers: 186\n- Open issues: 5\n- License: BSD 3-Clause \"New\" or \"Revised\" License\n- Homepage: https://ntnu-arl.github.io/unified_autonomy_stack/\n- Default branch: main\n- Created: 2025-12-05T03:58:28Z\n...\nWelcome to the documentation for the **Unified Autonomy Stack**. \nThis stack presents an autonomy architecture integrating perception, planning, and navigation algorithms developed and field tested at the [Autonomous Robots Lab](https://www.autonomousrobotslab.com) across robot configurations. The stack consists of the software for the core algorithms along with drivers, utilities, and tools for simulation and testing. We currently support rotary-wing (e.g., multirotor) and certain ground systems (e.g., legged robots) with extension to other systems, such as underwater robots, coming soon. The software distributed as a part of this stack has been thoroughly tested in real-world scenarios demonstrating robust autonomous operation in challenging GPS-denied environments.\n...\nThe documentation of the Unified Autonomy Stack is available at [https://ntnu-arl.github.io/unified_autonomy_stack/](https://ntnu-arl.github.io/unified_autonomy_stack/)."
+        ]
+      },
+      {
+        "id": "https://github.com/ZJU-FAST-Lab/Fast-Drone-250",
+        "title": "ZJU-FAST-Lab/Fast-Drone-250",
+        "url": "https://github.com/ZJU-FAST-Lab/Fast-Drone-250",
+        "highlights": [
+          "hardware and software design of the 250mm autonomous drone\n...\n\u7b2c\u4e00\u7ae0\uff1a\u8bfe\u7a0b\u4ecb\u7ecd\n \u672c\u6b21\u8bfe\u7a0b\u662f\u4e00\u5957\u9762\u5411\u5bf9\u81ea\u4e3b\u7a7a\u4e2d\u673a\u5668\u4eba\u611f\u5174\u8da3\u7684\u5b66\u751f\u3001\u7231\u597d\u8005\u3001\u76f8\u5173\u4ece\u4e1a\u4eba\u5458\u7684\u514d\u8d39\u8bfe\u7a0b\uff0c\u5305\u542b\u4e86\u4ece\u786c\u4ef6\u7ec4\u88c5\u3001\u673a\u8f7d\u7535\u8111\u73af\u5883\u8bbe\u7f6e\u3001\u4ee3\u7801\u90e8\u7f72\u3001\u5b9e\u673a\u5b9e\u9a8c\u7b49\u5168\u5957\u8be6\u7ec6\u6d41\u7a0b\uff0c\u5e26\u4f60\u4ece0\u5f00\u59cb\uff0c\u7ec4\u88c5\u5c5e\u4e8e\u81ea\u5df1\u7684\u81ea\u4e3b\u65e0\u4eba\u673a\uff0c\u5e76\u8ba9\u5b83\u53ef\u4ee5\u5728\u672a\u77e5\u7684\u73af\u5883\u4e2d\u81ea\u7531\u907f\u969c\u7a7f\u884c\u3002\u672c\u6b21\u8bfe\u7a0b\u6240\u6d89\u53ca\u7684\u6240\u6709\u4ee3\u7801\u3001\u786c\u4ef6\u8bbe\u8ba1\u5168\u90e8\u5f00\u6e90\uff0c \u4e25\u7981\u5546\u7528\u4e0e\u8f6c\u8f7d\uff0c\u7248\u6743\u4e0e\u6700\u7ec8\u89e3\u91ca\u6743\u7531\u6d59\u6c5f\u5927\u5b66FASTLAB\u5b9e\u9a8c\u5ba4\u6240\u6709\u3002 \n \u672c\u6b21\u8bfe\u7a0b\u7684\u91cd\u5fc3\u4e3b\u8981\u843d\u5728\u81ea\u4e3b\u7a7a\u4e2d\u673a\u5668\u4eba\u7684\u642d\u5efa\u3001\u4ee3\u7801\u90e8\u7f72\u53ca\u8c03\u8bd5\u4e0a\uff0c\u5173\u4e8e\u81ea\u4e3b\u7a7a\u4e2d\u673a\u5668\u4eba\u7684\u4e00\u4e9b\u7406\u8bba\u57fa\u7840\uff0c\u4f8b\u5982\u52a8\u529b\u5b66\u6a21\u578b\uff0c\u8def\u5f84\u641c\u7d22\uff0c\u8f68\u8ff9\u89c4\u5212\uff0c\u5730\u56fe\u6784\u5efa\u7b49\u5185\u5bb9\uff0c\u9ad8\u98de\u8001\u5e08\u5728\u6df1\u84dd\u5b66\u9662\u6709\u975e\u5e38\u8be6\u5c3d\u800c\u6df1\u5165\u6d45\u51fa\u7684[\u8bfe\u7a0b](https://www.shenlanxueyuan.com/course/385?source=1)\uff0c\u672c\u6b21\u8bfe\u7a0b\u5c31\u4e0d\u518d\u8d58\u8ff0\u3002\n...\n\u76f8\u5e94\u8c03\u6574\uff0c\n...\n\u4f46\u6ca1\u6709\u5916\u58f3\n...\n\u5efa\u8bae\u66f4\u6362\uff0c\n...\n\u521a\u521a\u597d\u53ef\u4ee5\u585e\u51652300mah 4S\u7535\u6c60\uff0c\u4e0d\u9700\u8981\u989d\u5916\u56fa\u5b9a\n...\n\u7535\u6c60\u9700\u8981\u81ea\u884c\u89e3\u51b3\u7535\u6c60\u653e\u7f6e\u95ee\u9898\n...\nA: \u4e0d\n...\n\u6539\u52a8\uff0c\u662f\n...\n\u6d4b\u8bd5\u901a\u8fc7\u4e86\u672c\n...\n13\u4e0a\u6d4b\u8bd5\u5931\u8d25\n...\nINS\u4f1a\u7ecf\u5e38"
+        ]
+      },
+      {
+        "id": "https://github.com/zhefan-xu/cerlab-uav-autonomy",
+        "title": "Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "url": "https://github.com/zhefan-xu/cerlab-uav-autonomy",
+        "highlights": [
+          "Welcome to the **CERLAB UAV Autonomy Framework**, a versatile and modular framework for autonomous unmanned aerial vehicles (UAVs). This framework comprises distinct components (simulator, perception, mapping, planning, and control) to achieve autonomous navigation, unknown exploration, and target inspection.\n...\n. [details](https://github.com/Zhefan-Xu/global_planner)\n - ```map_manager```: The 3D mapping library for autonomous robots. [details](https://github.com/Zhefan-Xu/map_manager)\n - ```onboard_detector```: The dynamic obstacle detection and tracking algorithm for autonomous robots. [details](https://github.com/Zhefan-Xu/onboard_detector)\n - ```remote_control```: The Rviz configuration and launch files for easy visualization. [details](https://github.com/Zhefan-Xu/remote_control)\n - ```time_optimizer```: The optimal trajectory time allocation library for autonomous robots. [details](https://github.com/Zhefan-Xu/time_optimizer)\n - ```tracking_controller```: The trajectory tracking controller for autonomous robots. [details](https://github.com/Zhefan-Xu/tracking_controller)\n - ```trajectory_planner```: The trajectory olanning library for autonomous robots. [details](https://github.com/Zhefan-Xu/trajectory_planner)\n - ```uav_simulator```: The lightweight Gazebo/ROS-based simulator for unmanned aerial vehicles. [details](https://github.com/Zhefan-Xu/uav_simulator)\n \n\n##"
+        ]
+      },
+      {
+        "id": "https://ntnu-arl.github.io/unified_autonomy_stack/report/UnifiedAutonomyStack-Outline/",
+        "title": "Technical Report - Unified Autonomy Stack",
+        "url": "https://ntnu-arl.github.io/unified_autonomy_stack/report/UnifiedAutonomyStack-Outline/",
+        "author": "Autonomous Robots Lab, NTNU",
+        "highlights": [
+          "To support early adoption, we combine the open-source release of the `Unified Autonomy Stack` with a reference hardware design incorporating all the considered sensing modalities, time-synchronization electronics and ample onboard compute. Called \"UniPilot\" the system is detailed in [35]. UniPilot is a compact modular autonomy payload combining LiDAR, radar, vision, Time-of-Flight (ToF)-depth and IMU sensing with an NVIDIA Orin NX-based compute and is deployable across heterogeneous robots. The specific sensor types are shown in the table below. Power, interfacing and synchronization electronics enable a compact and high-performance solution. All subsystems are housed in a lightweight SLA-printed enclosure engineered for mechanical robustness and cross-platform mounting. Tested onboard multitors, legged robots, and VTOL convertible aerial robots, UniPilot represents a practical, fully integrated autonomy payload enabling mapping, planning, safety, and control across diverse platforms in challenging GPS-denied visually-degraded, communications-denied environments. It can readily run the `Unified Autonomy Stack` and thus enable its immediate adoption. The full sensing configuration (and optional choices) of UniPilot are shown in the table below.\n...\n-6843AOPU | 25 | 7.5 | Range: 49 m, FoV: \\(180 \\times 180^{\\circ}\\) |\n| LiDAR | 1x RoboSense Airy or OUSTER OS0 | 230 | 8 | Range:"
+        ],
+        "image": "https://ntnu-arl.github.io/unified_autonomy_stack/figures/arl_logo.png"
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/about/",
+        "title": "About - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/about/",
+        "highlights": [
+          "AirStack is a comprehensive, modular autonomy stack for aerial robotics developed by the AirLab at Carnegie Mellon University's Robotics Institute.\n...\n- Modular Design: Swap components easily through ROS 2 interfaces\n- Layered Autonomy: Interface, Sensors, Perception, Local Planning, Global Planning, Behavior\n- Docker-Based: Consistent development and deployment environments\n- Simulation Support: NVIDIA Isaac Sim with Pegasus extension\n- Multi-Robot: Independent robots with coordinated operation\n...\n- NVIDIA Jetson (Orin, Xavier NX, TX2)\n- ModalAI VOXL (VOXL 2, VOXL Flight)\n- x86-64 desktop/laptop (development)\n...\n- ROS 2 Jazzy\n- Ubuntu 22.04/24.04\n- Docker with NVIDIA Container Toolkit\n...\nLicense to be determined. Likely Apache 2.0 or MIT\n...\nopen source components.\n...\nFor development: Ubuntu 22.04 machine with NVIDIA GPU (RTX 3070+ recommended), 16GB+ RAM, and 100GB+ free storage.\n...\nYes! AirStack is\n...\nfor easy module swapping. Create a ROS 2 package with the correct interface, integrate it into the bringup layer, and you're ready.\n...\nmanagement, and matches how we test and\n...\nStable API and public documentation\n...\nAdditional Simulators\n...\nGazebo support\n...\nJetson family, additional flight controllers\n...\n- Enhanced Multi\n...\nRobot: Improved coordination\n...\n- Expanded Tutorials:\n...\nComprehensive test suite"
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/OmniNxt",
+        "title": "HKUST-Aerial-Robotics/OmniNxt",
+        "url": "https://github.com/HKUST-Aerial-Robotics/OmniNxt",
+        "highlights": [
+          "> You\n...\nhave basic knowledge of the standard quadrotor's electronic system.\n...\n| Nxt-FC | [Project Page](https://github.com/HKUST-Aerial-Robotics/Nxt-FC) | [MicoAir](https://micoair.com/flightcontroller_nxtpx4v2/)\n...\n](https://item.taobao.com/item.htm?abbucket=2&id=7201\n...\n55815&ns=1&price\n...\nId=2\n...\n71670\n...\n9494632690\n...\n1d2e&spm=a21n57.1.item.4.54dc\n...\n23c\n...\nW) |\n...\nWe open-source hardware designs at \ud83d\udd17[NXT-FC](https://github.com/HKUST-Aerial-Robotics/Nxt-FC). Nxt-FC supports [PX4](https://github.com/PX4/PX4-Autopilot) and [Ardupilot](https://github.com/ArduPilot/ardupilot) firmware.\n...\nOur Omni-VINS and Omni-Depth are developed from D2SLAM. Since building the Docker images on the local machine(Jetson Orin) usually takes a long time, we suggest you pull the images from the Docker Hub. If you want to build the Docker image on your local machine, follow the instructions [Build Docker Images On Local Machine](#Build Docker images in local machines).\n...\nWe highly suggest you refer to Fast-Lab's PX4 controller [PX4-Control](https://github.com/ZJU-FAST-Lab/Fast-Drone-250/tree/master/src/realflight_modules/px4ctrl)\n\nWe also provide our yaw-rotation-free version of Fast-Lab's PX4 controller [PX4-Control](https://github.com/D2SLAM-Fusion/controller-PX4Control).\n...\nversion is here [\n...\n](https://github.\n...\nPlease cite"
+        ]
+      },
+      {
+        "id": "https://github.com/hkust-aerial-robotics/omninxt/",
+        "title": "HKUST-Aerial-Robotics/OmniNxt",
+        "url": "https://github.com/hkust-aerial-robotics/omninxt/",
+        "highlights": [
+          "own OmniNxt \n\n> You\n...\nhave basic knowledge of the standard quadrotor's electronic system. \n\n#### BOM\n...\n| Nxt-FC | [Project Page](https://github.com/HKUST-Aerial-Robotics/Nxt-FC) | [MicoAir](https://micoair.com/flightcontroller_nxtpx4v2/)\n...\n](https://item.taobao.com/item.htm?abbucket\n...\n201\n...\nId=215\n...\n167\n...\n9494632690e1d2e&spm=\n...\n21n\n...\n.1.item.4.54dc523c\n...\nW) |\n...\nWe open-source hardware designs at \ud83d\udd17[NXT-FC](https://github.com/HKUST-Aerial-Robotics/Nxt-FC). Nxt-FC supports [PX4](https://github.com/PX4/PX4-Autopilot) and [Ardupilot](https://github.com/ArduPilot/ardupilot) firmware.\n...\nOur Omni-VINS and Omni-Depth are developed from D2SLAM. Since building the Docker images on the local machine(Jetson Orin) usually takes a long time, we suggest you pull the images from the Docker Hub. If you want to build the Docker image on your local machine, follow the instructions [Build Docker Images On Local Machine](#Build Docker images in local machines).\n...\nWe highly suggest you refer to Fast-Lab's PX4 controller [PX4-Control](https://github.com/ZJU-FAST-Lab/Fast-Drone-250/tree/master/src/realflight_modules/px4ctrl)\n\nWe also provide our yaw-rotation-free version of Fast-Lab's PX4 controller [PX4-Control](https://github.com/D2SLAM-Fusion/controller-PX4Control).\n...\n](https://\n...\nversion is here ["
+        ]
+      },
+      {
+        "id": "https://github.com/yfliu-eng/TeamB_mrsd_24",
+        "title": "yfliu-eng/TeamB_mrsd_24",
+        "url": "https://github.com/yfliu-eng/TeamB_mrsd_24",
+        "publishedDate": "2025-05-04T03:40:00.000Z",
+        "highlights": [
+          "This repository contains the unified software stack for the Team Chiron MRS-D drone system. It consolidates flight autonomy, gimbal control, and vision-based geolocation.\n...\n| System | Hardware | Role | Key Components |\n| --- | --- | --- | --- |\n| **Onboard (Drone)** | NVIDIA Jetson Orin | Flight Autonomy & Gimbal Control | AirStack (ROS 2), MAVROS, Behavior Governor, RTSP Streamer |\n| **Ground Station** | x86_64 Laptop (Ubuntu) | Mission Control & Geolocator | VLM Geolocator, Foxglove Studio, QGroundControl, FVD Dashboard |\n...\nDOMAIN_ID\n...\n- **Hardware**: NVIDIA Jetson Orin (ARM64).\n- **Software**: Ubuntu 20.04/22.04, JetPack 5.x/6.x, Docker + NVIDIA Container Toolkit.\n- **Peripherals**: PX4 Flight Controller (USB), Gimbal Camera (RTSP/USB).\n...\n86_64 Laptop\n...\n**Software**: Ubuntu 22.04, Docker\n...\nPython 3.10+.\n...\nReliable WiFi/Radio link to the drone (Static IP configuration recommended).\n...\n- **MAVROS**: Communication with PX4.\n- **Behavior Governor**: Flight logic.\n- **Domain Bridge**: Links Domain 70 (Drone) to Domain 100 (Ground).\n...\n- `airstack/` \u2013 **Onboard Code**. ROS 2 workspace for flight autonomy (runs on Jetson).\n- `vlm_geolocator/` \u2013 **Ground Code**. Casualty detection and geolocation (runs on Laptop).\n- `operator/` \u2013 **Ground Tools**. Foxglove extensions.\n- `scripts/` \u2013 **Utilities**. Deployment scripts (e.g., `FVD.sh`)."
+        ]
+      },
+      {
+        "id": "https://github.com/XXLiu-HNU/Fast-Drone-250-v2",
+        "title": "XXLiu-HNU/Fast-Drone-250-v2",
+        "url": "https://github.com/XXLiu-HNU/Fast-Drone-250-v2",
+        "highlights": [
+          "## **Fast-Drone-250-v2** \n\nThis document is an extension of [Fast-Drone-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250), which is closer to the real experiment through Gazebo simulation. \n\n## \ud83d\ude80 Key Features\n...\n## Monitoring UAV State \nYou can use this [tools](https://github.com/XXLiu-HNU/uav-monitor) to monitor the UAV's state and the mode of the planer and controller.\n\n \n\n## \u26a0\ufe0f Known Limitations\n\n 1. The **drone position detection module** was not added, which resulted in other drones being modeled as obstacles when building the map, resulting in mediocre planning results.\n\n 2. The performance of the linear controller is average, and the tracking effect of the drone is average. The drone trajectory does not overlap with the planned trajectory, and the drone is **prone to collision when the speed is high**.\n...\n1. [XTDroen](https://github.com/robin-shaun/XTDrone) \nThe simulation platform of the experiment is modified based on this project. Interested readers can refer to the [document](https://www.yuque.com/xtdrone/manual_cn/install_scripts) for reproduction\n...\n2. [Fast-Drone-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) \nThe controller module comes from this project, but this project is only for real objects and a single drone\n...\n3. [EGO-Planner-v2](https://github.com/ZJU-FAST-Lab/EGO-Planner-v2) \nThe cluster planning part comes from this project, but the"
+        ]
+      },
+      {
+        "id": "https://github.com/ZJU-FAST-Lab/Fast-Drone-250/blob/master/readme_en.md",
+        "title": "Fast-Drone-250/readme_en.md at master",
+        "url": "https://github.com/ZJU-FAST-Lab/Fast-Drone-250/blob/master/readme_en.md",
+        "highlights": [
+          "- Repository: ZJU-FAST-Lab/Fast-Drone-250 | hardware and software design of the 250mm autonomous drone | 2K stars | C++\n- Branch: master\n...\n## Chapter 1: Course Introduction\n  This course is a set of free courses for students, enthusiasts, and related practitioners who are interested in autonomous aerial robots. It includes a complete set of detailed procedures from hardware assembly, airborne computer environment setting, code deployment, and real machine experiments. Assemble your own autonomous drone from, and make it explore autonomously and keep away from obstacles in an unknown environment. All code and hardware design involved in this course are all open source,<font color=\"#dd0000\">Commercial use and reprinting are strictly prohibited. The copyright and final interpretation rights are reserved by FAST-LAB, Zhejiang University.</font>\n  The focus of this course is mainly on the assembly, code deployment and debugging of autonomous aerial robots. Some theoretical foundations of autonomous aerial robots, such as dynamic model, path search, trajectory planning, mapping, etc., are taught by Fei Gao in Shenlan College [course] (https://www.shenlanxueyuan.com/course/385?source=1), which will not be repeated in this course.\n...\n* Download ego-planner code\n...\ncompile\n  *\n...\nLab/Fast\n...\n-250\n...\n* `catkin_make`\n  * `source devel/setup.bash\n...\n_in_\n...\n.launch`"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2403.20085v1",
+        "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot ...",
+        "url": "https://arxiv.org/html/2403.20085v1",
+        "publishedDate": "2024-03-29T00:00:00.000Z",
+        "highlights": [
+          "open-source aerial robotics platform with omnidirectional perception. We design a high-performance flight controller Nxt-FC and a multi-fisheye camera set for OmniNxt. Meanwhile, the compatible software is carefully devised, which empowers OmniNxt to achieve accurate localization and real-time dense mapping with limited computation resource occupancy. We conducted extensive real-world experiments to validate the superior performance of OmniNxt in practical applications. All the hardware and software are open-access at 3 3 3 https://github.com/HKUST-Aerial-Robotics/OmniNxt, and we provide docker images of each crucial module in the proposed system. Project page: https://hkust-aerial-robotics.github.io/OmniNxt.\n...\nAs shown in Fig. , OmniNxt consists of three key components in hardware: First, We use Nvidia Jetson Orin NX for the onboard computer, which has an 8-core CPU running at 2.0 GHz and a GPU with 1024 CUDA cores. CPU and GPU share the unified 16G RAM. Second, we adopt a multi-fisheye camera set to capture the omnidirectional image at 20 Hz. All four cameras are synchronized by one camera triggering the other three. Last, to further enhance the robustness of OmniNxt, we develop a low-noise flight controller, which provides 500 Hz low-noise IMU data. Besides, the software framework of OmniNxt can be divided into the following four parts, each serving a specific function:"
+        ],
+        "image": "http://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg"
+      },
+      {
+        "id": "https://mrsdprojects.ri.cmu.edu/2025teamb/system-implementation-2/system-implementation-2/current-software-implementation/",
+        "title": "Software Sub-system Implementation Details \u2013 MRSD 26' Team B",
+        "url": "https://mrsdprojects.ri.cmu.edu/2025teamb/system-implementation-2/system-implementation-2/current-software-implementation/",
+        "highlights": [
+          "- Configured with development/debugging tools and SSH access.\n- Includes key robotics packages: MAVROS (for Pixhawk communication), tf2 (for managing coordinate systems), and libraries like OpenCV, Python (NumPy, SciPy).\n- Uses ROS 2 Humble as the primary middleware.\n- Built on an NVIDIA L4T (Linux for Tegra) base Docker image for Jetson compatibility.\n...\nthe Robot Container\n...\nMAVROS and\n...\nRecognizing the complexity of building the entire stack from scratch, we explored existing robust aerial autonomy frameworks. We identified the Airlab AirStack as a promising foundation. The following cores of autonomy have been provided as structures.\n...\nThis is a functional ROS 2 interface layer for communicating with the PX4 flight controller via MAVLink. This directly addressed the \u201cActuation/Control\u201d block from our concept. The comprehensive API provided by the layer would make our path tracking / aerial flying a much easier task. We just need to figure out the right way to call the APIs.\n...\nA`behavior_tree_node` capable of executing complex tasks defined using Behavior Trees. This provided a structured way to implement \u201cPlanning\u201d and \u201cTracking\u201d logic, managed via commands from a Ground Control Station (GCS) over the ROS 2 network. Such Behavior Tree design has proved to be extendable and fully functionable for extremely complex autonomous decision making system."
+        ]
+      },
+      {
+        "id": "https://hkust-aerial-robotics.github.io/OmniNxt/static/pdfs/OmniNxt.pdf",
+        "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot ...",
+        "url": "https://hkust-aerial-robotics.github.io/OmniNxt/static/pdfs/OmniNxt.pdf",
+        "highlights": [
+          "A. System Overview OmniNxt is designed to be a general open-source aerial robotics platform. Therefore, we strictly follow the COPE criteria in hardware and software design. As shown in Fig. 1, OmniNxt consists of three key components in hardware: First, We use Nvidia Jetson Orin NX for the onboard computer, which has an 8-core CPU running at 2.0 GHz and a GPU with 1024 CUDA cores. CPU and GPU share the unified 16G RAM. Second, we adopt a multi-fisheye camera set to capture the omnidirectional image at 20 Hz. All four cameras are synchronized by one camera triggering the other three. Last, to further enhance the robustness of OmniNxt, we develop a low-noise flight controller, which provides 500 Hz low-noise IMU data. Besides, the software framework of OmniNxt can be divided into the following four parts, each serving a specific function:\n...\n. (Sec. III-F) The perception modules (Omni-VINS, Omni-Depth, and related hardware drivers) in OminNxt occupy 27% CPU and 40% GPU onboard resources, sparing sufficient resources for the downstream tasks. B. Nxt-FC The lack of open-source hardware options in most avail able flight controllers presents a significant challenge in fur ther development and adaptation on various platforms. To ad dress this issue, we design and open-source a flight controller named Nxt-FC with compact dimensions of 27mm\u00d7 33mm. Our flight controller is based on"
+        ]
+      },
+      {
+        "id": "https://docs.theairlab.org/0.17.0/docs/about/",
+        "title": "About - AirStack",
+        "url": "https://docs.theairlab.org/0.17.0/docs/about/",
+        "highlights": [
+          "AirStack is a comprehensive, modular autonomy stack for aerial robotics developed by the AirLab at Carnegie Mellon University's Robotics Institute.\n...\n- Modular Design: Swap components easily through ROS 2 interfaces\n- Layered Autonomy: Interface, Sensors, Perception, Local Planning, Global Planning, Behavior\n- Docker-Based: Consistent development and deployment environments\n- Simulation Support: NVIDIA Isaac Sim with Pegasus extension\n- Multi-Robot: Independent robots with coordinated operation\n...\n- NVIDIA Jetson (Orin, Xavier NX, TX2)\n- ModalAI VOXL (VOXL 2, VOXL Flight)\n- x86-64 desktop/laptop (development)\n...\n- ROS 2 Jazzy\n- Ubuntu 22.04/24.04\n- Docker with NVIDIA Container Toolkit\n...\nLicense to be determined. Likely Apache 2.0 or MIT\n...\nopen source components.\n...\nFor development: Ubuntu 22.04 machine with NVIDIA GPU (RTX 3070+ recommended), 16GB+ RAM, and 100GB+ free storage.\n...\nYes! AirStack is\n...\nfor easy module swapping. Create a ROS 2 package with the correct interface, integrate it into the bringup layer, and you're ready.\n...\nmanagement, and matches how we test and\n...\nStable API and public documentation\n...\nAdditional Simulators\n...\nGazebo support\n...\nJetson family, additional flight controllers\n...\n- Enhanced Multi\n...\nRobot: Improved coordination\n...\n- Expanded Tutorials:\n...\nComprehensive test suite"
+        ],
+        "image": "https://docs.theairlab.org/0.17.0/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://github.com/umfundii/aerial-autonomy-stack",
+        "title": "umfundii/aerial-autonomy-stack",
+        "url": "https://github.com/umfundii/aerial-autonomy-stack",
+        "highlights": [
+          "1. **Develop** end-to-end drone autonomy with ROS2\n2. **Simulate** perception and control in SITL, with YOLOv8, LiDAR and PX4 or ArduPilot\n3. **Deploy** in real drones with JetPack on NVIDIA Orin\n...\n) (LTS, ESM 4/2032), [*`nvidia-driver-580`*](https://developer.nvidia.com/datacenter-driver-archive) (latest as of 9/2025), [*Docker Engine v28*](https://docs.docker.com/engine/release-notes/28/) (latest as of 9/2025), [*ROS2 Humble*](https://docs.ros.org/en/rolling/Releases.html) (LTS, EOL 5/2027), [*Gazebo Sim Harmonic*](https://gazebosim.org/docs/latest/releases/) (LTS, EOL 9/2028), [*PX4 1.16*](https://github.com/PX4/PX4-Autopilot/releases) interfaced *via* [XRCE-DDS](https://github.com/eProsima/Micro-XRCE-DDS/releases), [*ArduPilot 4.6*](https://github.com/ArduPilot/ardupilot/releases) interfaced *via* [MAVROS](https://github.com/mavlink/mavros/releases),\n...\n> [!IMPORTANT]\n> AAS is developed using Ubuntu 22.04 with `nvidia-driver-580` on an i9-13 with RTX 3500 and an i7-11 with RTX 3060\u2014an NVIDIA GPU *is* required for ideal performance\n> \n> **To setup the requirements: (i) Ubuntu, (ii) NVIDIA driver, (iii) Docker Engine, and (iv) NVIDIA Container Toolkit (with NVIDIA NGC API Key), read [`REQUIREMENTS_UBUNTU.md`](/supplementary/REQUIREMENTS_UBUNTU.md)**\n>\n> Windows 11 support is available *via* WSLg, read [`REQUIREMENTS_WSL.md`](/supplementary/REQUIREMENTS_WSL.md)"
+        ]
+      }
+    ],
+    "searchTime": 1701.8,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

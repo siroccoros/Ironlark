@@ -1,4 +1,4 @@
-# Use the actual state estimator, overriding the upstream demo's sim AHRS.
+# Use the real EKF3 state estimator, overriding the upstream demo's sim-truth AHRS.
 AHRS_EKF_TYPE 3
 EK3_ENABLE 1
 EK2_ENABLE 0
@@ -8,23 +8,47 @@ EK3_SRC1_POSZ 1
 EK3_SRC1_VELZ 3
 EK3_SRC1_YAW 1
 
-# The Iris example lowers angle gains to 0.5. Keep Acro leveling within
-# those gains so the ordinary pre-arm configuration check remains valid.
-ACRO_BAL_ROLL 0.5
-ACRO_BAL_PITCH 0.5
-
-# Copter 4.7 requires nonzero roll/pitch integral gains. Run at half the
-# world's 500 Hz sensor rate to satisfy the IMU sampling requirement.
-ATC_RAT_RLL_I 0.05
-ATC_RAT_PIT_I 0.05
+# Critically-damped attitude & PosVelAccel trajectory tracking for Webots Iris (ArduPilot Copter 4.7 SI):
+# - Replaces iris.parm's sluggish 0.5 angle gains with crisp 2.6 / 1.6 angle loops and matched rate D
+# - Fixes iris.parm's forgotten 1:1 yaw P:I windup (P=0.02 vs Copter default I=0.018)
+# - Tilt envelope 25 deg, yaw slew 35 deg/s, and PSC_NE_JERK 6.0 sit cleanly ABOVE trajectory.py's own
+#   limits (~11 deg indoors / ~14 deg outdoors, 22-26 deg/s yaw, 2.6-2.8 m/s^3 jerk) so there is one
+#   smoothing layer (the trajectory) without ArduPilot lag or VEL_I overshoot, while keeping 600 deg/s^2
+#   inner attitude disturbance recovery.
+ATC_ANG_RLL_P 2.1
+ATC_ANG_PIT_P 2.1
+ATC_ANG_YAW_P 1.5
+ATC_RAT_RLL_P 0.085
+ATC_RAT_PIT_P 0.085
+ATC_RAT_RLL_I 0.015
+ATC_RAT_PIT_I 0.015
+ATC_RAT_RLL_D 0.0010
+ATC_RAT_PIT_D 0.0010
+ATC_RAT_YAW_P 0.05
+ATC_RAT_YAW_I 0.005
+ATC_RAT_YAW_D 0.0001
+ATC_ANGLE_MAX 25
+PSC_ANGLE_MAX 25
+ATC_ACC_R_MAX 600
+ATC_ACC_P_MAX 600
+ATC_ACC_Y_MAX 75
+ATC_RATE_WPY_MAX 30
+ATC_INPUT_TC 0.10
+ACRO_BAL_ROLL 1.0
+ACRO_BAL_PITCH 1.0
+PSC_NE_POS_P 0.95
+PSC_NE_VEL_P 1.55
+PSC_NE_VEL_I 0.25
+PSC_NE_VEL_D 0.25
+PSC_NE_JERK 3.5
 SCHED_LOOP_RATE 250
 
-# This first integration check has GPS. External odometry and loss-of-GPS
-# transitions will be added only after sensor-derived localization is working.
+# Simulated GPS enabled outdoors; cut at the measurement layer (SIM_GPS1_ENABLE=0) in GPS-denied zones.
 GPS1_TYPE 1
 SIM_GPS1_ENABLE 1
+SIM_GPS1_NUMSATS 10
 
-# No physical receiver is attached in this software-only test.
+# Software-only simulation: no physical RC/GCS failsafe; EKF failsafe stays at Copter default (Land).
 FS_THR_ENABLE 0
 FS_GCS_ENABLE 0
 LOG_DISARMED 1

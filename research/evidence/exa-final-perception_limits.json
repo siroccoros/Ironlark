@@ -1,0 +1,224 @@
+{
+  "query": {
+    "query": "drone autonomous navigation research open source visual odometry state estimation does not provide collision avoidance Nav2 2D aerial robots",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "30ba03c658dae9a60322e4d61f84da88",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/AmSach/GhostPilot",
+        "title": "AmSach/GhostPilot",
+        "url": "https://github.com/AmSach/GhostPilot",
+        "highlights": [
+          "**Open-source visual SLAM + agentic AI navigation stack for GPS-denied drone flight.**\n...\nGhostPilot lets any drone fly indoors, in jammed environments, or contested airspace without GPS. Built on proven robotics standards (ROS2, Nav2), with a natural language agentic layer for mission control.\n...\n- **Visual-Inertial SLAM**: Camera + IMU fusion for 6DOF pose estimation (VINS-Mono integration planned)\n- **Agentic Mission Planner**: Natural language commands \u2192 executable navigation goals\n- **Nav2 Integration**: Industry-standard path planning + obstacle avoidance\n- **Edge-Native**: Runs on Jetson Orin / Raspberry Pi 5, no cloud dependency\n- **ROS2 Native**: Full integration with the robotics ecosystem\n...\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Mission Parser | \u2705 Working | Natural language \u2192 structured goals |\n| Mission Executor | \u2705 Working | Goal execution with mock ROS2 |\n| SLAM Node Logic | \u2705 Tested | Pose conversion, IMU buffering |\n| Pose Bridge Logic | \u2705 Tested | Frame transforms, odometry |\n| Nav2 Integration | \u26a0\ufe0f Mock | Needs ROS2 for real Nav2 |\n| VINS-Mono | \u274c TODO | Not yet integrated |\n| Gazebo Simulation | \u274c TODO | World file created, needs testing |\n...\n\u2502  Visual-Inertial SLAM (VINS-Mono)           \u2502\n\u2502  Camera + IMU \u2192 6DOF pose                   \u2502\n\u2502  \u26a0\ufe0f Requires VINS-Mono integration          \u2502"
+        ]
+      },
+      {
+        "id": "https://github.com/amsach/GhostPilot",
+        "title": "AmSach/GhostPilot",
+        "url": "https://github.com/amsach/GhostPilot",
+        "highlights": [
+          "**Open-source visual SLAM + agentic AI navigation stack for GPS-denied drone flight.**\n...\nGhostPilot lets any drone fly indoors, in jammed environments, or contested airspace without GPS. Built on proven robotics standards (ROS2, Nav2), with a natural language agentic layer for mission control.\n...\n- **Visual-Inertial SLAM**: Camera + IMU fusion for 6DOF pose estimation (VINS-Mono integration planned)\n- **Agentic Mission Planner**: Natural language commands \u2192 executable navigation goals\n- **Nav2 Integration**: Industry-standard path planning + obstacle avoidance\n- **Edge-Native**: Runs on Jetson Orin / Raspberry Pi 5, no cloud dependency\n- **ROS2 Native**: Full integration with the robotics ecosystem\n...\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Mission Parser | \u2705 Working | Natural language \u2192 structured goals |\n| Mission Executor | \u2705 Working | Goal execution with mock ROS2 |\n| SLAM Node Logic | \u2705 Tested | Pose conversion, IMU buffering |\n| Pose Bridge Logic | \u2705 Tested | Frame transforms, odometry |\n| Nav2 Integration | \u26a0\ufe0f Mock | Needs ROS2 for real Nav2 |\n| VINS-Mono | \u274c TODO | Not yet integrated |\n| Gazebo Simulation | \u274c TODO | World file created, needs testing |\n...\n\u2502  Visual-Inertial SLAM (VINS-Mono)           \u2502\n\u2502  Camera + IMU \u2192 6DOF pose                   \u2502\n\u2502  \u26a0\ufe0f Requires VINS-Mono integration          \u2502"
+        ]
+      },
+      {
+        "id": "https://github.com/Yarok14Technologies/No-GPS_Autonomous-Drone-System",
+        "title": "Yarok14Technologies/No-GPS_Autonomous-Drone-System",
+        "url": "https://github.com/Yarok14Technologies/No-GPS_Autonomous-Drone-System",
+        "highlights": [
+          "PX4 + ROS2 + Visual SLAM + VIO + Obstacle Avoidance + Autonomous Return Home A fully autonomous drone capable of navigating, mapping, avoiding obstacles, detecting targets, and returning to its launch position without GPS. Designed for research-grade missions, ISRO-style No-GPS challenges, DARPA-style underground navigation, and autonomous flight.\n...\nThis repository contains the full software stack for a **fully autonomous drone** capable of navigating, mapping, avoiding obstacles, detecting targets, and returning to its launch position **without GPS**.\n...\nresearch-grade missions, ISRO-style No-GPS challenges, DARPA-style underground navigation, and indoor autonomous flight.\n...\n\u2714 GPS-Denied Navigation\n\u2714 Visual SLAM + VIO Fusion\n\u2714 Autonomous Exploration\n\u2714 Obstacle Detection & Avoidance\n\u2714 Visual Landing Pad Detection\n\u2714 No-GPS Return-to-Home (Keyframe Homing)\n\u2714 Fully ROS2-based Modular Architecture\n\u2714 PX4 Offboard Flight Control\n\u2714 Simulation Ready (PX4 SITL + Gazebo/Ignition)\n...\n### \ud83d\udd35 **2. State Estimation (EKF Fusion)**\n...\n* IMU + SLAM + optical flow + barometer\n* Provides `/odom`, `/tf`\n* Smooth, drift-corrected pose\n...\nUse reprojection\n...\nRTH path\n6. Local planner\n...\n7. Autonomous landing at return\n...\n* ROS2 Humble / Iron\n* PX4 / MAVROS / microRTPS\n* ORB-SLAM3 or RTAB-Map\n* Nav2 Stack\n* FastDDS\n* OpenCV / Eigen / g2o / Ceres"
+        ]
+      },
+      {
+        "id": "https://docs.nav2.org/tutorials/docs/integrating_vio.html",
+        "title": "Using VIO to Augment Robot Odometry - NAV2",
+        "url": "https://docs.nav2.org/tutorials/docs/integrating_vio.html",
+        "highlights": [
+          "odometry. For example, skid-steer, tracked, omnidirectional robots using mecanum wheels, and legged robots are notorious for producing suboptimal odometry. These types of platforms are becoming increasingly common in the robotics landscape and require augmentations or replacement sources of odometry. Further, some\n...\nThus, this tutorial walks through the integration of VIO into a robot system to replace or augment wheel odometry so that your robot can autonomously navigate with quality state estimation required for a well-engineered system that is able to accurately and predictably complete its tasks.\n...\nIn the below example, we\u2019re fusing the Stereolabs SDK\u2019s Pose Tracking VIO solution with a robot\u2019s external IMU and odometry (e.g. `robot_localization` has `odom0` `odom1` and `imu0`) to improve performance while navigating on a legged robot platform in outdoor environments. The robot\u2019s internal odometry based on leg motion is quite poor and causes the robot to have generally poor autonomous navigation performance.\n...\nThe Visual-Inertial Odometry\u2019s error over these datasets is 4.1% over the 70m path. Typically for \u2018good\u2019 odometry from wheel encoders + IMU, I would like to see 2-3% fully tuned (or less than 1% for \u2018great\u2019 odometry), so this is a great source! Fused in with the legged robot odometry, it improves overall performance to an acceptable level!"
+        ],
+        "image": "https://docs.nav2.org/_static/nav2_logo_powered.png"
+      },
+      {
+        "id": "https://github.com/s-k-0-1/gps-denied-drone-survey",
+        "title": "s-k-0-1/gps-denied-drone-survey",
+        "url": "https://github.com/s-k-0-1/gps-denied-drone-survey",
+        "highlights": [
+          "The drone takes off on optical flow, hands over to visual odometry only after proving it is\ntrustworthy, flies a lawnmower survey inside a yellow boundary it can see, and lands itself on a\nmarker. The photos are then stitched into one map, each reference object is found with a\ndeep-learning matcher, and its coordinates are reported relative to the base station.\n...\nPosition comes from the drone's camera and Pixhawk visual-inertial odometry \u2014 **no GPS anywhere**.\n...\nGPS is accurate to metres\n...\nthis task needs ~0.1 m, and\n...\nis unavailable indoors.\n...\nThe idea that makes it safe: **optical flow always runs underneath.** Visual odometry is only\n*added on top*, and only after it earns it. If the camera fails at any moment the gate closes and\nthe drone is still flying normally \u2014 the loss costs accuracy, not control.\n...\nno depth sensor\n...\n- **No GPS/GNSS.** Camera + Pixhawk VIO / optical flow. GPS gives metres; this needs ~0.1 m.\n...\n- **Optical flow is the floor, not the fallback.** It always runs; VIO is added on top only after a\n scored validation, and is dropped the instant it misbehaves.\n...\n- **Semantic matching, not template matching.** DINOv2 survives rotation, lighting and scale change.\n...\n- **Scale from known arena dimensions**, which cancels VIO scale error.\n...\n- **Landing is always flow-only**, with the gate closed *before* descent begins."
+        ]
+      },
+      {
+        "id": "https://github.com/hmakelin/gisnav",
+        "title": "hmakelin/gisnav",
+        "url": "https://github.com/hmakelin/gisnav",
+        "highlights": [
+          "Estimates airborne drone global position by matching video to map retrieved from onboard GIS server.\n...\n- ardupilot\n- autopilot\n- computer-vision\n- deep-learning\n- drone\n- drones\n- gis\n- maps\n- mavlink\n- navigation\n- neural-network\n- neural-networks\n- ogc\n- px4\n- ros\n- ros2\n- uav\n- uavs\n- visual-navigation\n- wms\n...\n> **Warning** Do not use this software for real drone flights. GISNav is untested and has only been demonstrated\n> in a simulation environment.\n...\nGISNav is a ROS 2 package that enables map-based visual navigation for airborne drones **in a simulation environment**.\n\nGISNav provides a *precise* global position by visually comparing frames from the drone's nadir-facing camera to a map\nof the drone's *approximate* global position retrieved from an onboard GIS system."
+        ]
+      },
+      {
+        "id": "https://link.springer.com/article/10.1007/s41315-025-00462-2",
+        "title": "Vision-based autonomous navigation for quadrotor UAVs in unknown and ...",
+        "url": "https://link.springer.com/article/10.1007/s41315-025-00462-2",
+        "publishedDate": "2025-05-23T00:00:00.000Z",
+        "highlights": [
+          "Visual Odometry (VO) and Visual-Inertial Odometry (VIO) are widely studied for UAV positioning and tracking. ORB-SLAM2 (Mur-Artal and Tard\u00f3s 2017), a well-known lightweight VO algorithm, struggles in low-light conditions, leading to frequent tracking failures. In contrast, VINS-Mono (Qin et al. 2018), the VIO algorithm used in this study, integrates visual and inertial data to provide high-frequency positioning. When visual tracking fails, it compensates using Inertial Measurement Unit (IMU) data, ensuring higher stability and adaptability. Beyond localization, modern UAV path planning emphasizes trajectory smoothness and adherence to dynamic constraints rather than simple reachability (Zafar and Mohanta 2018). Ego-Planner (Zhou et al. 2020a, b), adopted in this study, optimizes path search efficiency by eliminating Euclidean Signed Distance Field (ESDF) computation, which accounts for 70% of processing time in conventional methods as explained by Usenko et al. (2017). The ESDF-free enables real-time performance in complex environments, making Ego-Planner a state-of-the-art solution. However, its practical adaptability in highly constrained, low-light environments with dense obstacles remains to be further examined.\n...\ngood initial guesses and are less robust. To solve those issues, Lynen et al. (2013) proposed a loosely coupled sensor fusion approach, treating the IMU as an"
+        ],
+        "image": "https://media.springernature.com/m685/springer-static/image/art%3A10.1007%2Fs41315-025-00462-2/MediaObjects/41315_2025_462_Fig1_HTML.jpg"
+      },
+      {
+        "id": "https://github.com/VKWHM/Altair-Silent",
+        "title": "VKWHM/Altair-Silent",
+        "url": "https://github.com/VKWHM/Altair-Silent",
+        "highlights": [
+          "Altair-Silent is an autonomous drone navigation system developed for indoor, GPS-denied environments. It uses 2D LiDAR SLAM, behavior-tree navigation with the Nav2 stack, and a multi-stage window detection pipeline to enable a drone to detect, approach, fly through, and return through a window opening.\n...\n**Altair Silent** is a fully autonomous drone navigation system designed to detect, approach, and navigate through indoor window openings using LiDAR-based perception and advanced motion planning. The system combines real-time SLAM mapping, Nav2 path planning, PID-based altitude control, obstacle avoidance, and multi-stage window detection to enable safe autonomous flight in GPS-denied environments.\n...\n- Real-time 2D SLAM with loop closure optimization\n- Multi-phase window detection (horizontal + vertical scanning)\n- Lifecycle-managed controller architecture with composable modules\n- Sector-based obstacle avoidance with repulsive force fields\n- Autonomous exploration with corner-based room navigation\n- Nav2 integration with custom behavior trees and recovery actions\n...\n-controlled altitude and\n...\n- **Nav2 stack** with A* global planner and DWB local controller\n- Layered costmaps: static map, voxel layer, inflation layer\n- Behavior tree-based navigation with recovery actions (spin, backup, wait)\n- 0.25 m/s max velocity with acceleration limits for safe flight"
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/mz413rd9mm5",
+        "title": "Autonomous Systems: Autonomous Systems: Indoor Drone Navigation",
+        "url": "https://doi.org/10.48550/arxiv.2304.08893",
+        "publishedDate": "2023-04-18T00:00:00.000Z",
+        "author": "Aswin Iyer, Santosh Narayan, M. Naren, Manoj Kumar Rajagopal",
+        "highlights": [
+          "navigating in an indoor environment. LiDAR technology is used for scanning the room, and a map of the environment is created with the help of SLAM (Simultaneous Localization and Mapping), using SLAM Toolbox for ROS. The map is then used for the quadcopter's autonomous navigation, allowing it to avoid obstacles and travel from one location to another safely and efficiently. While the successful operation of autonomous navigation in ground vehicles and land-based robots has been demonstrated using Nav2, the same hasn't been achieved with UAVs and has a long way to go. The objective of this research is to build a simulated drone, which can travel autonomously, in an indoor (GPS-less) scenario, using the Nav2 navigation system framework and SLAM Toolbox for ROS. It can also be thought of as an\n...\nNav2 (Navigation2) provides a set of tools and algorithms for autonomous navigation in robots. It is built on top of ROS and provides a range of features such as Path Planning, Obstacle, Avoidance, Behaviour Tree, etc. It provides a path planner that can generate collision-free paths avoiding obstacles for a robot to follow, taking into account obstacles and the robot's capabilities. The architecture in Fig 8 shows that it uses SLAM for Localization as discussed before and then also uses the Live Lidar Data to keep updating the map for real-time navigation. (Fig 8: Nav2 Architecture)"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/mz413rd9mm5",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Autonomous Systems: Autonomous Systems: Indoor Drone Navigation",
+              "year": 2023,
+              "date": "2023-04-18",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 1,
+              "authors": [
+                {
+                  "name": "Aswin Iyer",
+                  "id": null
+                },
+                {
+                  "name": "Santosh Narayan",
+                  "id": null
+                },
+                {
+                  "name": "M. Naren",
+                  "id": null
+                },
+                {
+                  "name": "Manoj Kumar Rajagopal",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Drones are a promising technology for autonomous data collection and indoor sensing. In situations when human-controlled UAVs may not be practical or dependable, such as in uncharted or dangerous locations, the usage of autonomous UAVs offers flexibility, cost savings, and reduced risk. The system creates a simulated quadcopter capable of autonomously travelling in an indoor environment using the gazebo simulation tool and the ros navigation system framework known as Navigaation2. While Nav2 has successfully shown the functioning of autonomous navigation in terrestrial robots and vehicles, the same hasn't been accomplished with unmanned aerial vehicles and still has to be done. The goal is to use the slam toolbox for ROS and the Nav2 navigation system framework to construct a simulated drone that can move autonomously in an indoor (gps-less) environment.",
+              "doi": "10.48550/arxiv.2304.08893"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/priyanshu7124/Aerostem",
+        "title": "priyanshu7124/Aerostem",
+        "url": "https://github.com/priyanshu7124/Aerostem",
+        "highlights": [
+          "GPS-denied drone navigation layer: optical flow + offline map geo-match + EKF \u2192 MAVLink (sim-validated).\n...\n**Jam-proof GPS-denied navigation** for attritable drones: optical flow + offline map geo-registration + EKF fusion + barometric altitude.\n...\nJamBoy is a **navigation layer**, not a targeting or weapons system. It is sim-validated on synthetic data; it is **not flight-certified**.\n...\nGiven a downward camera, pre-loaded GeoTIFF maps, IMU rates, and barometer altitude, JamBoy estimates local position and velocity without GPS:\n...\n1. Lucas\u2013Kanade optical flow with gyro de-rotation \u2192 ground velocity \n2. ORB (optional SIFT) + RANSAC homography against tiled maps \u2192 absolute geo fix \n3. 6-state EKF fusion with baro altitude \n4. State machine: Cruise \u2192 DeadReckon \u2192 Terminal (stub) \u2192 Abort \n5. MAVLink out: `VISION_POSITION_ESTIMATE` (preferred) or reposition fallback \n\nGlobal shutter is strongly preferred; rolling shutter is supported with fallback modes.\n...\n| Role |\n|\n...\nFLANN/\n...\nAC map match |\n...\njamboy\n...\nsrc/jamboy/ekf.py)\n...\n|\n|\n...\njamboy\n...\noy/gpu\n...\n/jamboy/gpu\n...\n) | Optional CUDA\n...\nCuPy)\n...\nJamBoy is research / simulation software for GPS-denied navigation experiments. It does not provide targeting, ROE, or kinetic autonomy. Validate on your own hardware before flight. Use in accordance with applicable law and export controls."
+        ]
+      },
+      {
+        "id": "https://github.com/snktshrma/ngps_flight",
+        "title": "snktshrma/ngps_flight",
+        "url": "https://github.com/snktshrma/ngps_flight",
+        "highlights": [
+          "Global vision positioning system for UAVs in outdoor GNSS-denied environments\n...\nNext-Generation Positioning System (NGPS) for high-altitude drone navigation\n...\nThis codebase implements a visual geo-localization system for drones that matches down-facing camera images against satellite reference images using deep learning-based feature matching. The system provides absolute position estimates to correct drift in Visual-Inertial Odometry (VIO) systems.\n...\n- **ap_ngps_ros2**: ROS2 node that performs visual geo-localization by matching camera images to satellite reference images using LightGlue/SuperPoint deep learning features. Runs at 1-2 Hz.\n\n- **ap_ukf**: Unscented Kalman Filter that fuses multiple sensor inputs:\n - NGPS absolute position (1-2 Hz)\n - VIO relative pose (10-20 Hz)\n - IMU data (high frequency)\n\n Outputs fused odometry at 10-20 Hz for flight control.\n\n- **ap_vips**: Visual-Inertial Odometry system that provides high-frequency relative pose estimates optimized for high-altitude flight.\n...\n1. NGPS module matches real-time camera frames to a georeferenced satellite reference image\n2. Provides absolute position estimates at low frequency (1-2 Hz)\n3. UKF fuses NGPS absolute positions with high-frequency VIO estimates\n4. Fused output sent to ArduPilot's EKF for final state estimation\n...\nps](https://"
+        ]
+      },
+      {
+        "id": "https://github.com/Prisma-Drone-Team/nav2-3D",
+        "title": "Prisma-Drone-Team/nav2-3D",
+        "url": "https://github.com/Prisma-Drone-Team/nav2-3D",
+        "highlights": [
+          "Nav3D is a ROS 2 navigation stack that reformulates the Nav2 architectural model for\nthree-dimensional UAV navigation. It keeps the parts of Nav2 that are valuable as a\nnavigation framework, such as action-based task interfaces, lifecycle-managed servers,\nplugin-oriented planning and Behavior Tree execution, while replacing the planar costmap\nassumption with a 3D collision-aware pipeline based on MoveIt, OctoMap and PX4 offboard\nsetpoint streaming.\n...\nThe project originates from the master's thesis *Designing a Nav2-Based 3D Navigation\n...\nStack for UAVs*. The thesis motivation is practical: ROS 2 has a mature, modular\nnavigation framework for ground robots, but UAV navigation commonly appears as tightly\ncoupled planning pipelines or platform-specific systems. Nav3D explores whether a\nNav2-like stack can be preserved at the architectural level while making mapping,\nplanning, validation and execution consistent with volumetric flight.\n...\nAt runtime, a navigation request is received as a 3D pose. The BT Navigator coordinates\nplanning and execution through the selected Behavior Tree. The planner server calls the\n...\n`MoveItGlobalPlanner`, which generates a\ncollision-free geometric path in the current MoveIt PlanningScene. The controller server\nthen streams time-paced waypoint references along that path. The PX4 bridge performs the\nENU-to-NED conversion and publishes PX4"
+        ]
+      },
+      {
+        "id": "https://rpg.ifi.uzh.ch/research_mav.html",
+        "title": "Vision-based Navigation of Micro Aerial Vehicles (MAVs)",
+        "url": "https://rpg.ifi.uzh.ch/research_mav.html",
+        "highlights": [
+          "-inertial\n...\nof autonomous micro\n...\nby including a dynamics model in\n...\npresence of low-\n...\nvehicle models and continuous external disturbances, such as\n...\nlearning-based component that captures\n...\nof thrust and IM\n...\nthat our approach\n...\n-of-the-art by\n...\nexisting methods,\n...\nthat it is\n...\naccurately while having no explicit knowledge of its full state.\n...\nour vision-controlled\n...\n, live, dense\n...\nin real-time\n...\nalong predefinied way-points. No GPS, nor teleoperation, no motion\n...\nsystem were used\n...\nour REgular\n...\nOnocular DEnse\n...\n) runs in\n...\nalong predefinied way\n...\nNo GPS or teleoperation\n...\nSuddently,\n...\nometry, planning, and control algorithms run fully\n...\nvideo, we show a vision-based\n...\nthat can autonomously execute a given\n...\nand provide a live, dense 3D map\n...\npresented to the operator while the quadrotor is mapping\n...\nso that there are no unnecessary\n...\nin the mission\n...\nnot rely on any external positioning system (e.g., GPS or motion capture systems) as sensing, computation, and control are performed fully onboard on a smartphone processor"
+        ],
+        "image": "https://rpg.ifi.uzh.ch/img/logo/rpg_logo.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2602.15398v1",
+        "title": "Hybrid F\u2032 and ROS 2 Architecture for Vision-Based Autonomous Flight: Design and Experimental Validation",
+        "url": "https://arxiv.org/html/2602.15398v1",
+        "highlights": [
+          "-level autonomy frameworks are reliant.\n...\nplanning and landing strategies prior to real-world deployment\n...\nFor example, [13] presents a framework for vision-based autonomous drone landing implemented using ROS and Gazebo, where image processing pipelines are integrated with UAV kinematics and a hybrid LQR-based control strategy. The study validates the flexibility of ROS-based perception and control architecture for rapid prototyping. However, the proposed system was evaluated exclusively in SITL without guarantees of real-time safety, highlighting limitations of pure ROS-based solutions for critical flights.\n...\nHybrid architectures [18, 19, 27] have emerged as a promising solution, combining deterministic flight-software cores with ROS-based perception layers through typed serialization bridges such as Protocol Buffers [12]. This approach isolates flight-critical control loops with certification-grade determinism while enabling flexible autonomy and perception processing in non-certified components. Space ROS [10] extends this concept by adding deterministic execution guarantees and radiation robustness specifically for space missions. However, experimental validation of such hybrid architectures on resource-constrained embedded flight computers remains limited, particularly for vision-based navigation systems requiring sustained high-frequency data processing."
+        ],
+        "image": "https://arxiv.org/html/2602.15398v1/FSWEVO.png"
+      },
+      {
+        "id": "https://arxiv.org/pdf/2304.08893",
+        "title": "",
+        "url": "https://arxiv.org/pdf/2304.08893",
+        "highlights": [
+          "and Mapping), using \nSLAM Toolbox for ROS. The map is then used for the \nquadcopter's autonomous navigation, allowing it to \navoid obstacles and travel\n...\noperation of autonomous navigation in ground\n...\nvehicles and land-based robots has been \ndemonstrated using Nav2, the same hasn\u2019t been \nachieved with UAVs and has a long way to go. The \nobjective of this research is to build a simulated\n...\ndrone, which can travel autonomously, in an indoor \n(GPS-less) scenario, using the Nav2 navigation \nsystem framework and SLAM Toolbox for ROS. It \ncan also be thought of as an interesting use case for \ndemonstrating the extension of functionalities of \nthe existing navigation system Nav2 for ground \nrobots to UAVs.\n...\nFor navigation, a safe trajectory is planned and \nexecuted from an initial pose to a target position. \nNav2 (Navigation2) provides a set of tools and \nalgorithms for autonomous navigation in robots. It \nis built on top of ROS and provides a range of features \nsuch as Path Planning, Obstacle, Avoidance, \nBehaviour Tree, etc. It provides a path planner that \ncan generate collision-free paths avoiding obstacles \nfor a robot to follow, taking into account obstacles \nand the robot's capabilities. The architecture in Fig 8\nshows that it uses SLAM for Localization as \ndiscussed before and then also uses the Live Lidar \nData to keep updating the map for real-time \nnavigation."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/mz413rd9mm5",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Autonomous Systems: Autonomous Systems: Indoor Drone Navigation",
+              "year": 2023,
+              "date": "2023-04-18",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 1,
+              "authors": [
+                {
+                  "name": "Aswin Iyer",
+                  "id": null
+                },
+                {
+                  "name": "Santosh Narayan",
+                  "id": null
+                },
+                {
+                  "name": "M. Naren",
+                  "id": null
+                },
+                {
+                  "name": "Manoj Kumar Rajagopal",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Drones are a promising technology for autonomous data collection and indoor sensing. In situations when human-controlled UAVs may not be practical or dependable, such as in uncharted or dangerous locations, the usage of autonomous UAVs offers flexibility, cost savings, and reduced risk. The system creates a simulated quadcopter capable of autonomously travelling in an indoor environment using the gazebo simulation tool and the ros navigation system framework known as Navigaation2. While Nav2 has successfully shown the functioning of autonomous navigation in terrestrial robots and vehicles, the same hasn't been accomplished with unmanned aerial vehicles and still has to be done. The goal is to use the slam toolbox for ROS and the Nav2 navigation system framework to construct a simulated drone that can move autonomously in an indoor (gps-less) environment.",
+              "doi": "10.48550/arxiv.2304.08893"
+            }
+          }
+        ]
+      }
+    ],
+    "searchTime": 915.1,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

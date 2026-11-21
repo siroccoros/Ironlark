@@ -1,0 +1,195 @@
+{
+  "query": {
+    "query": "Altnautica ADOS drone agent obstacle avoidance github source implementation",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "e6e7c04dbded1fae3f5eaec89472da2d",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/altnautica/ADOSDroneAgent",
+        "title": "altnautica/ADOSDroneAgent: ADOS Drone Agent",
+        "url": "https://github.com/altnautica/ADOSDroneAgent",
+        "publishedDate": "2026-03-03T08:31:25.000Z",
+        "highlights": [
+          "# Repository: altnautica/ADOSDroneAgent\n...\nADOS Drone Agent is the onboard software for a software-defined drone. It runs on the companion computer next to your flight controller, reads MAVLink off the FC and routes it to any ground station, streams HD video over radio or the internet, and lets you fly and manage the aircraft from a browser. The flight-critical paths are native Rust. AI, vision, and plugins run in Python.\n...\nreceive.** Two\n...\nthree ground nodes form\n...\nmesh so you keep the\n...\n`ados-control`, a native Rust HTTP front, owns port `:8080`. It serves the control, telemetry, pairing, parameter, fleet, and ground-station routes natively, and reverse-proxies a small Python feature service on an internal socket for the parts that stay in Python: AI and vision inference, the plugin runtime, the setup webapp, and WHEP video.\n...\n| Path | Contents |\n| --- | --- |\n| `crates/` | Native Rust services (one crate per service) plus the shared protocol and SDK crates |\n| `src/ados/` | Python runtime: feature service, HAL detection, plugins, SDK, ground-station managers |\n| `data/` | systemd units, udev rules, overlays, and other deploy-time assets |\n| `scripts/` | Installer bootstrap and helper scripts |\n| `dashboard/` | Local web dashboard assets |\n| `docs/` | Deployment, ground-station, and OEM documentation |\n| `tests/` | Test suite |\n...\n```bash\ngit clone https://github.com/altnautica/ADOSDroneAgent.git\ncd ADOSDroneAgent\n...\nOn a device the\n...\nfetches prebuilt Rust binaries, so deploying needs no Rust toolchain. You only need one to build the\n...\nfrom source."
+        ]
+      },
+      {
+        "id": "https://github.com/altnautica/ADOSMissionControl/blob/bbf62739/src/lib/agent/feature-catalogs/safety.ts",
+        "title": "src/lib/agent/feature-catalogs/safety.ts",
+        "url": "https://github.com/altnautica/ADOSMissionControl/blob/bbf62739/src/lib/agent/feature-catalogs/safety.ts",
+        "highlights": [
+          "# src/lib/agent/feature-catalogs/safety.ts\n...\n- Branch: bbf62739\n- Repository: altnautica/ADOSMissionControl\n...\n/**\n * @module FeatureCatalog.Safety\n * @description Safety smart modes (obstacle avoidance, precision landing, terrain following).\n * @license GPL-3.0-only\n */\n...\nexport const SAFETY_FEATURES: Record<string, FeatureDef> = {\n \"obstacle-avoidance\": {\n id: \"obstacle-avoidance\",\n...\ncomingSoon: true,\n type: \"smart-mode\",\n name: \"Obstacle Avoidance\",\n description: \"Automatic obstacle detection with brake or detour maneuvers\",\n icon: \"ShieldAlert\",\n category: \"safety\",\n tierRequired: 3,\n sensorsRequired: [\n { type: \"camera\", label: \"Camera\", required: true },\n { type: \"npu\", label: \"NPU\", required: true },\n ],\n servicesRequired: [\"video-pipeline\"],\n visionBehavior: \"obstacle_avoidance\",\n requiresNpu: true,\n requiredModels: [\n { modelId: \"depth_midas_v3\", required: true, purpose: \"Depth estimation\" },\n ],\n configSchema: [\n { key: \"mode\", label: \"Avoidance Mode\", type: \"select\", default: \"brake\", options: [\n { value: \"brake\", label: \"Brake (stop on obstacle)\" },\n { value: \"detour\", label: \"Detour (fly around)\" },\n ]},\n { key: \"min_distance\", label: \"Minimum Distance\", type: \"slider\", default: 3, min: 1, max: 10, step: 0.5, unit: \"m\" },\n { key: \"sensitivity\", label: \"Sensitivity\", type: \"select\", default: \"normal\", options: [\n { value: \"low\", label: \"Low (fewer false positives)\" },\n { value: \"normal\", label: \"Normal\" },\n { value: \"high\", label: \"High (more cautious)\" },\n...\n]},\n ],\n },\n\n \"precision-landing\": {\n id: \"precision-landing\",\n...\nvisual guidance\","
+        ]
+      },
+      {
+        "id": "https://altnautica.com/technology",
+        "title": "ADOS Platform - Software-Defined Drone Intelligence",
+        "url": "https://altnautica.com/technology",
+        "highlights": [
+          "A full-stack open-source platform. Flight computer, onboard AI agent, ground control, vision engine, and cloud fleet management. One ecosystem. Any drone.\n...\n### ADOS Drone Agent\n...\nTurns any Linux single-board computer into a drone brain. MAVLink proxy, video pipeline, cloud relay, plugin sandbox. Hybrid Rust/Python, 29 independent services.\n...\nBehaviors like follow-me, orbit, precision landing, obstacle avoidance, structure inspection, and quickshots ship as per-drone plugins through the extensions registry.\n...\nADOS platform schematics, firmware, and software. All open-source. The community builds on our platform. Everyone wins.\n...\n- Flight Control Firmware Real-time autopilot\n- Onboard AI Agent Hybrid Rust/Python, 29 services\n- Ground Control Station TypeScript, 98K LOC\n- Vision Engine NPU-accelerated computer vision\n- HD Video Pipeline 5.8GHz broadcast protocol\n- Cloud Fleet Platform MQTT and reactive database"
+        ]
+      },
+      {
+        "id": "https://docs.altnautica.com/drone-agent/plugins",
+        "title": "",
+        "url": "https://docs.altnautica.com/drone-agent/plugins",
+        "highlights": [
+          "The agent ships with a plugin host (`ados-plugin-host`) that runs signed plugins in their own subprocesses with capability-gated access to agent state. Most plugins are Python modules run through the plugin runtime; a plugin can also ship a compiled binary entrypoint (the Vision Navigation extension is a Rust binary). This page is for operators and OEMs who install and manage plugins on a fleet. If you want to write a plugin, head to Your first plugin and the Agent plugin deep dive.\n...\nhardware bus access\n...\n` / `\n...\n2c` / `spi` / `gpio` /\n...\nusb`), recording, vision\n...\nand detections, estimator\n...\ninjection, and process spawn. The GCS half has its own UI slot capabilities on the Mission Control side. The full table lives next to the SDK in the agent plugin deep dive.\n...\nThree plugins ship with the agent as worked examples and as useful surfaces in their own right. They are first-party built-ins: their manifest ships in code (not as a packed `.adosplug` archive), they are trusted through the first-party signer allowlist rather than a signed archive, and they run in-process under the supervisor instead of as separate subprocesses. The subprocess and no-in-process-load behavior described in Resource isolation applies to installed third-party plugins.\n...\nEach plugin runs as a subprocess of `ados-supervisor` under a systemd slice with cgroup-enforced CPU and memory limits taken from the manifest's `resource_limits` block (or the agent's defaults if the manifest does not set them).\n...\nIf you want to write a plugin, the SDK and templates live in the developers tab:"
+        ]
+      },
+      {
+        "id": "https://docs.altnautica.com/drone-agent/vision-nav-install",
+        "title": "",
+        "url": "https://docs.altnautica.com/drone-agent/vision-nav-install",
+        "highlights": [
+          "Vision Navigation is a first-party plugin. You install it on one drone at a time from Mission Control's per-drone Extensions tab. Each install carries its own permission grants and its own per-drone configuration; the plugin runs only on the agent of the drone you picked.\n...\nThe plugin's agent half is a compiled Rust binary. Install and operation are unchanged and transparent to operators; the plugin host execs the binary the same way it runs any other plugin.\n...\n| Domain | Capability | Why |\n| --- | --- | --- |\n| Vision | `vision.frame.read` | Read normalized frames from the agent's shared vision bus. |\n| Hardware | `hardware.uart`, `hardware.i2c` | Talk to the rangefinder when the companion owns it. |\n| Events | `event.publish`, `event.subscribe` | Emit health and flow events on the agent bus. |\n| MAVLink | `mavlink.read`, `mavlink.write` | Receive FC telemetry; emit `OPTICAL_FLOW_RAD` and `DISTANCE_SENSOR`. |\n| MAVLink | `mavlink.component.peripheral` | Register MAVLink component 198 (optical flow + rangefinder). |\n| MAVLink | `mavlink.component.vio` | Register MAVLink component 197 (VIO pose). |\n...\n| Estimator | `estimator.pose.inject` | Submit pose and velocity estimates to the FC's state estimator. CRITICAL. |\n| Telemetry | `telemetry.extend` | Add the `navigation` block (flow quality, sync offset, estimator state) to the heartbeat. |\n| Process | `process.spawn` | Run the signed VIO vendor binaries when a VIO mode is active. |\n...\ncamera device, the range\n...\n. The drawer"
+        ]
+      },
+      {
+        "id": "https://docs.altnautica.com/drone-agent/overview",
+        "title": "",
+        "url": "https://docs.altnautica.com/drone-agent/overview",
+        "highlights": [
+          "the companion computer\n...\nduPilot,\n...\n4, Betaflight, or iNav\n...\nIt is a hybrid system. The core long-running services (the supervisor, MAVLink router, HTTP front, cloud relay, logging daemon, and video pipeline) are native Rust binaries. Python handles AI and vision inference, hardware detection and first-boot bootstrap, the plugin runtime, and the setup and update webapp, all served behind the Rust front. It is licensed under GPLv3 and runs on ARM single-board computers from Raspberry Pi to Rockchip to NVIDIA Jetson.\n...\nThe agent uses a multi-process architecture managed by systemd. Each service runs in its own process with its own cgroup resource limits. The supervisor service (`ados-supervisor`) is a Rust orchestrator that starts and monitors child services through `systemctl`. Most units now run a native Rust binary; a few stay Python by design (see the table below).\n...\n# Rust:\n...\nator (drives\n...\nlink          # Rust: FC\n...\nfront on :8080 (proxies the residual API\n...\n\u251c\u2500\u2500 ados-api              # Python:\n...\non an internal socket\n...\n\u251c\u2500\u2500 ados-\n...\n# Rust: MQTT + Convex\n...\nrelay\n  \u251c\u2500\u2500\n...\nWAL SQLite)\n  \u251c\u2500\u2500 ados-\n...\n\u251c\u2500\u2500\n...\n# Rust: camera + encoder\n...\nMTX\n  \u251c\u2500\u2500 ados-w\n...\n# Rust: WFB-ng video transmitter\n  \u251c\u2500\u2500 ados-vision           # Rust: vision host\n  \u251c\u2500\u2500 ados-plugin-host      # Rust: plugin subprocess supervisor\n  \u2514\u2500\u2500 ados\n...\ndiscovery        # mDNS advertisement"
+        ]
+      },
+      {
+        "id": "https://docs.altnautica.com/developers/sdk-python",
+        "title": "",
+        "url": "https://docs.altnautica.com/developers/sdk-python",
+        "highlights": [
+          ".sdk reference.\n...\nA plugin's agent half can be written in two languages. This page covers\nthe Python SDK, `ados.sdk`. The other agent-half language is Rust, with\nthe `ados-sdk` crate; both speak the same\nlength-prefixed msgpack wire and capability-token handshake to the\nplugin host, so the choice is per plugin. Python is the right pick when\nthe plugin leans on the Python ecosystem (machine-learning inference,\nscripting, fast hardware bring-up); Rust is the right pick for a tight,\nlow-overhead, long-running service.\n...\nA Python plugin'\n...\npublic author surface is the\n...\nados.sdk`\n...\ndriver base classes\n...\ntypes, and an in-process test\n...\n. Import from `ados.sdk`, not\nfrom internal\n...\nThe standalone `ados-sdk` PyPI package is still in flight. Until it\npublishes, plugin source vendors the contract types directly from the\nagent tree at\n`altnautica/ADOSDroneAgent/src/ados`,\nor develops against a checked-out agent so `import ados.sdk` resolves.\n...\nplugin context.\n...\nservice helpers a plugin needs, including\n...\nsubscribe(...)`\n...\nThe complete plugin (image-to-world projection, the\n...\nloop, the\n...\ngate) lives in\n...\n`altn\n...\nxtensions`\nunder `extensions/follow-\n...\nThe agent host modules at\n`altnautica/ADOSDroneAgent/src/ados/plugins/`\ndefine the install and runtime machinery the SDK sits on:\n...\n- `manifest` (the Pydantic\n...\nWatch the GitHub releases for the\n`ados-sdk` PyPI publish, which will re-export the contracts above and\nadd the context helpers once they stabilise."
+        ]
+      },
+      {
+        "id": "https://docs.altnautica.com/drone-agent/installation",
+        "title": "",
+        "url": "https://docs.altnautica.com/drone-agent/installation",
+        "highlights": [
+          "Install the ADOS Drone Agent on your companion computer in one command.\n...\nThe agent installs with a single command. It detects your board, installs dependencies, configures systemd services, and starts everything automatically.\n...\nThe install script requires root access. It installs to `/opt/ados/`, creates config at `/etc/ados/`, registers systemd services, and fetches the prebuilt Rust service binaries to `/opt/ados/bin/`. systemd is the supported process manager.\n...\nSets up a Python venv at `/opt/ados/venv/` and installs the `ados-drone-agent` package from PyPI along with its dependencies (pymavlink, FastAPI, uvicorn, paho-mqtt, structlog, Rich, and more). The prebuilt Rust service binaries (supervisor, MAVLink router, control front, cloud relay, video, logging, and others) are fetched and placed in `/opt/ados/bin/`.\n...\nRuns `systemctl\n...\nados-supervisor` which brings up\n...\ntree: MAVLink proxy, REST API, video pipeline (if a camera is\n...\n), cloud relay, health monitor, and everything else\n...\ntier supports.\n...\n## Install from source\n...\nFor contributors and developers who want to modify the agent code:\n...\n```bash\n# Clone the repo\ngit clone https://github.com/altnautica/ADOSDroneAgent.git\ncd ADOSDroneAgent\n...\n# Create a virtual environment\npython3.11 -m venv .venv\nsource .venv/bin/activate\n...\n# Install in development mode\npip install -e \".[dev]\"\n...\n# Check the CLI surface\nados --help\n...\non actual hardware,\n...\nuse the install script instead\n...\nmissing data files\n...\nentry points)\n...\nEditable installs are for local development on your laptop only."
+        ]
+      },
+      {
+        "id": "https://github.com/altnautica/ADOSExtensions",
+        "title": "First-party ADOS plugin extensions for Drone Agent ...",
+        "url": "https://github.com/altnautica/ADOSExtensions",
+        "highlights": [
+          "**First-party plugins for the ADOS Drone Agent and ADOS Mission Control.**\n...\nAn extension adds a capability to ADOS without for\n...\nit: a\n...\nin Mission Control,\n...\ndriver for a sensor or gimbal on the\n...\nan operator installs from\n...\n> **Part of the ADOS ecosystem.** Extensions build on the plugin system in [ADOS Drone Agent](https://github.com/altnautica/ADOSDroneAgent) (Python and Rust, supervised subprocess per plugin) and [ADOS Mission Control](https://github.com/altnautica/ADOSMissionControl) (React panels in a sandboxed iframe). One manifest describes both halves.\n\n \n ADOS Drone Agent |\n ADOS Mission Control |\n Developer Docs |\n Discord \n \n\n---\n...\n**Build an extension (developer).** Scaffold a plugin with `create-ados-plugin`, write the GCS half in TypeScript and the agent half in Python or Rust against the SDKs, then pack and sign it into a `.adosplug`. The same plugin system powers both first-party and community extensions.\n...\n| Package | Use |\n|---------|-----|\n| `create-ados-plugin` | Scaffolder. `npx create-ados-plugin` with GCS-only, agent-only, or hybrid templates |\n| `plugin-sdk` | TypeScript SDK for the GCS half: telemetry hooks, postMessage RPC to the agent, and a test harness |\n| `extension-ui` | Reusable React UI primitives that match the Mission Control theme |\n...\n`pnpm-workspace.yaml` declares the GCS halves and root tooling (run `pnpm install` at the repo root). `pyproject.toml` declares the agent halves and shared Python utilities. Each extension carries its own `CHANGELOG.md` and is versioned independently through its own release tags."
+        ]
+      },
+      {
+        "id": "https://docs.altnautica.com/developers/concepts",
+        "title": "",
+        "url": "https://docs.altnautica.com/developers/concepts",
+        "highlights": [
+          "A plugin has up to two halves: an agent half that runs on the drone\nor ground node, and a GCS half that runs in the Mission Control\nbrowser. The agent half is written in Python (the `ados.sdk`\npackage) or Rust (the `ados-sdk` crate); the GCS half is written in\nTypeScript (the `@altnautica/plugin-sdk` package). One signed\narchive carries both halves and one `manifest.yaml` describes them.\n...\nOS: a manifest, a\n...\n, a sandbox, and\n...\nset of capability\n...\n. If\nyou understand\n...\n, the rest of\n...\nA `manifest.yaml` at the root of the archive declares everything the\nhost needs to install the plugin: the id, the version, which halves\n(`agent`, `gcs`, or both), the permissions each half requests, and\nthe slots the GCS panels mount into. The manifest carries no per-asset\nhash list. Asset integrity is bound by the canonical payload hash that\nthe signing step writes into the separate `SIGNATURE` file (see below).\n...\n- Agent half: a subprocess under `ados-supervisor`. A Python plugin\nruns through the plugin runner; a Rust plugin (`runtime: rust` in the\nmanifest) runs its own compiled binary directly. Either way the\nsubprocess sits in the shared `ados-plugins.slice` cgroup, which caps\nCPU percent, memory, and PIDs. The generated systemd unit adds\nprivilege hardening: `NoNewPrivileges=yes`,\n`ProtectSystem=strict`, `ProtectHome=yes`, `PrivateTmp=yes`,\n`LockPersonality=yes`, `RestrictRealtime=yes`, and\n`RestrictSUIDSGID=yes`. The plugin reaches the host only through a\nUnix domain socket; it cannot open arbitrary network sockets unless it\ndeclared `network.outbound`."
+        ]
+      },
+      {
+        "id": "https://docs.altnautica.com/drone-agent/vision-nav-getting-started",
+        "title": "",
+        "url": "https://docs.altnautica.com/drone-agent/vision-nav-getting-started",
+        "highlights": [
+          "If this is your first time flying GPS-denied with an ADOS drone, this\npage walks the shortest path from a fresh drone to a hovering one. You\nwill pick a mode, wire the hardware, install the plugin, and arm.\n...\n- A companion computer running the ADOS Drone Agent (Pi 4B, Pi 5,\nRadxa ROCK 5C Lite, or any other supported board).\n- A camera mounted in the direction the chosen mode needs. Optical\nflow is always downward. VIO accepts either forward (indoor /\ncorridor) or downward (over-ground: agriculture, survey, SAR,\npipeline patrol). Hybrid uses both. The wizard surfaces an\nexplicit orientation picker under VIO and hybrid.\n...\n- A rangefinder when the chosen mode requires one (`optical_flow` and\n`hybrid_of_plus_vio` need one; the other modes do not).\n...\n- A flight controller running ArduPilot 4.5 or newer, PX4 1.14 or\nnewer, or iNav 7.0 or newer. The plugin auto-detects which.\nBetaflight is not supported; it has no position estimator to consume\nflow or VIO samples.\n...\nFrom Mission Control, open the drone's detail panel, switch to the\nExtensions tab, and click Install. Pick the `vision-nav.adosplug`\narchive. Walk the six-stage dialog; grant the permissions; enable the\nplugin.\n...\n1. Confirm the flight controller's source-set parameters match the\nselected mode. For ArduPilot this is `EK3_SRC1_VELXY`,\n`EK3_SRC1_POSXY`, `EK3_SRC1_YAW` (the GCS source-set switcher\nhandles the runtime flip). For PX4 it is `EKF2_OF_CTRL` or\n`EKF2_EV_CTRL` depending on mode (PX4 needs a parameter write +\nEKF restart; runtime switching is not supported)."
+        ]
+      },
+      {
+        "id": "https://altnautica.com/drone-agent",
+        "title": "ADOS Drone Agent - Make Any Drone Smart",
+        "url": "https://altnautica.com/drone-agent",
+        "highlights": [
+          "ADOS Drone Agent - Make Any Drone Smart\n...\nA flight controller handles stabilization and motor control. The ADOS Drone Agent handles everything else.\n...\nThe ADOS Drone Agent is the horizontal layer. It sits between the flight controller and user applications. Build signed plugins without forking the core. Get fleet connectivity out of the box. Scale from a Pi Zero running basic telemetry to a Jetson Orin running SLAM and swarm coordination. Same agent, different tiers.\n...\nAltnauticaOS is a layered stack. The Drone Agent implements Layers 1 through 6. Your GCS or dashboard connects at Layer 7.\n...\nScript Executor DroneScript engine, mission templates, REST + Python SDK entrypoints\n...\nPlugin System Signed .adosplug install, subprocess sandbox, capability-gated IPC, event bus\n...\nMAVLink proxy, video pipeline, MQTT gateway, WiFi link\n...\nbuses, cameras, modems\n...\n+ Install TLS 1.3, WireGuard, A/B partition updates, fleet enrollment\n...\nthe architecture. Built\n...\none package.\n...\nText commands and the async Python SDK, with more tiers planned. Code examples and comparison.\n...\n#### API & SDK\n...\nREST endpoints, WebSocket MAVLink relay, Python SDK classes, and authentication.\n...\nGPLv3 CC0 1.0 Open Source\n...\nSoftware is GPLv3. Open hardware design files and documentation are dedicated to the public domain under CC0 1.0. No attribution required. Fork it, modify it, ship it.\n...\nSSH into your companion computer and run the installer. The agent auto-detects your board, installs dependencies, and starts all services.\n...\nin active development"
+        ]
+      },
+      {
+        "id": "https://altnautica.com/drone-agent/plugins",
+        "title": "Plugins \u2014 Altnautica",
+        "url": "https://altnautica.com/drone-agent/plugins",
+        "author": "Altnautica",
+        "highlights": [
+          "# Extend the drone, not the core.\n...\nPython plugins run in sandboxed subprocesses with capability-gated access to hardware, MAVLink, telemetry, and missions. Add a thermal camera, a custom payload, or an autonomous behavior without touching agent source.\n...\ncgroup limits on memory,\n...\n, and process\n...\ncrash, a leak,\n...\nFirst-party extensions live in the public ADOSExtensions repository. Read the code, fork it, build your own.\n...\nover USB UVC\n...\ndecodes 16-bit\n...\nframes, applies the temperature transform,\n...\na MAVLink\n...\nsecond H.2\n...\nBrowse every extension in the open-source registry.\n...\nEvery plugin operation has a command on the agent. Mission Control wraps the same calls in a UI.\n...\ninstall` Verify the signature\n...\nthe manifest, prompt for permissions, lay down files\n- `enable / disable` Start\n...\nstop the plugin process without removing\n...\n- `remove` Stop\n...\nclear cgroup state, delete files and tokens\n-\n...\nlist / info`\n...\ninstalled plugins, granted permissions, and process state\n- `perms` Inspect or revoke permissions\n...\nan installed plugin\n- `logs` Tail the plugin's structured log stream\n- `test` Run\n...\nbundled test runner without\n...\n- \u2713 Local install of signed .adosplug archives\n- \u2713 Capability enforcement on every IPC call\n- \u2713 Three built-in plugins: geofence, telemetry-logger, mavlink-inspector\n- \u2713 The full ados plugin CLI\n- \u2713 A bundled test runner for offline validation\n- \u2713 Two-stage install dialog with a permission review"
+        ]
+      },
+      {
+        "id": "https://docs.altnautica.com/developers/driver-layer",
+        "title": "Driver layer",
+        "url": "https://docs.altnautica.com/developers/driver-layer",
+        "highlights": [
+          "The driver layer is a sub-pattern of agent plugins. Same manifest,\nsame lifecycle, same sandbox. What is new is a set of typed base\n...\nclasses that the host knows how to register, discover, and route\ndata to and from. A driver is just a plugin that subclasses one of\nthese bases\n...\ndeclares the matching\n...\nsensor.*.register` capability\n...\nThe driver layer exists in both agent SDKs. Python drivers\nsubclass the abstract base classes in `ados.sdk.drivers`. Rust\ndrivers implement the matching trait in `ados-sdk::drivers`. The two\nare method-for-method equivalents: the same `discover` / `open` /\n`close` / `capabilities` preamble, the same candidate / capabilities\n/ session shapes, the same kind-specific streaming methods. A driver\nplugin can be authored in either language. Set `agent.runtime` in the\nmanifest to `python` or `rust` to pick.\n...\nthe driver and registers\nit with the peripheral manager. In Python\n...\n`peripheral_manager.register_camera_driver(driver)`;\n...\nRust it is\n`ctx.peripheral_manager.register_camera_driver(driver_ref)\n...\ndeclare the matching\n...\nA driver registers under a `sensor.*.register` capability that the\nmanifest must declare. Camera, depth, lidar, imu, and payload drivers\neach gate on their own capability (`sensor.camera.register`,\n`sensor.depth.register`, `sensor.lidar.register`,\n`sensor.imu.register`, `sensor.payload.register`). Gimbal, GPS, and\nESC drivers do not have dedicated capabilities in the current catalog;\n...\nthey register under `sensor.payload.register`. The per-kind pages note\n...\nwhich capability each one uses."
+        ]
+      },
+      {
+        "id": "https://p.rst.im/q/github.com/altnautica/ADOSDroneAgent",
+        "title": "GitHub - altnautica/ADOSDroneAgent: ADOS Drone Agent \u2014 Software-defined drone network agent. Install on any companion computer to make your drone smart, autonomous, and fleet-ready. \u00b7 GitHub",
+        "url": "https://p.rst.im/q/github.com/altnautica/ADOSDroneAgent",
+        "publishedDate": "2026-03-03T08:31:25.000Z",
+        "author": "altnautica",
+        "highlights": [
+          "GitHub - altnautica/ADOSDroneAgent: ADOS Drone Agent \u2014 Software-defined drone network agent. Install on any companion computer to make your drone smart, autonomous, and fleet-ready. \u00b7 GitHub\n...\n-range data link\n...\nADOS Drone Agent is the onboard software for a software-defined drone. It runs on the companion computer next to your flight controller, reads MAVLink off the FC and routes it to any ground station, streams HD video over radio or the internet, and lets you fly and manage the aircraft from a browser. The flight-critical paths are native Rust. AI, vision, and plugins run in Python.\n...\n`ados-control`, a native Rust HTTP front, owns port`:8080`. It serves the control, telemetry, pairing, parameter, fleet, and ground-station routes natively, and reverse-proxies a small Python feature service on an internal socket for the parts that stay in Python: AI and vision inference, the plugin runtime, the setup webapp, and WHEP video.\n...\n| Path | Contents |\n| --- | --- |\n...\n`crates/` | Native Rust services (one crate per service) plus the shared protocol and SDK crates |\n| `src/ados/` | Python runtime: feature service, HAL detection, plugins, SDK, ground-station managers |\n| `data/` | systemd units, u\n...\n, and other deploy-time assets |\n| `scripts/` | Installer bootstrap and helper scripts |\n| `dashboard/` | Local web dashboard assets |\n| `docs/` |\n...\n, ground-station, and OEM documentation |\n| `tests/` | Test suite |\n...\nOn a device\n...\nfetches prebuilt Rust binaries, so deploying\n...\nno Rust toolchain. You only need\n...\nto build the\n...\nfrom source."
+        ],
+        "image": "https://opengraph.githubassets.com/bf143b9dae53bdac1267306889a9c652751489460c1843784c6f59d9d4aff4b1/altnautica/ADOSDroneAgent",
+        "favicon": "https://p.rst.im/q/github.com/fluidicon.png"
+      },
+      {
+        "id": "https://docs.altnautica.com/architecture/system-overview",
+        "title": "",
+        "url": "https://docs.altnautica.com/architecture/system-overview",
+        "highlights": [
+          "ground agent on a nearby\n...\nremote access.\n...\nYou can fly\n...\njust the first\n...\nflowchart TB\n...\nsubgraph Drone[\"Tier\n...\nDrone\"]\n        FC[\"Flight Controller<br/>(ArduPilot / PX4 / Betaflight)\"]\n        Agent[\"\n...\n<br/>(\n...\n, systemd)\"]\n        Camera[\"Camera<br/>(CSI or USB)\"]\n        WFB_TX[\"WFB-ng TX<br/>(RTL8812EU,\n...\n5 GHz)\"]\n        ELRS[\"\n...\nRS RX<br/>(2.4\n...\ncontrol)\"]\n...\n_Air[\"4G Modem\n...\n)\"]\n...\nFC <-->\n...\nMAVLink| Agent\n...\nThe entire ADOS stack lives in two\n...\n| Repository | Language | Purpose |\n| --- | --- | --- |\n| altnautica/ADOSMissionControl | TypeScript (Next.js 16, React 19, Zustand 5) | Ground control station, web app |\n| altnautica/ADOSDroneAgent | Rust + Python hybrid | Drone agent and ground agent |\n...\nBoth are GPLv3. The agent runs on the drone and the ground station (same code, different profile). Mission Control runs in a browser and talks to both.\n...\nThe agent is Rust-first. The long-running and safety-critical services (MAVLink router, cloud relay, video pipeline, radio, supervisor, logging, the HTTP front) are native Rust binaries; Python stays for AI and vision, the plugin runtime, setup, HAL detection, and some ground-station hardware glue. See Agent Services for the full breakdown.\n...\n. A crashed video\n...\nMAVLink\n...\n. See Agent Services\n...\nProfile over fork. The ground station is not a separate codebase. It is the same ADOS Drone Agent with a different profile selected at boot. This means one install script, one upgrade path, and one test matrix. See Agent Services."
+        ]
+      },
+      {
+        "id": "https://altnautica.com/drone-agent/api",
+        "title": "API and SDK \u2014 Altnautica",
+        "url": "https://altnautica.com/drone-agent/api",
+        "author": "Altnautica",
+        "highlights": [
+          "API and SDK \u2014 Altnautica\n...\n# Build on the agent.\n...\nA REST control surface for integration, a raw MAVLink WebSocket relay for real-time flight data, MQTT topics for the cloud relay, and a Python SDK for plugins and drivers. Everything you need to build on top of the drone.\n...\n## Ports and topics\n...\nThe agent exposes local ports for direct integration and MQTT topics for the optional cloud relay. Every transport speaks the same underlying MAVLink.\n...\n## Quick start.\n...\n## Raw MAVLink relay.\n...\nThe relay on port 8765 forwards raw MAVLink v2 between the flight controller and any number of consumers. Wire-compatible with the ArduPilot SITL WebSocket bridge.\n...\n## ados.sdk\n...\nThe SDK is for plugin and driver authors. It ships with the agent and exposes stable base classes for hardware drivers, the on-vehicle vision bus, and a plugin test harness.\n...\n`GimbalDriver`\n...\n`LidarDriver`\n...\n`GpsDriver`\n...\n`EscDriver`\n...\n`VisionClient`\n...\nRead frames and detections from the on-vehicle vision bus\n...\nkey authentication."
+        ]
+      },
+      {
+        "id": "https://p.rst.im/q/github.com/altnautica/ADOSExtensions",
+        "title": "GitHub - altnautica/ADOSExtensions: First-party ADOS plugin extensions for Drone Agent and Mission Control \u00b7 GitHub",
+        "url": "https://p.rst.im/q/github.com/altnautica/ADOSExtensions",
+        "publishedDate": "2026-04-30T00:00:00.000Z",
+        "author": "altnautica",
+        "highlights": [
+          "GitHub - altnautica/ADOSExtensions: First-party ADOS plugin extensions for Drone Agent and Mission Control \u00b7 GitHub\n...\nFirst-party plugins for the ADOS Drone Agent and ADOS Mission Control, shipped as signed `.adosplug` archives.\n...\n```\nextensions/\n  battery-health-panel/            GCS-only panel: cell-level diagnostics, predictive time-to-min, anomaly alerts\n  thermal-camera-flir-lepton-usb/  Hybrid: FLIR Lepton 3.5 USB UVC capture + GCS overlay + FC tab\n  mavlink-gimbal-v2/               Hybrid: SimpleBGC / Storm32 NT / Gremsy driver + GCS controls + ROI lock\n  vision-nav/                      Hybrid: optical flow + monocular VIO (OpenVINS / VINS-Fusion) for GPS-denied flight\n...\n519\n...\n- `pnpm-workspace.yaml` declares the GCS halves (TypeScript / React) and root tooling. Run `pnpm install` at the repo root.\n- `pyproject.toml` declares the agent halves and shared Python utilities for the hybrid extensions.\n...\nTagged releases run `scripts/sign.sh` in CI against the `altnautica-2026-A` publisher key. The signed archive is published as a GitHub Release asset and, for the four first-party extensions, also surfaces inside the Mission Control Plugins tab via the hosted registry.\n...\nFrom Mission Control: open a drone, switch to the Plugins tab, browse the registry, pick the extension, approve the two-stage install dialog. The agent downloads the signed archive, verifies the Ed25519 signature, and stages the plugin under its supervisor.\n...\n```\nados plugin install https://p.rst.im/q/github.com/altnautica/ADOSExtensions/releases/download/<release>/<extension>.adosplug"
+        ],
+        "image": "https://opengraph.githubassets.com/448f4c7e390b24181e6b931626e34bd164f4bbd4b28c01daf32ddf1e3d000d62/altnautica/ADOSExtensions"
+      },
+      {
+        "id": "https://docs.altnautica.com/drone-agent/extensions-catalog",
+        "title": "",
+        "url": "https://docs.altnautica.com/drone-agent/extensions-catalog",
+        "highlights": [
+          "> First-party extensions shipped by Altnautica through the public ADOSExtensions repo.\n...\nThese are the first-party extensions Altnautica publishes through the public `ADOSExtensions` repo. Each one ships as a signed `.adosplug` archive (Ed25519, signer `altnautica-2026-A`) on GitHub Releases and installs from the Mission Control Extensions tab on any drone you've connected.\n...\n--- | --- |\n...\nGPS-denied navigation. Optical flow (\n...\ncamera) and visual\n...\ninertial odometry\n...\nflight controller a\n...\nSix modes covering optical flow with or without a rangefinder, OpenVINS VIO, VINS-Fusion VIO, Hybrid, and Off. The agent half is a compiled Rust binary that reads frames from the agent's shared vision bus. A 250 ms internal self-check steps down to a safer mode when features drop or drift grows and surfaces the degradation through a warning notification channel.\n...\n1. Open a drone from the fleet, switch to the Extensions tab.\n2. Click Install plugin on this drone, then point the dialog at the extension's `.adosplug` (paste the release URL or upload the downloaded file).\n3. Approve the two-stage install dialog.\n...\nFrom the agent CLI:\n...\n```bash\nados plugin install https://github.com/altnautica/ADOSExtensions/releases/download/<release>/<extension>.adosplug\n\n```\n...\nCommunity extensions land via the hosted registry submission flow when the registry hits v1.0. Until then, first-party extensions live in the public `ADOSExtensions` repo and any plugin you build with the SDK installs cleanly via the local `.adosplug` path documented in Distribution: local install."
+        ]
+      },
+      {
+        "id": "https://github.com/altnautica/Documentation",
+        "title": "altnautica/Documentation",
+        "url": "https://github.com/altnautica/Documentation",
+        "highlights": [
+          "ADOS Platform Documentation for Mission Control, Drone Agent, and Ground Agent\n...\n# ADOS Platform Documentation\n...\nDocumentation for the ADOS open-source drone platform, powered by [Mintlify](https://mintlify.com).\n...\n- **[ADOS Mission Control](https://github.com/altnautica/ADOSMissionControl)** - Browser-based Ground Control Station\n- **[ADOS Drone Agent](https://github.com/altnautica/ADOSDroneAgent)** - Companion computer software for drones\n- **ADOS Ground Agent** - Ground station receiver (same codebase as Drone Agent, different profile)"
+        ]
+      }
+    ],
+    "searchTime": 989.9,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

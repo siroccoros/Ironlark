@@ -1,0 +1,262 @@
+[
+  {
+    "repo": "mit-acl/dynus",
+    "readme_url": "https://raw.githubusercontent.com/mit-acl/dynus/HEAD/README.md",
+    "characters": 17480
+  },
+  {
+    "repo": "mit-acl/sando",
+    "readme_url": "https://raw.githubusercontent.com/mit-acl/sando/HEAD/README.md",
+    "characters": 16320
+  },
+  {
+    "repo": "mit-acl/mighty",
+    "readme_url": "https://raw.githubusercontent.com/mit-acl/mighty/HEAD/README.md",
+    "characters": 36307
+  },
+  {
+    "repo": "mit-acl/deep_panther",
+    "readme_url": "https://raw.githubusercontent.com/mit-acl/deep_panther/HEAD/Readme.md",
+    "characters": 9128
+  },
+  {
+    "repo": "XinChen-stars/AERO_MPPI",
+    "readme_url": "https://raw.githubusercontent.com/XinChen-stars/AERO_MPPI/HEAD/README.md",
+    "characters": 2089
+  },
+  {
+    "repo": "Robotics-STAR-Lab/LA-Planner",
+    "readme_url": "https://raw.githubusercontent.com/Robotics-STAR-Lab/LA-Planner/HEAD/README.md",
+    "characters": 5116
+  },
+  {
+    "repo": "SJTU-ViSYS-team/avoid-mpc",
+    "readme_url": "https://raw.githubusercontent.com/SJTU-ViSYS-team/avoid-mpc/HEAD/README.md",
+    "characters": 3882
+  },
+  {
+    "repo": "KumarRobotics/HALO",
+    "readme_url": "https://raw.githubusercontent.com/KumarRobotics/HALO/HEAD/README.md",
+    "characters": 4147
+  },
+  {
+    "repo": "castacks/RAVEN",
+    "readme_url": "https://raw.githubusercontent.com/castacks/RAVEN/HEAD/README.md",
+    "characters": 12927
+  },
+  {
+    "repo": "ntnu-arl/mimosa",
+    "readme_url": "https://raw.githubusercontent.com/ntnu-arl/mimosa/HEAD/README.md",
+    "characters": 9706
+  },
+  {
+    "repo": "ntnu-arl/aerial_gym_simulator",
+    "readme_url": "https://raw.githubusercontent.com/ntnu-arl/aerial_gym_simulator/HEAD/README.md",
+    "characters": 9794
+  },
+  {
+    "repo": "ntnu-arl/rl_nav",
+    "readme_url": "https://raw.githubusercontent.com/ntnu-arl/rl_nav/HEAD/README.md",
+    "characters": 7820
+  },
+  {
+    "repo": "ntnu-arl/sdf-nmpc",
+    "readme_url": "https://raw.githubusercontent.com/ntnu-arl/sdf-nmpc/HEAD/README.md",
+    "characters": 11891
+  },
+  {
+    "repo": "ntnu-arl/composite_cbf",
+    "readme_url": "https://raw.githubusercontent.com/ntnu-arl/composite_cbf/HEAD/README.md",
+    "characters": 3545
+  },
+  {
+    "repo": "FP-Flight/AirGym",
+    "readme_url": "https://raw.githubusercontent.com/FP-Flight/AirGym/HEAD/README.md",
+    "characters": 17950
+  },
+  {
+    "repo": "btx0424/OmniDrones",
+    "readme_url": "https://raw.githubusercontent.com/btx0424/OmniDrones/HEAD/README.md",
+    "characters": 3354
+  },
+  {
+    "repo": "ctu-mrs/flight_forge",
+    "readme_url": "https://raw.githubusercontent.com/ctu-mrs/flight_forge/HEAD/README.md",
+    "characters": 2588
+  },
+  {
+    "repo": "HKUST-Aerial-Robotics/FALCON",
+    "readme_url": "https://raw.githubusercontent.com/HKUST-Aerial-Robotics/FALCON/HEAD/README.md",
+    "characters": 7791
+  },
+  {
+    "repo": "HKUST-Aerial-Robotics/FC-Planner",
+    "readme_url": "https://raw.githubusercontent.com/HKUST-Aerial-Robotics/FC-Planner/HEAD/README.md",
+    "characters": 11195
+  },
+  {
+    "repo": "Robotics-STAR-Lab/RACER",
+    "readme_url": "https://raw.githubusercontent.com/Robotics-STAR-Lab/RACER/HEAD/README.md",
+    "characters": 7156
+  },
+  {
+    "repo": "SYSU-RoboticsLab/FAEL",
+    "readme_url": "https://raw.githubusercontent.com/SYSU-RoboticsLab/FAEL/HEAD/README.md",
+    "characters": 6435
+  },
+  {
+    "repo": "Bottle101/Air-FAR",
+    "readme_url": "https://raw.githubusercontent.com/Bottle101/Air-FAR/HEAD/README.md",
+    "characters": 4101
+  },
+  {
+    "repo": "far-planner/far_planner",
+    "error": "readme not retrieved"
+  },
+  {
+    "repo": "caochao39/tare_planner",
+    "readme_url": "https://raw.githubusercontent.com/caochao39/tare_planner/HEAD/README.md",
+    "characters": 4755
+  },
+  {
+    "repo": "ZJU-FAST-Lab/EGO-Planner-v2",
+    "readme_url": "https://raw.githubusercontent.com/ZJU-FAST-Lab/EGO-Planner-v2/HEAD/README.md",
+    "characters": 794
+  },
+  {
+    "repo": "copterexpress/clover",
+    "readme_url": "https://raw.githubusercontent.com/copterexpress/clover/HEAD/README.md",
+    "characters": 3125
+  },
+  {
+    "repo": "grvcTeam/grvc-ual",
+    "readme_url": "https://raw.githubusercontent.com/grvcTeam/grvc-ual/HEAD/README.md",
+    "characters": 2448
+  },
+  {
+    "repo": "uzh-rpg/rpg_svo_pro_open",
+    "readme_url": "https://raw.githubusercontent.com/uzh-rpg/rpg_svo_pro_open/HEAD/README.md",
+    "characters": 13464
+  },
+  {
+    "repo": "ethz-mrl/okvis2",
+    "readme_url": "https://raw.githubusercontent.com/ethz-mrl/okvis2/HEAD/README.md",
+    "characters": 12577
+  },
+  {
+    "repo": "MIT-SPARK/Kimera-VIO",
+    "readme_url": "https://raw.githubusercontent.com/MIT-SPARK/Kimera-VIO/HEAD/README.md",
+    "characters": 14434
+  },
+  {
+    "repo": "ov2slam/ov2slam",
+    "readme_url": "https://raw.githubusercontent.com/ov2slam/ov2slam/HEAD/README.md",
+    "characters": 13837
+  },
+  {
+    "repo": "hku-mars/Point-LIO",
+    "readme_url": "https://raw.githubusercontent.com/hku-mars/Point-LIO/HEAD/README.md",
+    "characters": 10178
+  },
+  {
+    "repo": "rl-tools/raptor",
+    "readme_url": "https://raw.githubusercontent.com/rl-tools/raptor/HEAD/README.md",
+    "characters": 12801
+  },
+  {
+    "repo": "uzh-rpg/rpg_quadrotor_control",
+    "readme_url": "https://raw.githubusercontent.com/uzh-rpg/rpg_quadrotor_control/HEAD/README.md",
+    "characters": 4703
+  },
+  {
+    "repo": "Jaeyoung-Lim/mavros_controllers",
+    "readme_url": "https://raw.githubusercontent.com/Jaeyoung-Lim/mavros_controllers/HEAD/README.md",
+    "characters": 9347
+  },
+  {
+    "repo": "acados/acados",
+    "readme_url": "https://raw.githubusercontent.com/acados/acados/HEAD/README.md",
+    "characters": 6020
+  },
+  {
+    "repo": "D2SLAM-Fusion/planner-EgoPlanner",
+    "error": "readme not retrieved"
+  },
+  {
+    "repo": "D2SLAM-Fusion/controller-PX4Control",
+    "error": "readme not retrieved"
+  },
+  {
+    "repo": "D2SLAM-Fusion/oak_ffc_4p_ros",
+    "readme_url": "https://raw.githubusercontent.com/D2SLAM-Fusion/oak_ffc_4p_ros/HEAD/Readme.md",
+    "characters": 1049
+  },
+  {
+    "repo": "SHAILAB-IPEC/OpenFly-Platform",
+    "readme_url": "https://raw.githubusercontent.com/SHAILAB-IPEC/OpenFly-Platform/HEAD/README.md",
+    "characters": 17624
+  },
+  {
+    "repo": "buaa-colalab/TravelUAV",
+    "readme_url": "https://raw.githubusercontent.com/buaa-colalab/TravelUAV/HEAD/README.md",
+    "characters": 3714
+  },
+  {
+    "repo": "ASGO-MM/AirVLN",
+    "readme_url": "https://raw.githubusercontent.com/ASGO-MM/AirVLN/HEAD/README.md",
+    "characters": 7987
+  },
+  {
+    "repo": "EmbodiedCity/CityNavAgent.code",
+    "readme_url": "https://raw.githubusercontent.com/EmbodiedCity/CityNavAgent.code/HEAD/README.md",
+    "characters": 5101
+  },
+  {
+    "repo": "OmerMersin/LIONav",
+    "readme_url": "https://raw.githubusercontent.com/OmerMersin/LIONav/HEAD/README.md",
+    "characters": 16687
+  },
+  {
+    "repo": "GaryLee1210/UAV-Navigation-System",
+    "readme_url": "https://raw.githubusercontent.com/GaryLee1210/UAV-Navigation-System/HEAD/README.md",
+    "characters": 10905
+  },
+  {
+    "repo": "mzahana/px4_fast_planner",
+    "readme_url": "https://raw.githubusercontent.com/mzahana/px4_fast_planner/HEAD/README.md",
+    "characters": 3087
+  },
+  {
+    "repo": "NVIDIA-ISAAC-ROS/isaac_ros_visual_slam",
+    "readme_url": "https://raw.githubusercontent.com/NVIDIA-ISAAC-ROS/isaac_ros_visual_slam/HEAD/README.md",
+    "characters": 7959
+  },
+  {
+    "repo": "rpng/open_vins",
+    "readme_url": "https://raw.githubusercontent.com/rpng/open_vins/HEAD/ReadMe.md",
+    "characters": 13100
+  },
+  {
+    "repo": "iNavFlight/inav",
+    "readme_url": "https://raw.githubusercontent.com/iNavFlight/inav/HEAD/readme.md",
+    "characters": 8325
+  },
+  {
+    "repo": "ZJU-FAST-Lab/Fast-Drone-250",
+    "readme_url": "https://raw.githubusercontent.com/ZJU-FAST-Lab/Fast-Drone-250/HEAD/readme_en.md",
+    "characters": 15861
+  },
+  {
+    "repo": "PX4/px4-ros2-interface-lib",
+    "error": "readme not retrieved"
+  },
+  {
+    "repo": "sikang/DecompUtil",
+    "readme_url": "https://raw.githubusercontent.com/sikang/DecompUtil/HEAD/README.md",
+    "characters": 2099
+  },
+  {
+    "repo": "ZJU-FAST-Lab/FIRI",
+    "error": "readme not retrieved"
+  }
+]

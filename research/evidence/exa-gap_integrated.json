@@ -1,0 +1,247 @@
+{
+  "query": {
+    "query": "Find substantial open source drone autonomy systems with real onboard obstacle avoidance source code beyond CERLAB MRS KumarRobotics OmniNxt NTNU SUPER Prometheus GAAS. Include reference hardware, implementation gaps and dependency manifests.",
+    "type": "deep",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "6157b7d4760119cfb8d0dd5f45958316",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/OmerMersin/LIONav",
+        "title": "OmerMersin/LIONav",
+        "url": "https://github.com/OmerMersin/LIONav",
+        "highlights": [
+          "LIONav is a **production-grade, end-to-end autonomous drone flight stack** built for GPS-denied environments where off-the-shelf autopilots fail. It is not a research prototype or a stitched-together demo \u2014 it is a complete autonomy system engineered around failure modes, constrained edge hardware, degraded communications, and real-world repeat operations.\n...\n| `lionav_native_bridge` | Custom UDP binary transport to ground station |\n| `lionav_web_bridge` | WebSocket binary bridge for browser-based operators |\n| `lionav_project_manager` | Mission recording, replay, project lifecycle\n...\n| Layer | Technology |\n|---|---|\n| **Middleware** | ROS 2 Humble, `ament_cmake`, `colcon` |\n| **Languages** | C++17 \u2014 core, GCS, bridges \u00b7 Python 3 \u2014 launch, tooling |\n| **Localization** | FAST-LIO \u2014 LiDAR-inertial odometry |\n| **GPU Mapping** | NVIDIA nvblox \u2014 CUDA TSDF/ESDF |\n| **SLAM Backend** | GTSAM iSAM2 \u00b7 Scan Context \u00b7 ICP + NDT loop closure |\n| **Point Cloud** | PCL \u00b7 Eigen |\n| **Planning** | Custom flyable graph planner \u00b7 6-level autonomy manager \u00b7 weighted A* RTL |\n| **Flight Integration** | MAVLink / ArduPilot |\n| **Ground Station** | Qt6 (Widgets, Network, Multimedia, OpenGL) \u00b7 C++17 \u00b7 OpenGL |\n| **Web Client** | WebSocket \u00b7 WebGPU \u00b7 WebGL2 |\n| **Transport** | Custom `LION` UDP binary protocol \u00b7 WebSocket binary |\n| **Build** | `colcon` \u00b7 `ament` \u00b7 `CMake` |"
+        ]
+      },
+      {
+        "id": "https://github.com/crazy-robotics/aerial-autonomy-stack",
+        "title": "crazy-robotics/aerial-autonomy-stack",
+        "url": "https://github.com/crazy-robotics/aerial-autonomy-stack",
+        "highlights": [
+          "*Aerial autonomy stack* (AAS) is the all-in-one software stack to:\n...\n1. **Develop** multi-drone autonomy\u2014with ROS2, PX4, and ArduPilot\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLOv8 and 3D LiDAR \n3. **Deploy** in real drones\u2014with JetPack and NVIDIA Orin\n\n \n Feature list (click to expand) \n\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors and VTOLs**)\n...\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n...\n- **YOLOv8** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n...\n- 3D worlds for perception-based simulation\n...\n- **Dockerized simulation** based on [`nvcr.io/nvidia/cuda:12.8.1-cudnn-runtime-ubuntu22.04`](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags)\n...\n- **Dockerized deployment** based on [`nvcr.io/nvidia/l4t-jetpack:r36.4.0`](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-jetpack/tags)\n...\n\u251c\u2500\u2500 deploy_build.sh # Build `Dockerfile.\n...\narm64/Orin\n...\n\u251c\u2500\u2500 sim_build.sh # Build all\n...\nHolybro Jetson Baseboard](https://holybro.com/products/pixhawk-\n...\nson-baseboard\n...\nwith Pixhawk 6X and NVIDIA Orin NX 16GB\n...\ncurrently, HITL covers the Jetson compute and the inter-vehicle network, support for Pixhawk HITL is\n...\n. \n> Use USB2.0 ASIX Ethernet adapters to add multiple network interfaces to the Jetson baseboards"
+        ]
+      },
+      {
+        "id": "https://github.com/ntnu-arl/unified_autonomy_stack",
+        "title": "ntnu-arl/unified_autonomy_stack",
+        "url": "https://github.com/ntnu-arl/unified_autonomy_stack",
+        "highlights": [
+          "# ntnu-arl/unified_\n...\nonomy_stack\n...\nThe Unified Autonomy Stack: Toward a Blueprint for Generalizable Robot Autonomy\n...\n- Stars: 186\n- Forks: 13\n- Watchers: 186\n- Open issues: 5\n- License: BSD 3-Clause \"New\" or \"Revised\" License\n- Homepage: https://ntnu-arl.github.io/unified_autonomy_stack/\n- Default branch: main\n- Created: 2025-12-05T03:58:28Z\n...\nThe Unified Autonomy Stack: Toward a Blueprint for Generalizable Robot Autonomy](https\n...\nWelcome to the documentation for the **Unified Autonomy Stack**. \nThis stack presents an autonomy architecture integrating perception, planning, and navigation algorithms developed and field tested at the [Autonomous Robots Lab](https://www.autonomousrobotslab.com) across robot configurations. The stack consists of the software for the core algorithms along with drivers, utilities, and tools for simulation and testing. We currently support rotary-wing (e.g., multirotor) and certain ground systems (e.g., legged robots) with extension to other systems, such as underwater robots, coming soon. The software distributed as a part of this stack has been thoroughly tested in real-world scenarios demonstrating robust autonomous operation in challenging GPS-denied environments.\n...\nThe documentation of the Unified Autonomy Stack is available at [https://ntnu-arl.github.io/unified_autonomy_stack/](https://ntnu-arl.github.io/unified_autonomy_stack/)."
+        ]
+      },
+      {
+        "id": "https://ntnu-arl.github.io/unified_autonomy_stack/",
+        "title": "Unified Autonomy Stack",
+        "url": "https://ntnu-arl.github.io/unified_autonomy_stack/",
+        "author": "Autonomous Robots Lab, NTNU",
+        "highlights": [
+          "Welcome to the documentation for the Unified Autonomy Stack. This stack presents an autonomy architecture integrating perception, planning, and navigation algorithms developed and field tested at the Autonomous Robots Lab across robot configurations. The stack consists of the software for the core algorithms along with drivers, utilities, and tools for simulation and testing. We currently support rotary-wing (e.g., multirotor) and certain ground systems (e.g., legged robots) with extension to other configurations, such as underwater robots, coming soon. The software distributed as a part of this stack has been thoroughly tested in real-world scenarios, demonstrating robust autonomous operation in challenging GPS-denied environments.\n...\n- SDF-NMPC and RL: Neural MPC and Reinforcement Learning based map-free approaches for safe navigation.\n...\n- Last-resort Safety: Control Barrier Functions for filtering unsafe commands.\n...\n- Multi-platform Support: Designed for both aerial robots and ground robots with planned extension to underwater.\n...\n- Containerized Deployment: Docker-based deployment for easy setup and reproducibility across different platforms\n...\nflow.\n- Multi-modal SLAM: Details on the estimation stack.\n- VLM: Details on the VLM stack.\n- Planning: Explanation of the planning stack.\n- Navigation: Information on Neural MPC, RL and Composite CBF Safety Filter for safe"
+        ],
+        "image": "https://ntnu-arl.github.io/unified_autonomy_stack/figures/arl_logo.png"
+      },
+      {
+        "id": "https://github.com/peDrontonio/VLNontheFly",
+        "title": "peDrontonio/VLNontheFly",
+        "url": "https://github.com/peDrontonio/VLNontheFly",
+        "highlights": [
+          "Vision-language models (VLMs) have unlocked open-vocabulary, instruction-following navigation on many robot embodiments, but aerial robots have mostly been left out, because limited onboard compute, hierarchical-integration complexity, and safety concerns get in the way. **VLN on the Fly** is a fully onboard, decoupled VLN stack for micro air vehicles:\n...\nWe deploy the full stack on a real UAV across **15 open-volume flights** across three everyday referents, and validate obstacle avoidance in **6 additional cluttered-environment trials** with collision-free trajectory tracking and safe perception gating.\n...\n| [`ego-planner-swarm`](./ego-planner-swarm) | `ego_planner`, `plan_env`, `bspline_opt`, `path_searching`, `traj_utils`, `poscmd_2_odom`, `quadrotor_msgs`, \u2026 | EGO-Planner B-spline trajectory generation, occupancy mapping, `raptor_path_tracker.py` bridge to PX4 EXTERNAL mode |\n...\n| [`vio_bridge`](./vio_bridge) | `vio_bridge` | Visual-inertial odometry bridge, toward replacing the\n...\n- Quadrotor airframe with a **Pixhawk 6C** flight controller running **PX4**\n- **Jetson Orin NX** onboard computer (runs the quantized VLM, planner, and safety layer)\n- **Intel RealSense D435i** RGB-D camera\n- **OptiTrack PrimeX 41** motion-capture system for pose (current validation setup only; see the paper's Limitations and [`vio_bridge`](./vio_bridge) for the onboard-localization path)"
+        ]
+      },
+      {
+        "id": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "title": "GaryLee1210/UAV-Navigation-System",
+        "url": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "publishedDate": "2026-02-10T11:39:01.000Z",
+        "highlights": [
+          "| Component | Model / Specs | Note |\n| --- | --- | --- |\n| **Onboard Computer** | **NVIDIA Jetson Orin NX (8GB)** | Core computing unit |\n| **Flight Controller** | **Holybro Pixhawk 4** | 32-bit, running PX4/ArduPilot |\n| **LiDAR** | **Livox Mid-360** | Omnidirectional 3D LiDAR |\n| **Depth Camera** | **Intel RealSense D435** | For VIO and depth sensing |\n| **Frame** | **Custom Carbon Fiber (250mm)** | \"Taobao\" Custom Cut |\n| **Motors** | **Koofly 2207 V2 (1960KV)** | 4S Power System |\n| **ESC** | **EMAX BLHeli32 (45A)** | 4-in-1 ESC supported |\n| **Battery** | **Gens Ace 4S 4000mAh** | Long endurance for computing |\n| **Propellers** | **Gemfan 5147 (3-blade)** | Efficient 5-inch props |\n| **RC System** | **RadioLink AT9S Pro + R12DSM** | Reliable control link |\n...\n| **EGO-Planner** (`Drone/planner/ego_planner`, from [Fast-Drone-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) `8ff6427`) | launch/config | \u2460 Odometry source switched from VINS-Fusion (`/vins_fusion/imu_propagate`) to LIO (`/Odometry`). \u2461 `grid_map` is built directly from the LiDAR registered cloud (`cloud_registered`) instead of the depth camera. \u2462 `max_acc` lowered 6.0 \u2192 2.0 for safe indoor flight. Full diff in `patches/`. |\n...\n-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) `8ff6427`) | launch/config | Position-control bridge to PX4. Driven by `/Odometry_highrate`; `run_ctrl.launch` +"
+        ]
+      },
+      {
+        "id": "https://github.com/PX4/PX4-Autopilot",
+        "title": "PX4/PX4-Autopilot",
+        "url": "https://github.com/PX4/PX4-Autopilot",
+        "publishedDate": "2012-08-04T00:00:00.000Z",
+        "highlights": [
+          "PX4 is an open-source autopilot stack for drones and unmanned vehicles. It supports multirotors, fixed-wing, VTOL, rovers, and many more experimental platforms from racing quads to industrial survey aircraft. It runs on [NuttX](https://nuttx.apache.org/), Linux, and macOS. Licensed under [BSD 3-Clause](LICENSE).\n...\n**Modular architecture.** PX4 is built around [uORB](https://docs.px4.io/main/en/middleware/uorb.html), a [DDS](https://docs.px4.io/main/en/middleware/uxrce_dds.html)-compatible publish/subscribe middleware. Modules are fully parallelized and thread safe. You can build custom configurations and trim what you don't need.\n...\n4 runs on a wide range of [autopilot\n...\n| Resource | Description |\n| --- | --- |\n| [User Guide](https://docs.px4.io/main/en/) | Build, configure, and fly with PX4 |\n| [Developer Guide](https://docs.px4.io/main/en/development/development.html) | Modify the flight stack, add peripherals, port to new hardware |\n| [Airframe Reference](https://docs.px4.io/main/en/airframes/airframe_reference.html) | Full list of supported frames |\n| [Autopilot Hardware](https://docs.px4.io/main/en/flight_controller/) | Compatible flight controllers |\n| [Release Notes](https://docs.px4.io/main/en/releases/) | What's new in each release |\n| [Contribution Guide](https://docs.px4.io/main/en/contribute/) | How to contribute to PX4 |"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/organization/70kkdqm4d42",
+            "type": "company",
+            "version": 1,
+            "properties": {
+              "name": "PX4 Autopilot",
+              "foundedYear": 2008,
+              "description": "PX4 is the open source flight control software that powers any vehicle from commercial and cargo drones through to ground vehicles. ",
+              "workforce": {
+                "total": 14
+              },
+              "headquarters": {
+                "address": "Zurich, ZH 8092, CH",
+                "city": "Zurich",
+                "postalCode": null,
+                "country": "Switzerland"
+              },
+              "financials": {
+                "revenueAnnual": 4330000,
+                "fundingTotal": null,
+                "fundingLatestRound": null
+              },
+              "webTraffic": {
+                "visitsMonthly": 338941,
+                "countryRank": 7616,
+                "avgDurationSeconds": 121,
+                "history": [
+                  {
+                    "value": 362544,
+                    "dateFrom": "2026-03",
+                    "dateTo": "2026-03"
+                  },
+                  {
+                    "value": 346911,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 382883,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 420917,
+                    "dateFrom": "2026-05",
+                    "dateTo": "2026-05"
+                  },
+                  {
+                    "value": 420917,
+                    "dateFrom": "2026-05",
+                    "dateTo": "2026-05"
+                  },
+                  {
+                    "value": 338941,
+                    "dateFrom": "2026-06",
+                    "dateTo": "2026-06"
+                  }
+                ]
+              },
+              "research": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/KumarRobotics/kr_autonomous_flight",
+        "title": "KumarRobotics/kr_autonomous_flight",
+        "url": "https://github.com/KumarRobotics/kr_autonomous_flight",
+        "publishedDate": "2020-11-17T16:52:31.000Z",
+        "highlights": [
+          "This is the autonomous flight code stack used at KumarRobotics, providing a complete solution for GPS-denied quadcopter autonomy. It has been tested extensively in challenging urban and rural (under forest canopy) environments.\n...\n2 Jazzy Jalisco (Ubuntu 24.04) port of this stack lives on the [`ros2_dev`](https://github.com/KumarRobotics/kr_autonomous_flight/tree/ros2_dev) branch. It is built on top of [`feature/integrate_lidar_3d_planner_default`](https://github.com/KumarRobotics/kr_autonomous_flight/tree/feature/integrate_lidar_3d_planner_default), which adds two capabilities beyond `master`:\n...\nEvery package, launch file, Docker image, and CI workflow on `ros2_dev` has been adapted for ROS2 Jazzy. **This port has not been extensively tested or experimented with and is not the version used to produce any of the results shown in our papers or videos above.** It is provided as a starting point for developers who want to use kr_autonomous_flight under ROS2. Several external dependencies pulled via `external_*.yaml` (`kr_trackers_manager`, `kr_mav_control`, `faster-lio`, `mrsl_quadrotor`, etc.) are still ROS1-only and must themselves be ported before a full end-to-end build succeeds. See [`ROS2_MIGRATION_REPORT.md`](https://github.com/KumarRobotics/kr_autonomous_flight/blob/ros2_dev/ROS2_MIGRATION_REPORT.md) for a detailed per-package breakdown and the list of known follow-ups."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/organization/7zyg9hf64sx",
+            "type": "company",
+            "version": 1,
+            "properties": {
+              "name": "Vijay Kumar Lab",
+              "foundedYear": null,
+              "description": null,
+              "workforce": {
+                "total": 1
+              },
+              "headquarters": {
+                "address": "220 S 33rd St, Philadelphia, Pennsylvania 19104, US",
+                "city": "Philadelphia",
+                "postalCode": null,
+                "country": "United States"
+              },
+              "financials": null,
+              "webTraffic": {
+                "visitsMonthly": 10675,
+                "countryRank": 148367,
+                "avgDurationSeconds": 214,
+                "history": [
+                  {
+                    "value": 6322,
+                    "dateFrom": "2026-02",
+                    "dateTo": "2026-02"
+                  },
+                  {
+                    "value": 4991,
+                    "dateFrom": "2026-03",
+                    "dateTo": "2026-03"
+                  },
+                  {
+                    "value": 4794,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 4794,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 4405,
+                    "dateFrom": "2026-05",
+                    "dateTo": "2026-05"
+                  },
+                  {
+                    "value": 10675,
+                    "dateFrom": "2026-06",
+                    "dateTo": "2026-06"
+                  }
+                ]
+              },
+              "research": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/Relo02/Drone-optimal-trajectory",
+        "title": "Relo02/Drone-optimal-trajectory",
+        "url": "https://github.com/Relo02/Drone-optimal-trajectory",
+        "highlights": [
+          "This repository contains a ROS2 + PX4 SITL + Gazebo stack for a quadrotor MPC with LiDAR-based obstacle avoidance. The MPC runs inside ROS2, consumes PX4 odometry and LaserScan data, and outputs trajectory setpoints with velocity feedforward.\n...\n- `drone_ws/src/drone/drone/mpc_core.py` - Clean CasADi MPC solver with obstacle-aware reference trajectory\n- `drone_ws/src/drone/drone/mpc_obstacle_avoidance_node_v2.py` - ROS2 node with direct PX4 control and velocity feedforward\n- `drone_ws/src/drone/drone/mpc_visualizer.py` - Real-time 3D visualization tool\n- `drone_ws/src/drone/launch/mpc_obstacle_avoidance_v2.launch.py` - Standalone launch file (no separate commander needed)\n...\n- `drone_ws/src/drone/drone/mpc_obstalce_avoidance_node.py` - Original ROS2 node (requires separate commander)\n- `drone_ws/src/drone/drone/mpc_solver.py` - Original CasADi MPC formulation\n- `drone_ws/src/drone/drone/mpc_mission_commander.py` - Offboard commander that tracks MPC trajectory\n- `drone_ws/src/drone/drone/hover_enable_commander.py` - Hover gate that enables MPC once altitude is stable\n...\nPX4 Control | Via\n...\nHalf-space\n...\njectory | Straight line or reference\n...\nposition | **Potential field obstacle-aware** |\n...\n| Architecture |\n...\nThe MPC is solved\n...\ni + IPOPT.\n...\nslack), and a"
+        ]
+      },
+      {
+        "id": "https://github.com/OPBOYZ8/uav-lidar-autonomy",
+        "title": "OPBOYZ8/uav-lidar-autonomy",
+        "url": "https://github.com/OPBOYZ8/uav-lidar-autonomy",
+        "highlights": [
+          "Navigate a simulated quadrotor with real-time LiDAR, reactive obstacle avoidance, and no GPS or prebuilt map\n...\nuav-lidar-autonomy runs a simulated quadrotor in a warehouse and lets it move with LiDAR guidance. It uses ROS Noetic and Gazebo 11 to model the drone, the space, and the route it takes.\n...\n- detect nearby obstacles with a VLP-16 LiDAR\n- avoid walls and objects in real time\n- plan a route with A* path planning\n- move through a warehouse without manual piloting\n...\n- **LiDAR sensing** \n The VLP-16 scans the area around the drone and finds nearby walls, shelves, and objects.\n\n- **Reactive avoidance** \n The drone changes course when something is too close.\n\n- **A* planning** \n The drone searches for a path through the warehouse and tries to reach the goal through open space.\n...\n- warehouse navigation in simulation\n- LiDAR-based obstacle detection\n- reactive obstacle avoidance\n- A* path planning\n- quadrotor motion control\n- ROS Noetic support\n- Gazebo 11 scene playback\n- Python-based logic\n- occupancy grid use for map handling\n- Velodyne VLP-16 sensor model\n...\n`launch/\n...\n- `worlds/`\n...\nGazebo scenes\n...\n- `models/\n...\n- autonomous navigation\n- obstacle avoidance\n- occupancy grid planning\n- quadrotor control\n- LiDAR-based sensing\n- warehouse simulation\n- ROS Noetic\n- Gazebo 11\n- Python logic\n- Velodyne sensor simulation"
+        ]
+      },
+      {
+        "id": "https://github.com/xrj3000/GAAS",
+        "title": "xrj3000/GAAS",
+        "url": "https://github.com/xrj3000/GAAS",
+        "highlights": [
+          "Currently the project provides the following ten funcitons, some of which may need to be further optimized: \n\nNOTE: This is a beta version of the software. Please re-ensure the stability of each feature before implementing on real drones.\n\n \n \n \n VISION BASED POLE AVOIDANCE BY GAAS\n \n\n1. Details about automatic taking off and landing can be found in: ```software/px4_mavros_scripts```;\n...\n2. Navigation in GPS denied environment can be found in: ```software/SLAM/ygz_slam_ros```, currently we are using stereo optical flow;\n3. Obstacle avoidance based on stereo vision can be found in: ```software/Obstacle_Map```;\n4. Path planning can be found in ```software/Navigator```;\n...\nfound in ```algorithms/image_detection```;\n...\n11. A list of hardware that we use is at ```GAAS/hardware```.\n\n \n \n \n\n##\n...\n4. \u8def\u5f84\u89c4\u5212\u7684\u5b9e\u73b0\u5728 ```software/Navigator```\uff1b\n5. \u573a\u666f\u91cd\u8bc6\u522b\uff0c\u5373\u7ed9\u5b9a\u4e00\u5f20\u56fe\u7247\uff0c\u6062\u590d\u51fa\u5f53\u524d\u56fe\u7247\u5728\u7ed9\u5b9a\u73af\u5883\u4e2d\u7684\u4f4d\u7f6e\uff0c\u5177\u4f53\u5b9e\u73b0\u5728 ```algorithms/scene_retrieving```\uff1b\n6. 3D \u5efa\u6a21\uff0c\u5177\u4f53\u5b9e\u73b0\u5728 ```algorithms/sfm```\uff1b\n7. [\u7269\u4f53\u8ddf\u8e2a](https://youtu.be/C6902HKUVR8)\uff0c\u5177\u4f53\u5b9e\u73b0\u5728 ```algorithms/object_trace_tracking```\uff1b\n8. \u7269\u4f53\u68c0\u6d4b\uff0c\u5177\u4f53\u5b9e\u73b0\u5728 ```algorithms/image_detection```\uff1b\n9. \u8bed\u4e49\u5206\u5272\uff0c\u5177\u4f53\u5b9e\u73b0\u5728 ```algorithms/image_segmentation```\uff1b\n10. \u65e0\u4eba\u673a\u63a7\u5236 API \u53ca\u4e2d\u82f1\u6587\u6559\u7a0b\uff0c\u5177\u4f53\u5728 ```GAAS/demo``` \u6587\u4ef6\u5939\u3002"
+        ]
+      },
+      {
+        "id": "https://github.com/hkust-aerial-robotics/omninxt/",
+        "title": "HKUST-Aerial-Robotics/OmniNxt",
+        "url": "https://github.com/hkust-aerial-robotics/omninxt/",
+        "highlights": [
+          "](https://github.com/D2\n...\n), which contains hardware information,\n...\ntools.\n...\n](https://github.com/D2SLAM-Fusion/\n...\nWe open-source hardware designs at \ud83d\udd17[NXT-FC](https://github.com/HKUST-Aerial-Robotics/Nxt-FC). Nxt-FC supports [PX4](https://github.com/PX4/PX4-Autopilot) and [Ardupilot](https://github.com/ArduPilot/ardupilot) firmware.\n...\nOur Omni-VINS and Omni-Depth are developed from D2SLAM. Since building the Docker images on the local machine(Jetson Orin) usually takes a long time, we suggest you pull the images from the Docker Hub. If you want to build the Docker image on your local machine, follow the instructions [Build Docker Images On Local Machine](#Build Docker images in local machines).\n...\nWe highly suggest you refer to Fast-Lab's PX4 controller [PX4-Control](https://github.com/ZJU-FAST-Lab/Fast-Drone-250/tree/master/src/realflight_modules/px4ctrl)\n...\nWe also provide our yaw-rotation-free version of Fast-Lab's PX4 controller [PX4-Control](https://github.com/D2SLAM-Fusion/controller-PX4Control).\n...\nWe modified some of the\n...\nin the [\n...\n-planner](https://github.com/ZJU-FAST-Lab/\n...\n-planner.git). Our version is here [ego-planner-om\n...\n-modify](https://github.com/D2SLAM-Fusion/planner-EgoPlanner) \n\nPlease cite ZJU-Fast-Lab's [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner.git) if these modules are useful for your research and project."
+        ]
+      }
+    ],
+    "searchTime": 5424.9,
+    "costDollars": {
+      "total": 0.014
+    }
+  }
+}

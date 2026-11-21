@@ -1,0 +1,124 @@
+[
+  {
+    "full_name": "Zhefan-Xu/CERLAB-UAV-Autonomy",
+    "description": "[CMU] A Versatile and Modular Framework Designed for Autonomous Unmanned Aerial Vehicles [UAVs] (C++/ROS/PX4)",
+    "created_at": "2023-12-20T01:45:36Z",
+    "pushed_at": "2025-04-02T15:34:58Z",
+    "archived": false,
+    "stargazers_count": 866,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "default_branch": "main"
+  },
+  {
+    "full_name": "ntnu-arl/unified_autonomy_stack",
+    "description": "The Unified Autonomy Stack: Toward a Blueprint for Generalizable Robot Autonomy",
+    "created_at": "2025-12-05T03:58:28Z",
+    "pushed_at": "2026-08-15T12:51:15Z",
+    "archived": false,
+    "stargazers_count": 229,
+    "license": {
+      "key": "bsd-3-clause",
+      "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+      "spdx_id": "BSD-3-Clause",
+      "url": "https://api.github.com/licenses/bsd-3-clause",
+      "node_id": "MDc6TGljZW5zZTU="
+    },
+    "default_branch": "main"
+  },
+  {
+    "full_name": "HKUST-Aerial-Robotics/OmniNxt",
+    "description": "[IROS'24 Oral] A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception",
+    "created_at": "2024-03-07T13:51:50Z",
+    "pushed_at": "2025-03-09T04:24:18Z",
+    "archived": false,
+    "stargazers_count": 568,
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    },
+    "default_branch": "main"
+  },
+  {
+    "full_name": "uzh-rpg/agilicious",
+    "description": "Agile flight done right! ",
+    "created_at": "2022-06-14T16:42:51Z",
+    "pushed_at": "2023-03-07T18:30:25Z",
+    "archived": false,
+    "stargazers_count": 642,
+    "license": null,
+    "default_branch": "main"
+  },
+  {
+    "full_name": "aerostack2/aerostack2",
+    "description": "Aerostack2 is a ROS 2 framework developed to create autonomous multi-aerial-robots systems in an easy and powerful way.",
+    "created_at": "2022-12-09T10:04:25Z",
+    "pushed_at": "2026-09-07T12:59:33Z",
+    "archived": false,
+    "stargazers_count": 384,
+    "license": {
+      "key": "bsd-3-clause",
+      "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+      "spdx_id": "BSD-3-Clause",
+      "url": "https://api.github.com/licenses/bsd-3-clause",
+      "node_id": "MDc6TGljZW5zZTU="
+    },
+    "default_branch": "main"
+  },
+  {
+    "full_name": "ctu-mrs/mrs_uav_system",
+    "description": "The entry point to the MRS UAV system.",
+    "created_at": "2020-05-03T08:59:00Z",
+    "pushed_at": "2026-08-14T20:28:34Z",
+    "archived": false,
+    "stargazers_count": 636,
+    "license": {
+      "key": "bsd-3-clause",
+      "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+      "spdx_id": "BSD-3-Clause",
+      "url": "https://api.github.com/licenses/bsd-3-clause",
+      "node_id": "MDc6TGljZW5zZTU="
+    },
+    "default_branch": "ros2"
+  },
+  {
+    "full_name": "Yarok14Technologies/No-GPS_Autonomous-Drone-System",
+    "description": "PX4 + ROS2 + Visual SLAM + VIO + Obstacle Avoidance + Autonomous Return Home A fully autonomous drone capable of navigating, mapping, avoiding obstacles, detecting targets, and returning to its launch position without GPS.  Designed for research-grade missions, ISRO-style No-GPS challenges, DARPA-style underground navigation, and autonomous flight.",
+    "created_at": "2025-11-23T14:25:39Z",
+    "pushed_at": "2025-11-23T14:34:05Z",
+    "archived": false,
+    "stargazers_count": 5,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "default_branch": "main"
+  },
+  {
+    "full_name": "altnautica/ADOSDroneAgent",
+    "description": "ADOS Drone Agent \u2014 Software-defined drone network agent. Install on any companion computer to make your drone smart, autonomous, and fleet-ready.",
+    "created_at": "2026-03-03T08:31:25Z",
+    "pushed_at": "2026-09-03T22:42:44Z",
+    "archived": false,
+    "stargazers_count": 26,
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    },
+    "default_branch": "main"
+  }
+]

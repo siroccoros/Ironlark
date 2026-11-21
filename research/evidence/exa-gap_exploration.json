@@ -1,0 +1,156 @@
+{
+  "query": {
+    "query": "autonomous UAV exploration open source FAR Planner TARE FALCON RACER FAEL SEER RAPTOR DSV Planner repositories aerial robots",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "f88c42e001690a5ab90f30817c52dd88",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/FALCON",
+        "title": "HKUST-Aerial-Robotics/FALCON",
+        "url": "https://github.com/HKUST-Aerial-Robotics/FALCON",
+        "highlights": [
+          "[T-RO 2024] FALCON: Fast Autonomous Aerial Exploration using Coverage Path Guidance.\n...\nREADME\n\n# FALCON\n...\nThis is the code repository for the paper contributed to IEEE T-RO: \n\n**[FALCON: Fast Autonomous Aerial Exploration using Coverage Path Guidance](https://ieeexplore.ieee.org/document/10816079)**\n...\nThis paper introduces FALCON, a Fast Autonomous aerial robot expLoration planner using COverage path guidaNce. FALCON effectively harnesses the full potential of online generated coverage paths in enhancing exploration efficiency. We also introduce a lightweight exploration planner evaluation environment that allows for comparing exploration planners across a variety of testing scenarios using an identical quadrotor simulator.\n\n \n \n \n\nPlease cite our paper if you use this project in your research:\n...\nIt is recommended to use the [UniQuad](https://github.com/HKUST-Aerial-Robotics/UniQuad) platform for real-world UAV deployment. The UniQuad platform is a unified and versatile quadrotor platform series that offers high flexibility to adapt to a wide range of commontasks, excellent customizability for advanced demands, and easy maintenance in case of crashes. Our real-world UAV deployment is based on the **Uni250C** from the UniQuad platform.\n...\n* [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL): a powerful framework for Fast UAV ExpLoration"
+        ]
+      },
+      {
+        "id": "https://github.com/Robotics-STAR-Lab/RACER",
+        "title": "Robotics-STAR-Lab/RACER",
+        "url": "https://github.com/Robotics-STAR-Lab/RACER",
+        "highlights": [
+          "# RACER \n \n**RACER**, a **RA**pid **C**ollaborative **E**xplo**R**ation approach using a \nfleet of decentralized UAVs. \n \nWe develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The proposed system features robustness against unstable communication and a high degree of coordination. The quadrotor team operates with asynchronous and limited communication and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE Transactions on Robotics and is selected as the **2023 IEEE TRO Best Paper**! \n \n \nTry [Quick Start](#quick-start) to run a demo in a few minutes! \n \n \n \n \n \n \n__Complete video__: [video](https://www.bilibili.com/video/BV1ec411J7ps/?spm_id_from=333.999.0.0&vd_source=ce9122be0193fcad2e9384dacc62f4fa). \n \n__Authors__: [Boyu Zhou](http://sysu-star.com) from SYSU STAR Group, and Hao Xu, [Shaojie Shen](http://uav.ust.hk/group/) from the [HKUST Aerial Robotics Group](http://uav.ust.hk/). \n \nPlease cite our paper if you use this project in your research: \n- [__RACER: Rapid Collaborative Exploration with a \nDecentralized Multi-UAV System__](https://arxiv.org/abs/2209.08533), Boyu Zhou, Hao Xu, Shaojie Shen, IEEE Transactions on Robotics (**T-RO**) , \n \n```\r\n@article{zhou2023racer,"
+        ]
+      },
+      {
+        "id": "https://github.com/SYSU-RoboticsLab/FAEL",
+        "title": "SYSU-RoboticsLab/FAEL",
+        "url": "https://github.com/SYSU-RoboticsLab/FAEL",
+        "highlights": [
+          "FAEL: Fast Autonomous Exploration for Large-Scale Environments with a Mobile Robot\n...\n**FAEL** is a systematic framework for **F**ast **A**utonomous **E**xploration for **L**arge-scale environment. In **FAEL**, a fast preprocessing of environmental information is presented, providing fundamental information to support high-frequency path planning. An path optimization formulation that comprehensively considers key factors about fast exploration is introduced. Further, an heuristic algorithm is devised to solve the NP-hard optimization problem, which empirically finds optimal solution in real time. Our method is demonstrated to completes exploration with the least time and shortest movement distance compared to state-of-the-art methods at the time of publication.\n\n \n \n \n \n\n__Real-world experiment video__: [video](https://www.bilibili.com/video/BV1rv4y1i7Sg/?spm_id_from=333.999.0.0&vd_source=4b11429ea8ba8725f0fc457cc4442883)\n...\nWe use [jackal](https://github.com/jackal) for ground robot simulation, [RotorS](https://github.com/ethz-asl/rotors_simulator) for generic odometry sensor simulation, [cmu_planner](https://github.com/jizhang-cmu/ground_based_autonomy_basic) for local_planner and terrain_analysis, and [ufomap](https://github.com/UnknownFreeOccupied/ufomap) for 3D environment representation. We really appreciate these open source projects!"
+        ]
+      },
+      {
+        "id": "https://github.com/hkust-aerial-robotics/falcon",
+        "title": "HKUST-Aerial-Robotics/FALCON",
+        "url": "https://github.com/hkust-aerial-robotics/falcon",
+        "publishedDate": "2024-11-27T14:07:58.000Z",
+        "highlights": [
+          "[T-RO 2024] FALCON: Fast Autonomous Aerial Exploration using Coverage Path Guidance.\n...\nThis paper introduces FALCON, a Fast Autonomous aerial robot expLoration planner using COverage path guidaNce. FALCON effectively harnesses the full potential of online generated coverage paths in enhancing exploration efficiency. We also introduce a lightweight exploration planner evaluation environment that allows for comparing exploration planners across a variety of testing scenarios using an identical quadrotor simulator.\n\n \n \n \n\nPlease cite our paper if you use this project in your research:\n...\n[UniQuad](https://github.com/HKUST\n...\nAerial-Robotics/UniQuad) platform\n...\nThe UniQuad\n...\nis a unified and versatile\n...\na wide range\n...\ncommontasks, excellent customizability for\n...\ndemands, and easy maintenance in case of crashes\n...\nOur real-world\n...\nthe **Uni\n...\n0C**\n...\nthe UniQuad platform.\n...\n- [LKH](http://webhotel4.ruc.dk/~keld/research/LKH/): An effective implementation of the Lin-Kernighan heuristic for solving the traveling salesman problem\n- [NLOpt](https://nlopt.readthedocs.io/): An open-source library for nonlinear optimization\n- [Open3D](https://www.open3d.org/): An open-source library that supports rapid development of software that deals with 3D data\n- [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL): a powerful framework for Fast UAV ExpLoration"
+        ]
+      },
+      {
+        "id": "https://www.cmu-exploration.com/tare-planner",
+        "title": "TARE Planner",
+        "url": "https://www.cmu-exploration.com/tare-planner",
+        "highlights": [
+          "TARE planner involves a hierarchical framework for highly efficient exploration - one level in the framework maintains data densely and computes a detailed path within a local planning horizon, another level maintains data sparsely and computes a coarse path at the global scale. The paths at both levels are joined together to form the exploration path. The framework draws the insight that detailed processing is most effective close to the vehicle, while coarse processing provides sufficient utility far away from the vehicle. The framework trades off details at the global scale for computational speed. In practice, the framework prioritizes the exploration in the surroundings of the vehicle while keeping the global picture in mind. Here is the TARE Planner repository.\n...\n. The vehicle navigates at 2m/s. Each method is run a number of 10 times. The trajectories are the best of the 10 runs and the exploration metrics (explored volume, traveling distance, and algorithm runtime on vertical axis) are the means of the 10 runs with the time on horizontal axis spanning the longest run. A run is ended if the method reports completion, the vehicle almost stops (< 10m of movement within 5 minutes), or the time limit is reached. Here, the time limit is set to twice of TARE Planner or DSV Planner (our alternative method), depending on which one is longer. Note that TARE Planner and DSV"
+        ],
+        "image": "https://lh3.googleusercontent.com/sitesv/AG8ngQUIws_x7XCLD_KlOayIG60AqnrKx93398yKQqOGVWte88hTyaMQf3_Svmm1WmbIVUpPD4DtcDolTJnRmxlGG6GYXD6SGT3zaho6icEn7BUeIUgm70dttA870eYuNRfwmVP7Nys26tyVifTescwI3Q4u9Jwt2fE6N7Bj_7CTdMeFfJEEqMdSQBI5QnfF78XcVvFYd17vS8JLEAfCig7hCD1VazZu_nuzVS2rUoPjrSQ=w1280"
+      },
+      {
+        "id": "https://github.com/Life-with-god/FUEL",
+        "title": "Life-with-god/FUEL",
+        "url": "https://github.com/Life-with-god/FUEL",
+        "highlights": [
+          "- Feb 24, 2023: the code for **multi-UAV exploration** is released! check [this link](https://github.com/SYSU-STAR/RACER).\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n \n**FUEL** is a powerful framework for **F**ast **U**AV **E**xp**L**oration.\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes! \n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE TRO. Check code [here](https://github.com/SYSU-STAR/RACER).\n\n \n \n \n \n\n__Complete videos__: [video1](https://www.youtube.com/watch?v=_dGgZUrWk-8), [video2](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://github.com/Bottle101/Air-FAR",
+        "title": "Bottle101/Air-FAR",
+        "url": "https://github.com/Bottle101/Air-FAR",
+        "highlights": [
+          "# Bottle101/\n...\nAir-FAR is a robust framework for 3D path planning that leverages a visibility graph updated dynamically for real-time replanning (<30ms for 300m trajectory). This planner represents the environment using 3D polyhedrons and employs a novel heuristic, multi-layer visibility graph construction algorithm to sidestep dimensional catastrophes. Its path planning guarantees asymptotic optimality through a combination of divide-and-conquer based path pruning and heuristic random sampling techniques. The planner is capable of handling both known and unknown environments. In a known environment, paths are planned based on a prior map. In an unknown environment, multiple paths are attempted to guide the vehicle to goal based on the environment observed during the navigation. \nFull technical details will be disclosed in an upcoming paper.\n\n \n \n \n\n## Usage\n...\nThe\u00a0repository\u00a0has been tested in\u00a0Ubuntu 20.04 with\u00a0ROS Noetic. Follow instructions in [Aerial Autonomy Development Environment](https://www.far-planner.com/) to setup the development environment. Make sure to checkout the branch that matches the computer setup, compile, and download the simulation environments.\n...\npoint3D\n...\n/4 or Xbox controller\n...\n.\n...\n## Change\n...\nusing **outdoor**"
+        ]
+      },
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/FALCON?tab=readme-ov-file",
+        "title": "HKUST-Aerial-Robotics/FALCON",
+        "url": "https://github.com/HKUST-Aerial-Robotics/FALCON?tab=readme-ov-file",
+        "highlights": [
+          "[T-RO 2024] FALCON: Fast Autonomous Aerial Exploration using Coverage Path Guidance.\n...\nREADME\n\n# FALCON\n...\nThis is the code repository for the paper contributed to IEEE T-RO: \n\n**[FALCON: Fast Autonomous Aerial Exploration using Coverage Path Guidance](https://ieeexplore.ieee.org/document/10816079)**\n...\nThis paper introduces FALCON, a Fast Autonomous aerial robot expLoration planner using COverage path guidaNce. FALCON effectively harnesses the full potential of online generated coverage paths in enhancing exploration efficiency. We also introduce a lightweight exploration planner evaluation environment that allows for comparing exploration planners across a variety of testing scenarios using an identical quadrotor simulator.\n\n \n \n \n\nPlease cite our paper if you use this project in your research:\n...\nIt is recommended to use the [UniQuad](https://github.com/HKUST-Aerial-Robotics/UniQuad) platform for real-world UAV deployment. The UniQuad platform is a unified and versatile quadrotor platform series that offers high flexibility to adapt to a wide range of commontasks, excellent customizability for advanced demands, and easy maintenance in case of crashes. Our real-world UAV deployment is based on the **Uni250C** from the UniQuad platform.\n...\n* [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL): a powerful framework for Fast UAV ExpLoration"
+        ]
+      },
+      {
+        "id": "https://github.com/michaelfyang/far_planner",
+        "title": "MichaelFYang/far_planner",
+        "url": "https://github.com/michaelfyang/far_planner",
+        "highlights": [
+          "Fast, Attemptable Route Planner for Navigation in Known and Unknown Environments\n...\nFAR Planner uses a dynamically updated visibility graph for fast replanning. The planner models the environment with polygons and builds a global visibility graph along with the navigation. The planner is capable of handling both known and unknown environments. In a known environment, paths are planned based on a prior map. In an unknown environment, multiple paths are attempted to guide the vehicle to goal based on the environment observed during the navigation. When dynamic obstacles are present, FAR Planner disconnects visibility edges blocked by the dynamic obstacles and reconnects them after regaining visibility. The software implementation uses two CPU threads - one for dynamically updating the visibility graph using ~20% of the thread and the other for path search that can find a path within 3ms, as evaluated on an i7 computer.\n...\nThe\u00a0repository\u00a0has been tested in\u00a0Ubuntu 18.04 with\u00a0ROS Melodic\u00a0and Ubuntu 20.04 with\u00a0ROS Noetic. Follow instructions in [Autonomous Exploration Development Environment](http://cmu-exploration.com) to setup the development environment. Make sure to checkout the branch that matches the computer setup, compile, and download the simulation environments."
+        ]
+      },
+      {
+        "id": "https://github.com/mingren11/far_planner",
+        "title": "mingren11/far_planner",
+        "url": "https://github.com/mingren11/far_planner",
+        "highlights": [
+          "Fast, Attemptable Route Planner for Navigation in Known and Unknown Environments\n...\nFAR Planner uses a dynamically updated visibility graph for fast replanning. The planner models the environment with polygons and builds a global visibility graph along with the navigation. The planner is capable of handling both known and unknown environments. In a known environment, paths are planned based on a prior map. In an unknown environment, multiple paths are attempted to guide the vehicle to goal based on the environment observed during the navigation. When dynamic obstacles are present, FAR Planner disconnects visibility edges blocked by the dynamic obstacles and reconnects them after regaining visibility. The software implementation uses two CPU threads - one for dynamically updating the visibility graph using ~20% of the thread and the other for path search that can find a path within 3ms, as evaluated on an i7 computer.\n...\nThe\u00a0repository\u00a0has been tested in\u00a0Ubuntu 18.04 with\u00a0ROS Melodic\u00a0and Ubuntu 20.04 with\u00a0ROS Noetic. Follow instructions in [Autonomous Exploration Development Environment](http://cmu-exploration.com) to setup the development environment. Make sure to checkout the branch that matches the\n...\nsetup, compile, and download the simulation environments."
+        ]
+      },
+      {
+        "id": "https://www.far-planner.com/far-planner",
+        "title": "FAR Planner - Development Environment",
+        "url": "https://www.far-planner.com/far-planner",
+        "highlights": [
+          "implementation uses two CPU threads - one for dynamically updating the visibility graph using ~20% of the thread and the other for path search that can find a path within 3ms, as evaluated on an i7 computer.\n...\nOur ground vehicle platform and simulated aerial vehicle platform are equipped with a Velodyne Puck Lidar used as the range sensor for navigation planning. The ground vehicle has a camera at 640\u00d7360 resolution and a MEMS-based IMU, coupled with the Lidar for state estimation. The autonomous system onboard incorporates navigation modules from our development environment, e.g., terrain analysis, and waypoint following based on kinodynamic feasible trajectories generated by the local planner, as fundamental navigation modules, and runs FAR planner at the top of the system. In the experiments, we compare our method to two searchbased methods: A*, D* Lite, and three sampling-based methods: RRT*, BIT*, and SPARS. Here, BIT* is considered as the state-of-the-art in the RRT-based family, and RRT* is the classic method of the family. All methods run on a 4.1GHz i7 computer. We configure FAR planner to update the v-graph at 2.5Hz and perform a path search for replanning at each v-graph update. The planner uses images at a resolution of 0.2 m/pixel to extract edge points for constructing polygons. The local layer on the v-graph is a 40m\u00d740m area with the vehicle in the center."
+        ],
+        "image": "https://lh3.googleusercontent.com/sitesv/AG8ngQUXj_zAMFV-uPF1_siRAsRCDWENc6GrdI2HXL_NlMmqzjMgsH4LSIpz1LNr7W46LXejoKKE2_buK33z1G2BgqIRZ1NskDfJPK5Y_0EJBI6g-8GfGb2zz97xu9--1lmES73fi4NhsD2a_P1uEwHw7tonahVUWQn1fID-O-HqFjNaxmruCPfc3fT0Fn9Q_KnvZxH_RENjBi2PUtzi3PsyLNJs7A0yh1iPymMkWIxVdOE=w1280",
+        "favicon": "https://www.gstatic.com/images/branding/productlogos/sites_2026/v3/ico/sites_2026_16dp.ico"
+      },
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/FC-Planner",
+        "title": "HKUST-Aerial-Robotics/FC-Planner",
+        "url": "https://github.com/HKUST-Aerial-Robotics/FC-Planner",
+        "highlights": [
+          "# HKUST-Aerial-\n...\nFC-Planner\n...\n[ICRA'24 Best UAV Paper Award Finalist] An Efficient Global Planner for Aerial Coverage\n...\n- aerial-coverage\n-\n...\n-imagery\n-\n...\nics\n- motion-\n...\n## README\n\n \n \u26bd FC-Planner \n A Skeleton-guided Planning Framework for Fast Aerial Coverage of Complex 3D Scenes \n ICRA 2024 Best UAV Paper Award Finalist \n \n Chen Feng 2,\n Haojia Li 2,\n Mingjie Zhang 1,\n Xinyi Chen 2,\n Boyu Zhou 1,\u2020, and\n Shaojie Shen 2 \n \n \n 1 SYSU STAR Group \u00a0\u00a0\n 2 HKUST Aerial Robotics Group \u00a0\u00a0\n \n \n \u2020 Corresponding Author\n...\n##\n...\n**[ICRA'24]** This repository maintains the implementation of \"FC-Planner: A Skeleton-guided Planning Framework for Fast Aerial Coverage of Complex 3D Scenes\".\n\n \n \n \n \n\n**FC-Planner** is a highly efficient planning framework tailored for fast coverage of large and complex 3D scenes. Both the simulation and real-world experiments demonstrate the superior system simplicity and performance of our method compared to state-of-the-art ones.\n...\n* [PredRecon](https://github.com/HKUST-Aerial-Robotics/PredRecon) (ICRA2023): Prediction-boosted Planner for Aerial Reconstruction.\n...\n* [FC-Planner](https://github.com/HKUST-Aerial-Robotics/FC-Planner) (ICRA2024): Highly Efficient Global Planner for Aerial Coverage.\n...\n* [SOAR](https://github.com/SYSU-STAR/SOAR) (IROS2024): Heterogenous Multi-UAV Planner for Aerial Reconstruction."
+        ]
+      },
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/Fast-Planner",
+        "title": "HKUST-Aerial-Robotics/Fast-Planner: A Robust ...",
+        "url": "https://github.com/HKUST-Aerial-Robotics/Fast-Planner",
+        "publishedDate": "2019-02-27T13:16:48.000Z",
+        "highlights": [
+          "**Fast-Planner** is developed aiming to enable quadrotor fast flight in complex unknown environments. It contains a rich set of carefully designed planning algorithms. It also provides a foundational code framework and algorithms that support several popular open-source drone projects, including [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner),\n...\n[FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL) and [RACER](https://github.com/SYSU-STAR/RACER), etc.\n...\n[__Robust Real-time UAV Replanning Using Guided Gradient-based Optimization and Topological Paths__](https://arxiv.org\n...\n1912.1\n...\n- [__RAPTOR: Robust and Perception-aware Trajectory Replanning for Quadrotor Fast Flight__](https://arxiv.org/abs/2007.03465), Boyu Zhou, Jie Pan, Fei Gao and Shaojie Shen, IEEE Transactions on Robotics (__T-RO__).\n...\n- __Oct 20, 2020__: Fast-Planner is extended and applied to fast autonomous exploration. Check this [repo](https://github.com/HKUST-Aerial-Robotics/FUEL) for more details.\n...\n- __July 5, 2020__: We will release the implementation of paper: _RAPTOR: Robust and Perception-aware Trajectory Replanning for Quadrotor Fast Flight_ (submitted to TRO, under review) in the future.\n...\n- __April 12, 2020__: The implementation of the ICRA2020 paper: _Robust Real-time UAV Replanning Using Guided Gradient-based Optimization and Topological Paths_ is available."
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2407.00577v1",
+        "title": "FALCON: Fast Autonomous Aerial Exploration using ...",
+        "url": "https://arxiv.org/html/2407.00577v1",
+        "publishedDate": "2024-06-30T00:00:00.000Z",
+        "highlights": [
+          "Fast Autonomous expLoration framework using COverage path guidaNce, which aims at setting a new performance benchmark in the field of autonomous aerial exploration. Despite recent advancements in the domain, existing exploration planners often suffer from inefficiencies such as frequent revisitations of previously explored regions. FALCON effectively harnesses the full potential of online generated coverage paths in enhancing exploration efficiency. The framework begins with an incremental connectivity-aware space decomposition and connectivity graph construction, which facilitate efficient coverage path planning. Subsequently, a hierarchical planner generates a coverage path spanning the entire unexplored space, serving as a global guidance. Then, a local planner optimizes the frontier visitation order, minimizing traversal time while consciously incorporating the intention of the global guidance. Finally, minimum-time smooth and safe trajectories are produced to visit the frontier viewpoints. For fair and comprehensive benchmark experiments, we introduce a lightweight exploration planner evaluation environment that allows for comparing exploration planners across a variety of testing scenarios using an identical quadrotor simulator. Additionally, a VECO criteria is proposed for an in-depth analysis of FALCON\u2019s significant performance in comparison with the state-of-the-art"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://github.laiyagushi.com/SYSU-RoboticsLab/FAEL",
+        "title": "GitHub - SYSU-RoboticsLab/FAEL: FAEL: Fast Autonomous Exploration for Large-Scale Environments with a Mobile Robot \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/SYSU-RoboticsLab/FAEL",
+        "publishedDate": "2023-01-04T00:00:00.000Z",
+        "author": "SYSU-RoboticsLab",
+        "highlights": [
+          "GitHub - SYSU-RoboticsLab/FAEL: FAEL: Fast Autonomous Exploration for Large-Scale Environments with a Mobile Robot \u00b7 GitHub\n...\nFAEL is a systematic framework for F ast A utonomous E xploration for L arge-scale environment. In FAEL, a fast preprocessing of environmental information is presented, providing fundamental information to support high-frequency path planning. An path optimization formulation that comprehensively considers key factors about fast exploration is introduced. Further, an heuristic algorithm is devised to solve the NP-hard optimization problem, which empirically finds optimal solution in real time. Our method is demonstrated to completes exploration with the least time and shortest movement distance compared to state-of-the-art methods at the time of publication.\n\n \n\nReal-world experiment video: video\n...\n## Run FAEL in simulation\n...\ndevel/setup.\n...\n&& roslaunch exploration_\n...\nrobot_move\n...\n&& roslaunch exploration_manager explorer\n...\nBy default you can see an outdoor environment scene_1.world. The mobile robot will automatically start exploring after the file `explorer.launch` is run.\n...\nsim_env\n...\nWe use jackal for ground robot simulation, RotorS for generic odometry sensor simulation, cmu_planner for local_planner and terrain_analysis, and ufomap for 3D environment representation. We really appreciate these open source projects!"
+        ],
+        "image": "https://opengraph.githubassets.com/0c3a317c4cb2e8bbd6da2acbe469a96b780d690640546250fb850dcc1b0a01c8/SYSU-RoboticsLab/FAEL"
+      }
+    ],
+    "searchTime": 1128.1,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

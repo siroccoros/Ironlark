@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ironlark GCS</title>
+<style>
+  :root {
+    --bg: #0e1012; --panel: #15181b; --raised: #1b1f23; --line: #262b30; --line-2: #343a41;
+    --text: #dde1e4; --text-2: #9ba3ab; --text-3: #69727a;
+    --accent: #7eb1d1;              /* operator tasking: plan, goal, selection */
+    --ok: #6dbf8b; --caution: #e2aa45; --warn: #e8625b;
+    --map-bg: #0b0d0f;
+    --ui: "Inter", "IBM Plex Sans", "Source Sans 3", "Noto Sans", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", "IBM Plex Mono", "SF Mono", "Cascadia Mono", "Noto Sans Mono", "DejaVu Sans Mono", ui-monospace, Menlo, Consolas, monospace;
+    --side: clamp(300px, 26vw, 380px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--text); font: 13px/1.4 var(--ui); display: flex; flex-direction: column; overflow: hidden; -webkit-font-smoothing: antialiased; }
+  .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  button { font: inherit; color: inherit; }
+  kbd { font: 10px/1 var(--mono); color: var(--text-3); border: 1px solid var(--line-2); border-radius: 3px; padding: 2px 4px; margin-left: 6px; }
+  ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+  * { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+
+  /* status bar */
+  header { display: flex; align-items: stretch; flex-wrap: wrap; border-bottom: 1px solid var(--line); background: var(--panel); min-height: 48px; }
+  .ident { display: flex; flex-direction: column; justify-content: center; padding: 6px 16px; border-right: 1px solid var(--line); }
+  .ident b { font-size: 13px; font-weight: 650; letter-spacing: .14em; }
+  .ident span { font-size: 11px; color: var(--text-3); }
+  .stats { display: flex; flex-wrap: wrap; flex: 1; }
+  .stat { display: flex; flex-direction: column; justify-content: center; padding: 6px 16px; border-right: 1px solid var(--line); min-width: 0; }
+  .stat .k, .panel h2, .tl .k { font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); }
+  .stat .v { font-size: 13px; font-weight: 550; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); flex: none; }
+  .ok { color: var(--ok); } .caution { color: var(--caution); } .warn { color: var(--warn); } .dim { color: var(--text-3); }
+  .ok .dot { background: var(--ok); } .caution .dot { background: var(--caution); } .warn .dot { background: var(--warn); }
+
+  main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) var(--side); }
+
+  /* map column */
+  .mapcol { display: flex; flex-direction: column; min-width: 0; min-height: 0; border-right: 1px solid var(--line); }
+  .tools { display: flex; align-items: center; gap: 12px; padding: 0 12px; height: 44px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 5px; overflow: hidden; flex: none; }
+  .seg button { background: transparent; border: 0; padding: 6px 12px; cursor: pointer; color: var(--text-2); font-weight: 550; display: flex; align-items: center; }
+  .seg button + button { border-left: 1px solid var(--line-2); }
+  .seg button:hover { color: var(--text); background: var(--raised); }
+  .seg button[aria-checked="true"] { background: #222a31; color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+  .hint { color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
+  .cursor { color: var(--text-2); font-size: 12px; white-space: pre; flex: none; }
+  .mapwrap { position: relative; flex: 1; min-height: 0; background: var(--map-bg); overflow: hidden; }
+  .mapwrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #mapTop { cursor: crosshair; touch-action: none; }
+  .veh { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; transform-origin: 13px 13px; will-change: transform; }
+  .veh path { fill: #f2f4f5; stroke: #0b0d0f; stroke-width: 1.5; stroke-linejoin: round; }
+  .veh.ext path { fill: var(--caution); } .veh.bad path { fill: var(--warn); }
+  .veh.lost path { fill: none; stroke: #c9cdd0; stroke-dasharray: 3 2; }
+  .dragbox { position: absolute; left: 0; top: 0; border: 1px solid var(--accent); background: rgba(126,177,209,.12); pointer-events: none; }
+  .dragbox span { position: absolute; left: 4px; top: 100%; margin-top: 3px; font-size: 11px; color: var(--accent); white-space: nowrap; }
+  .legend { position: absolute; left: 12px; bottom: 12px; padding: 8px 10px; background: rgba(14,16,18,.88); border: 1px solid var(--line); border-radius: 5px; display: grid; grid-template-columns: auto auto; gap: 4px 14px; font-size: 11px; color: var(--text-2); pointer-events: none; }
+  .legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; border-radius: 2px; }
+  .banner { position: absolute; left: 50%; top: 12px; transform: translateX(-50%); padding: 6px 12px; border-radius: 5px; border: 1px solid; background: rgba(14,16,18,.92); font-weight: 550; white-space: nowrap; pointer-events: none; }
+  .banner.caution { border-color: rgba(226,170,69,.5); } .banner.warn { border-color: rgba(232,98,91,.55); }
+  .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--text-3); pointer-events: none; }
+  #mapEmpty { align-items: flex-end; padding-bottom: 72px; }
+  [hidden] { display: none !important; }
+
+  /* command bar */
+  .cmds { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+  .cmd { height: 32px; padding: 0 14px; border-radius: 5px; border: 1px solid var(--line-2); background: var(--raised); color: var(--text); font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; white-space: nowrap; }
+  .cmd:hover:not(:disabled) { background: #232930; border-color: #46505a; }
+  .cmd:focus-visible, .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .cmd:disabled { opacity: .4; cursor: not-allowed; }
+  .cmd.caution { color: var(--caution); border-color: rgba(226,170,69,.45); }
+  .cmd.warn { color: var(--warn); border-color: rgba(232,98,91,.5); }
+  .cmd.confirm { color: #111; border-color: transparent; }
+  .cmd.confirm.caution { background: var(--caution); } .cmd.confirm.warn { background: var(--warn); } .cmd.confirm.neutral { background: var(--text); }
+  .cmds .sep { flex: 1; }
+  .ack { font-size: 12px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .ack.fresh { color: var(--text-2); } .ack.warn { color: var(--warn); }
+
+  /* side column */
+  aside { display: flex; flex-direction: column; min-height: 0; overflow-y: auto; background: var(--panel); }
+  .panel { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .panel header, .panel .ph { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; background: none; border: 0; min-height: 0; }
+  .panel .meta { font-size: 11px; color: var(--text-3); }
+  .phase { font-size: 18px; font-weight: 600; line-height: 1.25; }
+  .phase.ok { color: var(--ok); } .phase.warn { color: var(--warn); }
+  .sub { color: var(--text-2); margin-top: 2px; min-height: 18px; }
+  .steps { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-top: 10px; }
+  .steps i { height: 4px; border-radius: 1px; background: var(--line-2); }
+  .steps i.done { background: #56606a; } .steps i.cur { background: var(--text); }
+  .steplbl { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-3); margin-top: 4px; }
+  .cam { position: relative; aspect-ratio: 4 / 3; background: #08090a; border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  .cam canvas { width: 100%; height: 100%; display: block; }
+  .cam .empty { color: var(--text-3); background: rgba(8,9,10,.55); }
+  .cam.stale canvas { opacity: .35; }
+  .tl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+  .tl .v { font: 500 14px/1.3 var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tl .v small { font-size: 11px; color: var(--text-3); margin-left: 3px; }
+  .tl .v small.tight { margin-left: 0; }
+  body.stale .tl .v, body.stale .phase { color: var(--text-3); }
+  body.lost .stat:not(:first-child) .v { opacity: .45; }
+  .log { flex: 1; min-height: 180px; display: flex; flex-direction: column; border-bottom: 0; }
+  .events { flex: 1; min-height: 0; overflow-y: auto; font-size: 12px; margin: 0 -14px -12px; }
+  .ev { display: grid; grid-template-columns: 52px 1fr; gap: 0 10px; padding: 4px 14px; border-top: 1px solid #1d2125; }
+  .ev .t { font: 11px/1.6 var(--mono); color: var(--text-3); text-align: right; font-variant-numeric: tabular-nums; }
+  .ev .s { font-weight: 600; color: var(--text-2); }
+  .ev .d { color: var(--text-3); word-break: break-word; }
+  .ev.op .s { color: var(--accent); } .ev.caution .s { color: var(--caution); } .ev.warn .s { color: var(--warn); } .ev.ok .s { color: var(--ok); }
+  .events .none { padding: 8px 14px; color: var(--text-3); }
+
+  @media (max-width: 1100px) { .ident span { display: none; } .stat { padding: 6px 12px; } kbd { display: none; } }
+  @media (max-width: 860px) { .hint { display: none; } .tools { justify-content: space-between; } }
+  @media (max-width: 720px) {
+    body { overflow: auto; height: auto; }
+    header { flex-wrap: nowrap; }
+    .ident { display: none; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .stat { border-bottom: 1px solid var(--line); padding: 6px 12px; }
+    .stat .v { white-space: normal; }
+    main { display: flex; flex-direction: column; flex: none; }
+    .mapcol { border-right: 0; }
+    .mapwrap { flex: none; height: min(72vh, 100vw); min-height: 320px; }
+    aside { overflow: visible; }
+    .log { min-height: 260px; }
+    .legend { grid-template-columns: repeat(4, auto); gap: 2px 10px; left: 8px; right: 8px; bottom: 8px; padding: 6px 8px; font-size: 10.5px; }
+    .cursor { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="ident"><b>IRONLARK</b><span>Supervisory GCS</span></div>
+  <div class="stats">
+    <div class="stat"><span class="k">Link</span><span class="v" id="sLink"><i class="dot"></i><span>Connecting</span></span></div>
+    <div class="stat"><span class="k">Sim time</span><span class="v num" id="sTime">--</span></div>
+    <div class="stat"><span class="k">Vehicle</span><span class="v" id="sArmed">--</span></div>
+    <div class="stat"><span class="k">Navigation</span><span class="v" id="sNav"><i class="dot"></i><span>--</span></span></div>
+    <div class="stat"><span class="k">GPS</span><span class="v" id="sGps"><i class="dot"></i><span>--</span></span></div>
+    <div class="stat"><span class="k">LiDAR odometry</span><span class="v" id="sLio"><i class="dot"></i><span>--</span></span></div>
+  </div>
+</header>
+
+<main>
+  <section class="mapcol">
+    <div class="tools">
+      <div class="seg" role="radiogroup" aria-label="Map tasking">
+        <button id="toolGoto" role="radio" aria-checked="true" title="Click the map to fly to a point (G)">Go to<kbd>G</kbd></button>
+        <button id="toolExplore" role="radio" aria-checked="false" title="Drag a box to explore that area (E)">Explore area<kbd>E</kbd></button>
+      </div>
+      <span class="hint" id="hint"></span>
+      <span class="cursor num" id="cursor"></span>
+    </div>
+    <div class="mapwrap" id="mapwrap">
+      <canvas id="mapBase"></canvas>
+      <canvas id="mapTop" aria-label="Occupancy map; click or drag to task the vehicle"></canvas>
+      <svg id="veh" class="veh" width="26" height="26" viewBox="-13 -13 26 26" hidden><path d="M12 0 L-7 -7 L-3 0 L-7 7 Z" /></svg>
+      <div id="dragBox" class="dragbox" hidden><span class="num"></span></div>
+      <div class="empty" id="mapEmpty">Waiting for map</div>
+      <div class="banner" id="mapBanner" hidden></div>
+      <div class="legend">
+        <span><i style="background:#14181b;border:1px solid #2c3237"></i>Unknown</span>
+        <span><i style="background:#222a31"></i>Free</span>
+        <span><i style="background:#3d302b"></i>Safety margin</span>
+        <span><i style="background:#c9cdd0"></i>Obstacle</span>
+        <span><i style="border:1.5px solid #c9cdd0;transform:rotate(45deg) scale(.7)"></i>Frontier</span>
+        <span><i style="background:var(--accent);height:2px;vertical-align:3px"></i>Plan</span>
+        <span><i style="background:rgba(126,177,209,.45);height:2px;vertical-align:3px"></i>Track</span>
+        <span><i style="border:1.5px solid var(--text-2);border-radius:1px"></i>Home</span>
+      </div>
+    </div>
+    <div class="cmds">
+      <button class="cmd" id="cMission" data-cmd="mission" data-guard="neutral" title="Arm if needed and run the full outdoor-to-interior mission (click twice)">Run full mission</button>
+      <button class="cmd" id="cHold" data-cmd="hold" title="Stop the current task and hold position (H)">Hold<kbd>H</kbd></button>
+      <span class="ack" id="ack"></span>
+      <span class="sep"></span>
+      <button class="cmd caution" id="cRth" data-cmd="rth" data-guard="caution" title="Fly back to the home pad and land (click twice)">Return home</button>
+      <button class="cmd warn" id="cLand" data-cmd="land" data-guard="warn" title="Land where the vehicle is now (click twice)">Land</button>
+    </div>
+  </section>
+
+  <aside>
+    <section class="panel">
+      <div class="ph"><h2>Mission</h2><span class="meta num" id="pTime"></span></div>
+      <div class="phase" id="pPhase">--</div>
+      <div class="sub" id="pDetail"></div>
+      <div id="pSteps" style="visibility:hidden">
+        <div class="steps" id="stepBars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="steplbl"><span id="stepNext"></span><span class="num" id="stepNum"></span></div>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="ph"><h2>Front camera</h2><span class="meta num" id="camMeta"></span></div>
+      <div class="cam" id="camBox"><canvas id="cam" width="320" height="240"></canvas><div class="empty" id="camEmpty">Waiting for video</div></div>
+    </section>
+    <section class="panel">
+      <div class="ph"><h2>Vehicle</h2><span class="meta">onboard estimate</span></div>
+      <div class="tl">
+        <div><div class="k">Position X, Y</div><div class="v" id="tPos">--</div></div>
+        <div><div class="k">Altitude</div><div class="v" id="tAlt">--</div></div>
+        <div><div class="k">Ground speed</div><div class="v" id="tSpd">--</div></div>
+        <div><div class="k">Heading</div><div class="v" id="tHdg">--</div></div>
+        <div><div class="k">Home</div><div class="v" id="tHome">--</div></div>
+        <div><div class="k">LIO inliers / scans</div><div class="v" id="tLio">--</div></div>
+        <div><div class="k">Mapped free</div><div class="v" id="tVol">--</div></div>
+        <div><div class="k">Frontiers visited</div><div class="v" id="tFr">--</div></div>
+      </div>
+    </section>
+    <section class="panel log">
+      <div class="ph"><h2>Events</h2><span class="meta">sim s</span></div>
+      <div class="events" id="events"><div class="none" id="evNone">No events yet</div></div>
+    </section>
+  </aside>
+</main>
+
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const CSS = getComputedStyle(document.documentElement);
+const C = {
+  accent: CSS.getPropertyValue('--accent').trim(), ok: CSS.getPropertyValue('--ok').trim(),
+  caution: CSS.getPropertyValue('--caution').trim(), warn: CSS.getPropertyValue('--warn').trim(),
+  text2: CSS.getPropertyValue('--text-2').trim(), mapBg: CSS.getPropertyValue('--map-bg').trim(),
+  mono: CSS.getPropertyValue('--mono').trim(), ui: CSS.getPropertyValue('--ui').trim(),
+};
+// Occupancy cell codes from gcs.py: 0 unknown, 1 free, 2 inflated margin, 3 occupied. Packed little-endian ABGR.
+const rgba = (r, g, b) => (255 << 24 | b << 16 | g << 8 | r) >>> 0;
+const PALETTE = new Uint32Array([rgba(0x14, 0x18, 0x1b), rgba(0x22, 0x2a, 0x31), rgba(0x3d, 0x30, 0x2b), rgba(0xc9, 0xcd, 0xd0)]);
+const HOME = [0, 0];
+const MISSION_STEPS = ['OUTDOOR_TRANSIT', 'ENTERING_INTERIOR', 'EXPLORING_INTERIOR', 'EXITING_INTERIOR', 'RETURNING_HOME', 'LANDING', 'COMPLETED'];
+const PHASE_LABEL = {
+  INIT: 'Initialising', STANDBY: 'Standby', HOLDING: 'Holding position', GOTO: 'Flying to point',
+  TRANSIT_TO_REGION: 'Transit to area', EXPLORING_REGION: 'Exploring area', EXPLORE_FRONTIER: 'Exploring frontier',
+  OUTDOOR_TRANSIT: 'Outdoor transit', ENTERING_INTERIOR: 'Entering interior', EXPLORING_INTERIOR: 'Exploring interior',
+  EXITING_INTERIOR: 'Exiting interior', RETURNING_HOME: 'Returning home', LANDING: 'Landing',
+  COMPLETED: 'Mission complete', FAILED: 'Failed',
+};
+const GPS_FIX = ['No GPS', 'No fix', '2D fix', '3D fix', 'DGPS', 'RTK float', 'RTK fixed'];
+const STATE_POLL_MS = 80, MAP_POLL_MS = 500, STALE_MS = 1000, LOST_MS = 4000;
+
+// ---- cached DOM writes: touch the DOM only when a value actually changes ----
+function setText(el, s) { if (el._t !== s) { el._t = s; el.textContent = s; } }
+function setHTML(el, s) { if (el._h !== s) { el._h = s; el.innerHTML = s; } }
+function setClass(el, s) { if (el._c !== s) { el._c = s; el.setAttribute('class', s); } }  // works for SVG too
+function setStat(el, tone, label) { setClass(el, 'v ' + tone); setText(el.lastElementChild, label); }
+const fmt = (v, d = 1) => (v == null || !isFinite(v)) ? '--' : v.toFixed(d);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const phaseLabel = p => PHASE_LABEL[p] || (p ? p.charAt(0) + p.slice(1).toLowerCase().replace(/_/g, ' ') : '--');
+const heading = yaw => ((90 - yaw * 180 / Math.PI) % 360 + 360) % 360;   // map north = +Y, yaw CCW from +X
+const bearing = (dx, dy) => ((Math.atan2(dx, dy) * 180 / Math.PI) + 360) % 360;
+const pad3 = n => String(Math.round(n) % 360).padStart(3, '0');
+
+// ---- state ----
+let state = null, grid = null, gridImg = null, mapEtag = null;
+let lastStateAt = 0, everConnected = false, simFrozenSince = 0, lastSim = null;
+let tool = 'goto', drag = null, hover = null, pending = null;
+let task = null, missionStep = -1, phaseSince = null, lastPhase = null;
+let lastEvKey = null, lastEvWall = 0, evCount = 0;
+const pose = { from: null, to: null, t0: 0, dur: 1, shown: null };
+
+// ---- map canvases & view transform ----
+const wrap = $('mapwrap'), baseCv = $('mapBase'), topCv = $('mapTop');
+const bctx = baseCv.getContext('2d'), tctx = topCv.getContext('2d');
+const narrowMq = matchMedia('(max-width: 720px)');
+let W = 0, H = 0, HB = 0, DPR = 1, vt = null, baseDirty = true, topDirty = true, rafId = 0;
+
+function computeView() {
+  const ox = grid ? grid.origin[0] : -42, oy = grid ? grid.origin[1] : -42;
+  const wx = grid ? grid.nx * grid.resolution : 84, wy = grid ? grid.ny * grid.resolution : 84;
+  HB = narrowMq.matches ? H - document.querySelector('.legend').offsetHeight - 8 : H;  // map bottom edge
+  const m = 24, scale = Math.max(0.1, Math.min((W - 2 * m) / wx, (HB - 2 * m) / wy));
+  const padX = (W - wx * scale) / 2, padY = (HB - wy * scale) / 2;
+  vt = {
+    scale, ox, oy, wx, wy, padX, padY,
+    toPx: (x, y) => [padX + (x - ox) * scale, HB - padY - (y - oy) * scale],
+    toWorld: (px, py) => [ox + (px - padX) / scale, oy + (HB - padY - py) / scale],
+  };
+}
+new ResizeObserver(() => {
+  const r = wrap.getBoundingClientRect();
+  W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height)); DPR = window.devicePixelRatio || 1;
+  for (const cv of [baseCv, topCv]) { cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR); }
+  computeView(); baseDirty = topDirty = true; requestFrame();
+}).observe(wrap);
+
+function requestFrame() { if (!rafId) rafId = requestAnimationFrame(frame); }
+function frame(now) {
+  rafId = 0;
+  if (!vt) return;
+  if (baseDirty) { baseDirty = false; drawBase(); }
+  if (topDirty) { topDirty = false; drawTop(); }
+  const moving = updatePose(now);
+  placeVehicle();
+  if (dragDirty) { dragDirty = false; placeDrag(); }
+  if (hoverDirty) { hoverDirty = false; updateCursor(); }
+  if (moving) requestFrame();
+}
+
+const veh = $('veh'), dragBox = $('dragBox');
+let dragDirty = false, hoverDirty = false;
+function placeVehicle() {
+  if (!pose.shown) return;
+  const [x, y] = vt.toPx(pose.shown[0], pose.shown[1]);
+  veh.style.transform = `translate(${(x - 13).toFixed(1)}px, ${(y - 13).toFixed(1)}px) rotate(${(-pose.shown[2]).toFixed(4)}rad)`;
+  if (veh.hasAttribute('hidden')) veh.removeAttribute('hidden');  // SVG elements have no .hidden property
+}
+function vehicleClass() {
+  const s = state, ext = s && s.ekf_source === 2;
+  setClass(veh, 'veh' + (linkTone() === 'warn' ? ' lost' : ext && !s.lio_healthy ? ' bad' : ext ? ' ext' : ''));
+}
+function placeDrag() {
+  if (!drag || !drag.moved) { dragBox.hidden = true; return; }
+  const x = Math.min(drag.x0, drag.x1), y = Math.min(drag.y0, drag.y1), w = Math.abs(drag.x1 - drag.x0), h = Math.abs(drag.y1 - drag.y0);
+  const st = dragBox.style;
+  st.transform = `translate(${x}px, ${y}px)`; st.width = `${w}px`; st.height = `${h}px`;
+  setText(dragBox.firstChild, `${(w / vt.scale).toFixed(1)} × ${(h / vt.scale).toFixed(1)} m`);
+  dragBox.hidden = false;
+}
+
+function niceStep(px) { // metres for a scale bar about px pixels long
+  const m = px / vt.scale, p = Math.pow(10, Math.floor(Math.log10(m)));
+  return [1, 2, 5, 10].map(k => k * p).filter(v => v <= m).pop() || p;
+}
+
+function drawBase() {
+  const c = bctx;
+  c.setTransform(DPR, 0, 0, DPR, 0, 0);
+  c.fillStyle = C.mapBg; c.fillRect(0, 0, W, H);
+  const { scale, ox, oy, wx, wy, padX, padY } = vt;
+  const gx0 = padX, gy0 = HB - padY - wy * scale, gw = wx * scale, gh = wy * scale;
+  if (gridImg) { c.imageSmoothingEnabled = false; c.drawImage(gridImg, gx0, gy0, gw, gh); }
+  else { c.fillStyle = '#121518'; c.fillRect(gx0, gy0, gw, gh); }
+  // metric grid: 5 m faint, 10 m slightly stronger
+  c.lineWidth = 1;
+  for (const [stepM, alpha] of [[5, 0.035], [10, 0.07]]) {
+    c.strokeStyle = `rgba(220,226,230,${alpha})`; c.beginPath();
+    for (let x = Math.ceil(ox / stepM) * stepM; x <= ox + wx; x += stepM) { const px = Math.round(vt.toPx(x, 0)[0]) + 0.5; c.moveTo(px, gy0); c.lineTo(px, gy0 + gh); }
+    for (let y = Math.ceil(oy / stepM) * stepM; y <= oy + wy; y += stepM) { const py = Math.round(vt.toPx(0, y)[1]) + 0.5; c.moveTo(gx0, py); c.lineTo(gx0 + gw, py); }
+    c.stroke();
+  }
+  c.strokeStyle = 'rgba(220,226,230,0.12)'; c.strokeRect(Math.round(gx0) + 0.5, Math.round(gy0) + 0.5, Math.round(gw) - 1, Math.round(gh) - 1);
+  // home pad
+  const [hx, hy] = vt.toPx(HOME[0], HOME[1]);
+  c.strokeStyle = C.text2; c.lineWidth = 1.5; c.strokeRect(Math.round(hx) - 7.5, Math.round(hy) - 7.5, 15, 15);
+  c.fillStyle = C.text2; c.font = `600 10px ${C.ui}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('H', hx, hy + 0.5);
+  // north indicator (top right)
+  const nx = W - 28, ny = 30;
+  c.fillStyle = '#c9cdd0'; c.beginPath(); c.moveTo(nx, ny - 12); c.lineTo(nx + 6, ny + 4); c.lineTo(nx, ny); c.lineTo(nx - 6, ny + 4); c.closePath(); c.fill();
+  c.font = `600 11px ${C.ui}`; c.textBaseline = 'top'; c.fillText('N', nx, ny + 8);
+  c.fillStyle = 'rgba(155,163,171,0.8)'; c.font = `10px ${C.mono}`; c.fillText('+Y', nx, ny + 22);
+  // scale bar (bottom right)
+  const m = niceStep(120), len = m * scale, sx = W - 16 - len, sy = HB - 14;
+  c.strokeStyle = '#c9cdd0'; c.lineWidth = 1.5; c.beginPath();
+  c.moveTo(sx, sy - 5); c.lineTo(sx, sy); c.lineTo(sx + len, sy); c.lineTo(sx + len, sy - 5); c.stroke();
+  c.fillStyle = '#c9cdd0'; c.font = `11px ${C.mono}`; c.textBaseline = 'bottom'; c.fillText(`${m} m`, sx + len / 2, sy - 4);
+  c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+}
+
+function polyline(c, pts) {
+  c.beginPath();
+  for (let i = 0; i < pts.length; i++) { const [x, y] = vt.toPx(pts[i][0], pts[i][1]); i ? c.lineTo(x, y) : c.moveTo(x, y); }
+  c.stroke();
+}
+
+function drawTop() {
+  const c = tctx;
+  c.setTransform(DPR, 0, 0, DPR, 0, 0);
+  c.clearRect(0, 0, W, H);
+  if (state) {
+    if (state.explore_box) {
+      const b = state.explore_box, [x0, y0] = vt.toPx(b.x[0], b.y[1]), [x1, y1] = vt.toPx(b.x[1], b.y[0]);
+      c.fillStyle = 'rgba(126,177,209,0.07)'; c.fillRect(x0, y0, x1 - x0, y1 - y0);
+      c.strokeStyle = C.accent; c.lineWidth = 1; c.setLineDash([5, 4]); c.strokeRect(x0 + .5, y0 + .5, x1 - x0, y1 - y0); c.setLineDash([]);
+      c.fillStyle = C.accent; c.font = `600 10.5px ${C.ui}`; c.fillText('EXPLORE AREA', x0 + 4, y0 - 5);
+    }
+    if ((state.trail || []).length > 1) { c.strokeStyle = 'rgba(126,177,209,0.45)'; c.lineWidth = 1.5; c.lineJoin = 'round'; polyline(c, state.trail); }
+    if ((state.path || []).length > 1) { c.strokeStyle = C.accent; c.lineWidth = 2; c.lineJoin = 'round'; polyline(c, state.path); }
+    c.strokeStyle = '#c9cdd0'; c.lineWidth = 1.5;
+    for (const f of (state.frontiers || [])) {
+      const [fx, fy] = vt.toPx(f[0], f[1]);
+      c.beginPath(); c.moveTo(fx, fy - 4.5); c.lineTo(fx + 4.5, fy); c.lineTo(fx, fy + 4.5); c.lineTo(fx - 4.5, fy); c.closePath(); c.stroke();
+    }
+    if (state.active_goal) {
+      const [gx, gy] = vt.toPx(state.active_goal[0], state.active_goal[1]);
+      c.strokeStyle = C.accent; c.lineWidth = 2;
+      c.beginPath(); c.arc(gx, gy, 8, 0, 2 * Math.PI); c.stroke();
+      c.beginPath(); c.moveTo(gx - 13, gy); c.lineTo(gx - 4, gy); c.moveTo(gx + 4, gy); c.lineTo(gx + 13, gy);
+      c.moveTo(gx, gy - 13); c.lineTo(gx, gy - 4); c.moveTo(gx, gy + 4); c.lineTo(gx, gy + 13); c.stroke();
+    }
+  }
+  if (pending) {
+    const [px, py] = vt.toPx(pending.x, pending.y);
+    c.strokeStyle = C.accent; c.lineWidth = 1.5; c.setLineDash([3, 3]);
+    c.beginPath(); c.arc(px, py, 8, 0, 2 * Math.PI); c.stroke(); c.setLineDash([]);
+  }
+}
+
+// Vehicle pose eases from where it is drawn to each new sample over one poll interval, so the
+// marker moves at display rate instead of stepping at the poll rate (adds at most one interval of lag).
+function updatePose(now) {
+  if (!pose.to) return false;
+  const a = Math.min(1, (now - pose.t0) / pose.dur);
+  const f = pose.from || pose.to, t = pose.to;
+  let dyaw = t[2] - f[2]; dyaw -= 2 * Math.PI * Math.round(dyaw / (2 * Math.PI));
+  pose.shown = [f[0] + (t[0] - f[0]) * a, f[1] + (t[1] - f[1]) * a, f[2] + dyaw * a];
+  return a < 1;
+}
+function pushPose(s) {
+  const now = performance.now(), next = [s.pos[0], s.pos[1], s.yaw];
+  const gap = now - (pose.at || 0);
+  pose.at = now;
+  const same = pose.to && pose.to[0] === next[0] && pose.to[1] === next[1] && pose.to[2] === next[2];
+  if (same) return false;
+  pose.from = (gap > 400 || !pose.shown) ? next : pose.shown;
+  pose.to = next; pose.t0 = now; pose.dur = Math.max(30, Math.min(250, gap));
+  return true;
+}
+
+// ---- occupancy map ----
+function decodeMap(m) {
+  const bin = atob(m.data_b64), nx = m.nx, ny = m.ny;
+  if (!gridImg || gridImg.width !== nx || gridImg.height !== ny) {
+    gridImg = document.createElement('canvas'); gridImg.width = nx; gridImg.height = ny;
+    gridImg._ctx = gridImg.getContext('2d'); gridImg._img = gridImg._ctx.createImageData(nx, ny);
+  }
+  const px = new Uint32Array(gridImg._img.data.buffer);
+  let known = 0;
+  for (let ix = 0; ix < nx; ix++) {
+    const col = ix * ny;
+    for (let iy = 0; iy < ny; iy++) {
+      const code = bin.charCodeAt(col + iy) & 3;
+      known |= code;
+      px[(ny - 1 - iy) * nx + ix] = PALETTE[code];
+    }
+  }
+  gridImg._ctx.putImageData(gridImg._img, 0, 0);
+  $('mapEmpty').hidden = known !== 0;
+  const geomChanged = !grid || grid.nx !== nx || grid.ny !== ny || grid.resolution !== m.resolution || grid.origin[0] !== m.origin[0] || grid.origin[1] !== m.origin[1];
+  grid = m;
+  if (geomChanged) { computeView(); topDirty = true; }
+  baseDirty = true; requestFrame();
+}
+
+async function pollMap() {
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 3000);
+  try {
+    const r = await fetch('/api/map', { signal: ctl.signal, cache: 'no-store', headers: mapEtag ? { 'If-None-Match': mapEtag } : {} });
+    if (r.status === 200) { mapEtag = r.headers.get('ETag'); decodeMap(await r.json()); }
+  } catch (_) { /* link status comes from the state poll */ }
+  clearTimeout(to);
+  setTimeout(pollMap, document.hidden ? 2000 : MAP_POLL_MS);
+}
+
+// ---- telemetry state ----
+async function pollState() {
+  const t0 = performance.now(), ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 2500);
+  try {
+    const r = await fetch('/api/state', { signal: ctl.signal, cache: 'no-store' });
+    if (r.ok) onState(await r.json());
+  } catch (_) { /* staleness is judged from lastStateAt */ }
+  clearTimeout(to);
+  setTimeout(pollState, document.hidden ? 1000 : Math.max(0, STATE_POLL_MS - (performance.now() - t0)));
+}
+
+function onState(s) {
+  const prev = state;
+  state = s; lastStateAt = performance.now(); everConnected = true;
+  if (s.sim_time !== lastSim) { lastSim = s.sim_time; simFrozenSince = lastStateAt; }
+  if (s.phase !== lastPhase) {
+    lastPhase = s.phase;
+    const ev = (s.events || []).filter(e => e.state === s.phase && e.sim_time != null).pop();
+    phaseSince = ev ? ev.sim_time : s.sim_time;
+  }
+  ingestEvents(s.events || []);
+  if (MISSION_STEPS.includes(s.phase) && (task === null || task.cmd === 'mission')) missionStep = MISSION_STEPS.indexOf(s.phase);
+  if (pending && (s.active_goal || performance.now() - pending.at > 4000)) { pending = null; topDirty = true; requestFrame(); }
+
+  if (pushPose(s)) requestFrame();
+  vehicleClass();
+  if (!prev || JSON.stringify([prev.path, (prev.trail || []).length, prev.frontiers, prev.active_goal, prev.explore_box])
+                       !== JSON.stringify([s.path, (s.trail || []).length, s.frontiers, s.active_goal, s.explore_box])) {
+    topDirty = true; requestFrame();
+  }
+  renderStatus();
+  renderTelemetry(s);
+  renderMission(s);
+}
+
+function linkTone() {
+  if (!everConnected) return 'dim';
+  const age = performance.now() - lastStateAt;
+  return age > LOST_MS ? 'warn' : age > STALE_MS ? 'caution' : 'ok';
+}
+
+function renderStatus() {
+  const tone = linkTone(), age = (performance.now() - lastStateAt) / 1000;
+  setStat($('sLink'), tone, tone === 'dim' ? 'Connecting' : tone === 'ok' ? 'Live' : tone === 'caution' ? `Stale ${age.toFixed(1)} s` : `Lost ${age.toFixed(0)} s`);
+  const stale = tone === 'caution' || tone === 'warn';
+  document.body.classList.toggle('stale', stale);
+  document.body.classList.toggle('lost', tone === 'warn');
+  const banner = $('mapBanner');
+  if (tone === 'warn') { banner.hidden = false; setClass(banner, 'banner warn'); setText(banner, `No data from vehicle for ${age.toFixed(0)} s. Showing last known state.`); }
+  else if (tone === 'caution') { banner.hidden = false; setClass(banner, 'banner caution'); setText(banner, `Telemetry delayed ${age.toFixed(1)} s`); }
+  else banner.hidden = true;
+  for (const b of CMD_BUTTONS) {
+    const needsArmed = b.dataset.cmd === 'land' || b.dataset.cmd === 'rth';
+    const dis = tone === 'warn' || tone === 'dim' || (needsArmed && state && !state.armed);
+    if (b.disabled !== dis) { b.disabled = dis; if (dis) disarmGuard(b); }
+  }
+  const s = state;
+  if (!s) return;
+  const frozen = s.sim_time != null && tone === 'ok' && performance.now() - simFrozenSince > 1500;
+  setClass($('sTime'), 'v num' + (frozen ? ' caution' : s.sim_time == null ? ' dim' : ''));
+  setText($('sTime'), s.sim_time == null ? 'waiting' : `${s.sim_time.toFixed(1)} s${frozen ? ' paused' : ''}`);
+  setClass($('sArmed'), 'v' + (s.armed ? '' : ' dim'));
+  setText($('sArmed'), s.armed ? 'Armed' : 'Disarmed');
+  const ext = s.ekf_source === 2;
+  setStat($('sNav'), ext ? 'caution' : 'ok', ext ? 'ExternalNav (LIO) · SRC2' : 'GPS · SRC1');
+  const fix = s.gps_fix | 0;
+  setStat($('sGps'), fix >= 3 ? 'ok' : s.armed ? 'caution' : 'dim', GPS_FIX[fix] || `fix ${fix}`);
+  setStat($('sLio'), s.lio_healthy ? 'ok' : ext ? 'warn' : 'caution', s.lio_healthy ? 'Healthy' : 'Degraded');
+}
+
+function renderTelemetry(s) {
+  const [x, y, z] = s.pos;
+  setHTML($('tPos'), `${fmt(x)}, ${fmt(y)}<small>m</small>`);
+  setHTML($('tAlt'), `${fmt(z, 2)}<small>m</small>`);
+  setHTML($('tSpd'), `${fmt(s.speed)}<small>m/s</small>`);
+  setHTML($('tHdg'), `${pad3(heading(s.yaw))}<small class="tight">°</small>`);
+  const hx = HOME[0] - x, hy = HOME[1] - y, hd = Math.hypot(hx, hy);
+  setHTML($('tHome'), hd < 0.5 ? 'at pad' : `${fmt(hd)}<small>m</small> ${pad3(bearing(hx, hy))}<small class="tight">°</small>`);
+  setHTML($('tLio'), `${s.lio_inliers ?? '--'}<small>/</small> ${s.lio_scans ?? '--'}`);
+  setHTML($('tVol'), `${fmt(s.free_volume_m3, 0)}<small>m³</small>`);
+  setText($('tFr'), String(s.frontiers_visited ?? '--'));
+}
+
+function renderMission(s) {
+  const ph = $('pPhase');
+  setText(ph, phaseLabel(s.phase));
+  setClass(ph, 'phase' + (s.phase === 'FAILED' ? ' warn' : s.phase === 'COMPLETED' ? ' ok' : ''));
+  setText($('pTime'), phaseSince != null && s.sim_time != null ? `${(s.sim_time - phaseSince).toFixed(0)} s in phase` : '');
+  let detail = '';
+  if (task) detail = `Task: ${taskLabel(task)}`;
+  else if (missionStep >= 0) detail = 'Full mission';
+  if (s.active_goal) {
+    const d = Math.hypot(s.active_goal[0] - s.pos[0], s.active_goal[1] - s.pos[1]);
+    detail += `${detail ? ' · ' : ''}goal ${fmt(d)} m`;
+  }
+  setText($('pDetail'), detail);
+  const inMission = missionStep >= 0 && (task === null || task.cmd === 'mission');
+  $('pSteps').style.visibility = inMission ? 'visible' : 'hidden';
+  if (inMission) {
+    const bars = $('stepBars').children;
+    for (let i = 0; i < bars.length; i++) setClass(bars[i], i < missionStep ? 'done' : i === missionStep ? 'cur' : '');
+    setText($('stepNum'), `${missionStep + 1} / ${MISSION_STEPS.length}`);
+    const nxt = MISSION_STEPS[missionStep + 1];
+    setText($('stepNext'), nxt ? `Next: ${phaseLabel(nxt).toLowerCase()}` : '');
+  }
+}
+
+function taskLabel(t) {
+  switch (t.cmd) {
+    case 'goto': return `Go to ${fmt(t.x)}, ${fmt(t.y)}`;
+    case 'explore': return `Explore area ${fmt(t.x1 - t.x0)} × ${fmt(t.y1 - t.y0)} m`;
+    case 'mission': return 'Full mission';
+    case 'hold': return 'Hold';
+    case 'rth': return 'Return home';
+    case 'land': return 'Land';
+    default: return t.cmd;
+  }
+}
+
+// ---- event log: append only what is new; keep a longer local history than the server's last 18 ----
+const evKey = e => `${e.wall_seconds}|${e.state}|${e.detail || ''}`;
+function ingestEvents(list) {
+  if (!list.length) return;
+  let start = 0;
+  if (lastEvKey !== null) {
+    let i = list.length - 1;
+    while (i >= 0 && evKey(list[i]) !== lastEvKey) i--;
+    if (i === list.length - 1) return;
+    if (i < 0 && list[list.length - 1].wall_seconds < lastEvWall) { $('events').replaceChildren(); evCount = 0; task = null; missionStep = -1; } // executive restarted
+    start = i + 1;
+  }
+  const box = $('events'), frag = document.createDocumentFragment();
+  for (let i = start; i < list.length; i++) {
+    const e = list[i];
+    let cls = 'ev', name = e.state, detail = e.detail || '';
+    if (e.state === 'OPERATOR_CMD') {
+      cls += ' op'; name = 'Operator';
+      try { const c = JSON.parse(detail); task = c; detail = taskLabel(c); if (c.cmd === 'mission') missionStep = -1; } catch (_) {}
+    } else if (e.state === 'EKF_SOURCE_2') { cls += ' caution'; name = 'Nav → ExternalNav'; detail = detail.replace(/^[^:]*:\s*/, ''); }
+    else if (e.state === 'EKF_SOURCE_1') { cls += ' ok'; name = 'Nav → GPS'; detail = detail.replace(/^[^:]*:\s*/, ''); }
+    else if (e.state === 'FAILED' || e.state === 'STALL_RECOVERY') cls += ' warn';
+    else if (e.state === 'OUTDOOR_TRANSIT' && (task === null || task.cmd !== 'mission')) task = { cmd: 'mission' };
+    if (e.state !== 'OPERATOR_CMD' && !e.state.startsWith('EKF_SOURCE_')) name = PHASE_LABEL[e.state] || phaseLabel(e.state);
+    const row = document.createElement('div');
+    row.className = cls;
+    row.innerHTML = `<span class="t">${e.sim_time != null ? e.sim_time.toFixed(1) : '--'}</span><span><span class="s">${esc(name)}</span>${detail ? ` <span class="d">${esc(detail)}</span>` : ''}</span>`;
+    frag.prepend(row);
+    evCount++;
+  }
+  $('evNone')?.remove();
+  box.prepend(frag);
+  while (evCount > 300) { box.lastElementChild.remove(); evCount--; }
+  lastEvKey = evKey(list[list.length - 1]);
+  lastEvWall = list[list.length - 1].wall_seconds;
+}
+
+// ---- commands ----
+const CMD_BUTTONS = [...document.querySelectorAll('.cmd')];
+let ackTimer = 0;
+function showAck(text, tone) {
+  const a = $('ack'); setText(a, text); setClass(a, 'ack ' + tone);
+  clearTimeout(ackTimer); ackTimer = setTimeout(() => setClass(a, 'ack'), 6000);
+}
+async function sendCmd(payload) {
+  const label = taskLabel(payload);
+  showAck(`${label}: sending`, 'fresh');
+  try {
+    const r = await fetch('/api/command', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const ack = await r.json().catch(() => ({}));
+    if (r.ok && ack.ok) showAck(`${label}: accepted ${new Date().toLocaleTimeString([], { hour12: false })}`, 'fresh');
+    else showAck(`${label}: rejected${ack.error ? ' (' + ack.error + ')' : ''}`, 'warn');
+  } catch (_) { showAck(`${label}: not delivered, no link`, 'warn'); }
+}
+
+// Guarded commands take two clicks within 4 s; the first click turns the button into its confirmation.
+let guarded = null, guardTimer = 0;
+function disarmGuard(b) {
+  if (!b || guarded !== b) return;
+  clearTimeout(guardTimer); guarded = null;
+  b.classList.remove('confirm', 'neutral'); b.textContent = b._label; if (b._kbd) b.append(b._kbd);
+}
+for (const b of document.querySelectorAll('.cmd')) {
+  b._label = b.firstChild.textContent; b._kbd = b.querySelector('kbd');
+  b.addEventListener('click', () => {
+    const cmd = b.dataset.cmd, guard = b.dataset.guard;
+    if (guard && guarded !== b) {
+      disarmGuard(guarded);
+      guarded = b; b.classList.add('confirm'); if (guard === 'neutral') b.classList.add('neutral');
+      b.textContent = `Confirm ${b._label.toLowerCase()}`;
+      guardTimer = setTimeout(() => disarmGuard(b), 4000);
+      return;
+    }
+    disarmGuard(guarded);
+    sendCmd({ cmd });
+  });
+}
+
+// ---- map tasking ----
+const HINTS = {
+  goto: 'Click the map to fly the vehicle to that point at 2.2 m.',
+  explore: 'Drag a box over the map to explore that area autonomously.',
+};
+function setTool(t) {
+  tool = t;
+  $('toolGoto').setAttribute('aria-checked', t === 'goto');
+  $('toolExplore').setAttribute('aria-checked', t === 'explore');
+  setText($('hint'), HINTS[t]);
+}
+$('toolGoto').onclick = () => setTool('goto');
+$('toolExplore').onclick = () => setTool('explore');
+setTool('goto');
+
+function updateCursor() {
+  if (!hover || !vt) { setText($('cursor'), ''); return; }
+  const [wx, wy] = vt.toWorld(hover[0], hover[1]);
+  let s = `X ${fmt(wx).padStart(5)}  Y ${fmt(wy).padStart(5)} m`;
+  if (state) {
+    const dx = wx - state.pos[0], dy = wy - state.pos[1];
+    s += `   ${fmt(Math.hypot(dx, dy)).padStart(4)} m ${pad3(bearing(dx, dy))}° from vehicle`;
+  }
+  setText($('cursor'), s);
+}
+topCv.addEventListener('pointermove', e => {
+  hover = [e.offsetX, e.offsetY];
+  if (drag) { drag.x1 = e.offsetX; drag.y1 = e.offsetY; drag.moved ||= Math.hypot(drag.x1 - drag.x0, drag.y1 - drag.y0) > 4; dragDirty = true; }
+  hoverDirty = true; requestFrame();
+});
+topCv.addEventListener('pointerleave', () => { hover = null; updateCursor(); });
+topCv.addEventListener('pointerdown', e => {
+  if (e.button !== 0) return;
+  topCv.setPointerCapture(e.pointerId);
+  drag = { x0: e.offsetX, y0: e.offsetY, x1: e.offsetX, y1: e.offsetY, moved: false };
+});
+topCv.addEventListener('pointerup', e => {
+  if (!drag) return;
+  const d = drag; drag = null; dragDirty = true; requestFrame();
+  if (linkTone() === 'warn' || linkTone() === 'dim') { showAck('Map tasking unavailable: no link', 'warn'); return; }
+  const [ax, ay] = vt.toWorld(d.x0, d.y0), [bx, by] = vt.toWorld(e.offsetX, e.offsetY);
+  if (tool === 'goto' && !d.moved) {
+    pending = { x: ax, y: ay, at: performance.now() }; topDirty = true; requestFrame();
+    sendCmd({ cmd: 'goto', x: +ax.toFixed(2), y: +ay.toFixed(2), z: 2.2 });
+  } else if (tool === 'explore' && Math.hypot(bx - ax, by - ay) > 1.5) {
+    sendCmd({ cmd: 'explore', x0: +Math.min(ax, bx).toFixed(2), x1: +Math.max(ax, bx).toFixed(2),
+              y0: +Math.min(ay, by).toFixed(2), y1: +Math.max(ay, by).toFixed(2) });
+  }
+});
+topCv.addEventListener('pointercancel', () => { drag = null; dragDirty = true; requestFrame(); });
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest('input, textarea')) return;
+  if (e.key === 'Escape') { disarmGuard(guarded); if (drag) { drag = null; dragDirty = true; requestFrame(); } }
+  else if (e.key === 'g' || e.key === 'G') setTool('goto');
+  else if (e.key === 'e' || e.key === 'E') setTool('explore');
+  else if ((e.key === 'h' || e.key === 'H') && !$('cHold').disabled) { disarmGuard(guarded); sendCmd({ cmd: 'hold' }); }
+});
+document.addEventListener('pointerdown', e => { if (guarded && !guarded.contains(e.target)) disarmGuard(guarded); });
+
+// ---- camera: long-poll raw RGBA frames, paint the newest in the next animation frame ----
+const cam = $('cam'), cctx = cam.getContext('2d');
+let camFrame = null, camSeq = 0, camLastAt = 0, camTimes = [];
+async function streamCamera() {
+  for (;;) {
+    if (document.hidden) { await new Promise(r => setTimeout(r, 500)); continue; }
+    try {
+      const r = await fetch('/api/camera.raw?after=' + camSeq, { cache: 'no-store' });
+      if (r.status === 200) {
+        const w = parseInt(r.headers.get('X-Width') || '320', 10), h = parseInt(r.headers.get('X-Height') || '240', 10);
+        camSeq = parseInt(r.headers.get('X-Seq') || String(camSeq + 1), 10);
+        const buf = await r.arrayBuffer();
+        if (buf.byteLength === w * h * 4) {
+          camFrame = new ImageData(new Uint8ClampedArray(buf), w, h);
+          camLastAt = performance.now(); camTimes.push(camLastAt);
+          if (!paintPending) { paintPending = true; requestAnimationFrame(paintCam); }
+        }
+      } else if (r.status !== 204) {
+        await new Promise(res => setTimeout(res, 500));
+      }
+    } catch (_) {
+      await new Promise(res => setTimeout(res, 500));
+    }
+  }
+}
+let paintPending = false;
+function paintCam() {
+  paintPending = false;
+  if (!camFrame) return;
+  if (cam.width !== camFrame.width || cam.height !== camFrame.height) { cam.width = camFrame.width; cam.height = camFrame.height; }
+  cctx.putImageData(camFrame, 0, 0);
+}
+function renderCamStatus() {
+  const now = performance.now();
+  while (camTimes.length && now - camTimes[0] > 2000) camTimes.shift();
+  const empty = $('camEmpty'), box = $('camBox'), age = (now - camLastAt) / 1000;
+  if (!camFrame) { empty.hidden = false; setText(empty, everConnected ? 'No video' : 'Waiting for video'); setText($('camMeta'), ''); return; }
+  const stale = age > 1.5;
+  setClass(box, stale ? 'cam stale' : 'cam');
+  empty.hidden = !stale;
+  if (stale) setText(empty, `No video for ${age.toFixed(0)} s`);
+  setText($('camMeta'), stale ? `${cam.width}×${cam.height}` : `${cam.width}×${cam.height} · ${(camTimes.length / 2).toFixed(0)} fps`);
+}
+
+// Link, staleness and camera indicators tick at 4 Hz independent of data arrival.
+setInterval(() => {
+  const before = document.body.classList.contains('lost');
+  renderStatus(); renderCamStatus();
+  if (document.body.classList.contains('lost') !== before) vehicleClass();
+}, 250);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { baseDirty = topDirty = true; requestFrame(); } });
+
+renderStatus(); renderCamStatus();
+pollState(); pollMap(); streamCamera();
+</script>
+</body>
+</html>

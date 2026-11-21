@@ -1,6 +1,0 @@
-Rough edges:
-- Sensing is slow in the forest. The flight takes 1.72× as long with it on. No data is lost; simulation time just slows down. Worth optimizing in the renderer.
-- The drone camera's view shows as a black box in the corner of the main window. Webots creates that panel after the settings that would hide it have loaded.
-- Still open from the looks list: trees vanish with ambient occlusion off, and foliage shimmers.
-
-I'll take trees-vanishing-with-AO-off next, since the drone's cameras would hit it.

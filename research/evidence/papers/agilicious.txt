@@ -1,0 +1,1020 @@
+ Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                              University of Zurich    1
+
+
+
+
+Agilicious: Open-Source and Open-Hardware Agile
+Quadrotor for Vision-Based Flight
+P HILIPP F OEHN †,* , E LIA K AUFMANN †,* , A NGEL R OMERO , R OBERT P ENICKA , S IHAO S UN , L EONARD
+BAUERSFELD , T HOMAS L AENGLE , G IOVANNI C IOFFI , Y UNLONG S ONG , A NTONIO L OQUERCIO , AND
+DAVIDE S CARAMUZZA
+
+All authors are with the Robotics and Perception Group, UZH, Zurich, Switzerland.
+† These authors contributed equally to this work.
+* Corresponding authors: foehn@ifi.uzh.ch, ekaufmann@ifi.uzh.ch
+
+
+This is the accepted version of Science Robotics Vol. 7, Issue 67
+DOI: 10.1126/scirobotics.abl6259 (2022)
+
+
+      Autonomous, agile quadrotor flight raises fundamental challenges for robotics research in terms of perception,
+      planning, learning, and control. A versatile and standardized platform is needed to accelerate research and let
+      practitioners focus on the core problems. To this end, we present Agilicious, a co-designed hardware and software
+      framework tailored to autonomous, agile quadrotor flight. It is completely open-source and open-hardware and
+      supports both model-based and neural-network–based controllers. Also, it provides high thrust-to-weight and
+      torque-to-inertia ratios for agility, onboard vision sensors, GPU-accelerated compute hardware for real-time
+      perception and neural-network inference, a real-time flight controller, and a versatile software stack. In contrast
+      to existing frameworks, Agilicious offers a unique combination of flexible software stack and high-performance
+      hardware. We compare Agilicious with prior works and demonstrate it on different agile tasks, using both model-
+      based and neural-network–based controllers. Our demonstrators include trajectory tracking at up to 5 g and
+      70 km/h in a motion-capture system, and vision-based acrobatic flight and obstacle avoidance in both structured
+      and unstructured environments using solely onboard perception. Finally, we demonstrate its use for hardware-in-
+      the-loop simulation in virtual-reality environments. Thanks to its versatility, we believe that Agilicious supports
+      the next generation of scientific and industrial quadrotor research.
+
+
+
+CODE AND MULTIMEDIA MATERIAL                                                 integration. As a result, only a small number of research groups have
+                                                                             undertaken the significant overhead of hardware and software engineer-
+Code and data can be found at https://agilicious.dev. A video of the
+                                                                             ing, and have developed the expertise and resources to design quadrotor
+experiments can be found at https://youtu.be/fNYxPLyJ5YY.
+                                                                             platforms that fulfill the requirements on weight, sensing, and compu-
+                                                                             tational budget necessary for autonomous agile flight. This work aims
+1. INTRODUCTION                                                              to bridge this gap through an open-source agile flight platform, en-
+Quadrotors are extremely agile vehicles. Exploiting their agility in         abling everyone to work on agile autonomy with minimal engineering
+combination with full autonomy is crucial for time-critical missions,        overhead.
+such as search and rescue, aerial delivery, and even flying cars. For this       The platforms and software stacks developed by research groups [2,
+reason, over the past decade, research on autonomous, agile quadrotor        4, 16–21] vary strongly in their choice of hardware and software tools.
+flight has continually pushed platforms to higher levels of speed and        This is expected, as optimizing a robot with respect to different tasks
+agility [1–10].                                                              based on individual experience in a closed-source research environ-
+    To further advance the field, several competitions have been             ment leads to a fragmentation of the research community. For example,
+organized—such as the autonomous drone racing series at the recent           even though many research groups use the Robot Operating System
+IROS and NeurIPS conferences [3, 11–13] and the AlphaPilot chal-             middleware to accelerate development, publications are often diffi-
+lenge [6, 14]—with the goal to develop autonomous systems that will          cult to reproduce or verify since they build on a plethora of previous
+eventually outperform expert human pilots. Million-dollar projects,          implementations of the authoring research group. In the worst case,
+such as AgileFlight [15] and Fast Lightweight Autonomy (FLA) [4],            building on an imperfect or even faulty closed-source foundation can
+have also been funded by the European Research Council and the               lead to wrong or non-reproducible conclusions, slowing down research
+United States government, respectively, to further push research. Agile      progress. To break this vicious cycle and to democratize research on
+flight comes with ever-increasing engineering challenges since per-          fast autonomous flight, the robotics community needs an open-source
+forming faster maneuvers with an autonomous system requires more             and open-hardware quadrotor platform that provides the versatility and
+capable algorithms, specialized hardware, and proficiency in system          performance needed for a wide range of agile flight tasks. Such an
+  Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                University of Zurich      2
+
+
+open and agile platform does not yet exist, which is why we present           Quad proposed in [2] operates with only onboard inertial measurement
+Agilicious, an open-source and open-hardware agile quadrotor flight           unit (IMU) and monocular camera while having a weight of only
+stack summarized in Figure 1.                                                 250 g. Nevertheless, the Qualcomm Snapdragon board installed on this
+    To reach the goal of creating an agile, autonomous, and versatile         platform lacks computational power and also the actuation constrains
+quadrotor research platform, two main design requirements must be             the maximal accelerations below 1.5g. Motivated by drone racing, the
+met by the quadrotor: it must carry the required compute hardware             MIT-Quad [27] reported accelerations of up to 2.1g while it was further
+needed for autonomous operation, and it must be capable of agile flight.      equipped with NVIDIA Jetson TX2 in [28], however, it does not reach
+    To meet the first requirement on computing resources needed for           the agility of Agilicious and contains proprietary electronics. Finally,
+true autonomy, a quadrotor should carry sufficient compute capability         the quadrotor proposed in [18] is a research platform designed explicitly
+to concurrently run estimation, planning, and control algorithms on-          for agile flight. Although the quadrotor featured a high thrust-to-weight
+board. With the emergence of learning-based methods, also efficient           ratio of up to 4, its compute resources are very limited, prohibiting truly
+hardware acceleration for neural network inference is required. To en-        autonomous operation. All these platforms are optimized for either
+able agile flight, the platform must deliver an adequate thrust-to-weight     relatively heavy sensor setups or for agile flight in non-autonomous
+ratio and torque-to-inertia ratio. While the thrust-to-weight ratio can       settings. While the former platforms lack the required actuation power
+often be enhanced using more powerful motors, which in turn require           to push the state of the art in autonomous agile flight, the latter have
+larger propellers and thus a larger size of the platform. However, the        insufficient compute resources to achieve true autonomy.
+torque-to-inertia ratio typically decreases with higher weight and size,         Finally, several mentioned platforms rely on either Pixhawk-
+since the moment of inertia increases quadratic with the size, and lin-       PX4 [29], the Parrot [30] or DJI [31] low-level controllers, which
+early with the weight. As a result, it is desirable to design a lightweight   are mostly treated as blackboxes. This, together with the proprietary
+and small platform [25, 26] to maximize agility (i.e. maximize both           nature of the DJI systems, limits control over the low-level flight char-
+thrust-to-weight and torque-to-inertia). Therefore the platform should        acteristics, which not only limits interpretability of results, but also
+meet the best trade-off, since maximizing compute resources competes          negatively impacts agility. Full control over the complete pipeline is
+against maximizing the flight performance.                                    necessary to truly understand aerodynamic and high-frequency effects,
+    Apart from hardware design considerations, a quadrotor research           model and control them, and exploit the platform to its full potential.
+platform needs to provide the software framework for flexible usage
+and reproducible research. This entails the abstraction of hardware               Apart from platforms mainly developed by research labs, several
+interfaces and a general co-design of software and hardware necessary         quadrotor designs are proposed by industry (Skydio [32], DJI [31],
+to exploit the platform’s full potential. Such co-design must account for     Parrot [30]) and open-source projects (PX4 [29], Paparazzi [21],
+the capabilities and limitations of each system component, such as the        Crazyflie [33]). While Skydio [32] and DJI [31] both develop platforms
+complementary real-time capabilities of common operating systems              featuring a high level of autonomy, they do not support interfacing with
+and embedded systems, communication latencies and bandwidths, sys-            custom code and therefore are of limited value for research and devel-
+tem dynamics bandwidth limitations, and efficient usage of hardware           opment purposes. Parrot [30] provides a set of quadrotor platforms
+accelerators. In addition to optimally using hardware resources, the          tailored for inspection and surveillance tasks that are accompanied
+software should be built in a modular fashion to enable rapid proto-          by limited software development kits that allow researchers to pro-
+typing through a simple exchange of components, both in simulation            gram custom flight missions. In contrast, PX4 [29] provides an entire
+and real-world applications. This modularity enables researchers to           ecosystem of open-source software and hardware as well as simulation.
+test and experiment with their research code, without the requirement         While these features are extremely valuable especially for low-speed
+to develop an entire flight stack, accelerating time to development           flight, both cross-platform hardware and software are not suited to
+and facilitating reproducibility of results. Finally, the software stack      push the quadrotor to agile maneuvers. Similarly, Paparazzi [21] is an
+should run on a broad set of computing boards, be efficient, easy to          open-source project for drones, which supports various hardware plat-
+transfer and adapt by having minimal dependencies and provide known           forms. However, the supported autopilots have very limited onboard
+interfaces, such as the widely-used Robot Operating System (ROS).             compute capability, rendering them unsuited for agile autonomous
+    The complex set of constraints and design objectives is difficult         flight. The Crazyflie [33] is an extremely lightweight quadrotor plat-
+to meet. There exists a variety of previously published open-source           form with a takeoff weight of only 27 g. The minimal hardware setup
+research platforms, which, while well designed for low-agility tasks,         leaves no margin for additional sensing or computation, prohibiting
+could only satisfy a subset of the aforementioned hardware and soft-          any non-trivial navigation task.
+ware constraints. In the following section, we list and analyze promi-            To address the requirements of agile flight, the shortcomings of
+nent examples such as the FLA platform [4], the MRS quadrotor [20],           existing works, and to enable the research community to progress fast
+the ASL-Flight [17], the MIT-Quad [27], the GRASP-Quad [2], or our            towards agile flight, we present an open-source and open-hardware
+previous work [18].                                                           quadrotor platform for agile flight at more than 5g acceleration while
+    The FLA platform [4] relies on many sensors, including Lidars and         providing substantial onboard compute and versatile software. The
+laser-range finders in conjunction with a powerful onboard computer.          hardware design leverages recent advances in motor, battery, and frame
+While this platform can easily meet autonomous flight computation             design initiated by the first-person-view (FPV) racing community. The
+and sensing requirements, it does not allow to perform agile flight           design objectives resulted in creating a lightweight 750 g platform with
+beyond 2.4g of thrust, limiting the flight envelope to near-hover flight.     maximal speed of 131 km/h. This high-performance drone hardware
+The MRS platform [20] provides an accompanying software stack                 is combined with a powerful onboard computer that features an inte-
+and features a variety of sensors. Even though this hardware and              grated GPU, enabling complex neural network architectures to run at
+software solution allows fully autonomous flight, the actuation renders       high frequency while concurrently running optimization-based control
+the system not agile with a maximum thrust-to-weight of 2.5. The ASL-         algorithms at low latency onboard the drone. The most important fea-
+Flight [17] is built on the DJI Matrice 100 platform and features an Intel    tures of the Agilicious framework are summarized and compared with
+NUC as the main compute resource. Similarly to the MRS platform, the          relevant research and industrial platforms in Figure 2. A qualitative
+ASL-Flight has very limited agility due to its weight being on the edge       comparison of mutually contradicting onboard computational power
+of the platform’s takeoff capability. The comparably smaller GRASP-           and agility is presented in Figure 2.
+ Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                            University of Zurich   3
+
+
+                          Trajectory   Waypoint         Velocity     Body Rates + Thrust     Rotor Thrusts     Start Land Hover Off
+
+    Agilicious Pilot      Logic
+                                           User select                 Reference                                        Action               User select
+
+
+       Pipeline
+                                         state                                  setpoint                           command
+                       Estimator                           Sampler                                Controller                        Bridge
+
+
+
+
+    Simulation                     Real World                        3D-printed Jetson Mount     Quasar Carrier Board            Jetson TX2            Nut
+                                                                     5" Propeller
+          Low Level                      Low Level
+          Controller                     Controller
+                                                                     Brushless Motor
+
+
+         Motor Model
+
+                                        Quadrotor                    Carbon Fiber Frame
+                                                                     3D-printed Sensor Mount
+                                                                                                                                             Hobbywing ESC
+          BEM Model
+
+                                                                     Vision Sensor                                                 Radix Flight Controller
+                                                state
+          Rigid Body                                                                                                                  Damper
+          Dynamics                                                                 3D-printed Battery Mount
+
+                  state                                                                                                    4S LiPo Battery
+
+
+
+
+Fig. 1. The Agilicious software and hardware quadrotor platform are tailored for agile flight while featuring powerful onboard compute ca-
+pabilities through an NVIDIA Jetson TX2. The versatile sensor mount allows for rapid prototyping with a wide set of monocular or stereo
+camera sensors. As a key feature, the software of Agilicious is built in a modular fashion, allowing rapid software prototyping in simulation and
+seamless transition to real-world experiments. The Agilicious Pilot encapsulates all logic required for agile flight, while exposing a rich set of
+interfaces to the user, from high-level pose commands to direct motor commands. The software stack can be used in conjunction with a custom
+modular simulator which supports highly accurate aerodynamics based on blade-element momentum theory [22], or with RotorS [23], hardware-
+in-the-loop, and rendering engines such as Flightmare [24]. Deployment on the physical platform only requires selecting a different bridge and a
+sensor-compatible estimator.
+
+
+   In co-design with the hardware, we complete the drone design with                    2. RESULTS
+a modular and versatile software stack, called Agilicious. It provides
+                                                                                        Our experiments, conducted in simulation and in the real world, demon-
+a software architecture that allows to easily transfer algorithms from
+                                                                                        strate that Agilicious can be used to perform cutting-edge research in
+prototyping in simulation to real-world deployment in instrumented
+                                                                                        the fields of agile quadrotor control, quadrotor trajectory planning,
+experiment setups, and even pure onboard-sensing applications in
+                                                                                        and learning-based quadrotor research. We evaluate the capabilities
+unknown and unstructured environments.
+                                                                                        of the Agilicious software and hardware stack in a large set of experi-
+   This modularity is key for fast development and high-quality re-                     ments that investigate trajectory tracking performance, latency of the
+search, since it allows to quickly substitute existing components with                  pipeline, combinations of Agilicious with a set of commercially or
+new prototypes and enables all software components to be used in                        openly available vision-based state estimators. Finally, we present two
+standalone testing applications, experiments, benchmarks, or even                       demonstrators of recent research projects that build on Agilicious.
+completely different applications.                                                      A. Trajectory Tracking Performance
+    The hardware and software presented in this work have been de-                      In this section, we demonstrate the tracking performance of our plat-
+veloped, tested, and refined throughout a series of research publica-                   form by flying an aggressive time-optimal trajectory in a drone racing
+tions [3, 9, 10, 34–38]. All these publications share the ambition to                   scenario. Additionally, to benchmark our planning and control algo-
+push autonomous drones to their physical limits. The experiments,                       rithms, we compete against a world-class drone racing pilot FPV pilot,
+performed in a diverse set of environments demonstrate the versatility                  reported in [10]. As illustrated in Figure 3, our drone racing track
+of Agilicious by deploying different estimation, control, and planning                  consists of seven gates that need to be traversed in a pre-defined order
+strategies on a single physical platform. The flexibility to easily com-                as fast as possible. The trajectory used for this evaluation reaches
+bine and replace both hard- and software components in the flight                       speeds of 60km/h and accelerations of 4 g.
+stack while operating on a standardized platform facilitates testing new                    Flying through gates at such high speed requires precise state es-
+algorithms and accelerates research on fast autonomous flight.                          timates, which is still an open challenge using vision-based state es-
+  Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                              University of Zurich       4
+
+
+
+
+            Agility   Research Platform / Open
+                      Proprietary Platform / Closed
+                                                                                                                       Future Research
+
+                                           DJI
+                                                              Ours
+
+
+
+
+                                                                  MIT
+
+
+                                                              Skydio
+                                        GRASP
+                                                                                                                                                  MRS
+                                                                                                           FLA
+                                    Crazyflie
+                                              Parrot
+                                                                                                                       ASL
+
+
+                                                                                                                               Onboard Compute Capability
+
+
+                                                        onboard            low-level             CPU mark                     maximum speed
+framework             open-source    simulation                                                                        GPU                              thrust/weight
+                                                       computer            controller         (higher is better)              (0-100 km/h time)
+PX4 [29]              SW and HW           3               7            custom open source                          -     7                          -                -
+Paparazzi [21]        SW and HW           3               7            custom open source                          -     7                          -                -
+DJI [31]                  -               7               7                proprietary                           -      7         140 km/h (2.0 s)          ≈ 4.434
+Skydio [32]               -               7               7                proprietary                           -      7                58 km/h                  -
+Parrot [30]              SW               7               7                proprietary                           -      7                55 km/h                  -
+Crazyflie [33]        SW and HW           3               7            custom open source                        -      7                        -           ≈ 2.26
+FLA-Quad [4]          SW and HW           7               3                   PX4                            3,383      7                        -           ≈ 2.38
+GRASP-Quad [2]            -               7               3                  custom                            625      7                        -           ≈ 1.80
+MIT-Quad [28]             -               7               3                  custom                          1,343      3                        -           ≈ 2.33
+ASL-Flight [17]       SW and HW           7               3                    DJI                           3,383      7                        -           ≈ 2.32
+RPG-Quad [18]         SW and HW           3               3                 Betaflight                         633      7                        -           ≈ 4.00
+MRS UAV [20]          SW and HW           3               3                   PX4                            8,846      7                        -           ≈ 2.50
+Agilicious (Ours)     SW and HW           3               3            custom open source                    1,343      3        131 km/h (1.01 s)              ≈ 5.00
+
+Fig. 2. A comparison of different available consumer and research platforms with respect to available onboard compute capability and agility.
+The platforms are compared based on their openness to the community, support of simulation and onboard computation, used low-level con-
+troller, CPU power (reported according to publicly available benchmarks https://www.cpubenchmark.net and corresponding to the speed of solving
+a set of benchmark algorithms that represent a generic program), and the availability of onboard general-purpose GPU. The agility of the plat-
+forms is expressed in the terms of thrust-to-weight ratio; however, we also report the maximal velocity as an agility indicator due to limited
+information about the commercial platforms. The PX4 [29] and the Paparazzi [21] are rather low-level autopilot frameworks without high-level
+computation capability, but they can be integrated in other high-level frameworks [4, 20]. The open-source frameworks FLA [4], ASL[17], and
+MRS [20] have relatively large weight and low agility. The DJI [31], Skydio [32], and Parrot [30] are closed-source commercial products that
+are not intended for research purposes. The Crazyflie [33] does not allow for sufficient onboard compute or sensing, while the MIT [28] and
+GRASP [2] platforms are not available open-source. Finally, our proposed Agilicious framework provides agile flight performance, onboard
+GPU-accelerated compute capabilities, as well as open-source and open-hardware availability.
+
+timators [39]. For this reason, we conduct these experiments in an                      from simulation to real-world deployment requires no source-code
+instrumented flight volume of 30 × 30 × 8 m (7200 m3 ), equipped                        changes or adaptions, which reduces the risk of crashing expensive
+with 36 VICON cameras that provide precise pose measurements at                         hardware, and is one of the major features of Agilicious accelerating
+400 Hz. However, even when provided with precise state estimation,                      rapid-prototyping. Figure 3 includes a simulated flight that shows
+accurately tracking such aggressive trajectories poses considerable                     similar characteristics and error statistics compared to the real-world
+challenges with respect to the controller design, which usually requires                flights described next.
+several iterations of algorithm development and substantial tuning ef-
+                                                                                           We evaluate three different system and control approaches includ-
+fort. The proposed Agilicious flight stack allows us to easily design,
+                                                                                        ing onboard computation with an off-the-shelf BetaFlight [40] flight
+test, and deploy different control methods by first verifying them in
+                                                                                        controller, our custom open-source agiNuttx controller, and an offboard-
+simulation and then fine-tuning them in the real-world. The transition
+                                                                                        control scenario. These three system configurations represent various
+   Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                                          University of Zurich       5
+
+A                                                                                            B
+
+
+
+
+                                                                                            Tracking Error [m]
+                                                                                                                 0.6
+
+                                                                                                                 0.4
+
+                                                                                                                 0.2
+        4
+                                                                                                                   0
+                                                                                                                       0     1        2      3          4       5        6           7
+Z [m]
+        2                                                                                                                                        Time [s]
+                                                                                             C
+        0
+
+
+                                                                                            Delay [ms]
+        -5                                                                                                       70
+                                                                                   5
+                  0
+                                                                                                                 50
+                                                                     0
+                                5
+                                                                     Y [m]
+                        X [m]              10
+                                                               -5                                                30
+                                                                                                                           agiNuttx          Betaflight         Betaflight + Laird
+                Reference                       agiNuttx                    Betaflight                                      Betaflight + Laird                       Simulation
+
+Fig. 3. An agile trajectory with speeds up to 60km/h and an acceleration of 4g, executed in an indoor instrumented flight volume. We compare
+multiple different drone configurations, including our own low-level flight controller software agiNuttx, an off-the-shelf BetaFlight controller,
+the BetaFlight controller together with offboard computing and remote control through a Laird wireless transmitter, and our included simulation.
+Figure A depicts an overview of the flown trajectory. Figure B shows the tracking errors along a single lap over all three configurations. Our
+provided agiNuttx achieves the best tracking performance, followed by BetaFlight combined with onboard computation. In contrast, offload-
+ing computation from the drone and controlling it remotely significantly impacts performance. This is due to the massively increased latency,
+depicted in Figure C, where, for reference, the motor time constant of 39.1ms is marked as a dashed line (- - -). Additionally, in Figure B it is
+visible that the simulation exhibits very similar error characteristics, thanks to our accurate aerodynamic modelling.
+
+use cases of Agilicious, such as running state-of-the-art single-rotor                Figure 3A,B depict the results of these trajectory tracking experi-
+control onboard the drone using our agiNuttx described in Sec. B, or              ments. Our first proposed configuration (i.e. with onboard computation
+simple remote control by executing Agilicious on a desktop computer               and the custom agiNuttx flight controller) achieves the best overall
+and forwarding the commands to the drone. All configurations use the              tracking performance with the lowest average positional root-mean-
+motion capture state estimate and our single-rotor model-predictive               square error (RMSE) of just 0.322m at up to 60 km/h and 4 g. Next
+control (MPC) described in Section D.1 [41] as high-level controller.             up is the second configuration with BetaFlight, still achieving less
+We use the single-rotor thrust formulation to correctly account for               than 0.385m average positional RMSE. Finally, the third configuration
+actuation limits, but use bodyrates and collective thrust as command              with offboard control exhibits higher latency, leading to an increased
+modality.                                                                         average positional RMSE of 0.474m. As can be seen, our simulation
+    The first configuration runs completely onboard the drone with an             closely matches the performance observed in real world in the first
+additional low-level controller in the form of incremental non-linear             configuration. The simulated tracking results in slightly lower errors,
+dynamic inversion (INDI) as described in Section D.1 [41]. It uses the            0.320m RMSE, since even the state-of-the-art aerodynamic models
+MPC’s output to compute refined single-rotor thrust commands using                [22] fail to reproduce the highly non-linear and chaotic real aerody-
+INDI, to reduce the sensitivity to model inaccuracies. These single-              namics. This simulation accuracy allows a seamless transition from
+rotor commands are executed using our agiNuttx flight controller with             simulation prototyping to real-world verification, and is one of the
+closed-loop motor speed tracking.                                                 prominent advantages of Agilicious.
+    The second configuration also runs onboard and directly forwards                  Additional experiments motivating the choice of MPC as outer-loop
+the bodyrate and collective thrust command from the MPC to a                      controller and its combination with INDI can be found in [41], details
+BetaFlight [40] controller. This represents the most simplistic system            on the planning of the time-optimal reference trajectory are elaborated
+which does not require flashing the flight controller and is compatible           on in [10], and additional extensions to the provided MPC for fast
+with a wide range of readily available off-the-shelf hobbyist drone               flight are in [45] and for rotor-failure MPC in [46]. These related
+components. However, in this configuration, the user does not get any             publications also showcase performance at even higher speeds of up to
+IMU or motor speed feedback, as those are not streamed by BetaFlight.             70 km/h and accelerations reaching 5 g. The following section gives
+                                                                                  further insights into the latency of the three configurations tested herein,
+    The third configuration is equal to the second configuration with the
+                                                                                  including on- and offboard control architecture, as well as BetaFlight
+difference that the Agilicious flight stack runs offboard on a desktop or
+                                                                                  and agiNuttx flight controllers.
+laptop computer. The bodyrate and collective thrust commands from
+the MPC are streamed to the drone using a serial wireless link imple-
+mented through LAIRD [42]. This configuration allows to run com-                  B. Control Latency
+putationally demanding algorithms, such as GPU-accelerated neural                 All real systems with finite resources suffer from communication and
+networks, with minimal modifications. However, due to the additional              computation delays, while dynamic systems and even filters can in-
+wireless command transmission, there is a higher latency which can                troduce additional latency and bandwidth limitations. Analyzing and
+potentially degrade the control performance.                                      minimizing these delays is fundamental for the performance in any
+    Finally, the Agilicious simulation is executed using the same setup           control task, especially when tracking agile and fast trajectories in the
+as the first configuration. It uses accurate models for the quadrotor             presence of model mismatch, disturbances and actuator limitations. In
+and motor dynamics, as well as a blade-element momentum theory                    this section we conduct a series of experiments that aim to analyse
+aerodynamic model as described in [22].                                           and determine the control latency, from command to actuation, of the
+    Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                               University of Zurich      6
+
+                                                                                                                             Average Tracking Error
+        4
+
+                                                                 2                                                                 Positional RMSE
+
+        2
+                                                                                                                                       RealSense
+                                                                 1
+                                                                                                                                 Circle       0.151 m
+                                                                                                                                 Lemniscate 0.114 m
+y [m]
+                                                         y [m]
+        0
+                                                                 0
+                                                                                                                                       SVO
+                                                                                                                                 Circle     0.217 m
+                                                                 1                                                               Lemniscate 0.131 m
+        2
+
+
+                                                                 2
+                                                                                                                                       Groundtruth
+        4
+
+            -2       0          2         4                          -2   0     2           4          6           8
+                            x [m]                                                         x [m]
+
+Fig. 4. A comparison of two different visual-inertial odometry solutions. The first solution consists of the Intel RealSense T265, an off-the-
+shelf sensor featuring a stereo camera, an IMU, and an integrated visual-inertial odometry (VIO) pipeline running on the integrated compute
+hardware. The second solution consists of a monocular camera, the IMU of the onboard flight controller, and SVO [43]. The estimates of both
+solutions are compared against motion-capture ground truth using [44] on a circle and a Lemniscate trajectory, flown using Agilicious in an
+indoor environment. Both systems show accurate tracking performance and could be used as cost-effective drop-in replacement for motion
+capture systems and enable deployment in the wild. While the Intel RealSense T265 is a convenient off-the-shelf option, using other cameras
+in combination with the onboard flight controller IMU and an open-source or custom visual-inertial odometry (VIO) pipeline enables tailored
+solutions and research-oriented data access.
+
+proposed architecture for the three different choices of low level con-       alSense T265 and (ii) a simple camera together with the onboard flight
+figurations: our agiNuttx, BetaFlight, and BetaFlight with offboard           controller IMU and an open-source VIO pipeline in the form of SVO
+control.                                                                      Pro [43, 48] with its sliding-window backend. While the RealSense
+     For this experiment, the quadrotor has been mounted on a load cell       T265 performs all computation on-chip and directly provides a state
+(ATI Mini 40 SI-20-1 [47]) measuring the force and moment acting              estimate via USB3.0, the alternative VIO solution uses the Jetson TX2
+on the platform. To measure the latency, a collective thrust step com-        to run the VIO software and allows researchers to interface and modify
+mand of 12N is sent to the corresponding low level controller, while          the state estimation software. Specifically, for sensor setup (ii), a single
+measuring the exerted force on the drone. These force sensor measure-         Sony IMX-287 camera at 30Hz with a 165° diagonal field-of-view is
+ments are time-synchronized with the collective thrust commands, and          used, combined with the IMU measurements of the flight controller at
+fitted through a first-order system representing to motor dynamics. The       500Hz, calibrated using the Kalibr toolbox [49].
+measured delays are reported in Figure 3C as the difference between              To verify their usability, a direct comparison of both VIO solutions
+the time at which the high level controller sends the collective thrust       with respect to ground-truth is provided. Performance is evaluated
+command, and the time at which the measured force effectively starts          based on the estimation error [44] obtained on two trajectories flown
+changing. The results show that both agiNuttx has the lowest latency at       with Agilicious. The flown trajectories consist of a circle trajectory
+35ms, with BetaFlight slightly slower at 40.15 ms. A large delay can          with radius of 4m at a speed of 5m/s, and a Lemniscate trajectory
+be observed when using offboard control and sending the commands              with an amplitude of 5m at a speed of up to 7m/s.
+via Laird connection to the drone, in which case the latency rises to
+more than 75ms. The impact of these latencies is also reflected in the            Figure 4 shows the performance of both VIO solutions in an xy-
+tracking error in Figure 3A,B. To put the measured delays into perspec-       overview of the trajectories together with their absolute tracking error
+tive, the motor’s time constant of 39.1ms, which dictates the actuator        (ATE) RMSE. Both approaches perform well on both trajectories, with
+bandwidth limitations, is indicated in Figure 3C. Finally, Section D.1        the Intel RealSense achieving slightly better accuracy according to the
+gives some insight into the latencies introduced when using Agilicious        ATE of 0.151m on the circle and 0.114m on the Lemniscate, compared
+together with Flightmare [24] in a hardware-in-the-loop setup.                to the monocular SVO approach with 0.217m and 0.131m, respectively.
+                                                                              This is expected since the Intel RealSense uses a stereo camera plus
+C. Visual-Inertial State Estimation                                           IMU setup and is a fully integrated solution, while sensor setup (ii)
+Deploying agile quadrotors outside of instrumented environments re-           aims at minimal cost by only adding a single camera and otherwise
+quires access to onboard state estimation. There exist many different         exploiting the existing flight-controller IMU and onboard compute
+approaches including GPS, lidar, and vision-based solutions. However,         resources.
+for size and weight constrained aerial vehicles, visual-inertial odometry         However, at the timing of writing this manuscript, the Intel Re-
+has proven to be the go-to solution because of the sensors’ comple-           alSense T265 is being discontinued. Other possible solutions include
+mentary measurement modalities, low cost, mechanical simplicity, and          camera sensors such as SevenSense [50], MYNT EYE [51], or Ma-
+reusability for other purposes, such as depth estimation for obstacle         trixVision [52], and other stand-alone cameras, combined with software
+avoidance.                                                                    frameworks like ArtiSense [53], SlamCore [54], or open-source frame-
+    The Agilicious platform provides a versatile sensor mount that is         works like VINSmono [55], OpenVINS [56], or SVO Pro [43, 48],
+compatible with different sensors and can be easily adapted to fit cus-       evaluated in [57]. Furthermore, there are other fully integrated alterna-
+tom sensor setups. In this work, two different visual-inertial odometry       tives to the Intel RealSense [58], including the Roboception [59] and
+(VIO) solutions are evaluated: (i) the proprietary, off-the-shelf Intel Re-   the ModalAI Voxl CAM [60].
+ Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                              University of Zurich         7
+
+ A
+                   Real World                                          Simulation                                                     Algorithms
+     Physical Platform                                 Photorealistic Environments                        Vision-based Navigation
+     Vicon Motion Capture (with mm Precision)          Sensors (Camera, Depth Sensor, Optical Flow)       Machine Learning
+
+                                                                                                                             Render Delay for HIL Simulation
+                                                                                                                       30
+                                                                                                                       25
+
+
+                                                                                                          Delay [ms]
+                                                                                                                       20
+                                                                                                                       15
+                                                                                                                       10
+                                                                                                                        5
+                                                                                                                       0
+                                                                                                                            100x100       640x480        1920x1080
+                                                         Real World                     Simulation                                     Resolution [px]
+
+                                    Quadrotor Position and Attitude                         Simulated Sensor Data
+
+
+
+
+Fig. 5. A: The hardware-in-the-loop simulation of Agilicious consists of a real quadrotor flying in a motion capture system combined with
+photorealistic simulation of complex 3D environments. Multiple sensors can be simulated with minimal delays while virtually flying in various
+simulated scenes. Such hardware-in-the-loop simulation offers a modular framework for prototyping robust vision-based algorithms safely,
+efficiently, and inexpensively. B-G: The Agilicious platform is deployed in a diverse set of environments while only relying on onboard sensing
+and computation. B-D: The quadrotor performs a set of acrobatic maneuvers using a learned control policy. E-G: By leveraging zero-shot sim-to-
+real transfer, the quadrotor platform performs agile navigation through cluttered environments. Courtesy of Kaufmann et al. [9] and Loquercio et
+al. [35]
+
+D. Demonstrators                                                                more aggressive flights can lead to devastating crashes. This motivates
+The Agilicious software and hardware stack is intended as a flexible            the Agilicious framework to support hardware-in-the-loop simulation,
+research platform. To illustrate its broad applicability, this section          which consists of flying a physical quadrotor in a motion-capture sys-
+showcases a set of research projects that have been enabled through             tem while observing virtual photorealistic environments, as previously
+Agilicious. Specifically, we demonstrate the performance of our plat-           shown in [14]. The key advantage of hardware-in-the-loop simulation
+form in two different experimental setups covering hardware-in-the-             over classical synthetic experiments [23] is the usage of real-world
+loop simulation and autonomous flight in the wild using only onboard            dynamics and proprioceptive sensors, instead of idealized virtual de-
+sensing.                                                                        vices, combined with the ability to simulate arbitrarily sparse or dense
+                                                                                environments without the risk of crashing into real obstacles.
+D.1. Hardware in the Loop Simulation
+Developing vision-based perception and navigation algorithms for ag-                The simulation of complex 3D environments and realistic exterocep-
+ile flight is not only slow and time-consuming, due to the large amount         tive sensors is achieved using our high-fidelity quadrotor simulator [24]
+of data required to train and test perception algorithms in diverse set-        built on Unity [61]. The simulator can offer a rich and configurable
+tings, but it progressively becomes less safe and more expensive as             sensor suite, including RGB cameras, depth sensors, optical flow, and
+  Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                University of Zurich     8
+
+
+image segmentation, combined with variable sensor noise levels, mo-          Nevertheless, platforms with a dynamic morphology are by design
+tion blur, distortion and diverse environmental factors such as wind and     more adaptable to the environment and potentially more power effi-
+rain. The simulator achieves this by introducing only minimal delays         cient [81–84]. For example, to increase flight time, a quadrotor might
+(see Figure 5A), ranging from 13ms for 640×480 VGA resolution to             transform to a fixed-wing aircraft [85]. Due to its flexibility, Agilicious
+22ms for 1920×1080 full HD images, when rendered on a NVIDIA                 is the ideal tool for the future development of morphable and soft aerial
+RTX 2080 GPU.                                                                systems.
+    Overall, the integration of our agile quadrotor platform and high-           Finally, vision-based agile flight is still in the early stages and has
+fidelity visual simulation provides an efficient framework for the rapid     not yet reached the performance of professional human pilots. The
+development of vision-based navigation systems in complex and un-            main challenges lie in handling complex aerodynamics, e.g. tran-
+structured environments.                                                     sient torques or rotor inflow, low-latency perception and state esti-
+                                                                             mation, and recovery from failures at high speeds. In the last few
+D.2. Vision-based Agile Flight with Onboard Sensing and Compute
+                                                                             years, considerable progress has been made by leveraging data-driven
+When a quadrotor can only rely on onboard vision and computation,            algorithms [9, 22, 35, 86] and novel sensors as event-based cam-
+perception needs to be effective, low-latency, and robust to disturbances.   eras [36, 87], that provide a high dynamic range, low latency, and
+Violating this requirement may lead to crashes, especially during agile      low battery consumption [88]. A major opportunity for future work is
+and fast maneuvers where latency has to be low and robustness to             to complement the existing capabilities of Agilicious with novel com-
+perception disturbances and noise must be high. However, vision sys-         pute devices such as the Intel Loihi [89–91] or SynSense Dynap [92]
+tems either exhibit reduced accuracy or completely fail at high speeds       neuromorphic processing architecture, which are specifically designed
+due to motion blur, large pixel displacements, and quick illumination        to operate in an event-driven compute scheme. Due to the modular
+changes [62]. To overcome these challenges, vision-based navigation          nature of Agilicious, individual software components can be replaced
+systems generally build upon two different paradigms. The first uses         by these novel computing architectures, supporting rapid iteration and
+the traditional perception-planning-and-control pipeline, represented        testing.
+by standalone blocks which are executed in sequence and designed                 In summary, Agilicious offers a unique quadrotor testbed to acceler-
+independently [2, 63–67]. Works in the second category substitute            ate current and future research on fast autonomous flight. Its versatility
+either parts or the complete perception-planning-and-control pipeline        in both hardware and software allows deployment in a wide variety of
+with learning-based methods [9, 68–76].                                      tasks, ranging from exploration or search and rescue missions to acro-
+    The Agilicious flight stack supports both paradigms and has been         batic flight. Furthermore, the modularity of the hardware setup allows
+used to compare traditional and learning-based methods on agile navi-        integrating novel sensors or even novel compute hardware, enabling to
+gation tasks in unstructured and structured environments (see Figure 5).     test such hardware on an autonomous agile vehicle. By open-sourcing
+Specifically, Agilicious facilitated quantitative analyses of approaches     Agilicious, we provide the research and industrial community access
+for autonomous acrobatic maneuvers [9](Fig. 5B-D) and high-speed             to a highly agile, versatile, and extendable quadrotor platform.
+obstacle avoidance in previously unknown environments [35](Fig. 5E-
+G). Both comparisons feature a rich set of approaches consisting of
+traditional planning and control [34, 64, 66] as well as learning-based      4. MATERIALS AND METHODS
+methods [9, 35] with different input and output modalities. Thanks           Designing a versatile and agile quadrotor research platform requires
+to its flexibility, Agilicious enables an objective comparison of these      to co-design its hardware and software, while carefully trading off
+approaches on a unified control stack, without biasing results due to        competing design objectives such as onboard computing capacity and
+different low-level control strategies.                                      platform agility. In the following, the design choices that resulted in the
+                                                                             flight hardware, compute hardware, and software design of Agilicious
+3. DISCUSSION                                                                (see Figure 1) are explained in detail.
+The presented Agilicious framework substantially advances the pub-
+                                                                             A. Compute Hardware
+lished state of the art in autonomous quadrotor platform research. It
+offers advanced computing capabilities combined with the most power-         To exploit the full potential of highly unstable quadrotor dynamics,
+ful open-source and open-hardware quadrotor platform created to date,        a high-frequency low-latency controller is needed. Both of these re-
+opening the door for research on the next generation of autonomous           quirements are difficult to meet with general-purpose operating sys-
+robots. We see three main axes for future research based on our work.        tems, which typically come without any real-time execution guar-
+    First, we hypothesize that future flying robots will be smaller,         antees. Therefore, we deploy a low-level controller with limited
+lighter, cheaper, and consuming less power than what is possible today,      compute capabilities but reliable real-time performance, which sta-
+increasing battery life, crash-resilience, as well as thrust-to-weight       bilizes high-bandwidth dynamics, such as the motor speeds or the
+ratio and torque-to-inertia ratio [26]. This miniaturization is evident in   vehicle’s bodyrate. This allows complementing the system with a
+state-of-the-art research towards direct hardware implementations of         general-purpose high-level compute unit that can run Linux for versa-
+modern algorithms in the form of application-specific integrated circuit     tile software deployment, with significantly relaxed real-time require-
+(ASIC)s, such as the Navion [77], the Movidius [78], or the PULP             ments.
+processor [79, 80]. These highly specialized in-silicon implementa-          High-Level Compute Board. The high-level of the system architecture
+tions are typically magnitudes smaller and more efficient than general       provides all the necessary compute performance to run the full flight
+compute units. Their success is rooted in the specific structure many        stack, including estimation, planning, optimization-based control, neu-
+algorithmic problems exhibit, such as the parallel nature of image data      ral network inference, or other demanding experimental applications.
+or the factor-graph representations used in estimation, planning, and        Therefore, the main goal is to provide general-purpose computing
+control algorithms, like SLAM, model-predictive control, and neural          power, while complying with the strict size and weight limits. We
+network inference.                                                           evaluate a multitude of different compute modules made from system-
+    Second, the presented framework was mainly demonstrated with             on-a-chip (SoC) solutions since they allow inherently small footprints.
+fixed-shape quadrotors. This is an advantage as the platform is eas-         An overview is shown in Tab. 1. We exclude the evaluation of two popu-
+ier to model and control, and less susceptible to hardware failures.         lar contenders: (a) the Intel NUC platform, since it neither provides any
+ Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                University of Zurich     9
+
+
+size and weight advantage over the Jetson Xavier AGX nor provides            in combination with a fast-spinning brushless DC motor rated at a high
+a general-purpose GPU; and (b) the Raspberry Pi compute modules              maximum power of 758 W. The chosen motor-propeller combination
+since they do not offer any compute advantages over the Odroid and           achieves a continuous static thrust of 4× 9.5 N on the quadrotor and
+UpBoard, and no size and weight advantage over the NanoPi product            consumes about 400 W of power per motor. To match the high power
+family.                                                                      demand of the motors, a lithium-polymer battery with 1800 mA h and
+    As we target general flight applications, fast prototyping, and ex-      a rating of 120C is used. Therefore, the total peak current of 110 A is
+perimentation, it is important to support a wide variety of software,        well within the 216 A limit of the battery. The motors are powered by
+which is why we chose a Linux-based system. TensorFlow [93] and Py-          an electronic speed controller in the form of the Hobbywing XRotor
+Torch [94] are some of the most prominent frameworks with hardware-          ESC, due to its compact form factor, its high continuous current rating
+accelerated neural network inference. Both of them support acceler-          (60 A per motor), and support of the DShot protocol supporting motor
+ated inference on the Nvidia CUDA general-purpose GPU architecture,          speed feedback.
+which renders nVidia products favorable, as other products have no or
+poorly-supported accelerators. Therefore, four valid options remain,         C. Sensors
+listed in the second row of Tab. 1. While the Jetson Xavier AGX is be-       To navigate arbitrary uninstrumented environments, drones need means
+yond our size and weight goals, the Jetson Nano provides no advantage        to measure their absolute or relative location and state. Due to the size
+over the Xavier NX, rendering both the Jetson TX2 and Xavier NX              and weight constraints of aerial vehicles, and especially the direct im-
+viable solutions. Since these two CUDA-enabled compute modules               pact of weight and inertia on the agility of the vehicle, visual-inertial
+require breakout boards to connect to peripherals, our first choice is the   odometry has proven to be the go-to solution for aerial navigation.
+TX2 due to the better availability and diversity of such adapter boards      The complementary sensing modality of cameras and IMUs, their low
+and their smaller footprint. For the breakout board we recommend             price and excellent availability, together with the depth-sensing capa-
+the ConnectTech Quasar [95], providing multiple USB ports, Ethernet,         bilities of stereo camera configurations allow for a simple, compact,
+serial ports, and other interfaces for sensors and cameras.                  and complete perception setup.
+Low-Level Flight Controller. The Low-Level Flight Controller provides
+                                                                                 Furthermore, our agiNuttxflight controller already provides high-
+real-time low-latency interfacing and control. A simple and widespread       rate filtered inertial measurements and can be combined with any
+option is the open-source BetaFlight [40] software which runs on many        off-the-shelf camera [50–52] and open-source [43, 48, 55, 56] or com-
+commercially available flight controllers, such as the Radix[96]. How-       mercial [53, 54] software to implement a VIO pipeline. Additionally,
+ever, BetaFlight is made for human-piloted drones and optimized for a        there exist multiple fully integrated products providing out-of-the-box
+good human flight feeling, but not for autonomous operation. Further-        VIO solutions, such as the Intel RealSense [58], the Roboception
+more, even though it uses high-speed IMU readings for the control loop,      rc_visard [59], and the ModalAI Voxl CAM [60].
+it only provides very limited sensor readings at only 10 Hz. Therefore,
+                                                                             D. The Agilicious Flight Stack Software
+Agilicious provides its own low-level flight controller implementa-
+tion called "agiNuttx", reusing the same hardware as the BetaFlight          To exploit the full potential of our platform and enable fast prototyping,
+controllers. This means that the wide variety of commercially avail-         we provide the Agilicious flight stack as an open-source software
+able products can be bought and reflashed with agiNuttx to provide a         package. The main development goals for Agilicious are aligned with
+low-level controller suited for autonomous agile flight.                     our overall design goals: high versatility and modularity, low latency
+                                                                             for agile flight, and transferability between simulation and multiple
+    In particular, we recommend using the BrainFPV Radix [96] con-
+                                                                             real-world platforms. These goals are met by splitting the software
+troller, to deploy our agiNuttx software. The agiNuttx is based on the
+                                                                             stack into two parts.
+open-source NuttX [97] real-time operating system, optimized to run
+                                                                                 The core library, called "agilib", is built with minimal dependencies
+on embedded microcontrollers such as the STM32F4 used in many
+                                                                             but provides all functionality needed for agile flight, implemented
+BetaFlight products. Our agiNuttx implementation interfaces with the
+                                                                             as individual modules (illustrated in Figure 1). It can be deployed
+motors’ electronic speed controller (ESC) over the digital bi-directional
+                                                                             on a large range of computing platforms, from lightweight low-power
+DShot protocol, allowing not only to command the motors, but also
+                                                                             devices to parallel neural network training farms built on heterogeneous
+receive individual rotor speed feedback. This feedback is provided to
+                                                                             server architectures. This is enabled by avoiding dependencies on other
+the high-level controller together with IMU, battery voltage, and flight
+                                                                             software components that could introduce compatibility issues and
+mode information over a 1 MBaud serial bus at 500 Hz. The agiNuttx
+                                                                             rely only on the core C++-17 standard and the Eigen library for linear
+also provides closed-loop motor speed control, bodyrate control, and
+                                                                             algebra. Additionally, agilib includes a standalone set of unit tests and
+measurement time synchronization, allowing estimation and control
+                                                                             benchmarks that can be run independently, with minimal dependencies,
+algorithms to take full advantage of the available hardware.
+                                                                             and in a self-contained manner.
+                                                                                 To provide compatibility to existing systems and software, the
+B. Flight Hardware                                                           second component is a ROS-wrapper, called "agiros", which enables
+To maximize the agility of the drone, it needs to be designed as             networked communication, data logging, provides a simple GUI in-
+lightweight and small as possible [25] while still being able to ac-         terface to command the vehicle and allows for integration with other
+commodate the Jetson TX2 compute unit. With this goal in mind, we            software components. This abstraction between "agiros" and the core
+provide a selection of cheap off-the-shelf drone components summa-           library "agilib" allows a more flexible deployment on systems or in
+rized in Tab. 1. The Armattan Chameleon 6 inch frame is used as a base       environments where ROS is not available, not needed, or communica-
+since it is one of the smallest frames with ample space for the compute      tion overhead must be avoided. On the other hand, the ROS-enabled
+hardware. Being made out of carbon fiber, it is durable and lightweight.     Agilicious provides versatility and modularity due to a vast number of
+The other structural parts of the quadrotor are custom-designed plastic      open-source ROS packages provided by the research community.
+parts (PLA and TPU material) and produced using a 3D printer. Most               For flexible and fast development, "agilib" uses modular software
+components are made out of PLA which is stiffer and only parts that          components unified in an umbrella structure called "pipeline" and
+act as impact protectors or as predetermined breaking points are made        orchestrated by a control logic, called "pilot". The modules consist of
+out of TPU. For propulsion, a 5.1 inch three-bladed propeller is used        an "estimator", "sampler", "controllers", and a "bridge", all working
+ Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                                       University of Zurich          10
+
+                                                                             without General-Purpose GPU
+
+
+
+
+ Product                   Odroid XU4                                    Intel UpBoard                         NanoPi Neo 3                             NanoPi Neo air
+
+ CPU                8× 32-bit ARM 2.1 GHz                       4× 64-bit Atom 1.92 GHz                  4× 64-bit ARM 1.5 GHz                    4× 32-bit ARM 1.2 GHz
+ RAM                     2 GB LPDDR3                                 4 GB LPDDR3                              2 GB LPDDR4                             512 MB LPDDR3
+ GPU                       Mali-T628                                   Intel HD400                            Mali-450 MP4                             Mali-400 MP2
+ FLOPS                   ∼120 GFLOPS                                 ∼ 115 GFLOPS                             ∼40 GFLOPS                               ∼10 GFLOPS
+ Storage              up to 128 GB EMMC                            up to 64 GB EMMC                            only SD card                             8 GB EMMC
+ Interfaces    USB, Ethernet, Serial, I2C, SPI, GPIO       USB, Ethernet, Serial, I2C, SPI, GPIO,   USB, Ethernet, Serial, I2C, SPI, GPIO    USB, Ethernet, WIFI, Serial, I2C, SPI,
+                                                                         1 camera                                                                      GPIO, 1 camera
+ Size                   83 × 58 × 19 mm                             85 × 57 × 20 mm                          40 × 40 × 23 mm                         40 × 40 × 10 mm
+ Weight                       59 g                                          79 g                                   36 g                                      24 g
+
+
+                                                                               with General-Purpose GPU
+
+
+
+
+ Product                nVidia Jetson Nano                              nVidia Jetson TX2                 nVidia Jetson Xavier NX                 nVidia Jetson AGX Xavier
+
+ CPU                4× 64-bit ARM 1.43 GHz                      6× 64-bit ARM 2.0 GHz                    6× 64-bit ARM 1.9 GHz                    8× 64-bit ARM 2.26 GHz
+ RAM                     4 GB LPDDR4                                 8 GB LPDDR4                              8 GB LPDDR4                              32 GB LPDDR4
+ GPU                 128× Maxwell CUDA                             256× Pascal CUDA                         384× Volta CUDA                          512× Volta CUDA
+ FLOPS                    472 GFLOPS                                  1.33 TFLOPS                              2.12 TFLOPS                               11 TFLOPS
+ Storage                  16 GB EMMC                                  32 GB EMMC                               16 GB EMMC                               32 GB EMMC
+ Interfaces    USB, Ethernet, Serial, I2C, SPI, GPIO,      USB, Ethernet, WIFI, Serial, I2C, SPI,   USB, Ethernet, Serial, I2C, SPI, GPIO,   USB, Ethernet, Serial, I2C, SPI, GPIO,
+                            4 cameras                                GPIO, 6 cameras                             6 cameras                                6 cameras
+ Size                  69.9 × 45 × 22 mm                            87 × 50 × 34 mm                         69.9 × 45 × 22 mm                        100 × 87 × 58 mm
+ Weight                        63 g                                       154 g                                     79 g                                     650 g
+
+
+Table 1. Overview of compute hardware commonly used on autonomous flying vehicles. Due to the emerging trend of deploying learning-based
+methods onboard, hardware solutions are grouped according to the presence of a general-purpose GPU, enabling real-time inference.
+
+
+ Component            Product                           Specification                               Finally, the core library is completed by a physics simulator. While
+                                                                                                this might seem redundant due to the vast variety of simulation
+ Frame                Armattan Chameleon 6 inch         4 mm carbon fiber, 86 g
+ Motor                Xrotor 2306                       23×6 mm stator, 2400 kV,
+                                                                                                pipelines available [23, 24, 98], it allows to use high-fidelity mod-
+                                                        758 W, 4× 27.5 g                        els (e.g. BEM [22] for aerodynamics), evaluate software prototypes
+ Propeller            Azure Power SFP 5148              5.1 inch length and 4.8 inch            without having to interface with other frameworks, avoids dependen-
+                                                        pitch, 4× 5 g
+                                                                                                cies, and enables even simulation-based continuous integration testing
+ Battery              Tattoo R-Line 1800                4× 3.7 V, 1800 mA h, 199 g
+                                                                                                that can run on literally any platform. The pilot, software modules, and
+ Flight Controller    BrainFPV radix                    BetaFlight or custom firmware,
+                                                        6g                                      simulator are all described in the following sections.
+ Motor Controller     HobbyWing XRotor                  DShot protocol, 4× 60 A, 15 g
+ Compute Unit         nVidia Jetson TX2                 6× ARM 2.0 GHz, 256×                    D.1. Pilot
+                                                        CUDA cores, 8 GB, 154 g                 The pilot contains the main logic needed for flight operation, handling
+                                                                                                of the individual modules, and interfaces to manage references and
+Table 2. Overview of the components of the flight hardware design.                              task commands. In its core, it loads and configures the software mod-
+                                                                                                ules according to YAML [99] parameter files, runs the control loop,
+together to track a so-called "reference". These modules are executed                           and provides simplified user interfaces to manage flight tasks, such
+in sequential order (illustrated in Figure 1) within a forward pass                             as position and velocity control or trajectory tracking. For all state
+of the pipeline, corresponding to one control cycle. However, each                              descriptions, we use a right-handed coordinate system located in the
+module can spawn its individual threads to perform parallel tasks, e.g.                         center of gravity, with the B ez pointing in body-relative upward thrust
+asynchronous sensor data processing. Agilicious provides a collection                           direction, and B e x pointing along with the drone’s forward direction.
+of state-of-the-art implementations for each module inherited from                              Motion is represented with respect to an inertial world frame with
+base classes, allowing to create new implementations outside of the                             I ez pointing against the gravity direction, where translational deriva-
+core library, and linking them into the pilot at runtime. Moreover,                             tives (e.g. velocity) are expressed in the world frame and rotational
+Agilicious is not only capable to control a drone when running onboard                          derivatives (e.g. bodyrate) are expressed in the body frame.
+the vehicle, but can also run offboard on computationally more capable                          Pipeline. The pipeline is a distinct configuration of the sequentially
+hardware and send commands to the drone over low-latency wireless                               processed modules. These pipeline configurations can be switched
+serial interfaces.                                                                              at runtime by the pilot or the user, allowing to switch to backup con-
+  Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                       University of Zurich      11
+
+
+figurations in an emergency, or quickly alternate between different                  nomial, and Sampled. While Hover references are uniquely defined by
+prototyping configurations.                                                          a reference position and a yaw angle, a Velocity reference specifies a
+                                                                                     desired linear velocity with a yaw rate. By exploiting the differential
+Estimator.      The first module in the pipeline is the estimator,
+                                                                                     flatness of the quadrotor platform, Polynomial references describe the
+which provides a time-stamped state estimate for the subsequent
+                                                                                     position and yaw of the quadrotor as polynomial functions of time.
+software modules in the control cycle. A state estimate x =
+                                                                                     Sampled references provide the most general reference representations.
+[ p, q, v, ω, a, τ, j, s, bω , b a , f d , f ], represents position p, orientation
+                                                                                     Agilicious provides interfaces to generate, and receive such sampled
+unit quaternion q, velocity v, bodyrate ω, linear a and angular τ
+                                                                                     references and also defines a message and file format to store refer-
+accelerations, jerk j, snap s, gyroscope and accelerometer bias bω
+                                                                                     ences to a file. By defining such formats, a wide variety of trajectories
+and b a , and desired and actual single rotor thrusts f d and f . Agili-
+                                                                                     can be generated, communicated, saved, and executed using Python
+cious provides a feed-through estimator to include external estimates
+                                                                                     or other languages. Finally, to simplify the integration and deploy-
+or ground-truth from a simulation, as well as two extended Kalman
+                                                                                     ment of other control approaches, Agilicious also exposes a command
+filters, one with IMU filtering, and one using the IMU as propagation
+                                                                                     feedthrough, that allows taking direct control over the applied low-
+model. These estimators can easily be replaced or extended to work
+                                                                                     level commands. For safety, even when command feedthrough is used,
+with additional measurement sources, such as GPS or altimeters, other
+                                                                                     Agilicious provides readily available back-up control that can take over
+estimation systems, or even implement complex localization pipelines
+                                                                                     on user request or on timeout.
+such as visual-inertial odometry.
+                                                                                     Guard. To further support users in fast prototyping, Agilicious provides
+Sampler. For trajectory tracking using a state estimate from the afore-
+                                                                                     a so-called guard. This guard uses the quadrotor’s state-estimate or an
+mentioned estimator, the controller module needs to be provided with a
+                                                                                     alternative estimate (e.g. from motion capture when flying with VIO
+subset of points of the trajectory that encode the desired progress along
+                                                                                     prototypes) together with a user-defined spatial bounding box to detect
+it, provided by the sampler. Agilicious implements two types of sam-
+                                                                                     unexpected deviations from the planned flight path. Further detection
+plers: a time-based sampling scheme that computes progress along the
+                                                                                     metrics can be implemented by the user. Upon violation of e.g. the
+trajectory based on the time since trajectory start, and a position-based
+                                                                                     spatial bounding box, the guard can switch control to an alternative
+sampling scheme that selects trajectory progress based on the current
+                                                                                     pipeline using a backup estimate and control configuration. This safety
+position of the platform, trading off temporally accurate tracking for
+                                                                                     pipeline can e.g. use a motion capture system and a simple geometric
+higher robustness and lower positional tracking error.
+                                                                                     controller, while the main pipeline runs a VIO estimator, an MPC,
+Controller. To control the vehicle along the sampled reference setpoints,            reinforcement learning control strategies, or other software prototypes.
+a multitude of controllers are available, which provide the closed-loop              By providing this measure of backup, Agilicious significantly reduces
+commands for the low-level controller. We provide a state-of-the-art                 the risk of crashes when testing novel algorithms, and allows to iterate
+MPC that uses the full non-linear model of the platform and which                    over research prototypes faster.
+allows to track highly agile references using single-rotor thrust com-
+mands or bodyrate control.Additionally, we include a cascaded geomet-                D.2. Simulation
+ric controller based on the quadrotor’s differential flatness [100]. The             The Agilicious software stack includes a simulator that allows sim-
+pipeline can cascade two controllers, which even allows combining the                ulating quadrotor dynamics at various levels of fidelity to accelerate
+aforementioned MPC [41] or geometric approaches with an interme-                     prototyping and testing. Specifically, Agilicious models motor dynam-
+diate controller for which we provide an L1 adaptive controller [101]                ics and aerodynamics acting on the platform. To also incorporate the
+and an incremental nonlinear dynamic inversion controller [41].                      different, possibly off-the-shelf, low-level controllers that can be used
+Bridge. A bridge serves as an interface to hardware or software by                   on the quadrotors, the simulator can optionally simulate the behav-
+sending control commands to a low-level controller or other means of                 ior of low-level controllers. One simulator update, typically called at
+communication sinks. Low-level commands can either be single rotor                   1 kHz, includes a call to the simulated low-level controller, the motor
+thrusts or bodyrates in combination with a collective thrust. Agilicious             model, the aerodynamics model, and the rigid body dynamics model
+provides a set of bridges to communicate via commonly used protocols                 in a sequential fashion. Each of these components is explained in the
+such as ROS, SBUS, and serial. While the ROS-bridge can be used                      following.
+to easily integrate Agilicious in an existing software stack that relies             Low-Level Controller & Motor Model. Simulated low-level controllers
+on ROS, the SBUS protocol is a widely used standard in the FPV                       run at simulation frequency and convert collective thrust and bodyrate
+community and therefore allows to interface Agilicious to off-the-                   commands into individual motor speed commands. The usage of
+shelf flight controllers such as BetaFlight [40]. For simple simulation,             a simulated low-level controller is optional if the computed control
+there is a specific bridge to interface with the popular RotorS [23]                 commands are already in the form of individual rotor thrusts. In
+simulator, which is however less accurate than our own simulation                    this case, the thrusts are mapped to motor speed commands and then
+described in Sec. D.2. As Agilicious is written in a general abstract                directly fed to the simulated motor model. The motors are modeled as
+way, it runs on onboard compute modules and offboard, for which case                 a first-order system with a time constant which can be identified on a
+we provide a bridge to interface with the LAIRD[42] wireless serial                  thrust test stand.
+interface. Finally, Agilicious also provides a bridge to communicate to
+                                                                                     Aerodynamics. The simulated aerodynamics model lift and drag pro-
+the custom low-level controller described in Sec. A. This provides the
+                                                                                     duced by the rotors from the current ego-motion of the platform and
+advantage of gaining access to closed-loop single rotor speed control,
+                                                                                     the individual rotor speeds. Agilicious implements two rotor mod-
+high-frequency IMU, rotor speed, and voltage measurements at 500 Hz,
+                                                                                     els: Quadratic and BEM. The Quadratic model implements a simple
+all provided to the user through the bridge.
+                                                                                     quadratic mapping from rotor rotational speed to produced thrust, as
+References. References are used in conjunction with a controller to                  commonly done in quadrotor simulators [23, 24, 98]. While such a
+encode the desired flight path of a quadrotor. In Agilicious, a reference            model does not account for effects imposed by the movement of a rotor
+is fed to the sampler, which generates a receding-horizon vector of                  through the air, it is highly efficient to compute. In contrast, the BEM
+setpoints that are then passed to the controller. The software stack                 model leverages Blade-Element-Momentum-Theory (BEM) to account
+implements a set of reference types, consisting of Hover, Velocity, Poly-            for the effects of varying relative airspeed on the rotor thrust. To further
+     Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                     University of Zurich      12
+
+
+increase the fidelity of the simulation, a neural network predicting the            7.    S. Li, M. M. Ozo, C. D. Wagter, G. C. de Croon, Autonomous drone
+residual forces and torques (e.g. unmodeled rotor to rotor interactions                   race: A computationally efficient vision-based navigation and control
+and turbulence) can be integrated into the aerodynamics model. For                        strategy, Robotics and Autonomous Systems 133 (2020).
+details regarding the BEM model and the neural network augmentation,                8.    H. Nguyen, M. Kamel, K. Alexis, R. Siegwart, Model predictive control
+                                                                                          for micro aerial vehicles: A survey, 2021 European Control Conference
+we refer the reader to [22].
+                                                                                          (ECC), 1556–1563 (IEEE, 2021).
+Rigid Body Dynamics. Provided with a model of the forces and torques                9.    E. Kaufmann, A. Loquercio, R. Ranftl, M. Müller, V. Koltun, D. Scara-
+acting on the platform predicted by the aerodynamics model, the system                    muzza, Deep drone acrobatics, RSS: Robotics, Science, and Systems
+dynamics of the quadrotor are integrated using a 4th order Runge-Kutta                    (2020).
+scheme with a step size of 1 ms. Agilicious also implements different               10.   P. Foehn, A. Romero, D. Scaramuzza, Time-optimal planning for
+integrators such as explicit Euler or symplectic Euler.                                   quadrotor waypoint flight, Science Robotics 6 (2021).
+    Apart from providing its own state-of-the-art quadrotor simulator,              11.   H. Moon, J. Martinez-Carranza, T. Cieslewski, M. Faessler, D. Falanga,
+Agilicious can also be interfaced with external simulators. Interfaces to                 A. Simovic, D. Scaramuzza, S. Li, M. Ozo, C. De Wagter, others,
+                                                                                          Challenges and implemented technologies used in autonomous drone
+the widely-used RotorS quadrotor simulator [23] and Flightmare [24],
+                                                                                          racing, Intelligent Service Robotics (2019).
+including the HIL simulator, are already provided in the software stack.
+                                                                                    12.   J. A. Cocoma-Ortega, J. Martínez-Carranza, Towards high-speed local-
+                                                                                          isation for autonomous drone racing, Mexican International Conference
+5. ACKNOWLEDGMENTS                                                                        on Artificial Intelligence (Springer, 2019).
+                                                                                    13.   R. Madaan, N. Gyde, S. Vemprala, M. Brown, K. Nagami, T. Taubner,
+Author Contribution. P.F. developed the Agilicious software concepts                      E. Cristofalo, D. Scaramuzza, M. Schwager, A. Kapoor, Airsim drone
+and architecture, contributed to the Agilicious implementation, helped                    racing lab, NeurIPS 2019 Competition and Demonstration Track (PMLR,
+with the experiments, and wrote the manuscript. E.K. contributed                          2020).
+to the Agilicious implementation, designed the Agilicious hardware,                 14.   W. Guerra, E. Tal, V. Murali, G. Ryou, S. Karaman, FlightGoggles:
+helped with the experiments, and wrote the manuscript. A.R., R.P.,                        Photorealistic sensor simulation for perception-driven robotics using
+S.S., and L.B. contributed to the Agilicious implementation, helped                       photogrammetry and virtual reality, IEEE/RSJ International Conference
+                                                                                          on Intelligent Robots and Systems (IROS) (IEEE, 2019).
+with the experiments, and wrote the manuscript. T.L. evaluated the
+                                                                                    15.   CORDIS - European Comission, AgileFlight, https://cordis.europa.eu/
+hardware components, designed and built the Agilicious hardware,
+                                                                                          project/id/864042. Accessed: 2021-7-30.
+helped with the experiments, and wrote the manuscript. Y.S. con-                    16.   L. Meier, P. Tanskanen, L. Heng, G. H. Lee, F. Fraundorfer, M. Pollefeys,
+tributed to the Agilicious implementation, helped with the experiments,                   PIXHAWK: A micro aerial vehicle design for autonomous flight using
+and wrote the manuscript. A.L. helped with the experiments and wrote                      onboard computer vision, Autonom. Rob. 21–39 (2012).
+the manuscript. D.S. provided funding, contributed to the design and                17.   I. Sa, M. Kamel, M. Burri, M. Bloesch, R. Khanna, M. Popovic, J. Nieto,
+analysis of the experiments, and revised the manuscript.                                  R. Siegwart, Build your own Visual-Inertial drone: A Cost-Effective and
+Funding. This work was supported by the National Centre of Com-                           Open-Source autonomous drone, IEEE Robot. Autom. Mag. 89–103
+                                                                                          (2018).
+petence in Research (NCCR) Robotics through the Swiss National
+                                                                                    18.   M. Faessler, A. Franchi, D. Scaramuzza, Differential flatness of quadro-
+Science Foundation (SNSF) and the European Union’s Horizon 2020                           tor dynamics subject to rotor drag for accurate tracking of high-speed
+Research and Innovation Program under grant agreement No. 871479                          trajectories, IEEE Robot. Autom. Lett. 620–626 (2018).
+(AERIAL-CORE) and the European Research Council (ERC) under                         19.   H. Oleynikova, C. Lanegger, Z. Taylor, M. Pantic, A. Millane, R. Sieg-
+grant agreement No. 864042 (AGILEFLIGHT).                                                 wart, J. Nieto, An open-source system for vision-based micro-aerial
+Data and Materials. The main purpose of this paper is to share our                        vehicle mapping, planning, and flight in cluttered environments, J. Field
+data and materials. Therefore all materials, both software as well as                     Robot. 642–666 (2020).
+                                                                                    20.   T. Baca, M. Petrlik, M. Vrba, V. Spurny, R. Penicka, D. Hert, M. Saska,
+hardware designs, are open-source accessible at https://agilicious.dev
+                                                                                          The MRS UAV system: Pushing the frontiers of reproducible research,
+under the GPL v3.0 license.
+                                                                                          real-world deployment, and education with autonomous unmanned
+                                                                                          aerial vehicles, J. Intell. Rob. Syst. p. 26 (2021).
+REFERENCES                                                                          21.   G. Hattenberger, M. Bronz, M. Gorraz, Using the paparazzi uav system
+                                                                                          for scientific research, International Micro Air Vehicle Conference and
+1.      D. Mellinger, N. Michael, V. Kumar, Trajectory generation and control for
+                                                                                          Competition, 247–252 (2014).
+        precise aggressive maneuvers with quadrotors, Int. J. Robot. Research
+                                                                                    22.   L. Bauersfeld, E. Kaufmann, P. Foehn, S. Sun, D. Scaramuzza, Neu-
+        664–674 (2012).
+                                                                                          robem: Hybrid aerodynamic quadrotor model, RSS: Robotics, Science,
+2.      G. Loianno, C. Brunner, G. McGrath, V. Kumar, Estimation, control,
+                                                                                          and Systems (2021).
+        and planning for aggressive flight with a small quadrotor with a single
+                                                                                    23.   F. Furrer, M. Burri, M. Achtelik, R. Siegwart. Rotors—a modular gazebo
+        camera and imu, IEEE Robotics and Automation Letters 404–411 (2017).
+                                                                                          mav simulator framework. Robot Operating System (ROS) (Springer,
+3.      E. Kaufmann, M. Gehrig, P. Foehn, R. Ranftl, A. Dosovitskiy, V. Koltun,
+                                                                                          2016), 595–625.
+        D. Scaramuzza, Beauty and the beast: Optimal methods meet learn-
+                                                                                    24.   Y. Song, S. Naji, E. Kaufmann, A. Loquercio, D. Scaramuzza, Flight-
+        ing for drone racing, 2019 International Conference on Robotics and
+                                                                                          mare: A flexible quadrotor simulator, Conference on Robot Learning
+        Automation (ICRA), 690–696 (IEEE, 2019).
+                                                                                          (2020).
+4.      K. Mohta, M. Watterson, Y. Mulgaonkar, S. Liu, C. Qu, A. Makineni,
+                                                                                    25.   V. Kumar, N. Michael, Opportunities and challenges with autonomous
+        K. Saulnier, K. Sun, A. Zhu, J. Delmerico, K. Karydis, N. Atanasov,
+                                                                                          micro aerial vehicles, The International Journal of Robotics Research
+        G. Loianno, D. Scaramuzza, K. Daniilidis, C. J. Taylor, V. Kumar, Fast,
+                                                                                          1279–1291 (2012).
+        autonomous flight in gps-denied and cluttered environments, J. Field
+                                                                                    26.   D. Floreano, R. J. Wood, Science, technology and the future of small
+        Robot. 101–120 (2018).
+                                                                                          autonomous drones, Nature 460–466 (2015).
+5.      B. Zhou, J. Pan, F. Gao, S. Shen, RAPTOR: robust and perception-
+                                                                                    27.   E. Tal, S. Karaman, Accurate tracking of aggressive quadrotor trajec-
+        aware trajectory replanning for quadrotor fast flight, IEEE Transactions
+                                                                                          tories using incremental nonlinear dynamic inversion and differential
+        on Robotics (2021).
+                                                                                          flatness, IEEE Transactions on Control Systems Technology 1203–1218
+6.      P. Foehn, D. Brescianini, E. Kaufmann, T. Cieslewski, M. Gehrig,
+                                                                                          (2020).
+        M. Muglikar, D. Scaramuzza, Alphapilot: Autonomous drone racing,
+                                                                                    28.   A. Antonini, W. Guerra, V. Murali, T. Sayre-McCord, S. Karaman, The
+        Robotics: Science and Systems (RSS) (2020).
+                                                                                          blackbird uav dataset, The International Journal of Robotics Research
+                                                                                          1346–1364 (2020).
+  Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                       University of Zurich      13
+
+
+29. L. Meier, D. Honegger, M. Pollefeys, Px4: A node-based multithreaded                visual-inertial state estimator, IEEE Trans. Robot. (2018).
+    open source robotics framework for deeply embedded platforms, 2015              56. P. Geneva, K. Eckenhoff, W. Lee, Y. Yang, G. Huang, Openvins: A
+    IEEE International Conference on Robotics and Automation (ICRA),                    research platform for visual-inertial estimation, IEEE Int. Conf. Robot.
+    6235–6240 (2015).                                                                   Autom. (ICRA) (2020).
+30. P. D. SAS, Parrot ANAFI ai, https://www.parrot.com/en/drones/anafi-ai.          57. J. Delmerico, D. Scaramuzza, A benchmark comparison of monocular
+    Accessed: 2021-7-20.                                                                visual-inertial odometry algorithms for flying robots, IEEE Int. Conf.
+31. DJI, DJI digital FPV system, https://www.dji.com/fpv. Accessed: 2021-               Robot. Autom. (ICRA), 2502–2509 (2018).
+    7-20.                                                                           58. Intel realsense d400 series product family, https://www.intel.com/
+32. Skydio, Skydio (2021).                                                              content/dam/support/us/en/documents/emerging-technologies/
+33. W. Giernacki, M. Skwierczyński, W. Witwicki, P. Wroński, P. Kozierski,            intel-realsense-technology/Intel-RealSense-D400-Series-Datasheet.
+    Crazyflie 2.0 quadrotor as a platform for research and education in                 pdf (2019).
+    robotics and control engineering, International Conference on Methods           59. Roboception, rc_visard, https://roboception.com/en/rc_visard-en/.
+    and Models in Automation and Robotics (MMAR), 37–42 (2017).                     60. ModalAI, Voxl cam core dev kit, https://www.modalai.com/pages/
+34. D. Falanga, P. Foehn, P. Lu, D. Scaramuzza, Pampc: Perception-aware                 voxl-cam-perception-engine. Accessed: 2021-11-30.
+    model predictive control for quadrotors, IEEE/RSJ Int. Conf. Intell. Robot.     61. A. Juliani, V.-P. Berges, E. Vckay, Y. Gao, H. Henry, M. Mattar, D. Lange,
+    Syst. (IROS), 1–8 (IEEE, 2018).                                                     Unity: A general platform for intelligent agents, arXiv e-prints (2018).
+35. A. Loquercio, E. Kaufmann, R. Ranftl, M. Müller, V. Koltun, D. Scara-           62. C. Cadena, L. Carlone, H. Carrillo, Y. Latif, D. Scaramuzza, J. Neira,
+    muzza, Agile autonomy: Learning high-speed flight in the wild, Science              I. Reid, J. J. Leonard, Past, present, and future of simultaneous local-
+    Robotics (2021). Under review.                                                      ization and mapping: Toward the robust-perception age, IEEE Trans.
+36. S. Sun, G. Cioffi, C. De Visser, D. Scaramuzza, Autonomous quadrotor                Robot. (2016).
+    flight despite rotor failure with onboard vision sensors: Frames vs.            63. H. Oleynikova, Z. Taylor, M. Fehr, R. Siegwart, J. I. Nieto, Voxblox:
+    events, IEEE Robotics and Automation Letters 580–587 (2021).                        Incremental 3d euclidean signed distance fields for on-board MAV
+37. B. Nisar, P. Foehn, D. Falanga, D. Scaramuzza, VIMO: Simultaneous                   planning, IEEE/RSJ Int. Conf. Intell. Robot. Syst. (IROS), 1366–1373
+    visual inertial Model-Based odometry and force estimation, IEEE Robot.              (2017).
+    Autom. Lett. 2785–2792 (2019).                                                  64. P. Florence, J. Carter, R. Tedrake. Integrated perception and control at
+38. Y. Song, M. Steinweg, E. Kaufmann, D. Scaramuzza, Autonomous                        high speed: Evaluating collision avoidance maneuvers without maps.
+    drone racing with deep reinforcement learning, IEEE/RSJ Int. Conf.                  Algorithmic Foundations of Robotics XII (Springer, 2020), 304–319.
+    Intell. Robot. Syst. (IROS) (2021).                                             65. D. Falanga, E. Mueggler, M. Faessler, D. Scaramuzza, Aggressive
+39. J. Delmerico, T. Cieslewski, H. Rebecq, M. Faessler, D. Scaramuzza,                 quadrotor flight through narrow gaps with onboard sensing and com-
+    Are we ready for autonomous drone racing? the uzh-fpv drone racing                  puting using active vision, IEEE Int. Conf. Robot. Autom. (ICRA), 5774–
+    dataset, IEEE Int. Conf. Robot. Autom. (ICRA) (2019).                               5781 (IEEE, 2017).
+40. The Betaflight Open Source Flight Controller Firmware Project,                  66. B. Zhou, F. Gao, L. Wang, C. Liu, S. Shen, Robust and efficient quadro-
+    Betaflight, https://github.com/betaflight/betaflight. Accessed: 2021-7-             tor trajectory generation for fast autonomous flight, IEEE Robotics and
+    20.                                                                                 Automation Letters 3529–3536 (2019).
+41. S. Sun, A. Romero, P. Foehn, E. Kaufmann, D. Scaramuzza, A com-                 67. D. Falanga, E. Mueggler, M. Faessler, D. Scaramuzza, Aggressive
+    parative study of nonlinear mpc and differential-flatness-based control             quadrotor flight through narrow gaps with onboard sensing and com-
+    for quadrotor agile flight, IEEE Transactions on Robotics 1–17 (2022).              puting using active vision, IEEE Int. Conf. Robot. Autom. (ICRA), 5774–
+42. Laird connectivity, https://www.lairdconnect.com/. Accessed: 2021-7-                5781 (2017).
+    20.                                                                             68. W. Zeng, W. Luo, S. Suo, A. Sadat, B. Yang, S. Casas, R. Urtasun,
+43. C. Forster, Z. Zhang, M. Gassner, M. Werlberger, D. Scaramuzza, SVO:                End-to-end interpretable neural motion planner, IEEE Int. Conf. Comput.
+    Semidirect visual odometry for monocular and multicamera systems,                   Vis. Pattern Recog. (CVPR), 8660–8669 (2019).
+    IEEE Trans. Robot. 249–265 (2017).                                              69. W. Zeng, S. Wang, R. Liao, Y. Chen, B. Yang, R. Urtasun, Dsdnet:
+44. Z. Zhang, D. Scaramuzza, A tutorial on quantitative trajectory evalua-              Deep structured self-driving network, Eur. Conf. Comput. Vis. (ECCV),
+    tion for visual(-inertial) odometry, IEEE/RSJ Int. Conf. Intell. Robot. Syst.       156–172 (2020).
+    (IROS) (2018).                                                                  70. S. Bansal, V. Tolani, S. Gupta, J. Malik, C. J. Tomlin, Combining opti-
+45. A. Romero, S. Sun, P. Foehn, D. Scaramuzza, Model predictive con-                   mal control and learning for visual navigation in novel environments,
+    touring control for time-optimal quadrotor flight, IEEE Transactions on             Conference on Robot Learning, CoRL 2019, 420–429 (PMLR, 2019).
+    Robotics 1–17 (2022).                                                           71. N. Homayounfar, W.-C. Ma, J. Liang, X. Wu, J. Fan, R. Urtasun,
+46. F. Nan, S. Sun, P. Foehn, D. Scaramuzza, Nonlinear mpc for quadrotor                Dagmapper: Learning to map by discovering lane topology, IEEE
+    fault-tolerant control, IEEE Robotics and Automation Letters 5047–5054              Int. Conf. Comput. Vis. Pattern Recog. (CVPR), 2911–2920 (2019).
+    (2022).                                                                         72. Z. Zhang, D. Scaramuzza, Perception-aware receding horizon nav-
+47. A. I. Automation, Ati mini40-si-20-1, https://www.ati-ia.com/products/ft/           igation for mavs, IEEE Int. Conf. Robot. Autom. (ICRA), 2534–2541
+    ft_models.aspx?id=Mini40. Accessed: 2021-11-30.                                     (2018).
+48. C. Forster, Z. Zhang, M. Gassner, M. Werlberger, D. Scaramuzza, Svo             73. S. Ross, N. Melik-Barkhudarov, K. S. Shankar, A. Wendel, D. Dey,
+    pro, http://rpg.ifi.uzh.ch/svo_pro.html. Accessed: 2021-11-30.                      J. A. Bagnell, M. Hebert, Learning monocular reactive UAV control in
+49. J. Rehder, J. Nikolic, T. Schneider, T. Hinzmann, R. Siegwart, Extending            cluttered natural environments, IEEE Int. Conf. Robot. Autom. (ICRA),
+    kalibr: Calibrating the extrinsics of multiple imus and of individual axes,         1765–1772 (2013).
+    IEEE Int. Conf. Robot. Autom. (ICRA) (2016).                                    74. F. Sadeghi, S. Levine, CAD2RL: real single-image flight without a
+50. SevenSense,          Alphasense,      https://www.sevensense.ai/product/            single real image, Robotics: Science and Systems RSS, N. M. Amato,
+    alphasense-position. Accessed: 2021-11-30.                                          S. S. Srinivasa, N. Ayanian, S. Kuindersma, eds. (2017).
+51. M. EYE, S210, https://www.mynteye.com/pages/s210. Accessed: 2021-               75. A. Loquercio, A. I. Maqueda, C. R. del-Blanco, D. Scaramuzza, Dronet:
+    11-30.                                                                              Learning to fly by driving, IEEE Robotics Autom. Lett. 1088–1095 (2018).
+52. M. Vision, Bluefox, https://www.matrix-vision.com/en/products/areas/            76. D. Gandhi, L. Pinto, A. Gupta, Learning to fly by crashing, International
+    MA08. Accessed: 2021-11-30.                                                         Conference on Intelligent Robots and Systems, IROS, 3948–3955 (2017).
+53. ArtiSense, Artislam, https://www.artisense.ai/vinspro-2020. Accessed:           77. A. Suleiman, Z. Zhang, L. Carlone, S. Karaman, V. Sze, Navion: A
+    2021-11-30.                                                                         2-mw fully integrated Real-Time Visual-Inertial odometry accelerator
+54. SLAMcore, Spatial intelligence sdk, https://www.slamcore.com/                       for autonomous navigation of nano drones, IEEE J. Solid-State Circuits
+    spatial-intelligence-sdk. Accessed: 2021-11-30.                                     1106–1119 (2019).
+55. T. Qin, P. Li, S. Shen, Vins-mono: A robust and versatile monocular             78. Intel Corporation, Intel movidius myriad X vision process-
+ Research Article: Science Robotics Vol. 7, Issue 67, 2022                                                                        University of Zurich      14
+
+
+      ing unit, https://www.intel.com/content/www/us/en/products/details/           91. A. Vitale1, A. Renner, C. Nauer, D. Scaramuzza, Y. Sandamirskaya,
+      processors/movidius-vpu/movidius-myriad-x.html. Accessed: 2021-                    Event-driven vision and control for uavs on a neuromorphic chip, IEEE
+      8-2.                                                                               Int. Conf. Robot. Autom. (ICRA) (2021).
+79.   D. Palossi, A. Loquercio, F. Conti, F. Conti, E. Flamand, E. Flamand,         92. S. Moradi, N. Qiao, F. Stefanini, G. Indiveri, A scalable multicore ar-
+      D. Scaramuzza, L. Benini, L. Benini, A 64mw dnn-based visual navi-                 chitecture with heterogeneous memory structures for dynamic neu-
+      gation engine for autonomous nano-drones, IEEE Internet of Things                  romorphic asynchronous processors (DYNAPs), IEEE Trans. Biomed.
+      Journal 1–1 (2019).                                                                Circuits Syst. 106–122 (2018).
+80.   D. Palossi, F. Conti, L. Benini, An open source and open hardware             93. M. Abadi, A. Agarwal, P. Barham, E. Brevdo, Z. Chen, C. Citro, G. S.
+      deep Learning-Powered visual navigation engine for autonomous Nano-                Corrado, A. Davis, J. Dean, M. Devin, S. Ghemawat, I. Goodfellow,
+      UAVs, 2019 15th International Conference on Distributed Computing in               A. Harp, G. Irving, M. Isard, Y. Jia, R. Jozefowicz, L. Kaiser, M. Kud-
+      Sensor Systems (DCOSS), 604–611 (2019).                                            lur, J. Levenberg, D. Mané, R. Monga, S. Moore, D. Murray, C. Olah,
+81.   E. Ajanic, M. Feroskhan, S. Mintchev, F. Noca, D. Floreano, Bioin-                 M. Schuster, J. Shlens, B. Steiner, I. Sutskever, K. Talwar, P. Tucker,
+      spired wing and tail morphing extends drone flight capabilities, Science           V. Vanhoucke, V. Vasudevan, F. Viégas, O. Vinyals, P. Warden, M. Wat-
+      Robotics 5 (2020).                                                                 tenberg, M. Wicke, Y. Yu, X. Zheng, TensorFlow: Large-scale machine
+82.   E. Chang, L. Y. Matloff, A. K. Stowers, D. Lentink, Soft biohybrid                 learning on heterogeneous systems (2015). Software available from
+      morphing wings with feathers underactuated by wrist and finger motion,             tensorflow.org.
+      Science Robotics 5 (2020).                                                    94. A. Paszke, S. Gross, F. Massa, A. Lerer, J. Bradbury, G. Chanan,
+83.   D. Falanga, K. Kleber, S. Mintchev, D. Floreano, D. Scaramuzza, The                T. Killeen, Z. Lin, N. Gimelshein, L. Antiga, A. Desmaison, A. Kopf,
+      foldable drone: A morphing quadrotor that can squeeze and fly, IEEE                E. Yang, Z. DeVito, M. Raison, A. Tejani, S. Chilamkurthy, B. Steiner,
+      Robotics and Automation Letters 209–216 (2019).                                    L. Fang, J. Bai, S. Chintala. Pytorch: An imperative style, high-
+84.   L. Bauersfeld, L. Spannagl, G. Ducard, C. Onder, Mpc flight control for            performance deep learning library. Advances in Neural Information
+      a tilt-rotor vtol aircraft, IEEE Transactions on Aerospace and Electronic          Processing Systems 32, H. Wallach, H. Larochelle, A. Beygelzimer,
+      Systems 1–13 (2021).                                                               F. d'Alché-Buc, E. Fox, R. Garnett, eds. (Curran Associates, Inc., 2019),
+85.   R. D’Sa, D. Jenson, N. Papanikolopoulos, Suav:q - a hybrid approach                8024–8035.
+      to solar-powered flight, 2016 IEEE International Conference on Robotics       95. Connect Tech Inc., Quasar carrier board, https://connecttech.com/
+      and Automation (ICRA), 3288–3294 (2016).                                           product/quasar-carrier-nvidia-jetson-tx2/ (2019). Accessed: 2021-7-
+86.   G. Torrente, E. Kaufmann, P. Föhn, D. Scaramuzza, Data-driven                      20.
+      mpc for quadrotors, IEEE Robotics and Automation Letters 3769–3776            96. M. Luessi, radix, https://www.brainfpv.com/product/radix-fc/ (2017).
+      (2021).                                                                            Accessed: 2021-7-20.
+87.   D. Falanga, K. Kleber, D. Scaramuzza, Dynamic obstacle avoidance              97. The Apache Software Foundation, NuttX, https://nuttx.apache.org/.
+      for quadrotors with event cameras, Science Robotics 5 (2020).                      Accessed: 2021-7-20.
+88.   G. Gallego, T. Delbruck, G. Orchard, C. Bartolozzi, B. Taba, A. Censi,        98. S. Shah, D. Dey, C. Lovett, A. Kapoor, Airsim: High-fidelity visual and
+      S. Leutenegger, A. Davison, J. Conradt, K. Daniilidis, D. Scaramuzza,              physical simulation for autonomous vehicles, Field and service robotics,
+      Event-based vision: A survey, IEEE Trans. Pattern Anal. Machine Intell.            621–635 (Springer, 2018).
+      (2020).                                                                       99. O. Ben-Kiki, C. Evans, I. D. Net, YAML ain’t markup language (YAML™)
+89.   M. Davies, N. Srinivasa, T.-H. Lin, G. Chinya, Y. Cao, S. H. Choday,               version 1.2, https://yaml.org/spec/1.2/spec.pdf (2009). Accessed: 2021-
+      G. Dimou, P. Joshi, N. Imam, S. Jain, Y. Liao, C.-K. Lin, A. Lines, R. Liu,        7-20.
+      D. Mathaikutty, S. McCoy, A. Paul, J. Tse, G. Venkataramanan, Y.-H.           100. D. Mellinger, V. Kumar, Minimum snap trajectory generation and con-
+      Weng, A. Wild, Y. Yang, H. Wang, Loihi: A neuromorphic manycore                    trol for quadrotors, IEEE Int. Conf. Robot. Autom. (ICRA), 2520–2525
+      processor with On-Chip learning, IEEE Micro 82–99 (2018).                          (2011).
+90.   J. Dupeyroux, J. J. Hagenaars, F. Paredes-Vallés, G. C. de Croon,             101. D. Hanover, E. Kaufmann, P. Foehn, D. Scaramuzza, Performance,
+      Neuromorphic control for optic-flow-based landing of mavs using the                precision, and payloads: Adaptive optimal control for quadrotors under
+      loihi processor, 2021 IEEE International Conference on Robotics and                uncertainty, IEEE Robot. Autom. Lett. (2021).
+      Automation (ICRA), 96–102 (IEEE, 2021).
+

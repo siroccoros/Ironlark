@@ -1,0 +1,293 @@
+{
+  "query": {
+    "query": "Open source autonomous nano drones visual collision avoidance DroNet PULP-Dronet NanoMap RAPPIDS repositories real flight",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "9193a06fd83b13898dc32f882cd008f2",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/pulp-platform/pulp-dronet/",
+        "title": "PULP-DroNet",
+        "url": "https://github.com/pulp-platform/pulp-dronet/",
+        "highlights": [
+          "A deep learning-powered visual navigation engine to enables autonomous navigation of pocket-size quadrotor - running on PULP\n...\non Nano-UAVs},\n  year={2024},\n  volume={},\n  number={},\n  pages={1-1},\n  keywords={Navigation;Task analysis;Artificial intelligence;Internet of Things;Autonomous robots;Throughput;Collision avoidance;Autonomous Nano-UAV;Embedded Devices;Ultra-low-power;Artificial Intelligence;Mobile and Ubiquitous Systems},\n  doi={10.1109/JIOT.2024.3431913}\n}\n...\n@article{palossi2019pulpdronetIoTJ,\n  author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}},\n  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones},\n  journal={IEEE Internet of Things Journal},\n  doi={10.1109/JIOT.2019.2917066},\n  ISSN={2327-4662},\n  year={2\n...\n19}\n...\n````bibtex\n@inproceedings{palossi2019pulpdronetDCOSS,\n  author={D. {Palossi} and F. {Conti} and L. {Benini}},\n  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},\n  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},\n  pages={604-611},\n  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},\n  doi={10.1109/DCOSS.2019.00111},\n  ISSN={2325-2944},\n  month={May},\n  year={2\n...\n19},"
+        ]
+      },
+      {
+        "id": "https://zenodo.org/records/13348430",
+        "title": "PULP-Dronet v3 dataset | Zenodo",
+        "url": "https://zenodo.org/records/13348430",
+        "publishedDate": "2024-08-20T00:00:00.000Z",
+        "highlights": [
+          "# The PULP-Dronet v3 dataset\n\n The Himax dataset has been collected at University of Bologna and Technology Innovation Institute using a Himax ultra-low power, gray-scale, and QVGA camera mounted on a Bitcraze Crazyflie nano-drone. The dataset has been used for training and testing the PULP-Dronet v3 CNN, a neural network for autonomous visual-based navigation for nano-drones. This release includes the training and testing set described in the paper.\n...\nWe collected a dataset of 77k images for nano-drones' autonomous navigation, for a total of 600MB of data.\n...\nmanually flew the drone, collecting i) images from the grayscale QVGA Himax camera sensor of the AI-deck, ii) the gamepad'\n...\nthe [-1;+1] range, inputted from the human pilot, iii) the drone's estimated state, and iv)\n...\nAfter the data collection, we labeled all the images with a binary collision label whenever an obstacle was in the line of sight and closer than 2m. We recorded 301 sequences in 20 different environments. Each sequence of data is labeled with high-level characteristics, listed in characteristics.json:\n...\nWe release this dataset as open source under Creative\n...\nAttribution-NonCommercial-ShareAlike 4.0 International License, see LICENSE.\n...\n.md.\n...\ndataset\n\n Repository URL \n: https://github.com/pulp-platform/pulp-dronet\n Programming language \n: Python\n Development Status \n: Active"
+        ],
+        "image": "https://zenodo.org/static/images/invenio-rdm.svg"
+      },
+      {
+        "id": "https://github.com/pulp-platform/pulp-dronet/tree/master/pulp-dronet-v2",
+        "title": "pulp-dronet/pulp-dronet-v2 at master \u00b7 pulp-platform/pulp-dronet \u00b7 GitHub",
+        "url": "https://github.com/pulp-platform/pulp-dronet/tree/master/pulp-dronet-v2",
+        "publishedDate": "2019-04-09T22:26:34.000Z",
+        "author": "pulp-platform",
+        "highlights": [
+          "pulp-dronet/pulp-dronet-v2 at master \u00b7 pulp-platform/pulp-dronet \u00b7 GitHub\n...\n# PULP-Dronet V2\n...\nThe PULP-DroNet dataset is composed by the following three sub-sets:\n...\n- Himax Dataset(only testing set);\n- Udacity Dataset;\n- Zurich Bicycle Dataset.\n...\nThe original Udacity and Zurich Bicycle datasets were previously released in their respective open-source projects\n...\nZurich Bicycle dataset\n...\nPlease follow the step-by-step guide of the original DroNet repository for downloading and extracting the Udacity and Zurich bicycle datasets.\n...\nTesting on the original dataset only (Udacity and Zurich bicycle datasets) will provide performances of both Accuracy (collision) and RMSE (steering angle)\n...\nTesting on the HIMAX dataset only will provide performances of Accuracy only (kust \"collision\" labels, no \"steering angle\" labels)\n...\n## Deployment flow: NEMO/DORY and GAP8 (GVSoC) flow: quickstart\n...\nHow to run PULP-DroNet on GAP8 or GVSoC in three steps, starting from a pretrained model.\n...\n- Input: model definition (pytorch format, can be found in \"models/dronet_v2_nemo_dory.py\") + pre-trained weights (\".pth file\", can be found in \"models/dronet_v2_dory.pth\" )\n- Output: ONNX graph model (including weights) + golden activations (\".txt\" files, used by DORY for checksums)\n...\n+ golden activations (\".txt\" files\n...\noptimized C code\n...\ndeployment on GAP8\n...\nory_examples/"
+        ],
+        "image": "https://opengraph.githubassets.com/000190a6c66361f399122a213b2392bc08b54ae73ffbfa8628f7758e3a44a486/pulp-platform/pulp-dronet"
+      },
+      {
+        "id": "https://github.com/pulp-platform/pulp-dronet/blob/98f15cfe/README.md",
+        "title": "README.md",
+        "url": "https://github.com/pulp-platform/pulp-dronet/blob/98f15cfe/README.md",
+        "highlights": [
+          "@article{lamberti2024pulpdronetIOTJ,\n  author={Lamberti, Lorenzo and Bellone, Lorenzo and Macan, Luka and Natalizio, Enrico and Conti, Francesco and Palossi, Daniele and Benini, Luca\n...\nnumber={},\n  pages={1-1},\n  keywords={Navigation;Task analysis;Artificial intelligence;Internet of Things;Autonomous robots;Throughput;Collision avoidance;Autonomous Nano-UAV;Embedded Devices;Ultra-low-power;Artificial Intelligence;Mobile and Ubiquitous Systems},\n  doi={10.1109/JIOT.2024.3431913}\n}\n...\n@article{palossi2019pulpdronetIoTJ,\n  author={D. {Palossi} and A. {Loquercio} and F. {Conti} and E. {Flamand} and D. {Scaramuzza} and L. {Benini}},\n  title={A 64mW DNN-based Visual Navigation Engine for Autonomous Nano-Drones},\n  journal={IEEE Internet of Things Journal},\n  doi={10.1109/JIOT.2019.2917066},\n  ISSN={2327-4662},\n  year={2019}\n}\n...\n@inproceedings{palossi2019pulpdronetDCOSS,\n  author={D. {Palossi} and F. {Conti} and L. {Benini}},\n  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},\n  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},\n  pages={604-611},\n  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},\n  doi={10.1109/DCOSS.2019.00111},\n  ISSN={2325-2944},\n  month={May},\n  year={2\n...\n19},"
+        ]
+      },
+      {
+        "id": "https://ar5iv.labs.arxiv.org/html/1905.04166",
+        "title": "[1905.04166] An Open Source and Open Hardware Deep Learning-powered Visual Navigation Engine for Autonomous Nano-UAVs",
+        "url": "https://ar5iv.labs.arxiv.org/html/1905.04166",
+        "highlights": [
+          "of $2\\text{\\,}\\mathrm{m}$ while flying at $1.5\\text{\\,}\\mathrm{m}\\mathrm{/}\\mathrm{s}$ . To the best of our knowledge, our design is the first to enable such complex functionality in the field on a nano-UAV consuming $<$ $100\\text{\\,}\\mathrm{mW}$\n...\nIn the second part of the control accuracy evaluation, we analyze the system\u2019s capability of preventing collisions. Correctly identifying obstacles has been already implicitly demonstrated with the autonomous navigation test. With the collision avoidance set of experiments we want to push our visual navigation engine to its limit, preventing collisions also under very unfavourable conditions \u2013 i.e., high flight speed and small reaction space/time. The setup of this experiment is represented by a straight path where, after the nano-drone has traveled the first $8\\text{\\,}\\mathrm{m}$ at full speed, an unexpected dynamic obstacle appear within only $2\\text{\\,}\\mathrm{m}$ of distance from it (i.e., at $10\\text{\\,}\\mathrm{m}$ from the starting point). We performed multiple experiments, sweeping the flight speed, to identify the maximum one for which the nano-drone is still able to react promptly and prevent the collision. Results, also shown in the supplementary video material (https://youtu.be/JKY03NV3C2s), demonstrate that our visual navigation engine enables safe flight up to $\\sim$ $1.5\\text{\\,}\\mathrm{m}\\mathrm{/}\\mathrm{s}$ ."
+        ],
+        "image": "https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png"
+      },
+      {
+        "id": "https://exa.ai/library/publication/37xzczgysqn",
+        "title": "Distilling Tiny and Ultrafast Deep Neural Networks for Autonomous Navigation on Nano-UAVs",
+        "url": "https://doi.org/10.1109/jiot.2024.3431913",
+        "publishedDate": "2024-07-22T00:00:00.000Z",
+        "author": "Lorenzo Lamberti, Lorenzo Bellone, Luka Macan, Enrico Natalizio, Francesco Conti, Daniele Palossi, et al.",
+        "highlights": [
+          "Nano-sized unmanned aerial vehicles (UAVs) are ideal candidates for flying Internet-of-Things smart sensors to collect information in narrow spaces. This requires ultrafast navigation under very tight memory/computation constraints. The PULP-Dronet convolutional neural network (CNN) enables autonomous navigation running aboard a nano-UAV at 19 frame/s, at the cost of a large memory footprint of 320 kB and with drone control in complex scenarios hindered by the disjoint training of collision avoidance and steering capabilities. In this work, we distill a novel family of CNNs with better capabilities than PULP-Dronet, but memory footprint reduced by up to 168\u00d7 (down to 2.9 kB), achieving an inference rate of up to 139 frame/s; we collect a new open-source unified collision/steering 66 k images data set for more robust navigation; and we perform a thorough in-field analysis of both PULP-Dronet and our tiny CNNs running on a commercially available nano-UAV. Our tiniest CNN, called Tiny-PULP-Dronet v3, navigates with a 100% success rate a challenging and never-seen-before path, composed of a narrow obstacle-populated corridor and a 180 \u2022 turn, at a maximum target speed of 0.5 m/s. In the same scenario, the State-of-the-Art PULP-Dronet consistently fails despite having 168\u00d7 more parameters.\n...\n8 SoC. Our tiniest CNN, i.e., Tiny-PULP-Dronet v3, has only 2.9 k parameters and 1.1 M"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/37xzczgysqn",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Distilling Tiny and Ultrafast Deep Neural Networks for Autonomous Navigation on Nano-UAVs",
+              "year": 2024,
+              "date": "2024-07-22",
+              "type": "article",
+              "language": "en",
+              "citationCount": 20,
+              "authors": [
+                {
+                  "name": "Lorenzo Lamberti",
+                  "id": null
+                },
+                {
+                  "name": "Lorenzo Bellone",
+                  "id": null
+                },
+                {
+                  "name": "Luka Macan",
+                  "id": null
+                },
+                {
+                  "name": "Enrico Natalizio",
+                  "id": null
+                },
+                {
+                  "name": "Francesco Conti",
+                  "id": null
+                },
+                {
+                  "name": "Daniele Palossi",
+                  "id": null
+                },
+                {
+                  "name": "Luca Benini",
+                  "id": null
+                }
+              ],
+              "referenceCount": 30,
+              "abstract": "Nano-sized unmanned aerial vehicles (UAVs) are ideal candidates for flying Internet-of-Things smart sensors to collect information in narrow spaces. This requires ultra-fast navigation under very tight memory/computation constraints. The PULP-Dronet convolutional neural network (CNN) enables autonomous navigation running aboard a nano-UAV at 19, at the cost of a large memory footprint of 320kB\u2013 and with drone control in complex scenarios hindered by the disjoint training of collision avoidance and steering capabilities. In this work, we distill a novel family of CNNs with better capabilities than PULP-Dronet, but memory footprint reduced by up to 168\u00d7 (down to 2.9kB), achieving an inference rate of up to 139frame/s; we collect a new open-source unified collision/steering 66images dataset for more robust navigation; and we perform a thorough in-field analysis of both PULP-Dronet and our tiny CNNs running on a commercially available nano-UAV. Our tiniest CNN, called Tiny-PULP-Dronet v3, navigates with a 100% success rate a challenging and never-seen-before path, composed of a narrow obstacle-populated corridor and a 180\u00b0turn, at a maximum target speed of 0.5m/s. In the same scenario, the SoA PULP-Dronet consistently fails despite having 168\u00d7 more parameters.",
+              "doi": "10.1109/jiot.2024.3431913"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://www.research-collection.ethz.ch/server/api/core/bitstreams/7e19dfe9-6b59-4e16-8d92-ed48a440c516/content",
+        "title": "An open source and open hardware deep learning-powered ...",
+        "url": "https://www.research-collection.ethz.ch/server/api/core/bitstreams/7e19dfe9-6b59-4e16-8d92-ed48a440c516/content",
+        "highlights": [
+          "Abstract\u2014Nano-size unmanned aerial vehicles (UAVs),\n...\n27 g nano-UAV system able to run aboard an end-to-end, closed\u0002loop visual pipeline for autonomous navigation based on a state\u0002of-the-art deep-learning algorithm, built upon the open-source\n...\nWe enable onboard real-time execution of a state-\n...\n18 Hz.\n...\nsystem\u2019s high responsiveness prevents collisions with unexpected\n...\ndynamic obstacles up to a flight speed of 1.5 m/s. In addition, we\n...\nThe project\u2019s code, datasets and trained models are available\n...\nat: https://github.com/pulp-platform/pulp-dronet.\n...\nThe system can run the DroNet [9] CNN for autonomous\n...\nonly onboard resources.\n...\nfor embedding the CNN-based DroNet [9] visual navigation\n...\nand ii)\n...\nrobustness against the appearance of a sudden\n...\ndistance of 2 m while flying at 1.5 m\n...\n, we release the PULP-Shield design and all code running\n...\non GAP8\n...\nas well as datasets and trained networks, as publicly\n...\nThe key driver for our proposed autonomous visual navi\u0002gation engine is DroNet: an algorithm proposed initially by\n...\n\u2019s capability of preventing collisions\n...\nnavigation engine to its limit, preventing collisions also\n...\nmultiple experi\u0002\n...\nthat our visual navigation engine enables safe flight up to\n...\nwireless mobile smart sensors, we release open-source our\n...\nPULP-Shield design and all code running on it, as well as"
+        ]
+      },
+      {
+        "id": "https://github.com/VishalSharma0309/nano_drone",
+        "title": "VishalSharma0309/nano_drone",
+        "url": "https://github.com/VishalSharma0309/nano_drone",
+        "publishedDate": "2020-05-18T00:00:00.000Z",
+        "highlights": [
+          "An autonomous nano drone with an end-to-end closed-loop visual pipeline with multiple visual inputs\n...\nTo develop an autonomous nano drone with an end-to-end closed-loop visual pipeline for autonomous navigation based on a CNN model taking input from multiple cameras.\n...\n2. PULP SDK \n```\n$ git clone --recursive https://github.com/VishalSharma0309/pulp-sdk\n```\n...\n3. PULP DroNet \n```\n$ git clone --recursive https://github.com/VishalSharma0309/pulp-dronet\n```\n...\n.png)\n...\n:\n\n nano_drone\n \u2502 README.md\n \u2502 readme_GAPSDK.txt (to setup GAP SDK)\n | readme_gvsoc.txt (to setup and use GVSOC on GAP SDK and PULP SDK)\n | readme_multiCameraInterfacing.txt (research on interfacing multi-cameras on GAP SoC)\n | readme_pulpDroNet.txt (to setup PULP DroNet)\n | readme_setupCentOS.txt (to setup toolchain & SDK on centOS)\n | readme_vncsteps.txt (to vnc into\n...\nPCs)\n | tasks.txt (weekly meeting notes)\n \u2502 environment.yml (yml file for\n...\nnot working)\n | gap_env.yml (yml file for\n...\n& PULP-SDK conda environment) (not working)\n | pulpsdk.yml (yml file for PULP-SDK conda environment) (working)\n |\n...\nautomated script to setup\n...\n-SDK in any\n...\n)\n | start.\n...\nto run bofore using GAP-SDK)\n |\n...\n\u2502 \u2502\n...\n\u2502 README.md\n...\n\u2502 \u2502\n \u2502 \u2514\u2500\u2500\u2500\n...\n\u2502 \u2514\u2500\u2500\u2500include \n \u2502 \u2514\u2500\u2500\u2500lib \n \u2502 \u2514\u2500\u2500\u2500\n...\n\u2502 \u2514\u2500\u2500\n...\n-elf\n |"
+        ]
+      },
+      {
+        "id": "https://github.com/ETH-PBL/Nano_Swarm_Mapping",
+        "title": "ETH-PBL/Nano_Swarm_Mapping",
+        "url": "https://github.com/ETH-PBL/Nano_Swarm_Mapping",
+        "publishedDate": "2023-11-15T08:14:44.000Z",
+        "highlights": [
+          ". To maximize area coverage and reduce mission latency, swarms of collaborating drones have become a significant research direction. However, this approach requires open challenges in positioning, mapping, and communications to be addressed. This work describes a distributed mapping system based on a swarm of nano-UAVs, characterized by a limited payload of 35 g and tightly constrained onboard sensing and computing capabilities. Each nano-UAV is equipped with four 64-pixel depth sensors that measure the relative distance to obstacles in four directions. The proposed system merges the information from the swarm and generates a coherent grid map without relying on any external infrastructure. The data fusion is performed using the iterative closest point algorithm and a graph-based simultaneous localization and mapping algorithm, running entirely onboard the UAV\u2019s low-power ARM Cortex-M microcontroller with just 192 kB of memory. Field results gathered in three different mazes with a swarm of up to 4 nano-UAVs prove a mapping accuracy of 12 cm and demonstrate that the mapping time is inversely proportional to the number of agents. The proposed framework scales linearly in terms of communication bandwidth and onboard computational complexity, supporting communication between up to 20 nano-UAVs and mapping of areas up to 180 m2 with the chosen configuration requiring only 50 kB"
+        ]
+      },
+      {
+        "id": "https://github.com/pulp-platform/pulp-dronet/blob/98f15cfe/LICENSE_README.md",
+        "title": "LICENSE_README.md",
+        "url": "https://github.com/pulp-platform/pulp-dronet/blob/98f15cfe/LICENSE_README.md",
+        "highlights": [
+          "\u251c\u2500\u2500 dataset/\n...\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 training/\n...\n\u2502\n...\nodo\n    \u251c\u2500\u2500 drone-applications/\n...\nrunning on the Bitcraze Crazyflie 2.1 nano-drone and the GAP8 SoC\n...\n\u251c\u2500\u2500 crazyflie-dronet-app/ # Crazyflie STM32 code (flight controller)\n...\n\u2502\n...\ninc/ ...\n...\n\u2502\u00a0\u00a0 \u2502\n...\nsrc/ ...\n    \u2502\u00a0\u00a0 \u2502\n...\n\u2514\u2500\u2500 Makefile\n    |   \u251c\u2500\u2500 external/\n    |   |    \u2514\u2500\u2500 crazyflie\n...\nuse tag\n...\n.01\n...\n(CNN processing + camera\n...\nUse gap-sdk 3.9.1\n...\n\u2502\u00a0\u00a0  \u00a0\u00a0 \u251c\u2500\u2500\n...\n-dronet\n...\nv3/ # main running pulp-dronet v3 (19fps, 320kB)\n...\n\u2502\u00a0\u00a0  \u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 DORY_network/\n    \u2502\u00a0\u00a0  \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 inc/ ...\n    \u2502\u00a0\u00a0  \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 src/ ...\n    \u2502\u00a0\u00a0  \u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 Makefile\n    \u2502\u00a0\u00a0  \u00a0\u00a0 \u251c\u2500\u2500 tiny\n...\npulp-dronet-v3/ # main running tiny-pulp-dronet v3 (139fps, 2.9kB)\n    \u2502\u00a0\u00a0  \u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 DORY_network/\n    \u2502\n...\n\u2502\u00a0\u00a0 \u251c\u2500\u2500 inc/\n...\n\u2502\u00a0\u00a0  \u00a0\u00a0 |   \u2502\u00a0\u00a0 \u2514\u2500\u2500 src/ ...\n...\n-Dronet v3\n...\npre-trained model"
+        ]
+      },
+      {
+        "id": "https://github.com/LorenzoLamberti94/pulp-dronet",
+        "title": "LorenzoLamberti94/pulp-dronet",
+        "url": "https://github.com/LorenzoLamberti94/pulp-dronet",
+        "highlights": [
+          "A deep learning-powered visual navigation engine to enables autonomous navigation of pocket-size quadrotor - running on PULP\n...\nbibtex\n@article{lamberti2024pulpdronetIOTJ,\n  author={Lamberti, Lorenzo and Bellone, Lorenzo and Macan, Luka and Natalizio, Enrico and Conti, Francesco and Palossi, Daniele and Benini, Luca},\n  journal={IEEE Internet of Things Journal},\n  title={Distilling Tiny and Ultra-fast Deep Neural Networks for Autonomous Navigation on Nano-UAVs},\n  year={2024},\n  volume={},\n  number={},\n  pages={1-1},\n  keywords={Navigation;Task analysis;Artificial intelligence;Internet of Things;Autonomous robots;Throughput;Collision avoidance;Autonomous Nano-UAV;Embedded Devices;Ultra-low-power;Artificial Intelligence;Mobile and Ubiquitous Systems},\n  doi={10.1109/JIOT.2024.3431913}\n}\n...\n19}\n...\nbibtex\n@inproceedings{palossi2019pulpdronetDCOSS,\n  author={D. {Palossi} and F. {Conti} and L. {Benini}},\n  booktitle={2019 15th International Conference on Distributed Computing in Sensor Systems (DCOSS)},\n  title={An Open Source and Open Hardware Deep Learning-Powered Visual Navigation Engine for Autonomous Nano-UAVs},\n  pages={604-611},\n  keywords={autonomous navigation, nano-size UAVs, deep learning, CNN, heterogeneous computing, parallel ultra-low power, bio-inspired},\n  doi={10.1109/DCOSS.2019.00111},\n  ISSN={2325-2944},\n  month={May},\n  year={2\n...\n19},\n}"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2407.12675",
+        "title": "Distilling Tiny and Ultra-fast Deep Neural Networks for Autonomous Navigation on Nano-UAVs",
+        "url": "https://arxiv.org/html/2407.12675",
+        "highlights": [
+          "(UAVs) are ideal candidates for flying Internet-of-Things smart sensors to collect information in narrow spaces. This requires ultra-fast navigation under very tight memory/computation constraints. The PULP-Dronet convolutional neural network (CNN) enables autonomous navigation running aboard a nano-UAV at $19\\text{\\,}\\mathrm{frame/s}$ , at the cost of a large memory footprint of $320\\text{\\,}\\mathrm{kB}$ \u2013 and with drone control in complex scenarios hindered by the disjoint training of collision avoidance and steering capabilities. In this work, we distill a novel family of CNNs with better capabilities than PULP-Dronet, but memory footprint reduced by up to 168 $\\times$ (down to $2.9\\text{\\,}\\mathrm{kB}$ ), achieving an inference rate of up to $139\\text{\\,}\\mathrm{frame/s}$ ; we collect a new open-source unified collision/steering $66\\text{\\,}\\mathrm{k}$ images dataset for more robust navigation; and we perform a thorough in-field analysis of both PULP-Dronet and our tiny CNNs running on a commercially available nano-UAV. Our tiniest CNN, called Tiny-PULP-Dronet v3, navigates with a 100% success rate a challenging and never-seen-before path, composed of a narrow obstacle-populated corridor and a $180\\text{\\,}\\mathrm{\u00b0}$ turn, at a maximum target speed of $0.5\\text{\\,}\\mathrm{m}$ . In the same scenario, the SoA PULP-Dronet consistently fails despite having 168 $\\times$"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/qypkl9yzhhy",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Distilling Tiny and Ultra-fast Deep Neural Networks for Autonomous Navigation on Nano-UAVs",
+              "year": 2024,
+              "date": "2024-07-17",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Lorenzo Lamberti",
+                  "id": null
+                },
+                {
+                  "name": "Lorenzo Bellone",
+                  "id": null
+                },
+                {
+                  "name": "Luka Macan",
+                  "id": null
+                },
+                {
+                  "name": "Enrico Natalizio",
+                  "id": null
+                },
+                {
+                  "name": "Francesco Conti",
+                  "id": null
+                },
+                {
+                  "name": "Daniele Palossi",
+                  "id": null
+                },
+                {
+                  "name": "Luca Benini",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Nano-sized unmanned aerial vehicles (UAVs) are ideal candidates for flying Internet-of-Things smart sensors to collect information in narrow spaces. This requires ultra-fast navigation under very tight memory/computation constraints. The PULP-Dronet convolutional neural network (CNN) enables autonomous navigation running aboard a nano-UAV at 19 frame/s, at the cost of a large memory footprint of 320 kB -- and with drone control in complex scenarios hindered by the disjoint training of collision avoidance and steering capabilities. In this work, we distill a novel family of CNNs with better capabilities than PULP-Dronet, but memory footprint reduced by up to 168x (down to 2.9 kB), achieving an inference rate of up to 139 frame/s; we collect a new open-source unified collision/steering 66 k images dataset for more robust navigation; and we perform a thorough in-field analysis of both PULP-Dronet and our tiny CNNs running on a commercially available nano-UAV. Our tiniest CNN, called Tiny-PULP-Dronet v3, navigates with a 100% success rate a challenging and never-seen-before path, composed of a narrow obstacle-populated corridor and a 180\u00b0 turn, at a maximum target speed of 0.5 m/s. In the same scenario, the SoA PULP-Dronet consistently fails despite having 168x more parameters.",
+              "doi": "10.48550/arxiv.2407.12675"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://idsia-robotics.github.io/nanorobotics/assets/pdf/2023_ral_imav.pdf",
+        "title": "arXiv:2312.08991v1 [cs.RO] 14 Dec 2023",
+        "url": "https://idsia-robotics.github.io/nanorobotics/assets/pdf/2023_ral_imav.pdf",
+        "highlights": [
+          "SLAM) [13], can not run onboard nano-drones due to their steep performance require ments. Even when run off-board, they suffer from substantial performance degradation as nano-drones employ low-quality sensors [14], [15]. Lightweight approaches better suited to nano-drones employ different sensors such as Time-of-Flight (ToF) ranging sen sors [16], [17], [18]. These approaches can be implemented onboard and provide robust obstacle avoidance, even in un known environments, with raw sensor readings or minimal onboard processing (e.g., 30 OP/s in [18]), such as simple bug inspired lightweight state machines [16], [17]. However, in our competition, only a low-resolution monochrome monocu lar camera was allowed, narrowing the teams\u2019 effort only to visual-based approaches. A lightweight vision-based system for pocket-sized drones was presented by McGuire et al. [19], implementing depth estimation with a stereo camera and achieving obstacle avoid ance at low speed (0.3 m/s). The SoA visual-based CNN for autonomous nano-drone navigation is PULP-Dronet [9], trained on real-world data to predict a steering angle and a collision probability based on a QVGA monocular image. PULP-Dronet runs onboard the GAP8 SoC at 19 frame/s, proving in-field obstacle avoidance capabilities up to a speed of 1.65 m/s when coping with a dynamic obstacle. As a result, at the IMAV competition, 3 of 6 teams,"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2403.11661",
+        "title": "Combining Local and Global Perception for Autonomous Navigation on Nano-UAVs",
+        "url": "https://arxiv.org/html/2403.11661",
+        "highlights": [
+          "on nano-UAVs. We combine the visual-based PULP-Dronet [1] convolutional neural network for semantic information extraction, i.e., serving as the global perception, with 8 $\\times$ $8\\text{\\,}\\mathrm{px}\\text{/}$ depth maps for close-proximity maneuvers, i.e., the local perception. When tested in-field, our integration strategy highlights the complementary strengths of both visual and depth sensory information. We achieve a 100% success rate over 15 flights in a complex navigation scenario, encompassing straight pathways, static obstacle avoidance, and $90\\text{\\,}\\mathrm{\\textdegree}\\text{/}$\n...\nGlobal $+$ local perception pipelines. Our autonomous navigation pipeline for nano-UAVs, depicted in Figure 1, comprises several components, all executed onboard. The global perception pipeline is constituted by the PULP-Dronet [1], a CNN for visual-based navigation on nano-UAVs. We use the pre-trained weights of [1]. The CNN takes $200\\times 200$ $\\text{\\,}\\mathrm{px}\\text{/}$ images as input and produces two outputs: a steering angle $\\theta_{CNN}$ and a collision probability $p_{col}$ . This CNN runs on the 8-core cluster of the GAP8 SoC at $19\\text{\\,}\\mathrm{F}\\mathrm{P}\\mathrm{S}$ . As in [1], we post-process the PULP-Dronet outputs, computing the forward speed $v_{CNN}$ inversely proportional to $p_{col}$ , while the steering angle $\\theta_{CNN}$ is rescaled into a yaw-rate."
+        ],
+        "image": "https://arxiv.org/html/2403.11661v1/x1.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/2mg0r7n8rrs",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Combining Local and Global Perception for Autonomous Navigation on Nano-UAVs",
+              "year": 2024,
+              "date": "2024-03-18",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Lorenzo Lamberti",
+                  "id": null
+                },
+                {
+                  "name": "Georg Rutishauser",
+                  "id": null
+                },
+                {
+                  "name": "Francesco Conti",
+                  "id": null
+                },
+                {
+                  "name": "Luca Benini",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "A critical challenge in deploying unmanned aerial vehicles (UAVs) for autonomous tasks is their ability to navigate in an unknown environment. This paper introduces a novel vision-depth fusion approach for autonomous navigation on nano-UAVs. We combine the visual-based PULP-Dronet convolutional neural network for semantic information extraction, i.e., serving as the global perception, with 8x8px depth maps for close-proximity maneuvers, i.e., the local perception. When tested in-field, our integration strategy highlights the complementary strengths of both visual and depth sensory information. We achieve a 100% success rate over 15 flights in a complex navigation scenario, encompassing straight pathways, static obstacle avoidance, and 90\u00b0 turns.",
+              "doi": "10.48550/arxiv.2403.11661"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://www.bitcraze.io/2019/05/pulp-dronet-open-source-and-open-hardware-artificial-intelligence-for-fully-autonomous-navigation-on-crazyflie/",
+        "title": "PULP-DroNet: open source and open hardware artificial ...",
+        "url": "https://www.bitcraze.io/2019/05/pulp-dronet-open-source-and-open-hardware-artificial-intelligence-for-fully-autonomous-navigation-on-crazyflie/",
+        "publishedDate": "2019-05-06T00:00:00.000Z",
+        "author": "Daniele Palossi",
+        "highlights": [
+          "navigation on small size flying robots, like the Crazyflie 2.0 (CF) nano-drone. In this post, we will give you the basic ideas to make the CF able to fly fully autonomously, relying only on onboard computational resources, that means no human operator, no ad-hoc external signals, and no remote base-station! Our prototype can follow a street or a corridor and at the same time avoid collisions with unexpected obstacles even when flying at high speed. \n\n PULP-DroNet is based on the Parallel Ultra Low Power (PULP) project envisioned by the ETH Z\u00fcrich and the University of Bologna. In the PULP project, we aim to develop an open-source,\n...\nThen, we selected as the algorithmic heart of our autonomous navigation engine an advanced artificial intelligence algorithm based on DroNet, a Convolutional Neural Network (CNN) that was originally developed by our friends at the Robotic and Perception Group (RPG) of the University of Z\u00fcrich. To enable the execution of DroNet on our resource-constrained system, we developed a complete methodology to map computationally-intense deep neural networks on the PULP-Shield and the GAP8 SoC. The network outputs two pieces of information, a probability of collision and a steering angle that are translated in dynamic information used to control the drone: respectively, forward velocity and angular yaw rate. The layout of the network is the following:"
+        ],
+        "image": "https://www.bitcraze.io/images/nav/navbar-logo.webp"
+      }
+    ],
+    "searchTime": 1296.6,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

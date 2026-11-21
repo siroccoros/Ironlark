@@ -1,0 +1,162 @@
+{
+  "query": {
+    "query": "SUPER autonomous drone github deployment license hardware guide issue 5 FAST LIO",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "feec23777abdee2bf03f8ae89b6b3423",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/hku-mars/SUPER",
+        "title": "hku-mars/SUPER",
+        "url": "https://github.com/hku-mars/SUPER",
+        "publishedDate": "2024-12-19T09:07:25.000Z",
+        "highlights": [
+          "- **Mar. 09, 2025** - The hardware components of SUPER have been released at [SUPER-Hardware](https://github.com/hku-mars/SUPER-Hardware) \ud83e\uddbe\n- **Jan. 29, 2025** - The preview version of SUPER's planning module, supporting both ROS1 and ROS2, is now available! Try it out, and we welcome any issues or contributions.\n- **Jan. 2\n...\n, 2025** - The paper of\n...\n### 1.3.2 FAST-LIVO2 (TRO '24)\n...\nSUPER serves as the flight platform and navigation system in the video demonstration of [FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry](https://github.com/hku-mars/FAST-LIVO2) by [@xuankuzcr](https://github.com/xuankuzcr) et al.\n\n \n\n# 2 Quick Start\n...\n### Real-world deployment\n...\nA detailed guide for deploying SUPER on real-world hardware will be available soon. In the meantime, you can refer to [issue #5](https://github.com/hku-mars/SUPER/issues/5) for some helpful hints.\n...\n- [#10]: When using SUPER with your own simulator (e.g., Gazebo\n...\nor a LiDAR odometry system\n...\nFAST-LIO2, ensure\n...\nthe input point cloud is provided in the world frame. ROG-Map does\n...\n`/tf` information and assumes\n...\ndefault that all input point clouds are in\n...\n- **[FAST_LIO](https://github.com/hku-mars/FAST_LIO)**, **[Swarm-LIO2](https://github.com/hku-mars/Swarm-LIO2)** and **[LiDAR_IMU_Init](https://github.com/hku-mars/LiDAR_IMU_Init)** for their excellent localization solutions."
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/SUPER/issues/5",
+        "title": "Is the MPC part not open source? How to run SUPER on a real drone? \u00b7 Issue #5 \u00b7 hku-mars/SUPER",
+        "url": "https://github.com/hku-mars/SUPER/issues/5",
+        "publishedDate": "2025-02-18T00:00:00.000Z",
+        "author": "hcws",
+        "highlights": [
+          "flight_modules\n...\n> However, please note that the MPC module of SUPER is not yet open-sourced, but we plan to release it later this year. If you're interested in trying this method, you may need to implement it yourself in the meantime.\n> \n> I will keep this issue open until I have time to create a comprehensive guide on real-world deployment. If you succeed and are willing to share your insights, I encourage you to document your experience here. I will reference this issue in the README to assist anyone looking to deploy SUPER on a real-world drone.\n...\n> > How\n...\n, we use a customized in-house board designed in our lab, but we don't have an open-source\n...\nyet. I am currently testing\n...\ncommercial board and will provide updates as progress is made.\n...\nI'd\n...\nlearn about this part\n...\nhave plans to open source the MPC component, but it will likely be later this year. Stay tuned!\n...\n> \n> For sensor calibration, consult our work at https://github.com/hku-mars/LiDAR_IMU_Init. In FAST-LIO, odometry frequency aligns with the LiDAR frequency. To enable higher-frequency odometry, modify the system to propagate the EKF-estimated state in the IMU callback function and publish the propagated state (not yet open-sourced but straightforward to implement). Our controller leverages this propagated state at 100 Hz, synchronized with the MPC operating at 100 Hz.\n...\nLiDAR and IMU"
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/SUPER-Hardware/blob/main/README.md",
+        "title": "README.md at main \u00b7 hku-mars/SUPER-Hardware",
+        "url": "https://github.com/hku-mars/SUPER-Hardware/blob/main/README.md",
+        "highlights": [
+          "This repository contains the hardware components of the SUPER project. See the software part of SUPER at [hku-mars/SUPER (github.com)](https://github.com/hku-mars/SUPER)\n...\n| LiDAR | Livox MID360 | 1 | [Livox Mid\n...\n(livoxtech\n...\n60) |\n...\nHtKpyn\n...\nfejgh\n...\nOnboard Computer\n...\n| Flight Controller | NxtPx4 |\n...\n| [NxtPX4v2(micoair.cn\n...\nhttps://m\n...\ncn/docs/NxtPX4v\n...\nce) |\n...\n| RC | Radiolink AT\n...\n| [AT\n...\n)](https://www\n...\niver | Radiol\n...\nare what we\n...\ncan substitute for the\n...\nmay be open-sourced later\n...\nyear, and our development is based on\n...\nare currently using a customized DC\n...\nDC buck converter designed by\n...\nlabmate, but we do not have plans\n...\nmake it open-source at this time. However, you may find the following open-source option useful: [NUC Battery Power - Open Source Hardware Platform.](https://oshwhub.com/PancLAN/buck\n...\nfor_nuc). Please note that this open-source solution is not very stable, which\n...\nwhy we are making some modifications. However, these updates are\n...\nme, so I don\n...\nfurther details. We may provide updates in the future.\n...\n/04\n...\nfound an alternative for NUC 1\n...\nother types that supports\n...\ninputs, listed in"
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/fast_lio",
+        "title": "hku-mars/FAST_LIO: A computationally efficient and robust ...",
+        "url": "https://github.com/hku-mars/fast_lio",
+        "publishedDate": "2020-10-12T07:12:56.000Z",
+        "highlights": [
+          "- Stars: 4940\n- Forks: 1613\n- Watchers: 56\n...\n- Open issues:\n...\n- Primary language: C++\n- Languages: C++ (97.0%), MATLAB (1.5%), Python (0.9%), CMake (0.6%)\n...\n- License: GNU General Public License v2.0 (GPL-2.0)\n...\n- Topics: lidar-odometry, livox-avia-lidar\n- Default branch: main\n- Created: 2020-10-12T07:12:56Z\n- Last push: 2025-01-15T10:23:34Z\n- Contributors: 20 (top: XW-HKU, Ecstasy-EC, zfc-zfc, borongyuan, Huguet57, matosinho, zang09, kennyS99, maoxiang1991, xuankuzcr)\n...\n**FAST-\n...\nometry) is a computationally efficient and robust\n...\nial odometry package.\n...\nfeature points with\n...\ntightly-coupled\n...\ncluttered environments where\n...\n- Since the FAST-LIO must support Livox serials LiDAR firstly, so the **livox_ros_driver** must be installed and **sourced** before run any FAST-LIO luanch file.\n...\n- How to source? The easiest\n...\nline ``` source $\n...\n_dir$/devel/setup.\n...\nend of file\n...\n``` is the directory of the livox\n...\ndriver workspace (should be the ```\n...\n_livox ``` directory if you completely followed the livox official document\n...\nIn order to validate the robustness and computational efficiency of FAST-LIO in actual mobile robots, we build a small-scale quadrotor which can carry a Livox Avia LiDAR with 70 degree FoV and a DJI Manifold 2-C onboard computer with a 1.8 GHz Intel i7-8550U CPU and 8 G RAM, as shown in below."
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/SUPER/issues/55",
+        "title": "Hardware Compatibility of Jetson Orin Nano Super with PX4 for SUPER Planner Deployment \u00b7 Issue #55 \u00b7 hku-mars/SUPER",
+        "url": "https://github.com/hku-mars/SUPER/issues/55",
+        "publishedDate": "2025-11-18T18:58:11.000Z",
+        "author": "MightySheep01",
+        "highlights": [
+          "# Issue: hku-mars/SUPER #55\n...\n- Repository: hku-mars/SUPER | 861 stars | C++\n...\n## Hardware Compatibility of Jetson Orin Nano Super with PX4 for SUPER Planner Deployment\n...\nI'm trying to run the SUPER Planner on a drone using a Jetson Orin Nano (8GB RAM) and a Cube Orange flight controller with PX4. Since I have a tight budget and will be running several heavy nodes (SUPER Planner, Fast LIO 2, PX4 bridge, ROG Map), I need to confirm: Is 8GB of shared RAM enough to handle all this in real-time without crashing the drone, especially considering the high data load from Fast LIO 2? If 8GB is pushing it, what's the minimum recommended RAM or JetPack version? Also, are there any specific MAVROS setup tricks or pitfalls I should know about when connecting the Orin Nano to the Cube Orange/PX4?"
+        ]
+      },
+      {
+        "id": "https://github.com/MarcYoungR/future_ws",
+        "title": "MarcYoungR/future_ws",
+        "url": "https://github.com/MarcYoungR/future_ws",
+        "publishedDate": "2025-12-30T06:46:55.000Z",
+        "highlights": [
+          "Autonomous UAV System (FAST-LIO + Px4Ctrl + SUPER)\n...\n\u5b9a\u4f4d\u4e0e\u5efa\u56fe:\u91c7\u7528FAST-LIO2\u65b9\u6848[hku-mars/FAST_LIO](https://github.com/hku-mars/FAST_LIO)\uff0c\u57fa\u4e8eLivox MID360\u6fc0\u5149\u96f7\u8fbe\u63d0\u4f9b\u9ad8\u7cbe\u5ea6\u7684\u91cc\u7a0b\u8ba1\u4e0e\u73af\u5883\u70b9\u4e91\u3002\n...\n\u907f\u969c\u4e0e\u89c4\u5212:\u91c7\u7528MARS\u5b9e\u9a8c\u5ba4\u7684SUPER Planner[hku-mars/SUPER](https://github.com/hku-mars/SUPER)\uff0c\u5b9e\u73b0\u52a8\u6001\u73af\u5883\u4e0b\u7684\u907f\u969c\u4e0e\u8def\u5f84\u89c4\u5212\u3002\n...\n# 2. \u786c\u4ef6\u4e0e\u9a71\u52a8\u51c6\u5907\n...\n\u524d\uff0c\u8bf7\u786e\u4fdd\u4ee5\u4e0b\u786c\u4ef6\u9a71\u52a8\u5df2\n...\n360\n...\n\u9700\u8981\u9884\u5148\u5b89\u88c5 livox_ros_driver2\u3002\n...\n3. \u53c2\u6570\u914d\u7f6e\n...\n\u5728\u4f7f\u7528 FAST-LIO \u8fdb\u884c\u5b9a\u4f4d\u524d\uff0c\u5fc5\u987b\u6839\u636e\u4f60\u7684\u65e0\u4eba\u673a\u5b9e\u9645\u7ed3\u6784\u4fee\u6539\u914d\u7f6e\u6587\u4ef6\u3002\n...\nFAST-LIO \u914d\u7f6e\u6587\u4ef6\n...\n\u6587\u4ef6\u8def\u5f84\uff1asrc/FAST_LIO/config/mid360.yaml\n...\n\u4fee\u6539\u5185\u5bb9\uff1a\u9700\u8981\u4fee\u6539\u96f7\u8fbe\uff08LiDAR\uff09\u76f8\u5bf9\u4e8e\u98de\u63a7 IMU \u7684\u5916\u53c2\u3002\n...\n\u5982\u679c\u96f7\u8fbe\u5b89\u88c5\u4f4d\u7f6e\u53d1\u751f\u53d8\u5316\uff0c\u52a1\u5fc5\u91cd\u65b0\u6d4b\u91cf\u5e76\u66f4\u65b0\u8fd9\u4e24\u4e2a\u53c2\u6570\uff0c\u5426\u5219\u4f1a\u5bfc\u81f4\u91cc\u7a0b\u8ba1\u6f02\u79fb\u6216\u63a7\u5236\u53d1\u6563\u3002\n...\nSUPER Planner: \u4fee\u6539 src/SUPER/super_planner/config/click_smooth_ros1.yaml \u4ee5\u8c03\u6574\u89c4\u5212\u5668\u7684\u901f\u5ea6\u3001\u52a0\u901f\u5ea6\u9650\u5236\u53ca\u907f\u969c\u7b56\u7565\u3002\n...\nPx4Ctrl: \u4fee\u6539 src/Px\n...\nctrl/config/ctrl_param_fpv.yaml \u4ee5\u8c03\u6574\n...\n\u589e\u76ca\u53ca\u52a8\u529b\u5b66\u53c2\u6570\u3002\n...\n### Step 2: \u542f\u52a8 FAST-LIO \u91cc\u7a0b\u8ba1\n...\n```Bash\n\n# \u8bf7\u786e\u4fdd\u5728 workspace \u6839\u76ee\u5f55\u4e0b\u8fd0\u884c\nroslaunch fast_lio mapping_mid360.launch\n...\n\u6ce8\u610f\uff1a\u542f\u52a8\u524d\u8bf7\u786e\u8ba4\u4e0a\u8ff0\u63d0\u5230\u7684 config \u5916\u53c2\u5df2\u914d\u7f6e\u6b63\u786e\u3002"
+        ]
+      },
+      {
+        "id": "https://uas-forge.com/slam-guide/",
+        "title": "SLAM Integration Guide \u2014 Visual Odometry for Drones",
+        "url": "https://uas-forge.com/slam-guide/",
+        "highlights": [
+          "FAST-LIO2 uses ROS1 Noetic. If you're using SUPER (the full nav stack), you need ROS2 Humble. Here's both.\n...\nWhich ROS? For just SLAM odometry (FAST-LIO2, Point-LIO, S-FAST_LIO) \u2192 ROS1 Noetic. For full autonomous navigation (SUPER) \u2192 ROS2 Humble. For LIO-SAM \u2192 either works.\n...\nproperties-common sudo add-apt-repository universe sudo curl\n...\n.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/\n...\n2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main\" | sudo tee /etc/apt/sources.list.d/\n...\n2.list > /dev/null sudo apt update sudo apt install ros-\n...\n-ros-base echo \"source /opt/\n...\n/setup.bash\" >> ~/.bashrc source ~/.bashrc # Create workspace: mkdir -p ~/\n...\n_ws/src cd ~/\n...\n_ws colcon build\n...\nDocker shortcut: Skip all the above. `docker pull ros:noetic-ros-base` gives you a working ROS1 environment in seconds. Mount `/dev` for hardware access.\n...\n100\n...\n# \u2550\u2550\u2550 BUILD FAST-LIO2 \u2550\u2550\u2550 cd ~/catkin_ws/src git clone https://github.com/hku-mars/FAST_LIO.git cd FAST_LIO git submodule update --init # pulls ikd-Tree cd ../.. catkin_make source devel/setup.bash # Dependencies it needs (install if catkin_make fails): sudo apt install libeigen3-dev libpcl-dev ros-noetic-pcl-ros Build"
+        ],
+        "image": "https://uas-forge.com/static/og-image.png"
+      },
+      {
+        "id": "https://github.laiyagushi.com/hku-mars/SUPER-Hardware",
+        "title": "GitHub - hku-mars/SUPER-Hardware \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/hku-mars/SUPER-Hardware",
+        "publishedDate": "2025-03-09T00:00:00.000Z",
+        "author": "hku-mars",
+        "highlights": [
+          "This repository contains the hardware components of the SUPER project. See the software part of SUPER at hku-mars/SUPER (github.laiyagushi.com)\n...\n| --- |\n| LiDAR | Livox MID360 | 1 | Livox Mid-360 (livoxtech.com) |\n| LiDAR Connecting Cable | N/A | 1 | \u65e0\u540d\u521b\u65b0 Livox M12\u822a\u63d2\u4e00\u5206\u4e8c\u6570\u636e\u7ebf mid360\u6570\u636e\u7ebf \u7535\u8d5b\u65e0\u4eba\u673a-\u6dd8\u5b9d\u7f51 (taobao.com) |\n| Onboard Computer | Intel NUC | 1 | ASUS NUC 12 Pro\uff5cNUCs\uff5cASUS Global |\n| Aluminum Standoffs Pillars | 40 mm * 3 mm | 4 | |\n| Aluminum Standoffs Pillars | 30 mm * 3 mm | 4 | (Or 8 pcs 40 mm * 3mm) |\n| Motor | T-Motor F90 KV1300 | 4 | T-MOTORHOBBY F90 2806.5 Long Range Motor - 1300KV/1500KV/1950KV_Motor_F Series Racing Power_FPV Drone Parts_Tmotorhobby Store-Tmotorobby drone motor,ESC,Propeller |\n| Propeller | HQ 7x4x3 | 4 | HQProp 7X4X3 Light Grey |\n| ESC | T-Motor F60A mini 4 in 1 | 1 | TMOTOR F60A MINI 20x20 4IN1\n...\n| Battery | DualSky 3300mAh 6S XP-3300HED | 1 | cn.dualsky.com/Xpower_LiPos/decc7a90-6c8f-5c0d-d0d4-c8eaced6f5d2.shtml |\n| Flight Controller | NxtPx4 | 1 | NxtPX4v2(micoair.cn) |\n| RC | Radiolink AT9S | 1 | AT9S PRO 12 channels transmitter for racing drone, fixed wing, helicopter, glider, cars and boats (radiolink.com.cn) |\n| Reveiver | Radiolink R12DSM | 1 | 12 channels MINI receiver R12DSM (radiolink.com) |\n| Power Module | CKCS CK2416 (12 V 16 A) | 1 | https://e.tb.cn/h.6U3o07BuE81jHGi?tk=fopteCChcyW |"
+        ],
+        "image": "https://opengraph.githubassets.com/614df80c93458addfd49ca7557757e049c61adefc26e0716c265ebae8bc7a82f/hku-mars/SUPER-Hardware"
+      },
+      {
+        "id": "https://github.com/hku-mars/SUPER-Hardware/issues/6",
+        "title": "Does MID360 need additional vibration reduction? \u00b7 Issue #6 \u00b7 hku-mars/SUPER-Hardware",
+        "url": "https://github.com/hku-mars/SUPER-Hardware/issues/6",
+        "author": "XXLiu-HNU",
+        "highlights": [
+          "# Does MID360 need additional vibration reduction?\n...\n- State: closed\n- Author: XXLiu-HNU\n- Created: 2025-04-21T07:55:56Z\n- Updated: 2025-04-23T08:23:05Z\n- Repository: hku-mars/SUPER-Hardware\n- Number: #6\n...\nThanks to the author for open source.\n\n We re-assembled a quadcopter with reference to your hardware, but in actual use, we found that the MID360's imu vibration changed greatly after the drone started to take off, causing the LIO algorithm to fail. \n\nWe first manually moved the drone to ensure the LIO algorithm was working properly, then used the remote controller to unlock the drone and gave it some throttle. After the drone took off, LIO began to drift.\n...\nThe following three pictures show the data of mid360 imu at the beginning of takeoff, the positioning of fastlio2 and our drone hardware. We only added a d435i camera in the front, and the rest is similar to your hardware.\n...\nDo we need to consider adding shock absorption to mid360 during the design?\n...\n**RENyunfan** commented on 2025-04-23T08:23:04Z:\n...\n> Great question! We recommend using the IMU within the FCU, as it\u2019s more robust against vibrations. Ensure you calibrate the spatial-temporal extrinsics with tools like https://github.com/hku-mars/LiDAR_IMU_Init.\n...\n- RENyunfan closed\n\n- Referenced by issue #108: \u53ef\u4e0d\u53ef\u4ee5\u4f7f\u7528MID360 \u7684IMU\u4f5c\u4e3apx4ctrl\u7684\u8f93\u5165"
+        ]
+      },
+      {
+        "id": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "title": "GaryLee1210/UAV-Navigation-System",
+        "url": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "publishedDate": "2026-02-10T11:39:01.000Z",
+        "highlights": [
+          "| Component | Model / Specs | Note |\n| --- | --- | --- |\n| **Onboard Computer** | **NVIDIA Jetson Orin NX (8GB)** | Core computing unit |\n| **Flight Controller** | **Holybro Pixhawk 4** | 32-bit, running PX4/ArduPilot |\n| **LiDAR** | **Livox Mid-360** | Omnidirectional 3D LiDAR |\n| **Depth Camera** | **Intel RealSense D435** | For VIO and depth sensing |\n| **Frame** | **Custom Carbon Fiber (250mm)** | \"Taobao\" Custom Cut |\n| **Motors** | **Koofly 2207 V2 (1960KV)** | 4S Power System |\n| **ESC** | **EMAX BLHeli32 (45A)** | 4-in-1 ESC supported |\n| **Battery** | **Gens Ace 4S 4000mAh** | Long endurance for computing |\n| **Propellers** | **Gemfan 5147 (3-blade)** | Efficient 5-inch props |\n| **RC System** | **RadioLink AT9S Pro + R12DSM** | Reliable control link |\n...\n| **FAST-LIO2** (`Drone/localization/fast_lio2_ws`) | [hku-mars/FAST_LIO](https://github.com/hku-mars/FAST_LIO) `7cc4175` | \u2460 **High-rate odometry**: new `PropagateHighRateState()` forward-propagates the latest LIO state with each incoming IMU sample and publishes `/Odometry_highrate` (~IMU rate) for `px4ctrl`, instead of the ~10 Hz LiDAR-rate `/Odometry`. \u2461 Ported from `livox_ros_driver` to `livox_ros_driver2`. \u2462 Mid-360 config tuning (`config/mid360.yaml`). |\n...\nodometry](https://github\n...\nodometry) `fc\n...\naccelScale\n...\n-LIO2\n...\nstack. |"
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/fast-livo2",
+        "title": "FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry",
+        "url": "https://github.com/hku-mars/fast-livo2",
+        "highlights": [
+          "- Stars: 4211\n- Forks: 758\n- Watchers: 4211\n- Open issues: 318\n- License: GNU General Public License v2.0\n- Default branch: main\n- Created: 2024-04-22T12:49:47Z\n...\nWe open-source our handheld device, including CAD files, synchronization scheme, STM32 source code, wiring instructions, and sensor ROS driver. Access these resources at this repository: [**LIV_handhold**](https://github.com/xuankuzcr/LIV_handhold).\n...\ncom/h\n...\nib) toolkit is\n...\n## 2. Prerequisited\n...\nUbuntu 18.04~20.04\n...\nInstallation](http://wiki.ros.org/ROS/Installation).\n...\nPCL>=\n...\n, Follow [P\n...\nInstallation](https://\n...\nclouds.org\n...\n.3.4, Follow [Eigen Installation](https://eigen\n...\nuxfamily.org/index.php?title=Main_Page).\n...\nFollow [Openc\n...\n.org/).\n...\n### 2.3\n...\nVikit contains camera models, some math and interpolation functions that we need. Vikit is a catkin project, therefore, download it into your catkin workspace source folder.\n...\n## 3. Build\n...\nClone the repository and catkin_make:\n...\n```\ncd ~/catkin_ws/src\ngit clone https://github.com/hku-mars/FAST-LIVO2\ncd ../\ncatkin_make\nsource ~/catkin_ws/devel/setup.bash\n```\n...\n## 5. License\n...\nThe source code of this package is released under the [**GPLv2**](http://www.gnu.org/licenses/) license. For commercial use, please contact me at <zhengcr@connect.hku.hk> and Prof. Fu Zhang at <fuzhang@hku.hk> to discuss an alternative license."
+        ]
+      },
+      {
+        "id": "https://github.com/zjz0001/LIO-Drone-250",
+        "title": "zjz0001/LIO-Drone-250",
+        "url": "https://github.com/zjz0001/LIO-Drone-250",
+        "highlights": [
+          "- Stars: 151\n...\n- Forks: 21\n...\n- Watchers: 151\n...\n- Open issues:\n...\n- License: GNU General Public License v3.0\n...\n- Default branch: main\n...\n- Created: 2\n...\nThis repository enables fully autonomous drone flight based on Mid360. It incorporates an odometry reference from [Fast-LIO2](https://github.com/hku-mars/FAST_LIO) and a planning module reference from [Ego-Planner](https://github.com/ZJU-FAST-Lab/ego-planner-swarm). Also, this contribution is inspired by the [Fast-Drone-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) from the FAST-LAB laboratory.\n \n \n \n\n## 1. Prerequisites\n...\n- Since the FAST-LIO must support Livox serials LiDAR firstly, so the **livox_ros_driver** must be installed and **sourced** before run any FAST-LIO luanch file.\n...\n- How to source? The easiest way is add the\n...\nsource $Livox_ros_driver_dir$/devel/setup.bash ``` to the end of file ``` ~/.bashrc ```, where ``` $Livox_ros_driver_dir$ ``` is the directory of the livox ros driver workspace (should be the ``` ws_livox ``` directory if you completely followed the livox official document\n...\n### 1.5\n...\nRealsense\n...\n/tree/\n...\n1-legacy).\n...\ninstall the Realsense package under ROS\uff1a\n...\napt-get install\n...\n-melodic-realsense2-camera\n      sudo apt\n...\n-melodic-realsense2-description\n...\nRemember to source the livox_ros_driver before build (follow 1.4 **livox_ros_driver**)"
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/Bziyue/SUPER",
+        "title": "GitHub - Bziyue/SUPER \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/Bziyue/SUPER",
+        "publishedDate": "2026-03-17T00:00:00.000Z",
+        "author": "Bziyue",
+        "highlights": [
+          "- Mar. 09, 2025 - The hardware components of SUPER have been released at SUPER-Hardware \ud83e\uddbe\n...\n, 2025 - The preview version of SUPER's planning module, supporting both ROS1 and ROS2, is now available! Try it out, and we welcome any\n...\nor contributions.\n...\n- Jan. 29, 2025 - The paper of SUPER is\n...\non the official website of Science Robotics.\n- Dec.\n...\n, 2024 -\n...\npaper has been accepted by\n...\n### 1.3.2 FAST-L\n...\n2 (TRO '24)\n...\nSUPER serves as the flight platform and navigation system in the video demonstration of FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry by @xuankuzcr et al.\n...\n### Real-world deployment\n...\nA detailed guide for deploying SUPER on real-world hardware will be available soon. In the meantime, you can refer to issue #5 for some helpful hints.\n...\n10]: When using SUPER with your own simulator (e.g., Gazebo) or a LiDAR odometry system\n...\nFAST-LIO2,\n...\nthe input point cloud is provided in the world frame. ROG-Map does\n...\n`/tf` information and assumes by default that all input point clouds are in\n...\nthan the body frame.\n...\n- FAST_LIO, Swarm-LIO2 and LiDAR_IMU_Init for their excellent localization solutions.\n...\n- ROG-Map - A high-\n...\nframework that influenced our approach to\n...\nplayed a key role in testing and evaluating our\n...\n.\n- GCOPTER\n...\nA valuable resource that\n...\nfoundation of our trajectory optimization method"
+        ],
+        "image": "https://opengraph.githubassets.com/ff6beec5569143893418d33b4ce060862f09854b8acc7b66ce7622d19dabaa62/Bziyue/SUPER"
+      },
+      {
+        "id": "https://www.repoportal.com/en/hku-mars-super",
+        "title": "hku-mars/SUPER - C++ project:",
+        "url": "https://www.repoportal.com/en/hku-mars-super",
+        "highlights": [
+          "- Mar. 09, 2025 - The hardware components of SUPER have been released at SUPER-Hardware????\n- Jan. 29, 2025 - The preview version of SUPER's planning module, supporting both ROS1 and ROS2, is now available! Try it out, and we welcome any issues or contributions.\n- Jan. 29, 2025 - The paper of SUPER is now featured on the official website of Science Robotics.\n- Dec. 12, 2024 - ???? Our paper has been accepted by Science Robotics!\n...\n### 1.3.2 FAST-LIVO2 (TRO '24)\n...\nSUPER serves as the flight platform and navigation system in the video demonstration of FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry by@xuankuzcr et al.\n...\n### Real-world deployment\n...\nA detailed guide for deploying SUPER on real-world hardware will be available soon. In the meantime, you can refer to issue #5 for some helpful hints.\n...\n- [#10]: When using SUPER with your own simulator (e.g., Gazebo) or a LiDAR odometry system other than FAST-LIO2, ensure that the input point cloud is provided in the world frame. ROG-Map does not utilize`frame_id` or`/tf` information and assumes by default that all input point clouds are in the world frame rather than the body frame.\n...\nFAST_LIO, Swarm-LIO2 and LiDAR_IMU_Init for their excellent localization solutions."
+        ],
+        "image": "https://flagcdn.com/w20/tr.png"
+      },
+      {
+        "id": "https://github.com/hku-mars/LiDAR-UAV-Autonomy",
+        "title": "hku-mars/LiDAR-UAV-Autonomy",
+        "url": "https://github.com/hku-mars/LiDAR-UAV-Autonomy",
+        "highlights": [
+          "| **Name** | **Year** | **Link** |\n| -------------- | -------- | ---------------------------------------------------------------------- |\n| SUPER | 2024 | [GitHub](https://github.com/hku-mars/SUPER) |\n| PMM | 2024 | [GitHub](https://github.com/ctu-mrs/pmm_uav_planner) |\n| IPC | 2023 | [GitHub](https://github.com/hku-mars/IPC) |\n| GCOPTER | 2022 | [GitHub](https://github.com/ZJU-FAST-Lab/GCOPTER) |\n| mintime-replan | 2022 | [GitHub](https://github.com/uzh-rpg/sb_min_time_quadrotor_planning) |\n| FASTER | 2021 | [GitHub](https://github.com/mit-acl/faster) |\n| time optimal | 2021 | [GitHub](https://github.com/uzh-rpg/rpg_time_optimal) |\n| TRR | 2020 | [GitHub](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan) |\n| FastPlanner | 2020 | [GitHub](https://github.com/HKUST-Aerial-Robotics/Fast-Planner) |\n| EGO-Planner |\n...\n.com/hku-mars/SUPER-Hardware) |\n| OmniNxt | 2024 | [GitHub](https://github.com/HKUST-Aerial-Robotics/OmniNxt) |\n| UniQuad | 2024 | [GitHub](https://github.com/HKUST-Aerial-Robotics/UniQuad) |\n| Aerial Gym | 2024 | [GitHub](https://github.com/ntnu-arl/aerial_gym_simulator) |\n| Agilicious | 2023 | [GitHub](https://github.com/uzh-rpg/agilicious) |\n| PULSAR | 2023 | [GitHub](https://github.com/hku-mars/PULSAR) |\n| MARSIM | 2023 | [GitHub](https://github.com/hku-mars/MARSIM) |\n| Fast-Drone-250 | 2022 | [GitHub](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) |"
+        ]
+      }
+    ],
+    "searchTime": 1068.2,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

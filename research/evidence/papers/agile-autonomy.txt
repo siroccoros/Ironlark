@@ -1,0 +1,1687 @@
+  Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                                  University of Zurich and Intel    1
+
+
+
+
+Learning High-Speed Flight in the Wild
+A NTONIO L OQUERCIO1,†,* , E LIA K AUFMANN1,† , R ENÉ R ANFTL2 , M ATTHIAS M ÜLLER2 ,
+V LADLEN KOLTUN3 , AND DAVIDE S CARAMUZZA1
+1 Robotics and Perception Group, UZH, Zurich, Switzerland
+2 Intelligent Systems Lab, Intel, Munich, Germany
+3 Intelligent Systems Lab, Intel, Santa Clara, CA, USA
+† These authors contributed equally to this work
+* Corresponding author: loquercio@ifi.uzh.ch
+
+
+This is the accepted version of Science Robotics Vol. 6, Issue 59, abg5810 (2021)
+DOI: 10.1126/scirobotics.abg5810
+
+
+        Quadrotors are agile. Unlike most other machines, they can traverse extremely complex environments at high
+        speeds. To date, only expert human pilots have been able to fully exploit their capabilities. Autonomous opera-
+        tion with onboard sensing and computation has been limited to low speeds. State-of-the-art methods generally
+        separate the navigation problem into subtasks: sensing, mapping, and planning. Although this approach has
+        proven successful at low speeds, the separation it builds upon can be problematic for high-speed navigation in
+        cluttered environments. The subtasks are executed sequentially, leading to increased processing latency and a
+        compounding of errors through the pipeline. Here we propose an end-to-end approach that can autonomously
+        fly quadrotors through complex natural and human-made environments at high speeds, with purely onboard
+        sensing and computation. The key principle is to directly map noisy sensory observations to collision-free trajec-
+        tories in a receding-horizon fashion. This direct mapping drastically reduces processing latency and increases
+        robustness to noisy and incomplete perception. The sensorimotor mapping is performed by a convolutional net-
+        work that is trained exclusively in simulation via privileged learning: imitating an expert with access to privileged
+        information. By simulating realistic sensor noise, our approach achieves zero-shot transfer from simulation to
+        challenging real-world environments that were never experienced during training: dense forests, snow-covered
+        terrain, derailed trains, and collapsed buildings. Our work demonstrates that end-to-end policies trained in
+        simulation enable high-speed autonomous flight through challenging environments, outperforming traditional
+        obstacle avoidance pipelines.
+
+
+
+CODE AND MULTIMEDIA MATERIAL                                                              without the need for human intervention, has the potential to massively
+                                                                                          enhance their usefulness and to revolutionize whole industries. How-
+A video demonstrating our approach is available at https://youtu.be/
+                                                                                          ever, the development of autonomous quadrotors that can navigate in
+m89bNn6RFoQ. We publicly release code and training datasets at
+                                                                                          complex environments with the agility and safety of expert human
+https://github.com/uzh-rpg/agile_autonomy.
+                                                                                          pilots or birds is a long-standing challenge that is still open.
+                                                                                              The limiting factor for autonomous agile flight in arbitrary unknown
+1. INTRODUCTION                                                                           environments is the coupling of fast and robust perception with effective
+Quadrotors are among the most agile and dynamic machines ever                             planning. The perception system has to be robust to disturbances such
+created1 [1, 2]. Thanks to their agility, they can traverse complex envi-                 as sensor noise, motion blur, and changing illumination conditions. In
+ronments, ranging from cluttered forests to urban canyons, and reach                      addition, an effective planner is necessary to find a path that is both
+locations that are otherwise inaccessible to humans and machines alike.                   dynamically feasible and collision-free while relying only on noisy and
+This ability has led to their application in fields such as search and                    partial observations of the environment. These requirements, together
+rescue, logistics, security, infrastructure, entertainment, and agricul-                  with the limited computational resources that are available onboard,
+ture [3]. In the majority of these existing applications, the quadrotor                   make it difficult to achieve reliable perception and planning at low
+needs to be controlled by expert human pilots, who take years to train,                   latency and high speeds [4].
+and are thus an expensive and scarce resource. Infusing quadrotors                            Various approaches to enable autonomous flight have been pro-
+with autonomy, that is the capability to safely operate in the world                      posed in the literature. Some works tackle only perception and build
+    1
+                                                                                          high-quality maps from imperfect measurements [5–9], whereas others
+      The quadrotor used for the experiments in this paper has a maximum acceleration
+of 4g. Formula 1 cars achieve accelerations of up to 1.45g, and the Eurofighter Typhoon   focus on planning without considering perception errors [10–13]. Nu-
+reaches a longitudinal acceleration of up to 1.15g.                                       merous systems that combine online mapping with traditional planning
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                    University of Zurich and Intel   2
+
+
+
+
+Fig. 1. Time-lapse illustrations of agile navigation at speeds between 5 and 10 m/s in a variety of environments. From top to bottom: A moun-
+tain trail, a forest, an airplane hangar, and a disaster zone. The middle rows show the same environments, but from different viewpoints. The last
+row shows navigation through a collapsed building and above a derailed train. Please watch Movie 1 to get a better sense of the speed and agility
+of our approach.
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                     University of Zurich and Intel    3
+
+
+algorithms have been proposed to achieve autonomous flight in previ-            We also reflect the multi-modal nature of the problem in the de-
+ously unknown environments [14–22]. A taxonomy of prior works is            sign and training of the neural network policy. Our policy takes a
+presented in Figure S5 in the Supplementary Materials.                      noisy depth image and inertial measurements as sensory inputs and
+    The division of the navigation task into the mapping and plan-          produces a set of short-term trajectories together with an estimate of
+ning subtasks is attractive from an engineering perspective, because        individual trajectory costs. The trajectories are represented as high-
+it enables parallel progress on each component and makes the over-          order polynomials to ensure dynamical feasibility. We train the policy
+all system interpretable. However, it leads to pipelines that largely       using a multi-hypothesis winner-takes-all loss that adaptively maps the
+neglect interactions between the different stages and thus compound         predicted trajectories to the best trajectories that have been found by
+errors [22]. Their sequential nature also introduces additional latency,    the sampling-based expert. At test time, we use the predicted trajec-
+making high-speed and agile maneuvers difficult to impossible [4].          tory costs to decide which trajectory to execute in a receding horizon.
+While these issues can be mitigated to some degree by careful hand-         The policy network is designed to be extremely lightweight, which
+tuning and engineering, the divide-and-conquer principle that has been      ensures that it can be executed onboard the quadrotor at the update
+prevalent in research on autonomous flight in unknown environments          rates required for high-speed flight.
+for many years imposes fundamental limits on the speed and agility              The resulting policy can fly a physical quadrotor in natural and
+that a robotic system can achieve [23].                                     human-made environments at speeds that are unreachable by existing
+    In contrast to these traditional pipelines, some recent works propose   methods. We achieve this in a zero-shot generalization setting: we train
+to learn end-to-end policies directly from data without explicit mapping    on randomly generated obstacle courses composed of simple off-the-
+and planning stages [24–27]. These policies are trained by imitating a      shelf objects, such as schematic trees and a small set of convex shapes
+human [24, 27], from experience that was collected in simulation [25],      such as cylinders and cubes. We then directly deploy the policy in the
+or directly in the real world [26]. Because the number of samples           physical world without any adaptation or fine-tuning. Our platform
+required to train general navigation policies is very high, existing        experiences conditions at test time that were never seen during training.
+approaches impose constraints on the quadrotor’s motion model, for          Examples include high dynamic range (when flying from indoor envi-
+example by constraining the platform to planar motion [24, 26, 27]          ronments to outdoor environments), poorly textured surfaces (indoor
+and/or discrete actions [25], at the cost of reduced maneuverability        environments and snow-covered terrain), thick vegetation in forests,
+and agility. More recent work has demonstrated that very agile control      and the irregular and complex layout of a disaster scenario (Figure 2).
+policies can be trained in simulation [28]. Policies produced by the last   These results suggest that our methodology enables a multitude of
+approach can successfully perform acrobatic maneuvers, but can only         applications that rely on agile autonomous drones with purely onboard
+operate in unobstructed free space and are essentially blind to obstacles   sensing and computation.
+in the environment.
+    Here we present an approach to fly a quadrotor at high speeds in        2. RESULTS
+a variety of environments with complex obstacle geometry (Figure 1
+and Movie 1) while having access to only onboard sensing and com-           Our experiments in simulation show that the proposed approach re-
+putation. By predicting navigation commands directly from sensor            duces the failure rate up to 10 times with respect to state-of-the-art
+measurements, we decrease the latency between perception and ac-            methods. We confirm our results in a variety of real-world environ-
+tion while simultaneously being robust to perception artifacts, such        ments using a custom-built physical quadrotor; we deploy our policy
+as motion blur, missing data, and sensor noise. To deal with sample         trained in simulation without any further adaptations. In all experi-
+complexity and not endanger the physical platform, we train the policy      ments, the drone was provided with a reference trajectory, which is
+exclusively in simulation. We leverage abstraction of the input data to     not collision-free (Figure 3-C, depicted in red), to encode the intended
+transfer the policy from simulation to reality [28, 29]. To this end, we    flight path. This reference can be provided by a user or a higher-level
+utilize a stereo matching algorithm to provide depth images as input        planning algorithm. The drone is tasked to follow that flight path and
+to the policy. We show that this representation is both rich enough to      make adjustments as necessary to avoid obstacles. Recordings of the
+safely navigate through complex environments and abstract enough            experiments can be found in Movie 1.
+to bridge simulation and reality. Our choice of input representation
+guarantees a strong similarity of the noise models between simulated        A. High-Speed Flight in the Wild
+and real observations and gives our policy robustness against common        We tested our approach in diverse real-world environments, as illus-
+perceptual artifacts in existing depth sensors.                             trated in Figures 1 and 2. High-speed flight in these environments is
+    We train the navigation policy via privileged learning [30] on          very challenging because of their complex structure (e.g. thick vegeta-
+demonstrations that are provided by a sampling-based expert. Our            tion, thin branches, or collapsed walls) and multiple options available
+expert has privileged access to a representation of the environment in      to avoid obstacles. In addition, a high-level understanding of the envi-
+the form of a three-dimensional (3D) point cloud as well as perfect         ronment is necessary, for example to pass through far-away openings
+knowledge about the state of the quadrotor. Since simulation does           (Figure 3-C) or nearby obstacles (Figure 2-M). Flying at high speeds
+not impose real-time constraints, the expert additionally has an un-        also necessitates low-latency perception and robustness to sensor noise,
+constrained computational budget. While existing global planning            which is worsened by challenging illumination conditions and low-
+algorithms [10, 12, 13] generally output a single trajectory, our expert    texture surfaces (e.g. because of snow). At the same time, only limited
+uses Metropolis-Hastings (M-H) sampling to compute a distribution           computational resources are available onboard. Despite all of these
+of collision-free trajectories. This captures the multi-modal nature of     challenges, our approach was able to successfully navigate in all en-
+the navigation task where many equally valid solutions can exist (for       vironments that it was tested in. Note that our policy was trained in
+example, going either left or right around an obstacle). We therefore       simulation and was never exposed to any of these environments or
+use our planner to compute trajectories with a short time horizon to        conditions at training time.
+ensure that they are predictable from onboard sensors and that the sam-         We measure performance according to success rate, i.e. the percent-
+pler remains computationally tractable. We bias the sampler toward          age of successful runs over the total number of runs, where we consider
+obstacle-free regions by conditioning it on trajectories from a classic     a run successful if the drone reaches the goal location within a radius
+global planning algorithm [13].                                             of 5 m without crashing. We performed a total of 56 experiments at
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                               University of Zurich and Intel   4
+
+
+(A) Thin trees                                    (B) Thik trees                           (C) Vegetation
+
+
+
+
+(D) Boulder                                       (E) Branches                             (F) Rock formation
+
+
+
+
+(H) Narrow gap                                    (I) Crane                                (L) Bulding
+
+
+
+
+(M) Collapsed building                            (N) Train                                (O) Ruins
+
+
+
+
+Fig. 2. Testing Environments. Zero-shot generalization of our approach in complex natural (A to F) and human-made (H to O) environments.
+The encountered obstacles can often be avoided in multiple directions and have very different size and structure.
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                             University of Zurich and Intel            5
+
+
+different speeds. Overall, our approach was always able to achieve the     were never observed at training time, and consistently completes the
+goal when not colliding into an obstacle. We report the cumulative         task without crashing.
+and individual success rates at various speeds in Figure 3 (D and E).          We further compare our approach to a commercial drone2 . Specif-
+Our experimental platform performs state estimation and depth percep-      ically, the drones are required to exit a hangar by passing through a
+tion onboard using vision-based sensors. A detailed description of the     narrow gap of about 0.8 m in width (Figure 3-C). At the start of the ex-
+platform is available in section S3. We group the environments that        periment, the drones are placed at about 10 m in front of and about 5 m
+were used for experiments into two classes, natural and human-made,        to the right of the gap. The task was represented by a straight reference
+and highlight the distinct challenges that these types of environments     trajectory passing through the wall (Figure 3C, in red). This experi-
+present for agile autonomous flight.                                       ment is challenging since it requires a high-level understanding of the
+                                                                           environment to turn early enough toward the gap. The commercial
+Natural environments                                                       drone, flying at a speed of about 2.7 m s−1 consistently failed to pass
+                                                                           through the gap across three experiments. In two of the experiments it
+We performed experiments in diverse natural environments: forests
+                                                                           deemed the gap to be too small and stopped in front of it; in the third,
+of different types and densities and steep snowy mountain terrains.
+                                                                           it crashed into the wall. In contrast, the low latency and robustness to
+Figures 2 (A and F) illustrate the heterogeneity of those environments.
+                                                                           perception failures of our approach enabled the drone to successfully
+We performed experiments with two different reference trajectories:
+                                                                           fly through the narrow gap every time. We performed a total of six
+a 40 m-long straight line and a circle with a 6 m radius (Figure 3-
+                                                                           experiments at flight speeds of 3 and 5 m s−1 and never experienced a
+A). Both trajectory types are not collision-free and would lead to a
+                                                                           crash.
+crash into obstacles if blindly executed. We flew the straight line at
+different average speeds in the range of 3 to 10 m s−1 . Flying at
+                                                                           B. Controlled experiments
+these speeds requires very precise and low-latency control of position
+and attitude to avoid bushes and pass through the openings between         We perform a set of controlled experiments in simulation to compare
+trees and branches (Figure 3-B). Traditional mapping and planning          the performance of our approach with several baselines. We select two
+approaches generally fail to achieve high speeds in such conditions, as    representative state-of-the-art approaches as baselines for navigation in
+both the thick vegetation and the texture-less snow terrain often cause    unknown environments: the mapping and planning method of Zhou et
+very noisy depth observations.                                             al. [18] (FastPlanner) and the reactive planner of Florence et al. [32]
+                                                                           (Reactive). The first approach [18] incrementally builds a map from a
+    We conducted a total of 31 experiments in natural environments.
+                                                                           series of observations and plans a trajectory in this map to reach the
+At average speeds of 3 and 5 m s−1 our approach consistently com-
+                                                                           goal while avoiding obstacles. In contrast, the second approach [32]
+pleted the task without experiencing a single crash. For comparison,
+                                                                           does not build a map but uses instantaneous depth information to se-
+state-of-the-art methods with comparable actuation, sensing, and com-
+                                                                           lect the best trajectory from a set of pre-defined motion primitives
+putation [18, 31] achieve in similar environments a maximum average
+                                                                           based on a cost that encodes collision and progress toward the goal.
+speed of 2.29 m s−1 . To study the limit of the system, we set the
+                                                                           The baselines receive the same input as our policy: the state of the
+platform’s average speed to 7 m s−1 . Despite the very high-speed, the
+                                                                           platform, depth measurements from the stereo camera, and a goal in
+maneuver was successfully completed in 8 out of 10 experiments. The
+                                                                           the form of a reference state that lies 5 s in the future. To provide a
+two failures happened when objects entered the field of view very late
+                                                                           notion of the difficulty of the environments, we additionally show a
+because of the high angular velocity of the platform. Given the good
+                                                                           naive baseline that blindly follows the reference trajectory to the goal
+performance at 7 m s−1 , we push the average flight speed even higher
+                                                                           without avoiding obstacles (Blind). As in the real-world experiments,
+to 10 m s−1 . At this speed, external disturbances, e.g. aerodynamics,
+                                                                           we compare the different approaches according to their success rate,
+battery power drops, and motion-blur start to play an important role
+                                                                           which measures how often the drone reaches the goal location within
+and widen the simulation to reality gap. Nonetheless, we achieve a
+                                                                           a radius of 5 m without crashing. We perform all experiments in the
+success rate of 60%, with failures mainly happening in the proximity
+                                                                           Flightmare simulator [33] using the RotorS [34] Gazebo plugin for
+of narrow openings less than a meter wide, where a single wrong action
+                                                                           accurate physics modeling and Unity as a rendering engine [35]. The
+results in a crash.
+                                                                           experiments are conducted in four different environments: a forest,
+                                                                           a narrow gap, a disaster scenario, and a city street. Those environ-
+Human-made environments                                                    ments offer different challenges: from high-density but simple obstacle
+We also tested our approach in a set of human-made environments,           geometry in the forest, to complex obstacle geometries in the urban
+illustrated in Figure 2 (G to O). In these environments, the drone         scenarios. Sample observations collected from these environments are
+faces a different set of challenges. It has to avoid obstacles with        available in Figure S4 and Movie S2. These environments are available
+a variety of sizes and shapes (e.g. a train, a crane, a building, and      out-of-the-box from the Unity Asset store.
+ruins), slalom through concrete structures (c.f. Figure 2M), and exit a        The results of these experiments are summarized in Figure 4.
+building through a single narrow opening (c.f. Figure 2H). The irregular   Throughout all environments, a similar pattern can be observed. At
+and/or large structure of the encountered obstacles, the limited number    low speeds (3 m s−1 ) all methods perform similarly. However, as the
+of flyable openings, and the requirement to initiate the avoidance         speed increases, the baselines’ performances quickly drop: already at
+maneuver well in advance, offer a complementary set of challenges          5 m s−1 , no baseline is able to complete all runs without crashing. In
+with respect to our natural testing environments.                          contrast, our method can reliably fly at high-speeds through all envi-
+    As in the natural environments, we provide the drone with a straight   ronments, achieving an average success rate of 70% at 10 m s−1 . The
+reference trajectory with length of 40 m. The reference trajectory is in   drop in performance of the two baselines can be justified as follows.
+direct collision with obstacles and its blind execution would result in    Although the reactive baseline has a low processing latency, yet it has
+a crash. We performed a total of 19 experiments with flight speeds in      a limited expressive power: the trajectory to be executed can only be
+the range of 3 to 7 m s−1 . Given the lower success rate experienced       selected from a relatively small set of primitives. This set is usually
+in the forest environment at 10 m s−1 , we did not test at higher speeds       2
+                                                                                 The commercial drone (a Skydio R1) was tasked to follow a person running through the
+to avoid fatal crashes. As shown in Figure 3E, our approach is robust      narrow gap. The speed of this drone cannot be enforced nor controlled, and was therefore
+to zero-shot deployment in these environments, whose characteristics       estimated in post-processing.
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                      University of Zurich and Intel   6
+
+
+
+
+Fig. 3. Evaluation in indoor and outdoor environments. (A) A circular path in the forest at an average speed of 7 m s−1 . (B) Sequence of
+first-person views from the maneuver in A, observed during the avoidance of tree branches. The maneuver requires fine and fast adaptations in
+height (B2,B5) and attitude (B3,B4) to avoid the vegetation. After the obstacle is passed, the drone accelerates in the direction of travel (B6). (C)
+Comparison of reference trajectory passing through a wall (in red), to actual flight path (in green) in a airplane hangar. (D) Success rates for all
+experiments aggregated according to flight speed. (E) Number of trials per environment class at different speeds.
+  Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                      University of Zurich and Intel     7
+
+
+too small to account for all possible obstacle configurations and rela-      the latter features street lamp poles, parked vehicles, and traffic signs.
+tive speeds between obstacles and drone, which are observed during           Some observations from these environments are shown in Figure S4.
+high-speed flight. In addition, being the reactive baseline only condi-      We start the drone from a random location in the map, and provide
+tioned on the current observation, it is strongly affected by noise in the   it with a straight line reference of 40 m in length. For each starting
+observation. In contrast, the FastPlanner baseline can reject outliers       location, the reference is guaranteed to be in collision with at least one
+in the depth map by leveraging multiple observations, which makes it         obstacle. We vary the average flight speed from 3 m s−1 to 10 m s−1 .
+more robust to sensing errors. However, this methods generally results       The results of these experiments as well as the pointclouds from one of
+in higher processing latency: Multiple observations are required to add      the starting locations are shown in Figure 4. Because of the complex
+obstacles in the map, and, therefore, to plan trajectories to avoid them.    obstacle geometries, even at a low speed of 3 m s−1 the mapping
+This problem is worsened by high-speed motion, which generally re-           baseline does not achieve 100% success rate. The reactive baseline
+sults in little overlap between consecutive observations. By contrast,       performs better overall, with a success rate of up to 90% at 5 m s−1 .
+our approach has very the lowest processing latency (cf. section C). In      However, its performance quickly degrades at higher speeds, with as
+addition, the data-driven approach allows leveraging regularities in the     much as 8 of 10 failures at 10 m s−1 . Similarly to the narrow-gap
+data, which makes it more robust to sensor noise.                            experiments, we observe that the baselines only adapt their motion
+    We thoroughly analyze those aspects in controlled studies on latency     when very close to obstacles, which is often too late to avoid collision
+and sensor noise, which are shown in section C and section D, and            in presence of large obstacles with complex shapes. In contrast to
+additionally study the robustness of our method to noise in estimation       the baselines, our approach is much more robust at higher speeds,
+and control in section S1. A video demonstrating the performance of          with a success rate of up to 100% at 7 m s−1 . Even at a speed of
+our method in the simulation environments can be found in Movie S2.          10 m s−1 it only fails in 2 of 10 runs in the urban environment. The
+We now describe the specific characteristics of all environments and         ability of our approach to combine long-term and short-term planning
+their respective experimental results in detail.                             is crucial to achieving this performance, since the drone must steer
+                                                                             early enough toward free space and at the same time perform small
+Forest                                                                       reactive corrections to avoid a collision. This ability, in addition to
+We build a simulated forest [36] in a rectangular region R(l, w) of          the low latency and robustness to sensor noise, gives our approach
+width w = 30 m and length l = 60 m, and fill it with trees that              a substantial performance advantage with respect to the baselines in
+have a diameter of about 0.6 m. Trees are randomly placed ac-                these challenging environments.
+cording to a homogeneous Poisson point process P with intensity
+δ = 1/25 tree m−2 [36]. As it is possible to see in Figure 4, the            C. Computational cost
+resulting forest is very dense. We provide the drone with a straight         In this section, we compare the computational cost of our algorithm
+reference trajectory of 40 m length, and vary the average forward speed      with the baselines. Table 1 shows the results of this evaluation. It
+of the drone between 3 and 10 m s−1 . We repeat the experiments with         highlights how each step of the methods contributes to the overall
+10 different random realizations of the forest, using the same random        processing latency. All timings were recorded on a desktop computer
+seed for all baselines. At a low speed of 3 m s−1 , all methods success-     with a 6-core i7-8700 central processing unit (CPU), which was also
+fully complete every run. As speed increases, the success rates of the       used to run the simulation experiments. To ensure a fair comparison,
+baselines quickly degrade. At 10 m s−1 , no baseline completes even          we report the timings when using only the CPU for all approaches.
+a single run successfully. In contrast, our approach is very robust at       We also report the timings of our approach when performing neural
+higher speeds. It achieves 100% success rate up to 5 m s−1 . At the          network inference on a GeForce RTX 2080 graphics processing unit
+highest speed of 10 m s−1 , our approach still keeps a success rate of       (GPU), because accelerators can be used with our approach without any
+60%. An additional study of performance with respect to tree density         extra effort. To paint a complete and realistic picture, we additionally
+δ is available in section S2.                                                evaluate the timing of our algorithm on the onboard computer of the
+                                                                             quadrotor which is a Jetson TX2.
+Narrow gap                                                                       With a total computation time of 65.2 ms per frame, FastPlanner
+We then mimic in simulation the real-world narrow gap experiment.            incurs the highest processing latency. It is important to note that the
+We render a 40 m long wall with a single opening, 10 m in front of the       temporal filtering operations that are necessary to cope with sensing er-
+drone. The gap is placed at a randomized lateral offset in the range         rors effectively make perception even slower. Two to three observations
+of [−5, 5]m with respect to the starting location. The width of the          of an obstacle can be required to add it to the map, which increases
+opening is also randomized uniformly between 0.8 m and 1.0 m. All            the effective latency of the system. By foregoing the mapping stage
+experiments are repeated 10 times with different opening sizes and           altogether, the Reactive baseline significantly reduces computation
+lateral gap offsets for each speed. An illustration of the setup and         time. This baseline is about three times faster than FastPlanner, with a
+the results of the evaluation are shown in Figure 4. The reactive and        total processing latency of 19.1 ms. However, the reduced processing
+blind baselines consistently fail to solve this task, while FastPlanner      latency comes at the cost of the trajectory complexity that can be repre-
+has a success rate of up to 50% at 5 m s−1 , but still consistently fails    sented, since the planner can only select primitives from a pre-defined
+at 7 m s−1 . We observe that the baselines adapt their trajectory only       library. In addition, the reactive baseline is sensitive to sensing errors,
+when being close to the wall, which is often too late to correct course      which can drastically affect performance at high speeds.
+toward the opening. Conversely, our approach always completes the                Our approach has significantly lower processing latency than both
+task successfully at speeds of up to 5 m s−1 . Even at a speed of 7 m s−1    baselines; when network inference is performed on the GPU, our
+it only fails in 2 of 10 runs.                                               approach is 25.3 times faster than FastPlanner and 7.4 times faster
+                                                                             than the Reactive baseline. When GPU inference is disabled, the
+Disaster and urban scenario                                                  network’s latency increases by only 8 ms, and our approach is still
+We further test our method in a simulated disaster zone and an urban         much faster than both baselines. Moving from the desktop computer
+city street. These environments are challenging since they contain           to the onboard embedded computing device, the network’s forward
+obstacles with complex geometry. For instance, the former contains,          pass requires 38.9 ms. Onboard, the total time to pass from the sensor
+among others, collapsed buildings, crashed cars, and iron fences, while      reading to a plan is 41.6 ms, which corresponds to an update rate of
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                   University of Zurich and Intel   8
+
+
+
+
+                                   Blind              FastPlanner
+                                                      FastPlanner
+                                   Reactive           Ours
+                                                      Ours
+
+                        100
+
+                         80
+
+
+   Success Rate [%]
+                         80
+
+
+
+
+    Success Rate  [%]
+                         60
+                         60
+
+                                                                                Forest
+                         40                                                    Forest
+                         40
+
+                         20
+                         20
+
+                          00
+
+                                    44           66          88          10
+                                                                          10
+
+                        100
+                        100
+
+                         80
+                         80
+
+
+
+   Success Rate
+            Rate[%]
+                                                                                 Narrow Gap
+    Success      [%]
+                                                                               Narrow Gap
+                         60
+                         60
+
+                         40
+                         40
+
+                         20
+                         20
+
+                         00
+                               1     2      33        4     5       66    77
+
+                        100
+                        100
+
+                         80
+
+
+
+   Success Rate [%]
+                          80
+
+
+
+
+     Success Rate [%]
+                         60
+                         60
+                                                                               Disaster
+
+                                                                                 Disaster
+                         40
+                         40
+
+                         20
+                          20
+
+                         00
+
+                                    44           66          88           10
+                                                                         10
+
+
+
+                        100
+                         100
+
+                         80
+
+
+
+   Success Rate [%]
+                          80
+
+
+
+
+    Success Rate  [%]                                                            City Street
+                                                                               City Street
+                         60
+                          60
+
+                         40
+                          40
+
+                        20
+                         20
+
+                         00
+
+                                    44         66       88               10
+                                                                         10
+                                         Forward Speed [m/s]
+                                         Forward Speed [m/s]
+
+
+Fig. 4. Experiments in a variety of simulated environments. The left column reports success rates at various speeds. The right column shows
+a pointcloud of the environment together with paths taken by different policies from start (green arrow) to end (red arrow). The paths illustrate
+ Figure
+the blind 4:     Experiments
+           policy (red)            intaken
+                        and the path   different  simulated
+                                           by our approach (green). Our approach The
+                                                               environments.              left column
+                                                                                   consistently          reports
+                                                                                                outperforms the    success
+                                                                                                                baselines in allrates  at
+                                                                                                                                 environments and
+ various
+and at      speeds.
+       all speeds.      The right
+                    Sample           column
+                           observations        shows a
+                                         from these       pointcloud
+                                                    environments        of inthe
+                                                                 are shown        environment together with paths taken by
+                                                                               Figure S4.
+different policies from start (green arrow) to end (red arrow). The paths illustrate the blind policy (red)
+and the path taken by our approach (green). Our approach consistently outperforms the baselines in all
+environments and and at all speeds. Sample observations from these environments are shown in Figure S4.
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                      University of Zurich and Intel    9
+
+
+                          Method           Components          µ [ms]       σ [ms]      Perc. [%]    Total Proc. Latency [ms]
+
+                                          Pre-processing        14.6          2.3         22.3
+                     FastPlanner [18]        Mapping            49.2          8.7         75.5                  65.2
+                                             Planning           1.4           1.6          2.2
+
+                                          Pre-processing        13.8          1.3         72.3
+                       Reactive [32]                                                                            19.1
+                                             Planning           5.3           0.9         27.7
+
+                                          Pre-processing        0.1          0.04          3.9
+                           Ours           NN inference       10.1 (2.4*)   1.5 (0.8*)     93.0              10.3 (2.6*)
+                                            Projection          0.08         0.01          3.1
+
+                                          Pre-processing        0.2           0.1          0.4
+                     Ours (Onboard)       NN inference          38.9          4.5         93.6                  41.6
+                                            Projection          2.5           1.5          6.0
+
+Table 1. Processing latency (µ) on a desktop computer equipped with a hexacore i7-8700 CPU and a GeForce RTX 2080 GPU. The standard
+deviation σ is computed over 1000 samples. For our approach, we report the computation time on the CPU and GPU (marked with *) on the
+desktop computer (Ours), as well as the computation time on the onboard computation unit Jetson TX2, (Ours Onboard). For the FastPlan-
+ner [18] and Reactive [32] baselines pre-processing represents the time to build a pointcloud from the depth image, while for our method pre-
+processing is the time to convert depth into an input tensor for the neural network. More details on the subtasks division are available in the
+Appendix in section S4. The proposed methodology is significantly faster than prior works.
+
+
+about 24 Hz.                                                                 information, to isolate the effect of latency on performance, and (ii)
+                                                                             with depth estimated by stereo matching [37] to analyze the effect of
+D. The effect of latency and sensor noise                                    sensing errors to performance.
+We analyze the effect of sensor noise and planning latency in a con-
+trolled experiment. In this experiment, the quadrotor travels along a        Ground-truth depth
+straight line at a constant forward speed and is required to laterally       Figure 5B1 illustrates the results of this experiment when perfect depth
+evade a single obstacle (a pole) while having only limited sensing           perception (Figure 5A1) is available. All approaches can complete the
+range. This experimental setup was proposed in Falanga et al. [4] to         task perfectly up to 5m s−1 . However, even in these ideal conditions,
+understand the role of perception latency on the navigation ability of       the performance of the baselines drops for speeds beyond 5m s−1 . This
+a robotic system subject to bounded inputs. Specifically, the authors        drop in performance for Reactive can be attributed to the fact that the
+derived an upper-bound for the forward speed at which a robot can            finite library of motion primitives does not contain maneuvers that are
+fly and avoid a single obstacle as a function of perception latency and      aggressive enough to complete this task. Similarly, the performance
+sensing range. They modeled the robot as a point-mass, which is a            degrades for FastPlanner as a result of sub-optimal planning of actions.
+limited approximation for a quadrotor as it neglects the platform’s          Although this baseline manages to map the obstacle in time, the plan-
+rotational dynamics. We thus extend their formulation to account for         ner frequently commands actions to stop the platform which leads to
+the latency introduced by the rotational motion that is necessary to         crashes when flying at high speeds. It is important to point out that the
+avoid the obstacle. A detailed description of the formulation can be         FastPlanner baseline was only demonstrated up to speeds of 3m s−1
+found in the Supplementary Materials in section S5.                          in the original work [18], and thus was not designed to operate at high
+    We set up the experiment by placing a quadrotor with an initial          speeds. Our approach can successfully avoid the obstacle without a
+forward velocity v at a distance of 6 m from a pole with diameter 1.5 m.     single failure up to 7 m s−1 . For higher speeds, performance grace-
+The quadrotor is modeled as a sphere with radius 0.2 m. According to         fully degrades to 60% at 10 m s−1 . This decrease in performance can
+our formulation, we compute a theoretical maximum speed—i.e. the             be attributed to the sensitivity to imperfect network predictions when
+speed at which the task is no longer feasible—for each method. The           flying at high speed, where a single wrong action can lead to a crash.
+maximum speed depends on the sensing range, i.e. how far can an
+obstacle be accurately perceived, the latency of the visual sensor, i.e.     Estimated depth
+the inverse of the frame rate, and the processing latency, i.e. the time     While the previous experiments mainly focused on latency and the
+to convert an observation into motor commands. Note that the latter          avoidance strategy, we now study the influence of imperfect sensory
+varies between methods (c.f. section C), and therefore the theoretical       measurements on performance. We repeat the same experiment, but
+maximum speed differs for each approach. For the details of the              provide all methods with depth maps that have been computed from
+calculation, we refer the reader to section S5 in the Supplementary          the stereo pairs (Figure 5A2). Figure 5B2 shows the results of this
+Materials. We then perform the controlled experiment with varying            experiment. The baselines experience a significant drop in performance
+forward speeds v in the range of 3 to 13 m s−1 . We perform 10               compared with when provided with perfect sensory readings. Fast-
+experiments for each speed with all approaches and report the success        Planner completely fails for speeds of 5 m s−1 and beyond. This sharp
+rate. We run the experiment in two settings: (i) with ground-truth depth     drop in performance is because of the need for additional filtering of
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                                          University of Zurich and Intel   10
+
+
+
+
+  RGB
+
+
+
+
+          A1                                                            A2                                                A3
+
+
+
+
+  Depth
+
+
+
+
+                       Ground Truth                                                       Stereo                                           Real World
+
+
+
+                                                    TheoreticalLimit
+                                                    Theoretical  Limit
+                                                                     (4) (4)    FastPlanner(18)
+                                                                                FastPlanner (18)         Reactive  (32)
+                                                                                                         Reactive (32)      Ours
+                                                                                                                            Ours
+                                                           AA11
+
+
+                      B1
+                       B1 100
+                          100
+                                                                                           B2
+                                                                                           B2 100
+                                                                                              100
+
+                                             80
+                                             80                                                    80
+                                                                                                   80
+
+
+                         Success  Rate [%]
+                                              60
+                                             60                                                     60
+                                                                                                   60
+
+
+                          Success Rate [%]
+                                              40
+                                             40                                                    40
+                                                                                                   40
+
+                                              20
+                                             20                                                     20
+                                                                                                   20
+
+                                              00                                                    0
+                                                   44     66       88     10
+                                                                          10   12
+                                                                               12    14
+                                                                                     14                    4      6     8    10     12       14
+                                                        Forward Speed [m/s]                                     Forward Speed [m/s]
+                                                         Forward Speed [m/s]                                      Forward Speed [m/s]
+
+                 Figure 5: The effect of sensor noise on performance. (A) When comparing RGB and depth images
+                 generated in simulation with images captured in the real world, we observe that the corresponding depth
+                 images are more similar than the RGB images. In addition, simulated depth estimated by stereo matching
+Fig. 5. The effect of sensor noise on performance. (A) When comparing RGB and depth images generated in simulation with images captured
+                 (A2)  contains the typical failure cases of a depth sensor (A3), e.g. missing values and noise. (B) Results
+in the real world, we observe that the corresponding depth images are more similar than the RGB images. In addition, simulated depth estimated
+                 of the
+by stereo matching (A2)controlled    experiment
+                           contains the             to study
+                                         typical failure casesthe
+                                                                of aeffect
+                                                                     depthof   perception
+                                                                             sensor         latency
+                                                                                    (A3), e.g.        andvalues
+                                                                                                missing    noiseand   navigation
+                                                                                                                   on noise.       ability.of the controlled
+                                                                                                                             (B) Results
+                 The the
+experiment to study   experiment
+                         effect of is performed
+                                   perception       on and
+                                                latency ground-truth
+                                                              noise ondepth    (B1) and
+                                                                         navigation  ability. Thedepth
+                                                                                          stereo         (B2). is
+                                                                                                  experiment     Since        method has
+                                                                                                                        each on
+                                                                                                                   performed      ground-truth depth (B1)
+                 different
+and stereo depth (B2).      processing
+                        Since           latency
+                               each method    has(c.f. Section 2.3),
+                                                   different processingthelatency
+                                                                            theoretical  maximum
+                                                                                   (c.f. section    speed
+                                                                                                 C), the    differs between
+                                                                                                         theoretical  maximum approaches
+                                                                                                                                 speed differs between
+                 (dashed
+approaches (dashed        lines).
+                     lines). Our Our   method
+                                  method         can
+                                           can fly    fly to
+                                                    closercloser
+                                                              the to the  theoretical
+                                                                   theoretical        limithe
+                                                                               limit than    than      baselines
+                                                                                                  the and
+                                                                                               baselines           and is only
+                                                                                                               is only         minimally
+                                                                                                                       minimally  affected by the noise of
+                 affected by the noise of stereo depth estimates.
+stereo depth estimates.
+  Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                       University of Zurich and Intel      11
+
+
+the noisy depth measurements that drastically increases the latency of         perception latency: Faster sensors can provide more information about
+the mapping stage. To reject outliers from the depth sensor, multiple          the environment in a smaller amount of time and, therefore, can be
+observation (two/three) are required to completely map the obstacle.           used to provide more frequent updates, which improves the precision
+As a result, this baseline detects obstacles too late to be able to success-   of the estimate. This could enable further reducing sensitivity to noise
+fully evade them. Similarly, the performance of the Reactive baseline          and promote a quicker understanding of the environment. Perception
+drops by 30% at 7 m s−1 . In contrast to the baselines, our approach           latency can possibly be reduced with event cameras [38], especially in
+is only marginally affected by the noisy depth readings, with only a           the presence of dynamic obstacles [39].
+10% drop in performance at 10 m s−1 , but no change in performance at              Overall, our approach is a stepping stone toward the development
+lower speeds. This is because our policy, trained on depth from stereo,        of autonomous systems that can navigate at high speeds through pre-
+learns to account for common issues in the data such as discretization         viously unseen environments with only on-board sensing and com-
+artifacts and missing values.                                                  putation. Combining our short-horizon controller for local obstacle
+                                                                               avoidance with a long-term planner is a major opportunity for many
+                                                                               robotics applications, including autonomous exploration, delivery, and
+3. DISCUSSION
+                                                                               cinematography.
+Existing autonomous flight systems are highly engineered and modular.
+The navigation task is usually split into sensing, mapping, planning,          4. MATERIALS AND METHODS
+and control. The separation into multiple modules simplifies the imple-
+mentation of engineered systems, enables parallel development of each          To perform agile flight through cluttered and previously-unseen envi-
+component, and makes the overall system more interpretable. However,           ronments, we train a sensorimotor policy to predict receding-horizon
+modularity comes at a high cost: the communication between modules             trajectories from on-board sensor measurements and a reference trajec-
+introduces latency, errors compound across modules, and interactions           tory. We assume that the reference trajectory is provided by a higher-
+between modules are not modeled. In addition, it is an open ques-              level planning algorithm or the user. The reference is not necessarily
+tion if certain subtasks, such as maintaining an explicit map of the           collision-free and only encodes the long-term goal of the platform. The
+environment, are even necessary for agile flight.                              agent is responsible to fly in the direction dictated by the reference
+    Our work replaces the traditional components of sensing, mapping,          while adapting its flight path to the environment.
+and planning with a single function that is represented by a neural                An agent’s observation o consists of a depth image d ∈ IR640×480 ,
+network. This increases the system’s robustness against sensor noise           an estimate of the platform velocity v ∈ IR3 and attitude (expressed as
+and reduces the processing latency. We demonstrate that our approach           a rotation matrix) q ∈ IR9 , and a desired flight direction ω ∈ IR3 . The
+can reach speeds of up to 10 m s−1 in complex environments and                 policy output is a set of motion hypotheses which are represented as
+reduces the failure rate at high speeds by up to 10 times when compared        receding-horizon trajectories with the corresponding estimated risk of
+with the state of the art.                                                     collision. A model predictive controller then tracks the trajectory with
+    We achieve this by training a neural network to imitate an expert          the lowest collision probability and input cost. The controller is trained
+with privileged information in simulation. To cope with the complexity         using privileged learning [30]. Specifically, the policy is trained on
+of the task and to enable seamless transfer from simulation to reality,        demonstrations provided by a sampling-based planner that has access
+we make several technical contributions. These include a sampling-             to information that is not available to the sensorimotor student: the
+based expert, a neural network architecture, and a training procedure,         precise knowledge of the 3D structure of the environment and the exact
+all of which take the task’s multi-modality into account. We also use          platform state. Figure 6 shows an overview of our method.
+an abstract, but sufficiently rich input representation that considers real-       We collect demonstrations and perform training entirely in simula-
+world sensor noise. The combination of these innovations enables the           tion. This trivially facilitates access to perfect 3D and state data for the
+training of robust navigation policies in simulation that can be directly      privileged expert, enables the synthesis of unlimited training samples
+transferred to diverse real-world environments without any fine-tuning         for any desired trajectory, and does not put the physical platform in
+on real data.                                                                  danger. We use the Flightmare simulator [33] with the RotorS [34]
+    We see several opportunities for future work. Currently, the learned       Gazebo plugin and Unity as a rendering engine [35]. Both the training
+policy exhibits low success rates at average speeds of 10 m s−1 or             and the testing environments are built by adding obstacles to the uneven
+higher in the real world. At these speeds even our expert policy, de-          ground of an out-of-the-box Unity environment.
+spite having perfect knowledge of the environment, often fails to find             To enable zero-shot transfer to real environments, special care
+collision-free trajectories. This is mainly because of the fact that,          has to be taken to minimize the domain shift of the (visual) input
+at speeds of 10 m s−1 or higher, feasible solutions require temporal           modalities from simulation to reality. To this end we use depth as
+consistency over a long time horizon and strong variations of the in-          an abstract input representation that shows only a negligible domain
+stantaneous flying speed as a function of the obstacle density. This           shift from simulation to the real world (cf. Figure 5A). Specifically,
+requirement makes feasible trajectories extremely sparse in parameter          the sensorimotor agent is trained with depth images that have been
+space, resulting in intractable sampling. Engineering a more complex           computed using Semi-Global Matching (SGM) [37] from a simulated
+expert to tackle this problem can be very challenging and might require        stereo camera pair. As off-the-shelf depth sensors, such as the Intel
+specifically tailored heuristics to find approximate solutions. There-         RealSense 435 camera used on our physical platform, compute depth
+fore, we believe that this problem represents a big opportunity for            from stereo images using similar principles [40], this strategy ensures
+model-free methods, which have the potential to ease the engineering           that the characteristics of the input aligns between simulation and
+requirements. The second reason for the performance drop at very               the real world. As a result, the trained sensorimotor agent can be
+high speeds is the mismatch between the simulated and physical drone           directly deployed in the real world. The next section presents both the
+in terms of dynamics and perception. The mismatch in dynamics is               privileged expert and the sensorimotor agent in detail.
+because of aerodynamics effects, motor delays, and dropping battery
+voltage. Therefore, we hypothesize that performance would benefit              A. The privileged expert
+from increasing the fidelity of the simulated drone and making the             Our privileged expert is a sampling-based motion planning algorithm.
+policy robust to the unavoidable model mismatches. A third reason is           The expert has perfect knowledge of the platform state and the en-
+  Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                                       University of Zurich and Intel      12
+
+
+
+  Privileged Expert                       Metropolis-Hastings Sampling                           A
+        Reference Trajectory
+                                                                                Top 3 Trajectories
+        Full Quadrotor State                                                                                                         Parametrized Environments
+      Environment Pointcloud                                                                                                         1) Homogeneous Poisson Forest
+                                                                                                                                     2) Homogeneous Poisson Objects
+                                                                                                                                     3) Vertical Narrow Gap
+                                                                                                        Imitation Learning
+
+        SGM Depth
+                                                                                    Sensorimotor Agent
+                                         Depth            M
+                                        Backbone
+                                                                                     Conv1Ds
+                                                                 M x 32
+                                                                                    Conv1Ds
+   Velocity and Attitude
+                                                                                    Conv1Ds
+                                          States
+                                                          M
+                                        Backbone
+                                                                                                                                          Flightmare Simulator
+     Desired Direction
+                                                                 M x 32                                                      B
+                                             Projection                         Decision                             Controller
+
+                                                                                                                                             Action
+                                                                                                              Model Predictive Control
+
+                                                                                                                                                      C
+
+Fig. 6. Method overview. (A) Our offline planning algorithm computes a distribution of collision-free trajectories to follow a reference trajec-
+tory. The trajectories are computed with Metropolis-Hastings sampling and are conditioned on complete 3D knowledge of the environment,
+which is represented by a point cloud. (B) A sensorimotor agent is trained with imitation learning to predict the best three trajectories from
+the estimated depth, the drone’s velocity and attitude, and the desired direction that encodes the goal. (C) The predictions are projected on the
+space of polynomial trajectories and ranked according to their predicted collision cost ck . The trajectory with the lowest predicted cost ck is then
+tracked with a model predictive controller. If multiple trajectories have similar predicted cost (within a 5% range of the minimum c∗ = min ck ),
+the one with the smallest actuation cost is used.
+
+
+vironment (complete 3D map), both of which are only available in                           between the quadrotor and the closest point in the environment:
+simulation. The expert generates a set of collision-free trajectories τ                                                   (
+representing the desired state of the quadrotor xdes ∈ IR13 over the                                                        0              if dc > 2rq
+                                                                                                     Ccollision (τ (t)) =                                              (3)
+next second, starting from the current state of the drone, i.e. τ (0) = x.                                                  −d2c /rq2 + 4 otherwise.
+To do so, it samples from a probability distribution P that encodes dis-
+                                                                                         The distribution P is complex because of the presence of arbitrary
+tance from obstacles and proximity to the reference trajectory. Specif-
+                                                                                         obstacles and frequently multi-modal in cluttered environments since
+ically, the distribution of collision-free trajectories P(τ | τref , C) is
+                                                                                         obstacles can be avoided in multiple ways. Therefore, the analytical
+conditioned on the reference trajectory τref and the structure of the
+                                                                                         computation of P is generally intractable.
+environment in the form of a point cloud C ∈ IRn×3 . According to P,
+                                                                                             To approximate the density P, the expert uses random sampling.
+the probability of a trajectory τ is large if far from obstacles and close
+                                                                                         We generate samples with the M-H algorithm [41] as it provides asymp-
+to the reference τref . We define P as the following:
+                                                                                         totic convergence guarantees to the true distribution. To estimate P, the
+                                         1                                               M-H algorithm requires a target score function s(τ ) ∝ P(τ | τref , C).
+                 P(τ | τref , C) =         exp(−c(τ, τref , C))               (1)        We define s(τ ) = exp(−c(τ, τref , C)), where c(·) is the cost of the
+                                         Z
+                                                                                         trajectory τ. It is easy to show that this definition satisfies the con-
+where Z = τ P(τ | τref , C) is the normalization factor and                              ditions for the M-H algorithm to asymptotically estimate the target
+                 R
+c(τ, τref , C) ∈ IR+ is a cost function indicating proximity to the refer-               distribution P. Hence, the trajectories sampled with M-H will asymp-
+ence and distance from obstacles. We define the trajectory cost function                 totically cover all of the different modes of P. We point the interested
+as                                                                                       reader to the Supplementary Materials (section S6), for an overview of
+                                                                                         the M-H algorithm and its convergence criteria.
+                       Z 1
+                                                                                             To decrease the dimension of the sampling space, we use a compact
+    c(τ, τref , C) =           λc Ccollision (τ (t))+
+                         0                                                               yet expressive representation of the trajectories τ. We represent τ as a
+                       Z 1                                                               cubic B-spline τbspline ∈ IR3×3 curve with three control points and a
+                               [τ (t) − τre f (t)]> Q[τ (t) − τre f (t)] dt   (2)        uniform knot vector, enabling interpolation with high computational
+                         0
+                                                                                         efficiency [42]. Cubic B-splines are twice continuously differentiable
+where λc = 1000, Q is a positive semidefinite state cost matrix, and                     and have a bounded derivative in a closed interval. Because of the dif-
+Ccollision is a measure of the distance of the quadrotor to the points in C .            ferential flatness property of quadrotors [43], continuous and bounded
+We model the quadrotor as a sphere of radius rq = 0.2 m and define the                   acceleration directly translates to continuous attitude over the trajec-
+collision cost as a truncated quadratic function of dc , i.e. the distance               tory duration. This encourages dynamically feasible trajectories that
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                           University of Zurich and Intel       13
+
+
+can be tracked by a model-predictive controller accurately [43, 44].         where p(ti ) ∈ IR3 is the drone’s position at time t = ti relative to its
+Therefore, instead of naively sampling the states of τ, we vary the          current state x. This representation is more general than the B-spline
+shape of the trajectory by sampling the control points of the B-spline in    with three control points used by the sampling-based planner, and it
+a spherical coordinate system. In addition, for computational reasons,       was preferred to the latter representation to avoid the computational
+we discretize the trajectory at equally spaced time intervals of 0.1 s and   costs of interpolation at test time.
+evaluate the discrete version of Equation 2. Specifically, we sample             We train the neural network with supervised learning on the three
+a total of 50 thousands trajectories using a Gaussian with a variance        trajectories with lowest cost found by the expert. To account for
+of 2, 5, 10 that increases every 16 thousands samples as the proposal        the multi-hypotheses prediction, we minimize the following Relaxed
+distribution. Despite this efficient representation, the privileged ex-      Winner-Takes-All (R-WTA) loss for each sample
+pert cannot run in real-time, given the large computational overhead
+                                                                                                              |Te | |Tn |
+introduced by sampling.
+    To bias the sampled trajectories toward obstacle-free regions, we                  R-WTA(Te , Tn ) = ∑ ∑ α(τe,p
+                                                                                                                i
+                                                                                                                    , τnk )kτe,p
+                                                                                                                             i
+                                                                                                                                 − τnk k2 ,                 (5)
+                                                                                                              i =0 k =0
+replace the raw reference trajectory τre f in Equation 2 with a global
+collision-free trajectory τgbl from start to goal, that we compute using     where Te and Tn are the set of expert and network trajectories, τe,p
+the approach of Liu et al. [13]. As illustrated in Figure S6, conditioning   denotes the position component of τe , and α(·) is defined as
+sampling on τgbl practically increases the horizon of the expert and
+                                                                                                               i − τ k k2 ≤ k τ j − τ k k2 ∀ j 6 = i
+                                                                                                (
+generates more conservative trajectories. An animation explaining our              i              1 − e if kτe,p                e,p
+                                                                               α(τe,p , τnk ) =                       n                 n
+expert is available in Movie 1. After removing all generated trajectories                           e
+                                                                                                         otherwise.
+                                                                                                  M −1
+in collision with obstacles, we select the three best trajectories with                                                                            (6)
+lower costs. Those trajectories are used to train the student policy.        A necessary condition for Equation 5 to be minimized is that the net-
+                                                                             work predictions Tn correspond to the centroids of a Voronoi tessella-
+B. The student policy
+                                                                             tion of expert labels Te [46]. However, Equation 5 is not differentiable,
+In contrast to the privileged expert, the student policy produces            since it performs a hard assignment between predictions and labels.
+collision-free trajectories in real time with access only to on-board        Therefore, we relax the assignment with a small value e (Equation 6) to
+sensor measurements. These measurements include a depth image                optimize Equation 5 with gradient descent. Intuitively, an expert trajec-
+estimated with SGM [37], the platform velocity and attitude, and the         tory τei ∈ Te is associated with the closest network trajectory τnk ∈ Tn
+desired direction of flight. The latter is represented as a normalized       with a weight of 1 − e = 0.95 and with e/( M − 1) = 0.025 to all
+vector heading toward the reference point 1 s in the future with respect     remaining hypotheses. This formulation, proposed by Rupprecht et
+to the closest reference state. We hypothesize that this information is      al. [46], prevents mode collapse and was shown to outperform other
+sufficient for generating the highest probability samples of the distribu-   popular approaches for multi-modal learning such as Mixture Density
+tion P(τ | τref , C) without actually having access to the point cloud       Networks [47]. In addition, the predicted collision cost ck is trained
+C . There are two main challenges to accomplishing this: (i) The envi-       with supervised learning on the ground-truth cost Ccollision (τnk ) com-
+ronment is only partially observable from noisy sensor observations,         puted according to Equation 3. In summary, the final training loss for
+and (ii) the distribution P is in general multi-modal. Multiple motion       each sample is equal to:
+hypotheses with high probabilities can be available, but their average
+can have a very low probability.                                                                                              |Tn |
+    We represent the policy as a neural network that is designed to           L((Te , Tn ) = λ1 R-WTA(Te , Tn ) + λ2 ∑ kck − Ccollision (τnk )k2 ,
+be able to cope with these issues. The network consists of an archi-                                                          k =0
+                                                                                                                                                             (7)
+tecture with two branches that produce a latent encoding of visual,
+                                                                             where λ1 = 10 and λ2 = 0.1 were empirically found to equalize the
+inertial, and reference information, and outputs M = 3 trajectories
+                                                                             magnitudes of the two terms. This loss is averaged over a minibatch of
+and their respective collision cost. We use a pre-trained MobileNet-
+                                                                             8 samples and minimized with the Adam optimizer [48] and a learning
+V3 architecture [45] to efficiently extract features from the depth im-
+                                                                             rate of 1 × 10−3 .
+age. The features are then processed by a 1D convolution to generate
+                                                                                 At test time we retrieve the full state information from the predicted
+M feature vectors of size 32. The current platform’s velocity and
+                                                                             trajectories by projecting them on the space of order-5 polynomials
+attitude are then concatenated with the desired reference direction
+                                                                             for each axis independently. This representation enforces continu-
+and processed by a four-layer perceptron with [64, 32, 32, 32] hidden
+                                                                             ity in position, velocity, and acceleration with respect to the current
+nodes and LeakyReLU activations. We again use 1D convolutions
+                                                                             state, and facilitates dynamic feasibility because of differential flat-
+to create a 32-dimensional feature vector for each mode. The visual
+                                                                             ness [43]. Considering for example the x axis, we define the polyno-
+and state features are then concatenated and processed independently
+                                                                             mial projection   µ x (t) = a>                   >
+                                                                                                           x · T( t ), where a x = [ a0 , a1 , . . . , a5 ] and
+for each mode by another four-layer perceptron with [64, 128, 128]
+                                                                             T(t)> = 1, t, . . . , t5 . The projection term a x is found by solving
+                                                                                         
+hidden nodes and LeakyReLU activations. The latter predicts, for
+                                                                             the following optimization problem:
+each mode, a trajectory τ and its collision cost. In summary, our
+architecture receives as input a depth image d ∈ IR640×480 , the plat-                                        10                            2
+                                                                                                                                       i
+form’s velocity v ∈ IR3 , the drone’s attitude expressed as a rotation                       minimize
+                                                                                                  ax
+                                                                                                              ∑       k,i
+                                                                                                                     τn,x − a>
+                                                                                                                             x · T(
+                                                                                                                                      10
+                                                                                                                                         )
+matrix q ∈ IR9 , and reference direction ω ∈ IR3 . From this input                                           i =1
+it predicts a set Tn of trajectories and their relative collision cost,                      subject to      s x (0) − a >
+                                                                                                                         x · T(0) = 0
+i.e. Tn = {(τnk , ck ) | k ∈ [0, 1, . . . , M − 1]}, where ck ∈ IR+ . Dif-
+ferently from the privileged expert, the trajectory predicted by the                                         ṡ x (0) − a>
+                                                                                                                         x · Ṫ(0) = 0
+network does not describe the full state evolution but only its position                                     s̈ x (0) − a>
+                                                                                                                         x · T̈(0) = 0                      (8)
+component, i.e. τnk ∈ IR10×3 . Specifically, the network trajectory τnk
+is described by:                                                             where τn,x    k,i
+                                                                                                is the x component of the ith element of τnk and
+                                                     i                       s x (0), ṡ x (0), s̈ x (0) are the x position of the quadrotor and its deriva-
+                    τnk = [ p(ti ) ]10
+                                    i =1 ,   ti =      ,              (4)    tives obtained from the current state estimate. The latter corresponds
+                                                    10
+  Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                                          University of Zurich and Intel          14
+
+
+                             LocalPlan
+                              LocalPlan      RGB
+                                             RGB
+                             UniModal
+                              UniModal       SinglePoint
+                                             Single Point
+                              Ours
+                             Ours
+
+                      100
+                      100
+
+                      80
+                      80
+
+
+
+  Success Rate [%]
+                [%]
+  Success Rate
+                      60
+                      60
+
+                      40
+                      40
+
+                      20
+                       20
+
+                       00
+                             44      66     8      10
+                                                   10       12
+                                                            12
+                                  Forward Speed [m/s]
+                                  Forward Speed [m/s]
+                            (a) Ablation study                      (b) Poisson forest                            (c) Poisson convex shapes
+                                  (a) Ablation study                           (b) Poisson forest                                      (c) Poisson convex shapes
+  Figure 7: (a) Method validation. Without initialization of the sampler on a global trajectory (LocalPlan),
+ multi-modal
+Fig. 7. (a) Methodtraining   (UniModal),
+                    validation. With           or training
+                                     no initialization of the on SGM
+                                                              sampler on adepth
+                                                                           global image
+                                                                                  trajectory(RGB),  performance
+                                                                                             (LocalPlan), no         significantly
+                                                                                                             multi-modal training (UniModal), or
+   trainingPredicting
+nodrops.    on SGM depth    image (RGB),
+                         a single   point performance
+                                            in the futuresignificantly
+                                                            instead of drops.  Predicting
+                                                                          a full          a single
+                                                                                  trajectory    (SinglePoint)      hasinstead
+                                                                                                   point in the future similar     full trajectory (Sin-
+                                                                                                                              of aeffects
+glePoint) has similar effects on performance. Ours consistently outperforms all the ablated versions of the system. (b-c) Training environments.
+  on performance. Ours consistently outperforms all the ablated versions of the system. (b-c) Training
+We build training environments by spawning trees or convex shapes according to an homogeneous Poisson point process with varying intensities.
+  environments.
+Additional samples ofWe     build and
+                       the training training   environments
+                                        testing simulation        by are
+                                                           environmentsspawning      trees
+                                                                              available      or S4.
+                                                                                                convex shapes according to an
+                                                                                        in Figure
+  homogeneous Poisson point process with varying intensities. Additional samples of the training and
+totesting  simulation
+   the ground-truth       environments
+                    state when deployed in are available
+                                           simulation and tointhe
+                                                                Figure
+                                                                  state S4.only provided with a straight, potentially not collision-free, trajectory
+estimate computed by the Intel RealSense T265 when deployed on                                from start to end to convey the goal.
+the physical platform. To reduce abrupt changes in velocity during                                To assure sufficient coverage of the state space, we use the dataset
+  4.4                       Method Validation
+flight, which would lead to strong pitching motion, we additionally                           aggregation strategy (DAgger) [49]. This process consists of rolling
+constrain the polynomial’s average speed to a desired value vdes . To do                      out the student policy and labeling the visited states with the expert
+  Our
+so,         approach
+     we scale the    time tis of based
+                                  polynomial onµx (t)
+                                                  several        design
+                                                         by factor            choices
+                                                                       β = vdes /v    x
+                                                                                      µ,    that  we To
+                                                                                              policy.        avoid in
+                                                                                                          validate           an from
+                                                                                                                      divergence    ablation       study.
+                                                                                                                                            τgbl and     preventWe crashes in the
+i.e. t0 = βt, where vµx = kµ(1) − µ(0)k.                                                      early stages of training, we track a trajectory predicted by the student
+  ablate the following components: (i) the use of global                                           planning to initialize the sampling of
+                                                                                              only if the drone’s distance from the closest point on τgbl is smaller
+    Once all predicted trajectories are projected we select one for execu-
+tion.     privileged
+  theTo do so,      we selectexpert,       (ii)
+                                trajectories     the
+                                              with  c∗ /cuse    of ∗ depth as an than
+                                                          k ≥ 0.95 (c = min ck )
+                                                                                           intermediate          representation
+                                                                                                     a threshold ξ,    initialized to zero.       action, we
+                                                                                                                                           forOtherwise,        (iii)directly track
+  multi-modal
+and compute               network
+                  their input            prediction.
+                                costs according             The and
+                                                   to Mellinger                                     with athat all
+                                                                                     Figure τ7gblshow
+                                                                          Kumarin[43].
+                                                                    results                                              components
+                                                                                                             model-predictive                 areEvery 30
+                                                                                                                                     controller.     important environments the
+The one with the lowest input costs is tracked by a model-predictive                          student is re-trained on all available data and the threshold ξ set to
+  and      that  some       choices       have    a  larger     impact
+controller [44]. Intuitively, this choice enforces temporal continuity in
+                                                                             than    others.  ξ 0Our
+                                                                                                  = min study     indicates
+                                                                                                           (ξ + 0.25,             that depth
+                                                                                                                        6). Aggregating             perception
+                                                                                                                                            data over    all environments results
+  plays
+the           a For
+                 fundamental
+     trajectories.         example, when rule for      high-speed
+                                               dodging an                   obstacle
+                                                              obstacle to the     right,      in a  dataset ofwhen
+                                                                                            avoidance:           about 90K     samples.on
+                                                                                                                          training            color
+                                                                                                                                           For the        imagesexperiments,
+                                                                                                                                                      narrow-gap
+we   do   not  want   to  steer  toward    the left at  the  next  iteration,    unless       we  finetune
+  (RGB) performance drops significantly. This is inline with previous findings (28,50) showing created       the  student  policy    on 100  environments       that by adding
+strictly necessary because of the appearance of an obstacle.                                  a 50 m long wall with a single vertical gap of random width w g ∈
+  intermediate image representations have a strong positive                                       effect
+                                                                                              U (0.7,  1.2) on    performance
+                                                                                                             meters    in the center. whenIn thosesufficiently
+                                                                                                                                                      environments, the drone
+  informative
+C. Training environments for   the    task.    Not     accounting           for    multi-modalstarts   trajectory
+                                                                                                      at a 10 m          prediction
+                                                                                                                  distance  from    the wall(UniModal)
+                                                                                                                                             with   a  randomized  islateral offset
+                                                                                              l ∈ U (−5, 5) from the gap. We collect about 10K training samples
+Wealso       etrimental
+     build custom              for in the
+                        environments  performance.Flightmare This is      because
+                                                                  simulator     [33] to the l2from
+                                                                                               -loss     pushes predicted trajectories toward
+                                                                                                     those environments.
+collect   training  data.   All  environments    are  built by
+  the average of the expert trajectories, which is often in We  spawning     items   on          collision       withtrained
+                                                                                                                         obstacles.        Not     initializing
+                                                                                                       evaluate the             policies in  simulation      on environments not
+the uneven empty ground of an off-the-shelf Unity environment. We
+spawn    sampling
+  the items     belonging  ofto two
+                               expert       trajectories
+                                       categories:  simulatedon      a global
+                                                                 trees,              plan (LocalPlan) is not important for low-speed The same
+                                                                        available off-
+                                                                                              seen  during   training  but  coming    from  the  same    distributions.
+                                                                                              policies are then used to control the physical platforms in real-world
+  flight, and
+the-shelf,     buta set
+                     plays      an shapes
+                          of convex  important  such asrole    for success
+                                                          ellipsoids,   cuboids, at andhigher speeds. Biasing the motion away from
+                                                                                              environments. When deployed in simulation, we estimate depth with
+cylinders. Sample observations from these environments are available
+  regions        that    are    densely       populated         by    obstacles
+in Figure 7. Additional training samples, together with observations col-
+                                                                                        is particularly
+                                                                                              SGM               important
+                                                                                                      [37] from a   simulated for       high-speed
+                                                                                                                                stereo pair and    use the flight
+                                                                                                                                                             ground-truth state of
+  where                                                                                       the platform.    Conversely,   on  the  physical  platform     depth is estimated by
+lected   in thelittle   slack
+                simulated          is environments,
+                             testing    available are   foravailable
+                                                              reacting         to S4.
+                                                                         in Figure  unexpected obstacles. In addition, we compare
+                                                                                              an off-the-shelf Intel RealSense 435 and state estimation is performed
+  our
+The       output ofrepresentation,
+      dimensions                                 i.e. a trajectory
+                         these shapes are randomized         according to one        secondbyinanthe
+                                                                              a contin-
+                                                                                                      Intelfuture,
+                                                                                                            RealSenseto     theMore
+                                                                                                                         T265.     lessdetails
+                                                                                                                                          complexon our output
+                                                                                                                                                           experimental platform
+uous uniform random distribution with x ∈ U (0.5, 4), y ∈ U (0.5, 4),
+  representation             in   prior    work      (51),    i.e.
+and z ∈ U (0.5, 8). Training environments are created by spawning ei-
+                                                                     a  single      waypoint  are in   the
+                                                                                                  available   future
+                                                                                                               in        (SinglePoint).
+                                                                                                                  section S3.                     The      results
+  indicate
+ther of   the twothat     the of
+                   categories   limited      representation
+                                    items according to                power
+                                                          a homogeneous            of the latter representation causes performance to
+                                                                               Poisson
+point   process    with  intensity                                                            D. Method validation
+  drop significantly, especially at high speeds.
+                                     δ.
+    We generate a total of 850 environments by uniform randomization                          Our approach is based on several design choices that we validate in
+of the following two quantities: item category, i.e. , trees or shapes,                       an ablation study. We ablate the following components: (i) the use of
+and the intensity δ ∈ U (4, 7), with δ ∈ N+ . For each environment,                           global planning to initialize the sampling of the privileged expert, (ii)
+we compute a global collision-free trajectory τgbl from the starting                          the use of depth as an intermediate representation for action, and (iii)
+location to a point 40 m in front of it. The trajectory τgbl is not                           multi-modal network prediction. The results in Figure 7 show that all
+observed by the student policy, but only by the expert. The student is                        components are important and that some choices have a larger impact
+     Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                           University of Zurich and Intel       15
+
+
+than others. Our study indicates that depth perception plays a funda-              2.    E. Ackerman, “Ai-powered drone learns extreme acrobatics” (IEEE
+mental rule for high-speed obstacle avoidance: When training on color                    Spectrum 2020).
+images (RGB) performance drops significantly. This is inline with pre-             3.    J. Hilf, K. Umbach, “The commercial use of drones,” Comput. Law Rev.
+vious findings [28, 50] showing that intermediate image representations                  Int., vol.16, no. 3, 2015.
+                                                                                   4.    D. Falanga, S. Kim, and D. Scaramuzza, “How fast is too fast? The
+have a strong positive effect on performance when sufficiently informa-
+                                                                                         role of perception latency in high-speed sense and avoid,” IEEE Robot.
+tive for the task. Not accounting for multi-modal trajectory prediction
+                                                                                         Autom. Lett., vol. 4, no. 2, pp. 1884–1891, 2019.
+(UniModal) is also detrimental for performance. This is because of the             5.    L. Heng, D. Honegger, G. H. Lee, L. Meier, P. Tanskanen, F. Fraundorfer,
+ambiguities inherent of the task of obstacle avoidance: the average of                   and M. Pollefeys, “Autonomous visual mapping and exploration with
+expert trajectories is often in collision with obstacles. Not initializing               a micro aerial vehicle,” J. Field Robotics, vol. 31, no. 4, pp. 654–675,
+the sampling of expert trajectories on a global plan (LocalPlan) is not                  2014.
+important for low-speed flight, but plays an important role for success            6.    S. S. G., C. Thibault, M. Trentini, and H. Li, “3d mapping for
+at higher speeds. Biasing the motion away from regions that are densely                  autonomous quadrotor aircraft,” Unmanned Syst., vol. 5, no. 3, pp.
+populated by obstacles is particularly important for high-speed flight                   181–196, 2017.
+where little slack is available for reacting to unexpected obstacles. In           7.    D. Scaramuzza, M. Achtelik, L. Doitsidis, F. Fraundorfer, E. B. Kos-
+addition, we compare our output representation, i.e. a trajectory 1 s in                 matopoulos, A. Martinelli, M. W. Achtelik, M. Chli, S. A. Chatzichristofis,
+                                                                                         L. Kneip, D. Gurdan, L. Heng, G. H. Lee, S. Lynen, M. Pollefeys,
+the future, to the less complex output representation in prior work [51],
+                                                                                         A. Renzaglia, R. Siegwart, J. C. Stumpf, P. Tanskanen, C. Troiani,
+i.e. a single waypoint in the future (SinglePoint). The results indicate
+                                                                                         S. Weiss, and L. Meier, “Vision-controlled micro flying robots: From
+that the limited representation power of the latter representation causes                system design to autonomous navigation and mapping in gps-denied
+performance to drop significantly, especially at high speeds.                            environments,” IEEE Robotics Autom. Mag., vol. 21, no. 3, pp. 26–40,
+                                                                                         2014.
+5. ACKNOWLEDGMENTS                                                                 8.    M. Faessler, F. Fontana, C. Forster, E. Mueggler, M. Pizzoli, and
+                                                                                         D. Scaramuzza, “Autonomous, vision-based flight and live dense 3d
+The authors thank T. Längle, M. Sutter, Y. Song, C. Pfeiffer, L. Bauers-                 mapping with a quadrotor micro aerial vehicle,” J. Field Robotics,
+feld, and N. Aepli for their contributions to the drone design, the simu-                vol. 33, no. 4, pp. 431–450, 2016.
+lation environment, and preparation of multimedia material. We also                9.    M. Blösch, S. Weiss, D. Scaramuzza, and R. Siegwart, “Vision based
+thank J. Lee for the template of this document. Funding: This work                       MAV navigation in unknown and unstructured environments,” in IEEE
+was supported by the Intel Network on Intelligent Systems, Armasu-                       Int. Conf. Robot. Autom. (ICRA), 2010, pp. 21–28.
+isse, the National Centre of Competence in Research (NCCR) Robotics                10.   A. Bry and N. Roy, “Rapidly-exploring random belief trees for motion
+                                                                                         planning under uncertainty,” in IEEE Int. Conf. Robot. Autom. (ICRA),
+through the Swiss National Science Foundation (SNSF) and by the
+                                                                                         2011.
+European Research Council (ERC) under Grant Agreement 864042
+                                                                                   11.   C. Richter, A. Bry, and N. Roy, “Polynomial trajectory planning for
+(AGILEFLIGHT). Author contributions: A.L and E.K. formulated                             aggressive quadrotor flight in dense indoor environments,” in Proc. Int.
+the main ideas, implemented the system, performed all experiments,                       Symp. Robot. Research (ISRR), 2013.
+and wrote the paper; R.R and M.M. contributed to the experimen-                    12.   R. Allen and M. Pavone, “A real-time framework for kinodynamic plan-
+tal design, data analysis, and paper writing; V.K. and D.S. provided                     ning with application to quadrotor obstacle avoidance,” in AIAA Guid-
+funding and contributed to the design and analysis of experiments.                       ance, Navigation, and Control Conference, 2016, p. 1374.
+Competing interests: The authors declare that they have no com-                    13.   S. Liu, K. Mohta, N. Atanasov, and V. Kumar, “Search-based motion
+peting interests. Data and materials availability: All (other) data                      planning for aggressive flight in se (3),” IEEE Robotics and Automation
+needed to evaluate the conclusions in the paper are present in the pa-                   Letters, vol. 3, no. 3, pp. 2439–2446, 2018.
+per or the Supplementary Materials. Other material can be found at                 14.   H. Oleynikova, Z. Taylor, M. Fehr, R. Siegwart, and J. I. Nieto, “Voxblox:
+                                                                                         Incremental 3d euclidean signed distance fields for on-board MAV
+http://rpg.ifi.uzh.ch/AgileAutonomy.html and at [56].
+                                                                                         planning,” in IEEE/RSJ Int. Conf. Intell. Robot. Syst. (IROS), 2017, pp.
+                                                                                         1366–1373.
+SUPPLEMENTARY MATERIALS                                                            15.   T. Ozaslan, G. Loianno, J. Keller, C. J. Taylor, V. Kumar, J. M. Wozen-
+                                                                                         craft, and T. Hood, “Autonomous navigation and mapping for inspection
+Section S1.        Sensitivity to noise in estimation and control.                       of penstocks and tunnels with mavs,” IEEE Robot. Autom. Lett., vol. 2,
+Section S2.        The impact of obstacle density on performance.                        no. 3, pp. 1740–1747, 2017.
+Section S3.        The platform’s hardware.                                        16.   K. Mohta, M. Watterson, Y. Mulgaonkar, S. Liu, C. Qu, A. Makineni,
+Section S4.        Computational complexity.                                             K. Saulnier, K. Sun, A. Zhu, J. Delmerico, K. Karydis, N. Atanasov,
+Section S5.        Theoretical maximum speed while avoiding a pole.                      G. Loianno, D. Scaramuzza, K. Daniilidis, C. J. Taylor, and V. Kumar,
+Section S6.        Metropolis-Hasting sampling.                                          “Fast, autonomous flight in gps-denied and cluttered environments,” J.
+Figure S1.         Sensitivity to noise in estimation and control.                       Field Robot., vol. 35, no. 1, pp. 101–120, 2018.
+Figure S2.         Ablation of tree density.                                       17.   A. J. Barry, P. R. Florence, and R. Tedrake, “High-speed autonomous
+Figure S3.         Illustration of the experimental platform.                            obstacle avoidance with pushbroom stereo,” J. Field Robot., vol. 35,
+                                                                                         no. 1, pp. 52–68, 2018.
+Figure S4.         Illustration of the simulated environments.
+                                                                                   18.   B. Zhou, F. Gao, L. Wang, C. Liu, and S. Shen, “Robust and efficient
+Figure S5.         Qualitative illustration of the related work.                         quadrotor trajectory generation for fast autonomous flight,” IEEE Robot.
+Figure S6.         Motivation of global planning for label generation.                   Autom. Lett., vol. 4, no. 4, pp. 3529–3536, 2019.
+Movie S1.          Deployment at different speeds.                                 19.   M. Ryll, J. Ware, J. Carter, and N. Roy, “Efficient trajectory planning for
+Movie S2.          Deployment in simulation.                                             high speed flight in unknown environments,” in 2019 Int. Conf. Robot.
+                                                                                         Autom. (ICRA). IEEE, 2019, pp. 732–738.
+                                                                                   20.   J. Tordesillas, B. T. Lopez, and J. P. How, “FASTER: fast and safe
+                                                                                         trajectory planner for flights in unknown environments,” in IEEE/RSJ
+REFERENCES
+                                                                                         Int. Conf. Intell. Robot. Syst. (IROS), 2019, pp. 1934–1940.
+1.      J. Verbeke, J. D. Schutter, “Experimental maneuverability and agility      21.   T. Cieslewski, E. Kaufmann, and D. Scaramuzza, “Rapid exploration
+        quantification for rotary unmanned aerial vehicle,” Int. J. of Micro Air         with multi-rotors: A frontier selection method for high speed flight,” in
+        Veh., vol. 10, no. 1, pp. 3–11, 2018.
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                           University of Zurich and Intel      16
+
+
+    IEEE/RSJ Int. Conf. Intell. Robot. Syst. (IROS), 2017, pp. 2135–2142.             aware model predictive control for quadrotors,” in IEEE/RSJ Int. Conf.
+22. Z. Zhang and D. Scaramuzza, “Perception-aware receding horizon                    Intell. Robot. Syst. (IROS). 2018, pp. 1–8.
+    navigation for mavs,” in IEEE Int. Conf. Robot. Autom. (ICRA), 2018,        45.   A. Howard, R. Pang, H. Adam, Q. V. Le, M. Sandler, B. Chen, W. Wang,
+    pp. 2534–2541.                                                                    L. Chen, M. Tan, G. Chu, V. Vasudevan, and Y. Zhu, “Searching for
+23. G. Loianno and D. Scaramuzza, “Special issue on future challenges                 mobilenetv3,” in Int. Conf. Comp. Vis., ICCV, 2019, pp. 1314–1324.
+    and opportunities in vision-based drone navigation,” J. Field Robot.,       46.   C. Rupprecht, I. Laina, R. S. DiPietro, and M. Baust, “Learning in an
+    vol. 37, no. 4, pp. 495–496, 2020.                                                uncertain world: Representing ambiguity through multiple hypotheses,”
+24. S. Ross, N. Melik-Barkhudarov, K. S. Shankar, A. Wendel, D. Dey, J. A.            in Int. Conf. Comp. Vis., ICCV, 2017, pp. 3611–3620.
+    Bagnell, and M. Hebert, “Learning monocular reactive UAV control            47.   C. M. Bishop, Mixture density networks. Aston University, 1994.
+    in cluttered natural environments,” in IEEE Int. Conf. Robot. Autom.        48.   D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,”
+    (ICRA), 2013, pp. 1765–1772.                                                      in Int. Conf. Learn. Repr. (ICLR), 2015.
+25. F. Sadeghi and S. Levine, “CAD2RL: real single-image flight without         49.   S. Ross, G. Gordon, and D. Bagnell, “A reduction of imitation learning
+    a single real image,” in Robotics: Science and Systems RSS, N. M.                 and structured prediction to no-regret online learning,” in Proceedings
+    Amato, S. S. Srinivasa, N. Ayanian, and S. Kuindersma, Eds., 2017.                of the fourteenth international conference on artificial intelligence and
+26. D. Gandhi, L. Pinto, and A. Gupta, “Learning to fly by crashing,” in              statistics, 2011, pp. 627–635.
+    IEEE/RSJ Int. Conf. Intell. Robot. Syst. (IROS), 2017, pp. 3948–3955.       50.   B. Zhou, P. Krähenbühl, and V. Koltun, “Does computer vision matter
+27. A. Loquercio, A. I. Maqueda, C. R. del-Blanco, and D. Scaramuzza,                 for action?” Sci. Robotics, vol. 4, no. 30, 2019.
+    “Dronet: Learning to fly by driving,” IEEE Robotics Autom. Lett., vol. 3,   51.   A. Loquercio, E. Kaufmann, R. Ranftl, A. Dosovitskiy, V. Koltun,
+    no. 2, pp. 1088–1095, 2018.                                                       D. Scaramuzza, “Deep drone racing: From simulation to reality with
+28. E. Kaufmann, A. Loquercio, R. Ranftl, M. Müller, V. Koltun, and                   domain randomization,” IEEE Trans. Rob., vol. 36, pp. 1–14, 2019.
+    D. Scaramuzza, “Deep drone acrobatics,” RSS: Robotics, Science,             52.   E. Tomppo, “Models and methods for analysing spatial patterns of
+    and Systems, 2020.                                                                trees,” PhD dissertation, Finnish Forest Research Institute, 1986.
+29. M. Müller, A. Dosovitskiy, B. Ghanem, and V. Koltun, “Driving pol-          53.   D. Hernandez-Juarez, A. Chacón, A. Espinosa, D. Vázquez, J. C.
+    icy transfer via modularity and abstraction,” in Conference on Robot              Moure, and A. M. López, “Embedded real-time stereo estimation via
+    Learning, 2018, pp. 1–15.                                                         semi-global matching on the GPU,” in Int. Conf. Comp. Sci. ICCS ,
+30. D. Chen, B. Zhou, V. Koltun, and P. Krähenbühl, “Learning by cheating,”           2016.
+    in Conference on Robot Learning, 2019, pp. 66–75.                           54.   C. Andrieu, N. de Freitas, A. Doucet, and M. I. Jordan, “An introduction
+31. B. Zhou, J. Pan, F. Gao, and S. Shen, “RAPTOR: robust and                         to MCMC for machine learning,” Mach. Learn., vol. 50, no. 1-2, pp.
+    perception-aware trajectory replanning for quadrotor fast flight,” CoRR,          5–43, 2003.
+    vol. abs/2007.03465, 2020.                                                  55.   G. O. Roberts and A. F. Smith, “Simple conditions for the convergence
+32. P. Florence, J. Carter, and R. Tedrake, “Integrated perception and con-           of the gibbs sampler and metropolis-hastings algorithms,” Stochastic
+    trol at high speed: Evaluating collision avoidance maneuvers without              processes and their applications, vol. 49, no. 2, pp. 207–216, 1994.
+    maps,” in Algorithmic Foundations of Robotics XII. Springer, 2020, pp.      56.   A. Loquercio, E. Kaufmann, R. Ranftl, M. Mueller, V. Koltun, D. Scara-
+    304–319.                                                                          muzza, “Code and Dataset for the paper Speed Flight in the Wild"
+33. Y. Song, S. Naji, E. Kaufmann, A. Loquercio, and D. Scaramuzza,                   (Science Robotics,2021),” Zenodo, DOI: 10.5281/zenodo.5517791,
+    “Flightmare: A flexible quadrotor simulator,” in Conference on Robot              (2021).
+    Learning, 2020.
+34. F. Furrer, M. Burri, M. Achtelik, and R. Siegwart, “Rotors—a modular
+    gazebo mav simulator framework,” in Robot Operating System (ROS).
+    Springer, 2016, pp. 595–625.
+35. A. Juliani, V.-P. Berges, E. Vckay, Y. Gao, H. Henry, M. Mattar, and
+    D. Lange, “Unity: A general platform for intelligent agents,” arXiv e-
+    prints, 2018.
+36. S. Karaman and E. Frazzoli, “High-speed flight in an ergodic forest,” in
+    IEEE Int. Conf. Robot. Autom. (ICRA). IEEE, 2012, pp. 2899–2906.
+37. H. Hirschmuller, “Stereo processing by semiglobal matching and mutual
+    information,” IEEE Trans. Pattern Anal. Machine Intell., vol. 30, no. 2,
+    pp. 328–341, 2007.
+38. G. Gallego, T. Delbruck, G. Orchard, C. Bartolozzi, B. Taba, A. Censi,
+    S. Leutenegger, A. Davison, J. Conradt, K. Daniilidis, and D. Scara-
+    muzza, “Event-based vision: A survey,” IEEE Trans. Pattern Anal.
+    Machine Intell., 2020.
+39. D. Falanga, K. Kleber, and D. Scaramuzza, “Dynamic obstacle avoid-
+    ance for quadrotors with event cameras,” Science Robotics, vol. 5,
+    no. 40, 2020.
+40. L. Keselman, J. Iselin Woodfill, A. Grunnet-Jepsen, and A. Bhowmik,
+    “Intel realsense stereoscopic depth cameras,” in Proceedings of the
+    IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+    Workshops, 2017.
+41. W. K. Hastings, “Monte carlo sampling methods using markov chains
+    and their applications,” Biometrika, vol. 57, no. 1, pp. 97–109, 1970.
+42. J. Gallier, Curves and Surfaces in Geometric Modeling: Theory and
+    Algorithms. San Francisco, CA, USA: Morgan Kaufmann Publishers
+    Inc., 1999.
+43. D. Mellinger and V. Kumar, “Minimum snap trajectory generation and
+    control for quadrotors,” in IEEE Int. Conf. Robot. Autom. (ICRA), 2011,
+    pp. 2520–2525.
+44. D. Falanga, P. Foehn, P. Lu, and D. Scaramuzza, “Pampc: Perception-
+  Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                               University of Zurich and Intel    17
+
+
+SUPPLEMENTARY MATERIALS                                                                                             FastPlanner [18]
+S1. SENSITIVITY TO ESTIMATION AND CONTROL                                                               100
+    NOISE
+                                                                                                        80
+We compare the sensitivity of our proposed approach to noise in state
+estimation as well as the applied control action against the Reactive
+
+
+                                                                                     Success Rate [%]
+and FastPlanner baselines. To this end, we test in the high-density                                     60
+simulated forest as explained in section B and perturb the simulated
+state as well as the applied control command with additive disturbances.                                40
+Both types of disturbances are approximated as Gaussian noise with
+mean and variance identified from fast flights in an instrumented mo-
+tion capture volume. This instrumented tracking volume allows us                                        20
+accurately identify noise and drift in state estimation and the applied
+control action. Table S1 shows the identified noise parameters for                                       0
+the estimated state. The parameters are identified component-wise.                                            4            6            8              10
+Note that attitude is denoted in terms of the residual quaternion that                                                Forward Speed [m/s]
+rotates the estimated attitude onto the ground-truth attitude. The noise
+in control action is represented as a multiplicative factor m on the com-                                           Reactive [32]
+manded collective thrust, which mimics a drop in motors efficiency                                      100
+because of aerodynamics effects or shortages in battery power. This
+factor m is selected from a uniform distribution m ∈ U (0.9, 1) for
+each rollout.                                                                                           80
+    As laid out in section B, we test the performance for a set of increas-
+
+
+
+                                                                                     Success Rate [%]
+ing speeds, while the tree density is kept constant at the highest density                              60
+of δ3 = 25 1
+              treem−2 . For each average forward speed, we perform
+10 rollouts and compute the respective success rate. We repeat the set
+                                                                                                        40
+of experiments five times with different random seeds and report the
+mean and standard deviation overs sets of rollouts.
+    Figure S1 shows the results of this experiment, with the line indi-                                 20
+cating the mean success rate and the shaded area marking one standard
+deviation. At a low speed of 3 m s−1 , the performance of our approach                                   0
+is not affected by neither the noise in estimation nor control. In com-                                                    6            8
+                                                                                                              4                                        10
+parison, the Reactive baseline shows significant drop in performance                                                  Forward Speed [m/s]
+when exposed to noise in action and even more in case of noise in
+state estimation. The FastPlanner is less sensitive to noise and only                                                    Ours
+exhibits a small drop in performance at 3 m s−1 . For higher speeds,
+                                                                                                        100
+the performance of our approach with noise is between 5% and 10%
+worse than in the noise-free case, with noise in estimation resulting in
+a larger drop in success rate. The same pattern can be observed for the                                 80
+FastPlanner and the Reactive baselines, which both show a larger per-
+
+
+
+                                                                                     Success Rate [%]
+formance decrease when exposed to noise in estimation. In summary,                                      60
+neither noise in estimation nor noise in control did significantly affect
+performance of our approach, while the performance of the Reactive
+                                                                                                        40
+baseline is strongly reduced. The FastPlanner baseline shows larger
+robustness against noise, but performs inferior in general.                                                       No noise
+                                                                                                        20        Noise in state
+                                                                                                                  Noise in action
+S2. PERFORMANCE ANALYSIS IN FUNCTION OF
+    OBSTACLE DENSITY                                                                                     0
+                                                                                                              4            6            8              10
+We perform a set of experiments in a simulated forest to evaluate the
+                                                                                                                      Forward Speed [m/s]
+performance of our approach with respect to obstacle density. Similarly
+to previous experiments, we use as baselines the mapping and planning
+method of Zhou et al. [18] (FastPlanner) and the reactive planner of          Fig. S1. Sensitivity analysis of noise in state estimation and control.
+Florence et al. [32] (Reactive). We compare the different approaches
+according to their success rate, which measures how often the drone
+reaches the goal location within a radius of 5 meters without crashing.       w = 30 m and l = 60 m and start the drone at position s = (− 2l , − w2 )
+    We build a simulated forest [36] in a rectangular region R(l, w)          (the origin of the coordinate system is at the center of R(l, w)). We
+of width w and length l, and fill it with trees that have a diameter of       provide the drone with a straight reference trajectory of 40 m length.
+about 0.6 m. Trees are randomly placed according to a homogeneous             We test on three different tree densities with increasing difficulty:
+Poisson point process P with intensity δ treem−2 [36]. Note that              δ1 = 49 1
+                                                                                         (low), δ2 = 36 1
+                                                                                                           (medium), and δ3 = 25   1
+                                                                                                                                      (high) treem−2
+Tomppo et al. [52] found that around 30% of the forests in Finland            . We vary the average forward speed of the drone between 3 m s−1
+could be considered as a realization of a spatial Poisson point process.      and 12 m s−1 . We repeat the experiments with 10 different random
+We control the task difficulty by changing the tree density δ. We set         realizations of the forest for each difficulty, using the same random
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                                             University of Zurich and Intel   18
+
+
+
+
+                                                     vx               vy           vz         ωx       ωy      ωz       qw      qx      qy        qz
+
+                                           µ       0.009        −0.198          −0.570       −0.009   0.012   −0.004   0.997   0.002   0.022    0.003
+                                           σ       0.496             0.210      1.243        0.302    0.587   0.031    0.000   0.003   0.001    0.001
+
+Table S1. State estimation noise for velocity, angular velocity and attitude (quaternion). The noise parameters are obtained from real-world
+flights in a vicon-based system.
+                            Blind                  FastPlanner [18]
+                            Reactive [32]          Ours
+
+
+                      100
+
+
+                      80
+
+
+
+
+   Success Rate [%]
+                                                                                 δ1 = 1/49
+                      60
+
+
+                      40
+
+
+                      20
+
+
+                       0
+
+                            4          6             8          10         12
+
+
+                      100
+
+
+                      80
+
+
+
+
+   Success Rate [%]                                                              δ2 = 1/36
+                      60
+
+
+                      40
+
+
+                      20
+
+
+                       0
+
+                             4         6           8            10         12
+                            Blind           FastPlanner
+                            Reactive        Ours
+
+
+                      100
+
+
+                      80
+
+
+
+                                                                                 δ3 = 1/25
+   Success Rate [%]
+                      60
+
+
+                      40
+
+
+                      20
+
+
+                       0
+
+                                4              6            8              10
+
+
+
+Fig. S2. Experiments in a simulated forest. Experiments are ordered for increasing difficulty, which is controlled by the tree density δ. The
+left column reports success rates at various speeds. The right column shows one of the random realizations of the environment together with
+paths taken by different policies from start (green arrow) to end (red arrow). The paths illustrate the blind policy (red) and the path taken by our
+approach (green). Our approach consistently outperforms the baselines in all environments and and at all speeds.
+  Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                     University of Zurich and Intel     19
+
+
+
+
+Fig. S3. Illustration of our experimental platform. The main computational unit is an NVIDIA Jetson TX2, whose GPU is used for neural
+network inference and CPU for the control stack. Sensing is performed by an Intel Realsense T265 for state estimation and an Intel Realsense
+D435 for depth estimation.
+
+
+seed for all methods.                                                         processing. The horizontal field of view of this observation is about
+    The first three rows in Figure S2 show the results of this experiment,    90°, which appeared to be sufficient for the task of obstacle avoidance.
+together with one example environment for each difficulty. At a low           For experiments at speeds of 7 m s−1 and above, we tilt the depth
+speed of 3 m s−1 , all methods successfully complete every run even for       sensor by 30° to assure that the camera would look forward during
+high difficulties. As speed increases, the success rates of the baselines     flight. This is indeed a typical camera setup for high-speed flight in
+quickly degrade. At 10 m s−1 , no baseline completes even a single run        drone racing competitions. To support the transfer from simulation to
+successfully, irrespective of task difficulty. In contrast, our approach is   reality, we build a simulated stereo setup with the same characteristics
+significantly more robust at higher speeds. It achieves 100% success          of the RealSense D435, on which we run a GPU implementation of
+rate up to 5 m s−1 . For speeds of 10 m s−1 , our approach has a success      SGM [53] to estimate dense depth in simulation.
+rate of 90% in the low difficulty task and 60% in the high difficulty task.       Our software stack is developed in both C++ and Python, and will
+Moreover, we show that our approach can go as fast as 12 m s−1 with           be made publicly available upon acceptance. Specifically, we imple-
+a success rate of up to 50%. Our method achieves this performance             ment the trajectory prediction framework with Tensorflow in a Python
+by decreasing the latency between sensors and actions and increasing          node and the rest of our trajectory projection and tracking software in
+the robustness to sensor noise, developed using regularities in the data.     separate C++ nodes. The communication between different nodes is
+We show additional controlled studies on latency and sensor noise in          implemented with ROS. Specifically, the Tensorflow node predicts tra-
+section C and section D.                                                      jectories at 24.7 Hz on the physical platform, and the MPC generates
+                                                                              commands in the form of collective thrust and body rates at 100 Hz to
+                                                                              track those trajectories. The low-level controller, responsible for track-
+S3. EXPERIMENTAL PLATFORM                                                     ing desired body rates and collective thrust predicted by the MPC, runs
+To validate our approach with real-world experiments, we designed             at 2 kHz. The platform only receives a start and stop command from
+a lightweight, but powerful, quadrotor platform. The main frame is            the base computer, and is therefore completely autonomous during
+an Armattan Chameleon 6”, equipped with Hobbywing XRotor 2306                 flight.
+motors and 5”, three-bladed propellers. The platform has a total weight
+of 890 grams and can produce a maximum thrust of about 40 N, which            S4. COMPUTATIONAL COMPLEXITY
+results in a thrust-to-weight ratio of 4.4. The weight and power of this
+platform is comparable to the ones used by professional pilots in drone           The baseline with the largest latency is FastPlanner. This base-
+racing competitions.                                                          line has three components: sensing, mapping and planning. Sensing
+    The platform’s main computational unit is an NVIDIA Jetson TX2            includes transforming a depth image to a pointcloud after filtering.
+accompanied by a ConnectTech Quasar carrier board. The GPU of the             Mapping includes ray casting and Euclidean Signed Distance Field
+Jetson TX2 is used to run neural network inference and its CPU for            (ESDF) computation. Finally, planning includes finding the best tra-
+the rest of our control framework. The output of this framework is a          jectory to reach the goal while avoiding obstacles. The total time to
+low-level control command including a collective thrust and angular           perform all these operations is 65.2 ms. However, it is important to
+rates to be achieved for flying. The desired commands are sent to             note that, while the depth filtering and the probabilistic ray casting
+a commercial flight controller running BetaFlight, which produces             process are necessary to remove sensing errors, those operations make
+single-rotor commands that are fed to the 4-in-1 motor controller.            the inclusions of obstacles in the local map slower. Practically, 2-3
+    Our quadrotor is equipped with two off-the-shelf sensing units: an        observations are required to add an obstacle to the local map, therefore
+Intel RealSense T265 and an Intel RealSense D435i. Both have a                largely increasing the overall latency of the system.
+stereo camera setup and an integrated IMU. The RealSense T265 runs                Removing the mapping stage altogether, the Reactive baseline ex-
+a visual-inertial odometry pipeline to output the state estimation of         periences significant gains in computation time. For this baseline,
+the platform at 200 Hz, which we directly use without any additional          the sensing latency is the time between receiving a depth observation
+processing. Our second sensing unit, the RealSense D435i, outputs             and generating a point cloud after filtering and outlier rejection. The
+a hardware-accelerated depth estimation pipeline on its stereo setup.         planning latency consists of building a KD-Tree from the filtered point
+The latter pipeline provides to our framework a dense depth in VGA            cloud, and selecting the best trajectory out of the available motion prim-
+resolution (640 × 480 px) at 30 Hz, which we use without further              itives according to a cost based on collision probability and proximity
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                       University of Zurich and Intel               20
+
+
+to the goal. This baseline is about three times faster than FastPlanner,
+                                                                                s        Tmax             J                  cmax           ts             robs
+with a total latency of 19.1 ms. However, the reduced latency comes at
+the cost of a lower trajectory-representation power, since the planner         6m     1.02 N m       0.007 kg m−2      35.3 m s−2        66 ms            0.95 m
+can only select a primitive from a pre-defined motion library. In addi-
+tion, given the lack of temporal filtering, the reactive baseline is very
+                                                                             Table S2. Fixed parameters for the calculation of the theoretical
+sensitive to sensing errors, which can drastically affect performance at
+                                                                             maximum speed of our simulated sensor and quadrotor. Note that,
+high speeds.
+                                                                             differently from the physical quadrotor, the simulated drone is in the
+    Our approach has significantly lower latency than both baselines:
+                                                                             plus configuration.
+when network inference is performed on the GPU, our approach is 25.3
+times faster than FastPlanner and 7.4 times faster than the Reactive
+baseline. When GPU inference is disabled, the network’s latency
+                                                                                                         tp           trot           φ             vmax
+increases by only 8 ms, and our approach is still significantly faster
+than both baselines. For our approach, we break down computation
+                                                                                FastPlanner [18]      65.2 ms     125.2 ms          65.5°        12.0 m s−1
+into three operations: (i) sensing, which includes the time for recording
+an image and convert it to an input tensor, (ii) neural network inference,       Reactive [18]        19.1 ms     125.2 ms          65.5°        13.2 m s−1
+and (iii) projection, which is the time to project the prediction of the
+                                                                                      Ours            10.3 ms     125.2 ms          65.5°        13.5 m s−1
+neural network into the space of dynamically feasible trajectories for
+the quadrotor. Moving from the desktop computer to the onboard
+embedded computing device, the network’s forward pass requires               Table S3. We compute the theoretical maximum speed by optimiz-
+38.9 ms. Onboard, the total time to pass from sensor to action is then       ing Equation 11 according to the variable φ using grid-search. The
+41.6 ms, which is sufficient to update actions at up to 24.3 Hz.             processing latency tp represents the time to convert an image to a mo-
+                                                                             tor command (see section C), and the rotation latency trot is the time
+S5. ROTATIONAL DYNAMICS                                                      for the quadrotor to rotate at the angle φ. Interestingly, the methods’
+                                                                             processing latencies do not affect the rotation angle and latency.
+
+   Extending [4] to the quadrotor platform, we approximate the max-
+imum speed vmax that still allows successful avoidance of a vertical         algorithms. This time corresponds to the inverse of the frame rate.
+cylindrical obstacle. The avoidance maneuver is described as a se-           Therefore, ts = 66 ms, since images are rendered at 15 Hz. Also
+quence of two motion primitives consisting of pure rolling and pure          similarly to Falanga et al. [4], we select as sensing range s for our
+acceleration. Both primitives are executed with maximum motor in-            stereo camera the range at which the depth uncertainty because of
+puts. Concretely, we treat the time required to reorient the quadrotor as    triangulation is below 20% of the actual depth. Using this definition
+additional latency in the system, which can be computed by                   and the parameters of our simulated stereo camera ( VGA resolution,
+                                    s                                        baseline of 0.1 m, and focal length of 4 mm), we compute a sensing
+                             trot =
+                                       2φJ
+                                            ,                         (9)    range of s = 6 m. Table S2 summarizes all the variables of the problem.
+                                      Tmax
+                                                                                 Using these values, we derive the theoretical maximum speed for
+with J being the moment of inertia, Tmax the maximum torque the
+                                                                             each method by considering their processing latency tp (c.f. section C)
+quadrotor can produce, and φ the desired roll angle. As the roll angle
+                                                                             and optimizing Equation 11 according to the free variable φ. Table S3
+becomes a decision variable itself in this setting, we identify the best
+                                                                             presents the results of the optimization. Note that this approxima-
+roll angle by maximizing the speed that still allows successful avoid-
+                                                                             tion does not account for the fact that the quadrotor platform already
+ance. Assuming that the quadrotor oriented at a roll angle φ accelerates
+                                                                             performs some lateral acceleration during the rotation phase.
+with full thrust, its lateral position plat can be described by
+                                  1
+                     plat (t) =     sin φ · cmax · t2 ,              (10)    S6. METROPOLIS-HASTINGS SAMPLING
+                                  2
+where cmax denotes the maximum mass-normalized thrust of the plat-           In statistics, the Metropolis-Hastings (M-H) algorithm [41] is used to
+form. Solving this equation for t and setting plat = robs allows to          sample a distribution P(w) which can’t be directly accessed. To gener-
+formulate a maximum linear speed that still allows successful avoid-         ate the samples, the M-H algorithm requires a score function d(w) pro-
+ance when considering the sensing range s, the combined radius of            portional to P(w). RequiringR d(w) ∝ P(w) waives the need to find the
+the obstacle and the drone robs , the sensing latency ts , the processing    normalization factor Z = w d(w) such that P(w) = Z1 d(w), which
+latency tp , i.e. the time to convert an observation into motor commands,    can’t be easily calculated for high-dimensional spaces. Metropolis-
+and the latency introduced to reorient the platform trot :                   Hastings is a Markov Chain Monte Carlo sampling method [54]. There-
+                                                                             fore, it generates samples by constructing a Markov chain that has the
+                                          s                                  desired distribution as its equilibrium distribution. In this Markov
+                vmax =                        q                .     (11)
+                          ts + tp + trot +           2robs
+                                                  sin φ·cmax
+                                                                             chain, the next sample wt+1 comes from a distribution t(wt+1 |wt ),
+                                                                             referred to as transition model, which only depends on the current
+   Inserting 9 into 11 we can identify φ that maximizes vmax . In our        sample wt . The transition model t(wt+1 |wt ) is generally a pre-defined
+study case, we avoid a pole with diameter 1.5 m and model the drone          parametric distribution, e.g. a Gaussian. The next sample wt+1 is then
+as a sphere with diameter 0.4 m. Therefore, the combined radius of           accepted and used for the next iteration, or it is rejected, discarded, and
+the obstacle and drone is robs = 0.95 m. In addition, we set cmax =          the current sample wt is re-used. Specifically, the sample is accepted
+35.3 m s−2 , J = 0.007 kg m−2 . Similarly to Falanga et al. [4], we          with probability equal to
+define the sensing latency as the worst-case time between the quadrotor
+being closer than the sensing range s to the obstacle and an image
+                                                                                                                                               
+                                                                                                  d ( w t +1 )                P ( w t +1 )
+containing the obstacle being rendered and provided to the navigation                  α = min 1,                    = min 1,                         .       (12)
+                                                                                                    d ( wt )                   P ( wt )
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                University of Zurich and Intel   21
+
+
+Therefore, M-H always accepts a sample with a higher score than its
+predecessor. However, the move to a sample with a smaller score
+will sometimes be rejected, and the higher the drop in score α1 , the
+smaller the probability of acceptance. Therefore, many samples come
+from the high-density regions of P(w), while relatively few from the
+low-density regions. Roberts et. al [55] have shown that under the mild
+condition that
+                     α > 0 ∀ w t , w t +1 ∈ W ,                    (13)
+P̂(w) will asymptotically converge to the target distribution P(w). Ac-
+cording to Eq. 13, the probability of accepting a sample with lower
+score than its predecessor is always different from zero, which implies
+that the method will not ultimately get stuck into a local extremum.
+Intuitively, this is why the empirical sample distribution P̂(w) ap-
+proximates the target distribution P(w). In contrast to other Monte
+Carlo statistical methods, e.g. importance sampling, the MH algorithm
+tend to suffer less from the curse of dimensionality and are therefore
+preferred for sampling in high-dimensional spaces [55].
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                 University of Zurich and Intel   22
+
+
+
+
+ A Forest
+
+
+
+
+ B Objects                                                                                     C Narrow Gap
+
+
+
+
+ D Disaster
+
+
+
+
+ E City Street
+
+
+
+
+Fig. S4. Simulation Environments. The selected environments are challenging since they contain obstacles with complex geometry or narrow
+passages(C). Despite training only in simulated forests (A) and artificial environments with obstacles of convex shapes (B), our approach gener-
+alizes zero-shot to complex disaster zones (D) and urban environments (E). An illustration of the simulation environments can also be found in
+Movie S2.
+ Research Article: Science Robotics Vol. 6, Issue 59, 2021                                                   University of Zurich and Intel   23
+
+
+
+
+Fig. S5. Taxonomy of existing approaches for drone navigation in challenging and cluttered environments. Approaches are ordered with
+respect to the required prior knowledge about the environment and the maximum agility they achieve.
+
+
+
+
+                      (a) Without global planning                                                (b) With global planning
+
+
+
+
+Fig. S6. Influence of global planning on the sampled trajectories. Sampling around the raw reference trajectory (in red) strictly limits the
+expert’s sight to the immediate horizon (a). Conversely, sampling around a global collision-free trajectory (in green) results in a bias toward
+obstacle-free regions even beyond the immediate horizon (b). Best viewed in color.
+

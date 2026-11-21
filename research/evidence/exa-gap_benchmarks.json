@@ -1,0 +1,261 @@
+{
+  "query": {
+    "query": "open source UAV autonomous navigation benchmarks AvoidBench FlightBench FlightForge Aerial Gym Simulator OmniDrones AirGym SimpleFlight",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "35d710d51c5243cd6a1fb8dac76ac178",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/tudelft/AvoidBench",
+        "title": "tudelft/AvoidBench",
+        "url": "https://github.com/tudelft/AvoidBench",
+        "highlights": [
+          "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotor.\n...\nThis work is based on [Flightmare](https://github.com/uzh-rpg/flightmare). In this project, we propose AvoidBench as a benchmarking suite for evaluating the performance of vision-based obstacle avoidance algorithms. We choose Flightmare as the basic backbone of AvoidBench, because it is lighter and can achieve higher simulation speed than Airsim. Based on Flightmare, we have for now built two simulation scenes for benchmarking: a forest environment and an indoor environment. It is easy to change the distribution of obstacles and complexity of map so that researchers can reveal the potential of drones using their algorithms. And we propose a complete set of metrics which contain the flight performance and environment complexity to evaluate the obstacle avoidance algorithms.\n\n \n \n \n\n \n \n \n\n# 2. Installation\n...\n, including: [Agile-Autonomy](https://github.com/uzh-rpg/agile_autonomy)(learning-based), [Ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner)(optimization-based), and [MBPlanner](https://github.com/ntnu-arl/mbplanner_ros)(motion-primitive-based, the original version is designed for explorationm, we changed the exploration gain to the distance of current point to the goal point so that the drone can always fly to a fixed goal). Here is the testing video:\n \n \n \n\n# 7."
+        ]
+      },
+      {
+        "id": "https://github.com/thu-uav/FlightBench",
+        "title": "thu-uav/FlightBench",
+        "url": "https://github.com/thu-uav/FlightBench",
+        "publishedDate": "2024-05-29T12:58:20.000Z",
+        "author": "thu-uav",
+        "highlights": [
+          "# FlightBench\n...\nFlightBench is an open-source comprehensive benchmark for planning methods on ego-vision-based navigation for quadrotors built on Flightmare. FlightBench provides cusomizable test scenarios (including three quantitative task difficulty metrics), representative planning algorithms, and comprehensive evaluation metrics. FlightBench also integrates the MAPPO algorithm, facilitating the training of RL-based planning methods.\n...\n{yu20\n...\n={FlightBench:\n...\n| repository |\n...\n| --- |\n| flightmare | MIT |\n|\n...\nGPLv3 |\n| ego-planner | GPLv3 |\n| TGK-Planner | GPLv3 |\n| sb_min_time_quadrotor_planning | GPLv3 |\n| agile_autonomy | GPLv3 |"
+        ],
+        "image": "https://opengraph.githubassets.com/83a7c86177fb087f22ccb2f345af393accf0a198dceccf04ff86fb4367959878/thu-uav/FlightBench"
+      },
+      {
+        "id": "https://github.com/emNavi/AirGym",
+        "title": "emNavi/AirGym: A high-performance drone deep ...",
+        "url": "https://github.com/emNavi/AirGym",
+        "highlights": [
+          "AirGym is an open souce Python quadrotor simulator based on IsaacGym, a part of AirGym series Sim-to-Real workding flow. It provides a high-fidelity dynamics and Deep Reinforcement Learning (DRL) framework for quadrotor robot learning research. Furthermore, we also provide toolkits for transferring policy from AirGym simulator to the real quadrotor [emNavi-X152b](https://emnavi.tech/droneKit/#x152b%E5%B9%B3%E5%8F%B0), making Sim-to-Real possible. The documentation website is at https://emnavi.tech/AirGym/.\n\n \n \n \n\nThe Sim-to-Real working flow of AirGym series is broken down into four parts:\n...\n- **[Strict Alignment with PX4 Logic]()**: Flight control in AirGym is supported by [rlPx4Controller](https://github.com/emNavi/rlPx4Controller). It maintains strict control logic alignment with the open-source PX4, for a better Sim-to-Real.\n...\n- **[Multiple Control Modes]()**: AirGym provides various control modes including PY (position & yaw), LV (\n...\n& yaw), CTA (collective thrust & attitude angle),\n...\nBR (collective thrust & body rate), SRT (\n...\n-rotor thrust).\n...\n- **[\n...\n-to-Real Toolkits\n...\n**: AirGym\n...\nReal and provide\n...\nAlso, we thanks\n...\nexcellent work by Aerial Gym Simulator licensed(https://\n...\n_simulator) under the BSD 3-Clause\n...\nGym is modified and greatly improved upon Aerial Gym Simulator\n...\nfor Sim-to-Real task."
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2406.05687v1",
+        "title": "FlightBench: A Comprehensive Benchmark of \n Spatial Planning Methods for Quadrotors",
+        "url": "https://arxiv.org/html/2406.05687v1",
+        "highlights": [
+          "Spatial planning in cluttered environments is crucial for mobile systems, particularly agile quadrotors. Existing methods, both optimization-based and learning-based, often focus only on success rates in specific environments and lack a unified platform with tasks of varying difficulty. To address this, we introduce FlightBench, the first comprehensive open-source benchmark for 3D spatial planning on quadrotors, comparing classical optimization-based methods with emerging learning-based approaches. We also develop a suite of task difficulty metrics and evaluation metrics to quantify the characteristics of tasks and the performance of planning algorithms. Extensive experiments demonstrate the significant advantages of learning-based methods for high-speed flight and real-time planning, while highlighting the need for improvements in complex conditions, such as navigating large corners or dealing with view occlusion. We also conduct analytical experiments to justify the effectiveness of our proposed metrics. Additionally, we show that latency randomization effectively enhances performance in real-world deployments. The source code is available at https://github.com/thu-uav/FlightBench.\n...\nexist for non-sensor\n...\nplanning algorithms, such as OMPL\n...\nand PathBench [32]. OMPL and Bench-MR primarily focus on sampling-based planning\n...\nmethods, most benchmarks\n...\n. MRBP"
+        ],
+        "image": "https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png"
+      },
+      {
+        "id": "https://github.com/ntnu-arl/aerial_gym_simulator",
+        "title": "ntnu-arl/aerial_gym_simulator: Aerial Gym Simulator",
+        "url": "https://github.com/ntnu-arl/aerial_gym_simulator",
+        "highlights": [
+          "The Aerial Gym Simulator is a high-fidelity physics-based simulator for training Micro Aerial Vehicle (MAV) platforms such as multirotors to learn to fly and navigate cluttered environments using learning-based methods. The environments are built upon the underlying [NVIDIA Isaac Gym](https://developer.nvidia.com/isaac-gym) simulator. We offer aerial robot models for standard planar quadrotor platforms, as well as fully-actuated platforms and multirotors with arbitrary configurations. These configurations are supported with low-level and high-level geometric controllers that reside on the GPU and provide parallelization for the simultaneous control of thousands of multirotors.\n...\nThis is the *second release* of the simulator and includes a variety of new features and improvements. Task definition and environment configuration allow for fine-grained customization of all the environment entities without having to deal with large monolithic environment files. A custom rendering framework allows obtaining depth, and segmentation images at high speeds and can be used to simulate custom sensors such as LiDARs with varying properties. The simulator is open-source and is released under the [BSD-3-Clause License](https://opensource.org/licenses/BSD-3-Clause).\n...\nin under a minute and vision-based navigation policies in under an hour. Extensive examples are provided to allow users to"
+        ]
+      },
+      {
+        "id": "https://ar5iv.labs.arxiv.org/html/2301.07430",
+        "title": "[2301.07430] AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors",
+        "url": "https://ar5iv.labs.arxiv.org/html/2301.07430",
+        "highlights": [
+          "In this article, we propose AvoidBench as a benchmarking suite for evaluating the performance of vision-based obstacle avoidance algorithms. We choose Flightmare as the basic backbone of AvoidBench, because it is lighter and can achieve higher simulation speed than Airsim. Based on Flightmare, we have for now built two simulation scenes for benchmarking: a forest environment and an indoor environment. It is easy to change the distribution of obstacles and complexity of map so that researchers can reveal the potential of drones using their algorithms. And we propose a complete set of metrics which contain the flight performance and environment complexity to evaluate the obstacle avoidance algorithms.\n...\n, AvoidBench has the following three contributions: (1) We have developed a benchmark with high-fidelity visual scenes that allows to easily and objectively compare different algorithms in different conditions. The benchmark has been validated with real-world experiments; (2) Expanding upon Nous et al.\u2019s work [14], a complete set of evaluation metrics including the flight performance and environment complexity is proposed; (3) Different types of obstacle avoidance algorithms including learning-based, optimization-based and motion-primitive-based are tested in AvoidBench and the performance of each algorithm is evaluated objectively both in simulation and the real world; (4) We"
+        ],
+        "image": "https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png"
+      },
+      {
+        "id": "https://github.com/SIME-LAB/swarm",
+        "title": "SIME-LAB/swarm",
+        "url": "https://github.com/SIME-LAB/swarm",
+        "publishedDate": "2026-05-28T00:00:00.000Z",
+        "highlights": [
+          "## README\n\n \n\n \n \n \n\n Swarm \u2014 Autonomous Drone Navigation \n\n \n The open benchmark where AI learns to fly. \n Train a neural network to navigate drones through 3D worlds it has never seen \u2014 \n using nothing but a depth camera and raw flight state. No maps. No rules. No shortcuts.\n...\n**Swarm changes that.** It's an open benchmark that puts every model on equal footing: 1,000 procedurally generated worlds, containerized evaluation, and a public [leaderboard](https://swarm124.com/benchmark). No data leaks, no memorization \u2014 just raw skill.\n...\n128\u00d7128 image \n \u00a0\u2192\u00a0 Your Model \u00a0\u2192\n...\nFlight Commands [dir_x, dir_y, dir_z, speed, yaw] \n \u00a0\u2192\u00a0 Drone \n \n \n State Vector position \u00b7 velocity \u00b7 orientation \n \n \n\n \n\nYour model receives a depth image and flight state at 50 Hz. It outputs 5D velocity commands. The drone has 60 seconds to navigate to a landing platform and touch down safely.\n...\nThe models trained here don't stay in simulation.\n\n \n \n \n \n \n\n**[Langostino](https://github.com/swarm-subnet/Langostino)** is the open-source drone we built to prove it \u2014 ROS2, Raspberry Pi, INAV, 3D-printed parts. Full assembly guide and bill of materials included. Anyone can build one.\n\n \n \n \n \n \n\n \n \n \n \n \u00a0\n \n \n \n \n\n \n Train in Simulation \u00a0\u2192\u00a0 Compete on the Leaderboard \u00a0\u2192\u00a0 Deploy on Real Hardware \n \n\n ( back to top)"
+        ]
+      },
+      {
+        "id": "https://github.com/FP-Flight/AirGym",
+        "title": "emNavi/AirGym",
+        "url": "https://github.com/FP-Flight/AirGym",
+        "publishedDate": "2024-03-02T16:36:33.000Z",
+        "highlights": [
+          "AirGym is an open souce Python quadrotor simulator based on IsaacGym, a part of AirGym series Sim-to-Real workding flow. It provides a high-fidelity dynamics and Deep Reinforcement Learning (DRL) framework for quadrotor robot learning research. Furthermore, we also provide toolkits for transferring policy from AirGym simulator to the real quadrotor [emNavi-X152b](https://emnavi.tech/droneKit/#x152b%E5%B9%B3%E5%8F%B0), making Sim-to-Real possible. The documentation website is at https://emnavi.tech/AirGym/.\n\n \n \n \n\nThe Sim-to-Real working flow of AirGym series is broken down into four parts:\n...\n- **[Strict Alignment\n...\nNavi/rlPx4Controller\n...\nAirGym provides four basic tasks Hovering, Balloon, Tracking, Avoid, and a higher level task Planning. All tasks are implemented on [X152b](https://emnavi.tech/droneKit/#x152b%E5%B9%B3%E5%8F%B0) quadrotor frame since this is our Sim-to-Real device.\n...\na random generated\n...\nlike area, using only depth information as input\n...\nNo global information is\n...\nin a GNSS-deny environment\n...\nAlso, we thanks the excellent work by Aerial Gym Simulator licensed(https://github.com/ntnu-arl\n...\naerial_gym_simulator) under the BSD 3-Clause License. AirGym is modified and greatly improved upon Aerial Gym Simulator especially for Sim-to-Real task."
+        ]
+      },
+      {
+        "id": "https://github.com/microsoft/AirSim",
+        "title": "microsoft/AirSim",
+        "url": "https://github.com/microsoft/AirSim",
+        "highlights": [
+          "Open source simulator for autonomous vehicles built on Unreal Engine / Unity, from Microsoft AI & Research\n...\n# Welcome to AirSim \n \nAirSim is a simulator for drones, cars and more, built on [Unreal Engine](https://www.unrealengine.com/) (we now also have an experimental [Unity](https://unity3d.com/) release). It is open-source, cross platform, and supports software-in-the-loop simulation with popular flight controllers such as PX4 & ArduPilot and hardware-in-loop with PX4 for physically and visually realistic simulations. It is developed as an Unreal plugin that can simply be dropped into any Unreal environment. Similarly, we have an experimental release for a Unity plugin. \n \nAirSim was conceived and created by [Shital Shah](https://shital.com) with PX4 and hardware-in-loop code contributed by [Chris Lovett](https://lovettsoftware.com/). \n \nOur goal is to develop AirSim as a platform for AI research to experiment with deep learning, computer vision and reinforcement learning algorithms for autonomous vehicles. For this purpose, AirSim also exposes APIs to retrieve data and control vehicles in a platform independent way. \n \n**Check out the quick 1.5 minute demo** \n \nDrones in AirSim \n \n[![AirSim Drone Demo Video](docs/images/demo_video.png)](https://youtu.be/-WfTr1-OBGQ)\n...\n](docs/\n...\n_demo_video.png)](https://youtu.be/\n...\nz1X3UNM5\n...\n## How to Get It \n \n###"
+        ]
+      },
+      {
+        "id": "https://research.tudelft.nl/en/publications/avoidbench-a-high-fidelity-vision-based-obstacle-avoidance-benchm/",
+        "title": "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors\n      -  TU Delft Research Portal",
+        "url": "https://research.tudelft.nl/en/publications/avoidbench-a-high-fidelity-vision-based-obstacle-avoidance-benchm/",
+        "publishedDate": "2024-02-05T09:29:57.000Z",
+        "highlights": [
+          "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors - TU Delft Research Portal\n...\n# AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors\n...\nObstacle avoidance is an essential topic in the field of autonomous drone research. When choosing an avoidance algorithm, many different options are available, each with their advantages and disadvantages. As there is currently no consensus on testing methods, it is quite challenging to compare the performance between algorithms. In this paper, we propose AvoidBench, a benchmarking suite which can evaluate the performance of vision-based obstacle avoidance algorithms by subjecting them to a series of tasks. Thanks to the high fidelity of multi-rotors dynamics from RotorS and virtual scenes of Unity3D, AvoidBench can realize realistic simulated flight experiments. Compared to current drone simulators, we propose and implement both performance and environment metrics to reveal the suitability of obstacle avoidance algorithms for environments of different complexity. To illustrate AvoidBench's usage, we compare three algorithms: Ego-planner, MBPlanner, and Agile-autonomy. The trends observed are validated with real-world obstacle avoidance experiments. Code is available at: https://github.com/tudelft/AvoidBench\n...\nFinal published version\n...\n39 MB"
+        ],
+        "image": "https://research.tudelft.nl/skin/headerImage/"
+      },
+      {
+        "id": "https://exa.ai/library/publication/nhdylmdvjqr",
+        "title": "FlightForge: Advancing UAV Research with Procedural Generation of High-Fidelity Simulation and Integrated Autonomy",
+        "url": "https://doi.org/10.1109/icra55743.2025.11127704",
+        "publishedDate": "2025-05-19T00:00:00.000Z",
+        "author": "David \u010capek, Jan Hrn\u010d\u00ed\u0159, Tom\u00e1\u0161 B\u00e1\u010da, Jakub Jirkal, Vojt\u011bch Von\u00e1sek, Robert P\u011bni\u010dka, et al.",
+        "highlights": [
+          "play a crucial role in the development and testing of autonomous systems, particularly in the realm of Uncrewed Aerial Vehicles (UAV). However, existing simulators often lack high-level autonomy, hindering their immediate applicability to complex tasks such as autonomous navigation in unknown environments. This limitation stems from the challenge of integrating realistic physics, photorealistic rendering, and diverse sensor modalities into a single simulation environment. At the same time, the existing photorealistic UAV simulators use mostly hand-crafted environments with limited environment sizes, which prevents the testing of long-range missions. This restricts the usage of existing simulators to only low-level tasks such as control and collision avoidance. To this end, we propose the novel FlightForge UAV opensource simulator. FlightForge offers advanced rendering capabilities, diverse control modalities, and, foremost, procedural generation of environments. Moreover, the simulator is already integrated with a fully autonomous UAV system capable of long-range flights in cluttered unknown environments. The key innovation lies in novel procedural environment generation and seamless integration of high-level autonomy into the simulation environment. Experimental results demonstrate superior sensor rendering capability compared to existing simulators, and also the ability of"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/nhdylmdvjqr",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "FlightForge: Advancing UAV Research with Procedural Generation of High-Fidelity Simulation and Integrated Autonomy",
+              "year": 2025,
+              "date": "2025-05-19",
+              "type": null,
+              "language": "en",
+              "citationCount": 2,
+              "authors": [
+                {
+                  "name": "David \u010capek",
+                  "id": null
+                },
+                {
+                  "name": "Jan Hrn\u010d\u00ed\u0159",
+                  "id": null
+                },
+                {
+                  "name": "Tom\u00e1\u0161 B\u00e1\u010da",
+                  "id": null
+                },
+                {
+                  "name": "Jakub Jirkal",
+                  "id": null
+                },
+                {
+                  "name": "Vojt\u011bch Von\u00e1sek",
+                  "id": null
+                },
+                {
+                  "name": "Robert P\u011bni\u010dka",
+                  "id": null
+                },
+                {
+                  "name": "Martin Saska",
+                  "id": null
+                }
+              ],
+              "referenceCount": 18,
+              "abstract": "Robotic simulators play a crucial role in the development and testing of autonomous systems, particularly in the realm of Uncrewed Aerial Vehicles (UAV). However, existing simulators often lack high-level autonomy, hindering their immediate applicability to complex tasks such as autonomous navigation in unknown environments. This limitation stems from the challenge of integrating realistic physics, photorealistic rendering, and diverse sensor modalities into a single simulation environment. At the same time, the existing photorealistic UAV simulators use mostly hand-crafted environments with limited environment sizes, which prevents the testing of long-range missions. This restricts the usage of existing simulators to only low-level tasks such as control and collision avoidance. To this end, we propose the novel FlightForge UAV opensource simulator. FlightForge offers advanced rendering capabilities, diverse control modalities, and, foremost, procedural generation of environments. Moreover, the simulator is already integrated with a fully autonomous UAV system capable of long-range flights in cluttered unknown environments. The key innovation lies in novel procedural environment generation and seamless integration of high-level autonomy into the simulation environment. Experimental results demonstrate superior sensor rendering capability compared to existing simulators, and also the ability of autonomous navigation in almost infinite environments.",
+              "doi": "10.1109/icra55743.2025.11127704"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/5n8nslfpblk",
+        "title": "FlightForge: Advancing UAV Research with Procedural Generation of High-Fidelity Simulation and Integrated Autonomy",
+        "url": "https://doi.org/10.48550/arxiv.2502.05038",
+        "publishedDate": "2025-02-07T00:00:00.000Z",
+        "author": "David \u010capek, Jan Hrn\u010d\u00ed\u0159, Tom\u00e1\u0161 B\u00e1\u010da, Jakub Jirkal, Vojt\u011bch Von\u00e1sek, Robert P\u011bni\u010dka, et al.",
+        "highlights": [
+          "play a crucial role in the development and testing of autonomous systems, particularly in the realm of Uncrewed Aerial Vehicles (UAV). However, existing simulators often lack high-level autonomy, hindering their immediate applicability to complex tasks such as autonomous navigation in unknown environments. This limitation stems from the challenge of integrating realistic physics, photorealistic rendering, and diverse sensor modalities into a single simulation environment. At the same time, the existing photorealistic UAV simulators use mostly hand-crafted environments with limited environment sizes, which prevents the testing of long-range missions. This restricts the usage of existing simulators to only low-level tasks such as control and collision avoidance. To this end, we propose the novel FlightForge UAV opensource simulator. FlightForge offers advanced rendering capabilities, diverse control modalities, and, foremost, procedural generation of environments. Moreover, the simulator is already integrated with a fully autonomous UAV system capable of long-range flights in cluttered unknown environments. The key innovation lies in novel procedural environment generation and seamless integration of high-level autonomy into the simulation environment. Experimental results demonstrate superior sensor rendering capability compared to existing simulators, and also the ability of"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/5n8nslfpblk",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "FlightForge: Advancing UAV Research with Procedural Generation of High-Fidelity Simulation and Integrated Autonomy",
+              "year": 2025,
+              "date": "2025-02-07",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "David \u010capek",
+                  "id": null
+                },
+                {
+                  "name": "Jan Hrn\u010d\u00ed\u0159",
+                  "id": null
+                },
+                {
+                  "name": "Tom\u00e1\u0161 B\u00e1\u010da",
+                  "id": null
+                },
+                {
+                  "name": "Jakub Jirkal",
+                  "id": null
+                },
+                {
+                  "name": "Vojt\u011bch Von\u00e1sek",
+                  "id": null
+                },
+                {
+                  "name": "Robert P\u011bni\u010dka",
+                  "id": null
+                },
+                {
+                  "name": "Martin Saska",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Robotic simulators play a crucial role in the development and testing of autonomous systems, particularly in the realm of Uncrewed Aerial Vehicles (UAV). However, existing simulators often lack high-level autonomy, hindering their immediate applicability to complex tasks such as autonomous navigation in unknown environments. This limitation stems from the challenge of integrating realistic physics, photorealistic rendering, and diverse sensor modalities into a single simulation environment. At the same time, the existing photorealistic UAV simulators use mostly hand-crafted environments with limited environment sizes, which prevents the testing of long-range missions. This restricts the usage of existing simulators to only low-level tasks such as control and collision avoidance. To this end, we propose the novel FlightForge UAV open-source simulator. FlightForge offers advanced rendering capabilities, diverse control modalities, and, foremost, procedural generation of environments. Moreover, the simulator is already integrated with a fully autonomous UAV system capable of long-range flights in cluttered unknown environments. The key innovation lies in novel procedural environment generation and seamless integration of high-level autonomy into the simulation environment. Experimental results demonstrate superior sensor rendering capability compared to existing simulators, and also the ability of autonomous navigation in almost infinite environments.",
+              "doi": "10.48550/arxiv.2502.05038"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://ar5iv.labs.arxiv.org/html/2502.05038",
+        "title": "[2502.05038] FlightForge: Advancing UAV Research with Procedural Generation of High-Fidelity Simulation and Integrated Autonomy",
+        "url": "https://ar5iv.labs.arxiv.org/html/2502.05038",
+        "highlights": [
+          "play a crucial role in the development and testing of autonomous systems, particularly in the realm of Uncrewed Aerial Vehicles (UAV). However, existing simulators often lack high-level autonomy, hindering their immediate applicability to complex tasks such as autonomous navigation in unknown environments. This limitation stems from the challenge of integrating realistic physics, photorealistic rendering, and diverse sensor modalities into a single simulation environment. At the same time, the existing photorealistic UAV simulators use mostly hand-crafted environments with limited environment sizes, which prevents the testing of long-range missions. This restricts the usage of existing simulators to only low-level tasks such as control and collision avoidance. To this end, we propose the novel FlightForge UAV open-source simulator. FlightForge offers advanced rendering capabilities, diverse control modalities, and, foremost, procedural generation of environments. Moreover, the simulator is already integrated with a fully autonomous UAV system capable of long-range flights in cluttered unknown environments. The key innovation lies in novel procedural environment generation and seamless integration of high-level autonomy into the simulation environment. Experimental results demonstrate superior sensor rendering capability compared to existing simulators, and also the ability of"
+        ],
+        "image": "https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2502.05038v1",
+        "title": "FlightForge: Advancing UAV Research with Procedural ...",
+        "url": "https://arxiv.org/html/2502.05038v1",
+        "publishedDate": "2025-02-07T00:00:00.000Z",
+        "highlights": [
+          "play a crucial role in the development and testing of autonomous systems, particularly in the realm of Uncrewed Aerial Vehicles (UAV). However, existing simulators often lack high-level autonomy, hindering their immediate applicability to complex tasks such as autonomous navigation in unknown environments. This limitation stems from the challenge of integrating realistic physics, photorealistic rendering, and diverse sensor modalities into a single simulation environment. At the same time, the existing photorealistic UAV simulators use mostly hand-crafted environments with limited environment sizes, which prevents the testing of long-range missions. This restricts the usage of existing simulators to only low-level tasks such as control and collision avoidance. To this end, we propose the novel FlightForge UAV open-source simulator. FlightForge offers advanced rendering capabilities, diverse control modalities, and, foremost, procedural generation of environments. Moreover, the simulator is already integrated with a fully autonomous UAV system capable of long-range flights in cluttered unknown environments. The key innovation lies in novel procedural environment generation and seamless integration of high-level autonomy into the simulation environment. Experimental results demonstrate superior sensor rendering capability compared to existing simulators, and also the ability of"
+        ],
+        "image": "https://arxiv.org/html/2502.05038v1/extracted/6184115/fig/tomas_screenshot/forest_onbord.jpg"
+      },
+      {
+        "id": "https://github.com/swarm-subnet/swarm/tree/641973900862ddc1aa0edf5ce3e7d7821c8fe8ac",
+        "title": "GitHub - swarm-subnet/swarm at 641973900862ddc1aa0edf5ce3e7d7821c8fe8ac \u00b7 GitHub",
+        "url": "https://github.com/swarm-subnet/swarm/tree/641973900862ddc1aa0edf5ce3e7d7821c8fe8ac",
+        "publishedDate": "2025-06-19T07:07:59.000Z",
+        "author": "swarm-subnet",
+        "highlights": [
+          "# Swarm \u2014 Autonomous Drone Navigation\n...\nThe open benchmark where AI learns to fly. Train a neural network to navigate drones through 3D worlds it has never seen \u2014 using nothing but a depth camera and raw flight state. No maps. No rules. No shortcuts.\n...\nSwarm changes that. It's an open benchmark that puts every model on equal footing: 1,000 procedurally generated worlds, containerized evaluation, and a public leaderboard. No data leaks, no memorization \u2014 just raw skill.\n...\nand a state vector\n...\n- It outputs\n...\ncommands to fly the drone\n...\n0 seconds to navigate to a landing platform\n...\nacross cities, mountains, warehouses,\n...\nhas never seen\n...\nThe best model wins. That's it. Powered by the Bittensor network (Subnet 124).\n...\nEvery benchmark run\n...\ntypes test completely different navigation skills \u2014\n...\nLangostino is the open-source drone we built to prove it \u2014 ROS2, Raspberry Pi, INAV, 3D-printed parts. Full assembly guide and bill of materials included. Anyone can build one.\n...\nYour model receives a depth image and flight state at 50 Hz. It outputs 5D velocity commands. The drone has 60 seconds to navigate to a landing platform and touch down safely.\n...\n1,00\n...\n\u2014 you need consistency. New\n...\nmust pass a screening gate (>\n...\nbefore running the full benchmark.\n...\nSwarm\u2014 where AI learns to fly. Subnet 124 on Bittensor"
+        ],
+        "image": "https://opengraph.githubassets.com/8bffd6990b731d6cc5913f5e64e1eeb9f32c89b39a1eceb0d3e8cd1f50ae3511/swarm-subnet/swarm",
+        "favicon": "https://github.com/fluidicon.png"
+      }
+    ],
+    "searchTime": 1273.2,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

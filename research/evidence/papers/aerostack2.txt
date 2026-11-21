@@ -1,0 +1,506 @@
+                                              Aerostack2: A Software Framework for Developing Multi-robot Aerial
+                                                                          Systems
+                                                                     Miguel Fernandez-Cortizas1 , Martin Molina1,2 , Pedro Arias-Perez1 ,
+                                                                       Rafael Perez-Segui1 , David Perez-Saura1 , Pascual Campoy1
+
+                                            Abstract— The development of autonomous aerial systems,                   in a particular application, where relying on well-tested
+                                        particularly for multi-robot configurations, is a complex                     and robust algorithms is critical to enabling developers to
+                                        challenge requiring multidisciplinary expertise. Unlike ground
+                                        robotics, aerial robotics has seen limited standardization,                   focus on innovation and customization rather than software
+                                        leading to fragmented development efforts. To address this                    engineering.
+
+
+
+
+arXiv:2303.18237v2 [cs.RO] 3 Sep 2024
+                                        gap, we introduce Aerostack2, a comprehensive, open-source                       To address these challenges, this paper proposes a collabo-
+                                        ROS 2 based framework designed for creating versatile
+                                        and robust multi-robot aerial systems. Aerostack2 features                    rative framework for aerial robotics that brings users and de-
+                                        platform independence, a modular plugin architecture, and                     velopers together to work toward a common goal. We present
+                                        behavior-based mission control, enabling easy customization                   Aerostack2, a ROS 2-based framework designed to facilitate
+                                        and integration across various platforms. In this paper, we
+                                        detail the full architecture of Aerostack2, which has been                    the development of complex autonomous aerial systems. By
+                                        tested with several platforms in both simulation and real                     building a solid architecture that supports versatile and robust
+                                        flights. We demonstrate its effectiveness through multiple                    aerial systems, Aerostack2 aims to enhance research in aerial
+                                        validation scenarios, highlighting its potential to accelerate
+                                        innovation and enhance collaboration in the aerial robotics                   robotics and accelerate its application in various industrial
+                                        community.                                                                    domains. This paper presents an overview of our proposed
+                                                                                                                      framework and discusses its potential impact in the field.
+                                        Source code: https://github.com/aerostack2/aerostack2
+                                        Documentation: https://aerostack2.github.io/                                     The Aerostack2 software framework presented represents
+                                                                                                                      a new iteration designed from scratch and built on the
+                                                                 I. I NTRODUCTION                                     foundation laid by its predecessor, Aerostack [3]. Aerostack2
+                                           Developing autonomous aerial systems from scratch is a                     has been developed by learning from the strengths and weak-
+                                        challenging task that requires extensive expertise in many                    nesses of its predecessor, which has been used successfully
+                                        different areas, such as aerodynamics, control systems, sen-                  in our research lab for over six years, contributing not only
+                                        sor integration, or AI algorithms. This is a common problem                   to academic research, but also to industrial projects and
+                                        in the robotics field, so in recent years the robotics commu-                 international robotics competitions such as IARC2014 [4],
+                                        nity has witnessed the development of several software stacks                 IMAV2016 [5] or MBZIRC 2020 [6].
+                                        focused on the control and guidance of ground robots and                      Contributions
+                                        articulated robots. Navigation2 [1] and MoveIt [2] are two
+                                                                                                                        In this work, we present Aerostack2 a novel framework for
+                                        examples that have gained widespread adoption. However,
+                                                                                                                      designing Aerial Robotics systems in an easy and versatile
+                                        the same level of collaboration and standardization has not
+                                                                                                                      way. The main contributions of our work, compared with
+                                        been observed in the field of aerial robotics. Even when
+                                                                                                                      other solutions are:
+                                        frameworks for aerial systems have been developed, they
+                                        often have a narrow focus, like low-level control or working                    • Platform Independence: Offers platform-agnostic de-
+
+                                        on a concrete platform, which limits their usefulness in                           sign, facilitating seamless integration across various
+                                        broader applications. This fragmentation of effort can make it                     drones and simulators, enhancing adaptability and in-
+                                        difficult to take advantage of the strengths of each framework                     teroperability.
+                                                                                                                        • Behavior-based mission definition and monitoring:
+                                           1 Computer Vision and Aerial Robotics Group (CVAR), Centre
+                                                                                                                           Implements behavior-based logic for mission control,
+                                        for Automation and Robotics (C.A.R.), Universidad Politécnica de                  providing a structured approach for task formulation and
+                                        Madrid (UPM-CSIC), 28006 Madrid, Spain. Correspondence e-mail:
+                                        miguel.fernandez.cortizas@upm.es                                                   execution monitoring.
+                                           2 Department of Artificial Intelligence, Universidad Politécnica de         • Plugin oriented architecture: Enables dynamic re-
+                                        Madrid (UPM), 28040 Madrid, Spain                                                  configuration and easy integration of new components,
+                                           This work has been supported by the project COPILOT ref.
+                                        Y2020\EMT6368, funded by Madrid Government under the R&D Synergic                  enhancing system adaptability and long-term maintain-
+                                        Projects Program. We acknowledge the support of the European Union                 ability.
+                                        through the Horizon Europe Project No. 101070254 CORESENSE. This                • Versatility: Serves as a versatile framework supporting
+                                        work has also been supported by the project INSERTION ref. ID2021-
+                                        127648OBC32 and the project RATEC ref: PDC2022-133643-C22 funded                   a modular architecture that allows users to easily cus-
+                                        by the Spanish Ministry of Science and Innovation. The work of the third           tomize or replace each module, providing flexibility for
+                                        author is supported by the Grant FPU20/07198 of the Spanish Ministry for           different application scenarios.
+                                        Universities. The work of the fifth author is supported by the Spanish Min-
+                                        istry of Science and Innovation under its Program for Technical Assistants      • Validation in different showcases: These contributions
+                                        PTA2021-020671.                                                                    are validated in a variety of environments, including
+     controlled laboratory settings and industrial simulations,   B. High-Level Frameworks for Aerial Robotics
+     demonstrating their reliability and suitability for real-
+                                                                     Among general purpose frameworks, we can find some so-
+     world use.
+                                                                  lutions, such as Aerostack [3], a ROS-based framework that
+                     II. R ELATED W ORK                           integrates various computational solutions such as computer
+   In order to control an unmanned aerial vehicle (UAV)           vision and motion planning, developed through extensive use
+autonomously, there are two complementary parts: the Flight       in our research lab. The MRS UAV system [13] is another
+Control Unit (FCU), systems that focus on low-level control       ROS-based system designed for onboard use with PX4 and
+of the aircraft, allowing it to fly stably, and the high-level    DJI compatible controllers, suitable for both indoor and out-
+control frameworks that are responsible for providing further     door applications, and designed for multi-robot experiments.
+autonomy to the vehicle, making decisions, and commanding         The UAV Abstraction Layer (UAL) [15] further standardizes
+the FCU to perform a specific task. Below, we will discuss        the interfaces of UAVs on different autopilots, simplifying
+these two parts of the state of the art in more detail.           higher-level algorithm development for both simulated and
+                                                                  real platforms.
+A. Programmable Flight Control Unit
+                                                                     For more specialized applications, Agilicious [8], is a
+   FCUs can be classified into two blocks: generic or             framework optimized for agile quadrotor flight. It features
+embedded, each presenting distinct advantages and limita-         onboard vision sensors, GPU-accelerated hardware, and a
+tions. Generic FCUs offer versatility, accommodating various      versatile software stack for real-time perception and control.
+frames and components for customizable configurations,            Similarly, the KumarRobotics flight stack [12] focuses on au-
+which is beneficial for developers. However, their integration    tonomous navigation in cluttered, GPS-denied environments,
+and calibration require technical expertise and time. Embed-      performing all sensing and computation onboard without
+ded FCUs, integrated into complete aerial platforms, provide      human intervention after launch.
+a user-friendly experience with pre-calibrated hardware for          In the realm of simulation and experimentation, Crazy-
+reliable performance. This simplicity suits users seeking         Choir [9] offers a ROS 2 toolbox for working with swarms
+ready-to-fly solutions, but may limit adaptability to new         of Crazyflie nano-quadrotors, enabling complex distributed
+technologies or specific needs.                                   tasks in both simulations and real-world experiments. Sim-
+ Flight Controller   Open Source   Simulation    Generic          ilarly, Crazyswarm2 [10], is a toolbox designed for a large
+ Pixhawk/PX4          OSH, OSS     SITL, HITL      ✓              swarm of Crazyflies flying in dense indoor formations,
+ Ardupilot               OSS       SITL, HITL      ✓              obtaining accurate flights for up to 50 drones. XTDrone [16]
+ Paparazzi            OSH, OSS     SITL, HITL      ✓              provides a comprehensive simulation platform for various
+ Crazyflie            OSH, OSS     SITL, HITL      ✗
+ DJI Matrice          Propietary      HITL         ✗              types of UAV, facilitating the transition from algorithm
+ Parrot               Propietary      SITL         ✗              testing in simulations to deployment in real UAVs. RotorS
+ Skydio               Propietary        -          ✗              [14] is another modular MAV simulation framework, de-
+   OSH: Open Source Hardware, OSS: Open Source Software,          signed for quick research integration and easy transition from
+   SITL: Software In The Loop, HITL: Hardware In The Loop.
+                                                                  simulation to real MAV applications.
+TABLE I: Comparison of relevant programmable flight sys-             Finally, the Generalized Autonomy Aviation System
+tems.                                                             (GAAS) [11] presents a simulation platform aimed at fully
+   In 2018 Ebeid et al. presented a survey of open-source         autonomous VTOL and multirotors. It uses lidar, HD map
+hardware and software comparing their main features [7].          relocalization, and path planning for robust autonomous
+In Table I some relevant flight controller projects are listed.   flight, including human-carrying applications, and integrates
+These projects may cover both hardware and software devel-        with national air traffic control systems.
+opment of these controllers. They range from Open Source             Table II compares some relevant characteristics of these
+Hardware (OSH) and Open Source Software (OSS) to pro-             open-source frameworks. The table shows that, while most
+prietary commercial controllers. Furthermore, most of them        frameworks are modular, only half are actively maintained.
+allow to simulate their behavior in a fully simulated way or      A limited number support ROS 2 as middleware, and even
+Software-in-the-Loop (SITL) or in a Hardware-in-the-Loop          fewer are designed for industrial use. Approximately half
+(HITL) way, where the autopilot code actually runs on the         of the frameworks support multi-agent operations, but multi-
+specific hardware of the controller. This makes it possible       frame and multi-platform capabilities are less common. Very
+to improve the validation of the systems created, leading to      few frameworks feature a plugin-oriented design, which
+more robust and reliable solutions.                               allows for easy addition of new components and supports
+   Although some flight controllers can be programmed to          dynamic reconfiguration of the system. Furthermore, testing
+perform simple autonomous tasks, such as waypoint naviga-         environments vary, with some frameworks tested only in sim-
+tion and basic obstacle avoidance, they lack the capabilities     ulations, while others have been validated in real laboratories
+required to handle complex tasks. That is why they are com-       and field conditions.
+bined with high-level controllers that improve the robustness        Aerostack2 has been designed to cover all these mentioned
+and autonomy of these vehicles, allowing them to perform          features, allowing for a wide variety of use cases. It supports
+complex autonomous missions.                                      multi-agent and multi-platform operations, making it highly
+                                                                        Middle-      Industrial         Multi-   Multi-    Multi-     Plugin
+ Framework                 Modular       Maintained      Tested in
+                                                                         ware           use             frame    agent    platform   oriented
+ Aerostack [3]                 ✓              ✗          S,RL,RO         ROS             ✓                ✗        ✓         ✓           ✗
+ Agilicius [8]                 ✓              ✓          S,RL,RO         ROS             ✗                ✓        ✗          ✗          ✗
+ CrazyChoir [9]                ✗              ✓            S,RL         ROS 2            ✗                ✗        ✓          ✗          ✗
+ CrazySwarm2 [10]              ✓              ✓            S,RL         ROS 2            ✗                ✗        ✓          ✗         ✓
+ GAAS [11]                     ✓              ✗              S           ROS             -                ✗        ✗          ✗          ✗
+ KumarRobotics [12]            ✗              ✗          S,RL,RO         ROS             ✓                ✗        ✗         ✓           ✗
+ MRS UAV System [13]           ✓              ✓          S,RL,RO         ROS             ✓                ✓        ✓         ✓           ✗
+ RotorS [14]                   ✓              ✗              S           ROS             -                ✗        ✗          ✗          ✗
+ UAL [15]                      ✗              ✗          S,RL,RO         ROS             ✓                ✓        ✗         ✓           ✗
+ XTDrone [16]                  ✓              ✓              S           ROS             -                ✗        ✗          ✗          ✗
+ Aerostack2 (Ours)             ✓              ✓          S,RL,RO        ROS 2            ✓                ✓        ✓         ✓          ✓
+  S: Simulation; RL: real experiments in the laboratory; RO: real experiments outside the laboratory.
+
+TABLE II: Comparison of relevant open-sourced software stacks for aerial robotic systems. Industrial use is only evaluated
+for the frameworks that support real flights.
+
+adaptable. Its plugin oriented architecture facilitates easy                    It is important to note that this modular organization of
+addition of new components and dynamic reconfiguration,                      components is open to be used at any layer. This means
+making it easy to maintain and suitable for both research                    that developers who use Aerostack2 may use the entire
+and industrial applications.                                                 framework but also may use separately any intermediate
+                                                                             layer or other individual component (e.g., the state estimator)
+III. A S TACK OF S OFTWARE C OMPONENTS FOR A ERIAL                           for building a particular application. The following sections
+                      ROBOTICS                                               describe in more detail each layer of the software stack.
+   Aerostack2 framework is organized in the form of a                        A. Sensor-Actuator Interface
+software stack with components distributed in different hi-                     One of the main objectives of the presented framework
+erarchical layers, as can be seen in Fig. 1. Components                      is to be able to implement autonomous aerial systems
+in one layer control the components of the layers below                      independently to the platform in which it will be finally
+(corresponding to less complex functionalities). The layers                  deployed (considering that the sensory input and actuators
+are as follows:                                                              are compatible).
+  • Sensor-Actuator interface. These are components that                        To facilitate the implementation of different aerial plat-
+    serve as interfaces with multiple kinds of aerial plat-                  forms, Aerostack2 incorporates an AerialPlatform ab-
+    forms and sensors. Aerostack2 has defined standard                       stract class responsible for managing the capabilities as-
+    interfaces that allow operating with both physical plat-                 sociated with the direct integration of various aerial plat-
+    forms and simulated platforms indistinctly.                              forms into the framework. This abstraction facilitates the
+  • Basic robotics functions. This layer is dedicated to                     integration of new platforms into the framework and ensures
+    the components responsible for performing essential                      compatibility with the entire framework. The responsibility
+    functions of aerial robotics, such as motion control or                  of this interface is to gather the sensory measurements from
+    state estimation.                                                        the aircraft and transmit them to the rest of the system.
+  • Behaviors. This layer in Aerostack2 implements spe-                      In addition, it is tasked with receiving actuator commands
+    cialized components called behaviors, which encapsu-                     and other requests from the various layers of the Aerostack2
+    late specific robot skills for both reactive and goal-                   framework and relaying them to the aircraft in a platform-
+    based actions, allowing self-monitoring and streamlined                  specific manner.
+    execution of tasks.                                                         These platforms ease the transition from simulation to real-
+  • Plan execution control. This layer in Aerostack2                         world deployment because the logic modules remain agnostic
+    provides mechanisms for specifying and supervising                       to whether the system is operating on a real platform or
+    mission plans, allowing developers to define complex                     in simulation. This also simplifies the implementation of
+    tasks through the activation and deactivation of robot                   heterogeneous aerial systems using different platforms.
+    behaviors, thereby facilitating the autonomous execution                 B. Basic Robotic Functions
+    of complex missions.                                                        In aerial robotics, there are some functions that are vital
+  • Mission control. The top layer of Aerostack2 offers
+                                                                             for the basic operation of the system. In Aerostack2 we have
+    user-friendly interfaces for mission planning, system                    called these Basic Robotic Functions, and each one has a
+    monitoring, and debugging, tailored for both developers                  component that is in charge of this functionality. Some of
+    and non-developers.                                                      these functions are motion control and state estimation which
+   In order to communicate all the components with each                      support the autonomous operation of every aerial robot.
+other, we have specified a common interface in the form                         Due to the relevance of these components, we have found
+of a set of message definitions for information exchange to                  some general capabilities that these components are desired
+facilitate process interoperability.                                         to implement:
+Fig. 1: Overview of the Aerostack2 framework architecture. Each colorized block represents a hierarchical layer, which
+can be constituted from multiple ROS 2 nodes or processes, represented as white blocks. All the nodes and agents are
+communicated through the ROS 2 communication channel, as is represented with grey arrows. The big colorized arrows
+going left to right, represent the command flows, so that each blocks send commands to the right one. Nevertheless, each
+module can feed back meaningful information to the left modules through the communication channel, so the communication
+is bidirectional.
+
+  1) The implementation of the basic function has to be                are available to control it. The motion controller com-
+     done in a plugin with a common interface.                         ponent is responsible for finding the best combination
+  2) The plugins can be switched at run-time.                          of modes that satisfies the requirements of the motion
+  3) The inputs and outputs can be adequate for standard-              reference, the loaded plugin, and the aerial platform.
+     izing the plugin interface.                                    3) Input-Output Adaptation: Based on the motion ref-
+   In this approach, each component is managed by a func-              erence received (e.g. position, velocity, angle, etc.)
+tion manager, which is responsible for loading the plugins             in a specific reference frame, the module transforms
+with each specific algorithm and managing how they interact            this input into the desired coordinated frame of the
+with the rest of the framework. The plugin selector can also           loaded plugin. Similarly, some reference changes can
+provide meta-control features, such as plugin replacement,             be needed before sending the actuator commands to
+whereas the input and output adapters adjust the input or              the aerial platform.
+output of the function plugin to the rest of the Aerostack2
+framework. In the following, a more detailed explanation of
+the implementation of the Motion Controller and the State
+Estimator is provided.
+   1) Motion Control: This component handles the motion
+references generated from the upper-level layers and convert
+them into actuator command signals which will be followed
+by the specific aerial platform. This component performs
+three tasks:
+  1) Plugin Load and Selection: The module loads the dif-
+     ferent plugins that are required to operate. In this case,
+     this plugin includes the implementation of different         Fig. 2: Diagram of the motion controller component. Blue
+     control laws to control the platform. The selection          boxes represent the capabilities of it and how interact be-
+     of the plugin can be done by the user or decided in          tween them and the other modules. Plugins are represented
+     runtime using predefined rules. When the motion ref-         with green trapezoids.
+     erence can be handled directly by the aerial platform,
+     the plugin can be bypassed.                                     2) State Estimator: This module fuses the information
+  2) Control Mode Negotiation: Each plugin implements             received from different sensors to estimate the state of the
+     multiple combinations of input-output control mode.          robot, where the state refers to the position and speed of each
+     A control mode represents the set of different input         aircraft over time. Similarly to the previous one, this module
+     signals that a controller plugin can handle. Similarly,      can load multiple state estimation algorithms in the form of
+     each Aerial Platform has a set of control modes that         plugins. The State Estimator module is responsible for:
+  1) Plugin Load and Selection: The module shall load
+     the different plugins that are required to operate. The
+     selection of the plugin can be done by the user or
+     decided in runtime using predefined rules.
+  2) TF tree generation: The module is in charge of gen-
+     erating the transformation trees [17] that will be used
+     for the rest of the framework, allowing the system to
+     represent information in different coordinate frames.
+     This module is also in charge of managing the origin
+     of the coordinated system in a multi-robot system.
+  3) Geodesic to euclidean Conversion: When operating           Fig. 4: Schematic representation of the behavior template
+     outdoors, this component is in charge of storing the       architecture. The behavior monitor processes external com-
+     geodesic operation origin, allowing the system to be       mands and monitors behavior execution by interfacing with
+     able to work in the euclidean Space and translate          the behavior executor, which handles the underlying imple-
+     geodetic coordinates.                                      mentation. The system outputs include status and feedback,
+  4) Output Adaptation: The output information shall be         derived from the processed inputs.
+     adapted to be sent into the rest of the framework in a
+     standardized way.                                          ment1 or response measures in the presence of faults. This
+                                                                feature adds adaptability and robustness to the architecture.
+                                                                The modular distribution of execution monitoring provided
+                                                                by Aerostack2 with behaviors also provides greater flexibility
+                                                                than architectures with centralized monitoring.
+                                                                   In addition, each software component that implements a
+                                                                behavior encapsulates the details of the algorithms used,
+                                                                providing a uniform interface that is common to all behav-
+                                                                iors. This feature provides simplicity in describing mission
+                                                                plans. Using behaviors, a mission plan is expressed as
+                                                                a controlled sequence of activations (or deactivations) of
+Fig. 3: Diagram of the State Estimator component. Blue          multiple behaviors that may operate concurrently. The result
+boxes represent the capabilities of it and how interact be-     of each behavior execution is described in terms of success
+tween them and the other modules. Plugins are represented       or failure, which is useful to determine the next step to be
+with green trapezoids.                                          done during the mission.
+                                                                   In more detail, the uniform interface used to control the
+                                                                execution of the behavior uses the following basic services:
+C. Behaviors                                                    start, pause, resume and stop. In addition, a service
+                                                                called modify is used to change the parameters of a
+                                                                behavior without the need to stop its execution. The behavior
+   Aerostack2 uses a specialized type of component, called
+                                                                interface informs about its execution state (e.g., idle, running,
+behavior, which provides a logical layer to formulate mission
+                                                                or paused) and periodic feedback about the concrete details
+plans in a uniform and simplified way, compared to the
+                                                                on the running behavior. Aerostack2 behaviors have been
+direct use of state estimators and actuator controllers. The
+                                                                implemented in a way that is fully consistent with standard
+notion of behavior in robotics has been used in the behavior-
+                                                                ROS 2 actions.
+based paradigm [18] [19] [20]. In Aerostack2 each behavior
+corresponds to a specific robot skill related, for example,     D. Plan execution control
+to flight motion, such as taking off, landing, hovering, and       Aerostack2 provides several mechanisms to specify a
+following a path, or other abilities (e.g., video recording,    mission plan and supervise its execution. The developer
+communication with other agents, generating a trajectory to     can write a plan to specify the set of tasks that a robot
+reach a destination, etc.).                                     must perform on a particular mission. The specification of
+   Aerostack2 provides a behavior template architecture for     plans can be formulated in the form of activations and
+programming behaviors that includes two distinct parts (Fig-    deactivations of different robot behaviors. In this way, the
+ure 4). On the one hand, there is a behavior executor that      user can easily specify complex missions by combining tasks
+performs the execution using the algorithm used for each        that the robot executes autonomously. Aerostack2 provides
+case. On the other hand, there is a behavior monitor that       three main ways for generating and executing a plan:
+interacts with the behavior executor to check its operation
+                                                                   1 For example, in a landing maneuver, this can be done by descending
+before, during, and after execution. The behavior monitor can
+                                                                until touching the ground, or it can be a landing maneuver that uses vision
+adapt the execution by, for example, considering alternative    to center the drone on a landing spot. In both cases, the system calls the
+modes of operation depending on the state of the environ-       landing behavior in a similar way.
+   1) Python API: Helps to interact with the Aerostack2          for one or several drones using graphical resources (e.g.,
+framework by implementing a DroneInterface class                 a geographic map and graphical references), which can be
+that contains several methods to not only command the            done online or offline, allowing repeatability of missions,
+different drones, but also to retrieve meaningful information    as shown in Fig. 7. This user interface is also useful to
+about their status. This is a convenient method that provides    show graphically details of the mission execution, allowing
+high flexibility for formulating plans with complex control      its monitoring and modification in real-time.
+regimes. Regarding the plan control, our API provides a set
+of functions to activate/deactivate behaviors or to command                   IV. E XPERIMENTAL VALIDATION
+directly through motion reference messages.                         This section aims to showcase the capabilities of the
+   2) Mission Interpreter: As a mission plan can be de-          Aerostack2 to perform different autonomous drone missions
+scribed as a sequence of behavior activation and deactivation,   in both the simulation and real world with different plat-
+they can be described in a JSON format that can be directly      forms.
+translated into calls to the Python API by the Mission
+Interpreter. This allows each drone to communicate the           A. Heterogeneous gate crossing
+mission plan in a text format and then each drone will              In this experiment, two different drones shall pass through
+interpret it. This module supports conditional sentences that    two gates in a synchronized and cyclic fashion. The objective
+guide the mission execution.                                     of this experiment is not only to test the simulation with
+   3) Behavior Trees: Finally one of the most used tools         real capabilities of the framework in an indoor environment
+for describing plans in robotics is Behavior Trees [21]. The     but also to test the framework’s platform independence. The
+modularity and hierarchy of behavior trees are useful not        experiment was carried out in two phases: The simulation
+only during the mission plan design but also during mission      phase, in which the mission is determined and validated
+execution thanks to graphical monitoring. Aerostack2 robot       using a simulator, and the real flights phase, in which the
+behaviors are compatible with BehaviorTreeCPP2 library           simulation results are compared with those obtained on real
+through their ROS 2 action interface.                            flights.
+E. Mission control and supervision                                  1) Experimental Setup: The simulation was performed
+                                                                 using Gazebo simulator and the real experiment was carried
+   The top layer of the proposed architecture is mainly
+                                                                 out in an area of 60 m2 equipped with a motion capture
+dedicated to the user interface. The components of this layer
+                                                                 system (MoCap) that provides the position of drones and
+are designed to ease the definition of a mission to a human
+                                                                 gates within the capture area. The UAVs used for this
+operator or to help with the supervision of the system.
+                                                                 experiment were two: a Bitcraze Crazyflie 2.1 and a Tello
+Regarding the level of user expertise, we can differentiate
+                                                                 Ryze both with IR markers for mocap localization. Due to
+two blocks of tools:
+                                                                 the limited payload of these micro-UAVs, the computation
+   1) Developers tools: They show the internal status of
+                                                                 was performed by the ground station computer.
+the system, leading to a more detailed explanation of what
+is happening. The Alphanumeric Viewer is a component                    Module           Simulation                Real
+that monitors the state of specific variables of the system,        Mission Control                   Python API
+e.g. sensor measurements, values corresponding to state                Behaviors         Motion, Platform, Trajectory Generator
+estimation, references for controllers, etc. The information        State Estimation    Ground Truth       Motion Capture System
+is distributed in different panes to facilitate the search for      Motion Control                    DF controller
+a specific variable of the system. On the other hand, tools            Platforms       Gazebo Simulator        Crazyflie / Tello
+like the Keyboard teleoperation are useful to manipulate the     TABLE III: Comparison between Aerostack2 modules and
+drone swarm in a simple way, sending position and speed          plugins used in simulation and real flights of the crossing
+commands, which allows one to check the system behavior          gates experiment.
+or take control when the autonomous logic fails. This tool
+allows to test and debug aerial systems fast and securely.          2) Modules Used: Table III shows a comparison between
+   Both components operate in real-time through a Terminal       the components used in simulation and real experiments. For
+User Interface (TUI), which makes these tools suitable for       this mission, only basic behaviors are used: motion behaviors
+on-board debugging in low-power computers.                       for taking off, following a path, and landing. The location
+   2) End Users tools: In this case, the objective is to         of drones and gates is provided by the ground truth of the
+present all the information in a graphical and simple way        simulator or the mocap system, and for control, a Differential
+so that non-developers can use and interact with the aerial      Flatness (DF) based controller with trajectory references is
+system. In this category of components, Aerostack2 also          used.
+provides a Graphical User Interface (GUI) to use the software       3) Plan generation: The mission was planned using the
+framework through a web-based application. This tool is          Aerostack2 Python API. In Listing 1 a simplified version of
+very convenient for facilitating rapid planning of a mission     the mission with only one drone is shown. The synchroniza-
+  2 https://github.com/BehaviorTree/BehaviorTree.                tion mechanism is obtained by waiting for both drones to end
+CPP/tree/v3.8                                                    their current behavior before activating the follow-up one.
+ 1   ...                                                                                 1) Experimental Setup: For simulation, we have used
+ 2   n l a p s =3
+ 3   gate names =[ ” g a t e 1 ” , ” g a t e 2 ” ]
+                                                                                      the DJI HITL simulator, which provides better dynamic
+ 4   # I n i t i a l i z e drones i n t e r f a c e                                   modeling of the aerial platform. For both the simulation
+ 5   drone = D r o n e I n t e r f a c e ( ” t e l l o ” )
+ 6   d r o n e . arm ( )
+                                                                                      and the real-world experiments, we have used a DJI Matrice
+ 7   drone . offboard ( )                                                             300 and a DJI Matrice 350 both with a Nvidia Jetson AGX
+ 8   drone . t a k e o f f ( h e i g h t =2.0 , speed =1.0)
+ 9   for i in range ( n laps ) :
+                                                                                      Xavier for onboard computing. Only the GUI was running
+10           for gate in gate names :                                                 on the ground station; once the mission had been loaded into
+11           # The p a t h i s on e a c h g a t e c o o r d i n a t e s y s t e m
+12                 drone . f o l l o w p a t h ([[ −1 , 0 , 0 ] , [ 1 , 0 , 0 ] ] ,
+                                                                                      each drone, all the computations had been done onboard each
+13                        speed =1.0 ,                                                drone. In both real and simulated experiments, both drones
+                          frame id=gate )
+14
+15   drone . land ( speed =0.5)
+                                                                                      shall inspect a 4500m2 outdoors area.
+16   ...
+
+     Listing 1: Simplified mission for Tello drone. The gates poses                                  Module               Component
+     are provided by the MoCap system.                                                           Mission Control           Web GUI
+                                                                                                    Behaviors       Motion, Platform, Gimbal
+                                                                                                 State Estimation             GPS
+        4) Results: In Fig. 5 both simulation and real-world tra-
+                                                                                                 Motion Control          PID controller
+     jectories are plotted, showing the similarities in the trajectory                              Platforms              DJI PSDK
+     followed in both environments. Moreover, in Fig. 6 it can be
+     seen how both UAVs cross the gates in a synchronized and                         TABLE IV: Aerostack2 modules and plugins used in both
+     cyclical fashion. The experiment proves that it is only needed                   the HITL and real experiments for area coverage. Gimbal
+     to change the platform and the state estimation component                        behaviors points the gimbal at a desired orientation.
+     (in this case, a plugin inside of it) to translate the experiment
+     from simulation to the real world, even when the real system                        2) Modules Used: Table IV shows the components used
+     is heterogeneous.                                                                in both simulation and real experiments. For this mission,
+                                                                                      since we will use HITL simulation, all the modules remained
+                                                                                      the same in both experiments. In this case, the Web GUI is
+                                                                                      the component in charge of generating and uploading the
+                                                                                      mission that each drone is going to perform. We used the
+                                                                                      fused GPS signal for state estimation and a PID is used as
+                                                                                      the high-level controller.
+
+
+
+
+                  (a) Simulation                                     (b) Real
+     Fig. 5: Comparison of the trajectories performed by the
+     drones during the gate crossing experiments.
+
+
+
+
+                                                                                      Fig. 7: [Top] Aerostack2 GUI screenshot of the generated
+                                                                                      routes for both drones. [Bottom] Trajectories followed by
+     Fig. 6: Plot of the evolution of the position on each axis of                    both drones in the HITL simulation and the real flight.
+     both drones during the real experiment.
+                                                                                         3) Plan generation: The mission was planned using our
+     B. Cooperative area inspection
+                                                                                      web GUI, which generated a path of GPS waypoints for both
+       In this experiment, two high-end industrial drones will                        drones from a polygonal inspection area marked on a satellite
+     cooperate to inspect an area. In this scenario, a swarm of two                   image of the flight area. Once the mission was generated,
+     drones is used to perform a back-and-forth aerial inspection.                    both drones took off at the same time and each flew along
+     As in the previous experiment, we tested the mission in a                        the path, landing when finished. Figure 7 shows the mission
+     simulated environment before testing it in the real world,                       generated for each drone. The GUI also allows for real-time
+     and a comparison was made between the two.                                       monitoring of the operation.
+   4) Results: In Fig 7, can be shown that the trajectories                       [6] Alejandro Rodriguez-Ramos, Adrian Alvarez-Fernandez Hriday
+followed by the two drones are so similar in both HITL                                Bavle, Javier Rodriguez-Vazquez, Miguel Fernandez-Cortizas,
+                                                                                      Lu Liang, Ramon A Suarez Fernandez, Alberto Rodelgo, Carlos
+simulation and the real world experiments and can be easily                           Santos, Martin Molina, Luis Merino, Fernando Caballero, et al.
+generated and replicated from the mission generated with the                          Autonomous aerial robot for high-speed search and intercept
+GUI, demonstrating the capabilities of Aerostack2 for work-                           applications. arXiv preprint arXiv:2112.05465, 2021.
+                                                                                  [7] Emad Ebeid, Martin Skriver, Kristian Husum Terkildsen, Kjeld Jensen,
+ing reliably with multiple drones in outdoor environments.                            and Ulrik Pagh Schultz. A survey of open-source uav flight controllers
+                                                                                      and flight simulators. Microprocessors and Microsystems, 61:11–20,
+C. Aerostack2 for UAV Research                                                        2018.
+   The Aerostack2 framework has been utilized to develop a                        [8] Philipp Foehn, Elia Kaufmann, Angel Romero, Robert Penicka, Sihao
+                                                                                      Sun, Leonard Bauersfeld, Thomas Laengle, Giovanni Cioffi, Yunlong
+wide range of aerial robotics systems within the research                             Song, Antonio Loquercio, et al. Agilicious: Open-source and open-
+community. In [22], the authors employed Aerostack2 to                                hardware agile quadrotor for vision-based flight. Science Robotics,
+control a small UAV for reidentification of entities within an                        7(67):eabl6259, 2022.
+                                                                                  [9] Lorenzo Pichierri, Andrea Testa, and Giuseppe Notarstefano. Crazy-
+industrial setting. In [23], a virtual Spring-Damper approach                         choir: Flying swarms of crazyflie quadrotors in ros 2. arXiv preprint
+was developed and tested for UAV swarm formation in real-                             arXiv:2302.00716, 2023.
+world environments. In [24], the authors used Aerostack2 to                      [10] James A Preiss, Wolfgang Honig, Gaurav S Sukhatme, and Nora
+                                                                                      Ayanian. Crazyswarm: A large nano-quadcopter swarm. In 2017 IEEE
+test a novel approach for coverage path planning applica-                             International Conference on Robotics and Automation (ICRA), pages
+tions, incorporating replanning capabilities.                                         3299–3304. IEEE, 2017.
+   These are some examples that demonstrate the value of                         [11] et al. Nina Rong. Generalized autonomy aviation system. https:
+                                                                                      //github.com/generalized-intelligence/GAAS, 2021.
+the presented framework to develop various applications and                      [12] Kartik Mohta, Michael Watterson, Yash Mulgaonkar, Sikang Liu,
+work towards developing novel algorithms.                                             Chao Qu, Anurag Makineni, Kelsey Saulnier, Ke Sun, Alex Zhu,
+                                                                                      Jeffrey Delmerico, Dinesh Thakur, Konstantinos Karydis, Nikolay
+            V. C ONCLUSIONS AND F UTURE W ORK                                         Atanasov, Giuseppe Loianno, Davide Scaramuzza, Kostas Daniilidis,
+                                                                                      Camillo Jose Taylor, and Vijay Kumar. Fast, autonomous flight in
+   This paper presents a novel open-source framework de-                              gps-denied and cluttered environments. Journal of Field Robotics,
+signed for the development of aerial robotic systems, with                            35(1):101–120, 2018.
+a strong focus on multi-robot orientation, platform indepen-                     [13] Tomas Baca, Matej Petrlik, Matous Vrba, Vojtech Spurny, Robert
+                                                                                      Penicka, Daniel Hert, and Martin Saska. The mrs uav system: Pushing
+dence, versatility, and modularity. These features have been                          the frontiers of reproducible research, real-world deployment, and
+validated through a series of experiments in both simulated                           education with autonomous unmanned aerial vehicles. Journal of
+and real-world scenarios, demonstrating the effectiveness of                          Intelligent & Robotic Systems, 102(1):26, 2021.
+                                                                                 [14] Fadri Furrer, Michael Burri, Markus Achtelik, and Roland Siegwart.
+the framework. Although our initial experiments involved                              Robot Operating System (ROS): The Complete Reference (Volume
+only two drones simultaneously, the results confirm the                               1), chapter RotorS—A Modular Gazebo MAV Simulator Framework,
+framework’s fundamental capabilities.                                                 pages 595–625. Springer International Publishing, Cham, 2016.
+                                                                                 [15] Fran Real, Arturo Torres-González, Pablo Ramón Soria, Jesús Capitán,
+   Future work will extend the testing of the framework to                            and Anibal Ollero. Unmanned aerial vehicle abstraction layer: An
+systems involving a larger fleet of drones, and explore its                           abstraction layer to operate unmanned aerial vehicles. International
+scalability and robustness in more complex scenarios. A key                           Journal of Advanced Robotic Systems, 17(4):1–13, 2020.
+                                                                                 [16] Kun Xiao, Shaochang Tan, Guohui Wang, Xueyan An, Xiang Wang,
+focus will be the development of an advanced communica-                               and Xiangke Wang. Xtdrone: A customizable multi-rotor uavs sim-
+tion component, which is essential for efficient information                          ulation platform. In 2020 4th International Conference on Robotics
+exchange between multiple vehicles. In addition, the plugin-                          and Automation Sciences (ICRAS), pages 55–61. IEEE, 2020.
+                                                                                 [17] Tully Foote. tf: The transform library. In Technologies for Practical
+oriented architecture will facilitate the development of meta-                        Robot Applications (TePRA), 2013 IEEE International Conference on,
+control capabilities, enabling further system enhancements.                           Open-Source Software workshop, pages 1–6, April 2013.
+                                                                                 [18] Rodney Brooks. A robust layered control system for a mobile robot.
+                             R EFERENCES                                              IEEE journal on robotics and automation, 2(1):14–23, 1986.
+                                                                                 [19] Ronald C Arkin. Behavior-based robotics. MIT press, 1998.
+ [1] Steve Macenski, Francisco Martı́n, Ruffin White, and Jonatan                [20] François Michaud and Monica Nicolescu. Behavior-based systems.
+     Ginés Clavero. The marathon 2: A navigation system. In 2020                     Springer handbook of robotics, pages 307–328, 2016.
+     IEEE/RSJ International Conference on Intelligent Robots and Systems         [21] Michele Colledanchise and Petter Ögren. Behavior Trees in Robotics
+     (IROS), 2020.                                                                    and AI. CRC Press, jul 2018.
+ [2] David Coleman, Ioan Sucan, Sachin Chitta, and Nikolaus Correll.             [22] Jérôme Rutinowski, David Schuster, Sönke Kauffmann, Pedro Arias-
+     Reducing the barrier to entry of complex robotic software: a moveit!             Pérez, Frederik Polachowski, Miguel Granero, Moritz Roidl, and
+     case study, 2014.                                                                Pascual Campoy. Exploring the re-identification of industrial enti-
+ [3] Jose Luis Sanchez-Lopez, Martin Molina, Hriday Bavle, Carlos                     ties on autonomous guided vehicles. Logistics Journal: referierte
+     Sampedro, Ramón A Suárez Fernández, and Pascual Campoy. A                     Veröffentlichungen, 2023(1), 2023.
+     multi-layered component-based approach for the development of aerial        [23] Luis Mejias, Pedro Arias-Perez, Javier Melero-Deza, and Pascual
+     robotic systems: The aerostack framework. Journal of Intelligent &               Campoy. A virtual spring-damper approach for uav swarm formation
+     Robotic Systems, 88:683–709, 2017.                                               and decentralised collision avoidance. In 2024 International Confer-
+ [4] Jose Luis Sanchez-Lopez, Jesús Pestana, Jean-Franois Collumeau,                 ence on Unmanned Aircraft Systems (ICUAS). IEEE, 2024.
+     Ramon Suarez-Fernandez, Pascual Campoy, and Martin Molina. A                [24] Marco Andrés Luna, Martin Molina, Rodrigo Da-Silva-Gomez, Javier
+     vision based aerial robot solution for the mission 7 of the international        Melero-Deza, Pedro Arias-Perez, and Pascual Campoy. A multi-
+     aerial robotics competition. In 2015 International Conference on                 uav system for coverage path planning applications with in-flight re-
+     Unmanned Aircraft Systems (ICUAS), pages 1391–1400, 2015.                        planning capabilities. Journal of Field Robotics, 41(5):1480–1497,
+ [5] Carlos Sampedro, Hriday Bavle, Alejandro Rodrı́guez-Ramos, Adrian                2024.
+     Carrio, Ramon A Suárez Fernández, Jose Luis Sanchez-Lopez, and
+     Pascual Campoy. A fully-autonomous aerial robotic solution for the
+     2016 international micro air vehicle competition. In 2017 International
+     conference on unmanned aircraft systems (ICUAS). IEEE, 2017.
+

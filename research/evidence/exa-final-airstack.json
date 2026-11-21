@@ -1,0 +1,161 @@
+{
+  "query": {
+    "query": "CMU AirStack autonomous aerial navigation integrated source dependencies mapping local planner PX4 Isaac Sim",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "9a6ca3fdd9e851f14d7f9a1d4928c3bb",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://docs.theairlab.org/main/docs/simulation/isaac_sim/pegasus_scene_setup/",
+        "title": "Aerial Robot Simulation via the Pegasus Extension - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/simulation/isaac_sim/pegasus_scene_setup/",
+        "highlights": [
+          "Pegasus Simulator is a multirotor simulation and control framework built on top of NVIDIA Isaac Sim\u2019s physics engine. Isaac Sim provides the underlying physics and rendering and Pegasus Simulator implements the drone flight dynamics, control algorithms, and PX4 integration.\n...\nPegasus Sim accurately models multirotor dynamics and environment interaction, providing a physically grounded foundation for UAV simulation. Pegasus connects directly to the AirStack autonomy stack with its PX4 MAVLink integration, allowing AirStack\u2019s higher-level planning and perception components to control a realistically simulated drone as if it were a physical vehicle.\n...\nfor the user, AirStack maintains a fork of Pegasus Simulator that enables Pegasus's features from an Omnigraph node. This node serves as an Isaac Sim OmniGraph action graph wrapper around the Pegasus Sim code which can then be saved in Universal Scene Description (USD) format which are easily readable in Isaac-Sim. This design allows Pegasus-based simulations to be defined entirely in USD, enabling scenario\n...\n- `PX4_PHYSICS_HZ` \u2014 Sets `physics_dt = 1 / PX4_PHYSICS_HZ` in Isaac Sim's physics scene, and automatically syncs PX4's `IMU_INTEG_RATE` parameter to the same value via `PX4LaunchTool` \u2192 `px4-rc.simulator`. Patched within the Docker image to read the environment variable and set the IMU_INTEG_RATE parameter."
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://github.com/castacks/AirStack",
+        "title": "castacks/AirStack",
+        "url": "https://github.com/castacks/AirStack",
+        "publishedDate": "2024-06-07T21:22:29.000Z",
+        "highlights": [
+          "- **Modular Architecture**: Easily swap out components to customize for your specific needs\n- **ROS 2 Integration**: Built on ROS 2 for robust inter-process communication\n- **Simulation Support**: Integrated with NVIDIA Isaac Sim for high-fidelity simulation\n- **Multi-Robot Capability**: Control and coordinate multiple robots simultaneously\n- **Ground Control Station**: Monitor and control robots through an intuitive interface\n- **Comprehensive Autonomy Stack**:\n...\n- Robot Interface Layer\n - Sensor Integration\n - Perception Systems\n - Local Planning & Control\n - Global Planning\n - Behavior Management\n...\n\u251c\u2500\u2500 Perception Layer: State estimation and environment understanding\n\u251c\u2500\u2500 Local Layer:\n\u2502   \u251c\u2500\u2500 World Model: Local environment representation\n\u2502   \u251c\u2500\u2500 Planning: Trajectory generation and obstacle avoidance\n\u2502   \u2514\u2500\u2500 Controls: Trajectory following\n\u251c\u2500\u2500 Global Layer:\n\u2502   \u251c\u2500\u2500 World Model: Global environment mapping\n\u2502   \u2514\u2500\u2500 Planning: Mission-level path planning\n\u2514\u2500\u2500 Behavior Layer: High-level decision making\n...\n- `robot/`: Contains the ROS 2 workspace for the robot autonomy stack\n- `gcs/`: Software for monitoring and controlling robots\n- `simulation/`: Integration with Isaac Sim and simulation environments\n- `docs/`: Comprehensive documentation\n- `common/`: Shared libraries and utilities\n- `tests/`: Testing infrastructure"
+        ]
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/robot/",
+        "title": "Robot - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/robot/",
+        "highlights": [
+          "The robot autonomy stack is the core of AirStack, providing layered autonomy from hardware interface through perception, planning, control, and high-level behavior.\n...\n\u2502       \u251c\u2500\u2500 local/                    # Local planning, control, world models\n...\n\u2502       \u2502   \u251c\u2500\u2500 local_bringup/\n\u2502       \u2502   \u251c\u2500\u2500 planners/\n\u2502       \u2502   \u251c\u2500\u2500 c_controls/\n\u2502       \u2502   \u2514\u2500\u2500 world_models/\n...\n\u2502       \u251c\u2500\u2500 global/                   # Global planning & mapping\n\u2502       \u2502   \u251c\u2500\u2500 global_bringup/\n\u2502       \u2502   \u251c\u2500\u2500 planners/\n\u2502       \u2502   \u2514\u2500\u2500 world_models/\n\u2502       \u2514\u2500\u2500 behavior/                 # High-level decision making\n...\nbehavior_bringup/\n...\n```\nrobot.launch.xml                      # Entry point (robot_bringup)\n  \u2514\u2500\u2500 autonomy.launch.xml             # Autonomy orchestration (autonomy_bringup)\n      \u251c\u2500\u2500 interface.launch.xml        # Hardware interface\n      \u251c\u2500\u2500 sensors.launch.xml          # Sensor drivers\n      \u251c\u2500\u2500 perception.launch.xml       # State estimation\n      \u251c\u2500\u2500 local.launch.xml            # Local planning & control\n      \u251c\u2500\u2500 global.launch.xml           # Global planning & mapping\n      \u2514\u2500\u2500 behavior.launch.xml         # Mission execution\n...\nglobal_plan\n...\n| nav_msgs"
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/robot/autonomy/system_architecture/",
+        "title": "System Architecture - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/robot/autonomy/system_architecture/",
+        "highlights": [
+          "| Layer | Responsibility | Input | Output |\n| --- | --- | --- | --- |\n| Interface | Hardware abstraction, safety monitoring | Commands from control | Robot state, raw sensor data |\n| Sensors | Sensor processing, calibration | Raw sensor data | Processed sensor data |\n| Perception | State estimation, environment understanding | Sensor data | Odometry, depth, features |\n| Local | Reactive planning and control | Odometry, local sensors, global plan | Local trajectories, control commands |\n| Global | Strategic planning and mapping | Global map, robot pose, goals | Global plans, map updates |\n| Behavior | Mission execution, decision making | Mission commands, autonomy state | High-level goals, mode changes |\n...\n```\ngraph TB\n    MAVROS[MAVROS Interface]\n    Safety[Safety Monitor]\n    RobotIF[Robot Interface]\n\n    PX4[PX4 Flight Controller] --> MAVROS\n    MAVROS --> Safety\n    Safety --> RobotIF\n\n    RobotIF -->|State| Perception\n    RobotIF -->|Safety Status| Behavior\n\n    Control[Trajectory Controller] -->|Commands| MAVROS\n    MAVROS -->|Actuator Commands| PX4\n...\nLocal Layer\u00b6\n...\nDisparity[\n...\nGraph[\n...\nception -->|Odometry| DROAN\n    Perception -->|Disparity| Disparity\n    Global -->|Global\n...\n| DROAN\n\n    Att\n...\n-->|Commands| Interface\n...\nAN obstacle avoidance\n...\n- `take"
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/about/",
+        "title": "About - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/about/",
+        "highlights": [
+          "AirStack is a comprehensive, modular autonomy stack for aerial robotics developed by the AirLab at Carnegie Mellon University's Robotics Institute.\n...\n- Modular Design: Swap components easily through ROS 2 interfaces\n- Layered Autonomy: Interface, Sensors, Perception, Local Planning, Global Planning, Behavior\n- Docker-Based: Consistent development and deployment environments\n- Simulation Support: NVIDIA Isaac Sim with Pegasus extension\n- Multi-Robot: Independent robots with coordinated operation\n...\n- NVIDIA Isaac Sim (primary)\n- Gazebo (planned)\n...\nNo! You can develop and test entirely in Isaac Sim simulation before deploying to hardware.\n...\nLocal planning handles obstacle avoidance and trajectory generation at high frequency (10+ Hz) for immediate safety.\n...\nGlobal planning generates waypoint paths at lower frequency (1 Hz) for exploration and goal navigation.\n...\nYes! AirStack is designed for easy module swapping. Create a ROS 2 package with the correct interface, integrate it into the bringup layer, and you're ready.\n...\npossible, we strongly\n...\nusing Docker. It ensures\n...\nwe test and deploy.\n...\nPlace it in the appropriate layer under `robot/ros_ws/src/ / /<your_module>/`. For example, a new planner goes in `robot/ros_ws/src/local/planners/my_planner/`.\n...\nLaunch AirStack with Isaac Sim, run your module, and verify behavior. Record ROS bags for offline analysis."
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/development/advanced/ai_agent_guide/",
+        "title": "AI Agent Guide - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/development/advanced/ai_agent_guide/",
+        "highlights": [
+          "add-ros\n...\n-package \u2192 integrate-module-into-layer | 2\n...\n4 hours |\n| Debug module | debug-module | 30 min - 2 hours |\n...\n| Create test scenario | write-\n...\nac-sim-scene | 1-2 hours |\n...\n| Add behavior tree node | add-behavior-tree-node | 1-3 hours |\n...\nupdate-documentation | 3\n...\n1 hour |\n...\n- Interface: Hardware abstraction\n- Sensors: Sensor processing\n- Perception: State estimation\n- Local: Reactive planning & control\n- Global: Strategic planning & mapping\n- Behavior: Mission execution\n...\nodometry`\n...\n- `/[\n...\n_add` -\n...\n- Package in correct layer directory\n- `package.xml` with all dependencies\n- CMakeLists.txt / setup.py configured\n- Launch file with topic remapping\n- Config file with parameters\n- README.md with documentation\n- Added to layer bringup\n- Added to mkdocs.yml navigation\n- Tested standalone\n- Tested in full stack\n- Tested in simulation\n...\n| Module Type | Reference | Location |\n| --- | --- | --- |\n| Local Planner | DROAN | `robot/ros_ws/src/local/planners/droan_local_planner` |\n| Controller | Trajectory Controller | `robot/ros_ws/src/local/c_controls/trajectory_controller` |\n| World Model | Disparity Expansion | `robot/ros_ws/src/local/world_models/disparity_expansion` |\n| Global Planner | Random Walk | `robot/ros_ws/src/global/planners/random_walk` |\n| Behavior Node | Example Actions | `robot/ros_ws/src/behavior/behavior_tree_example` |"
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/",
+        "title": "Home - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/",
+        "highlights": [
+          "AirStack is a powerful robotics development boilerplate maintained by the AirLab at Carnegie Mellon University's Robotics Institute. It provides a structured foundation for building advanced robotics applications with:\n...\n- \ud83e\udd16 Complete Autonomy Stack - From sensors to behavior planning\n- \ud83d\udd27 Modular Architecture - Easy to customize and extend\n- \ud83d\ude80 Development Tools - Docker support, VSCode integration, and testing frameworks\n- \ud83d\udcca Ground Control Station - Built-in monitoring and control interface\n- \ud83c\udfae Simulation Ready - Integrated with Isaac Sim\n- \ud83d\udd04 CI/CD Pipeline - Automated testing and deployment\n...\nComplete suite of autonomy components including perception, planning, and control systems.\n...\nBuilt-in ground control station for robot monitoring and control, with multi-robot support.\n...\nIntegrated simulation environment with Isaac Sim for testing and development.\n...\nComprehensive development environment with Docker, VSCode, and testing frameworks."
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png",
+        "favicon": "https://docs.theairlab.org/main/docs/assets/StackedWhite.png"
+      },
+      {
+        "id": "https://github.com/castacks/AirStack/blob/main/AGENTS.md",
+        "title": "AGENTS.md",
+        "url": "https://github.com/castacks/AirStack/blob/main/AGENTS.md",
+        "highlights": [
+          "- Modular autonomy stack (interface, sensors, perception, local planning, global planning, behavior)\n- High-fidelity simulation environments (Isaac Sim with Pegasus extension, Microsoft AirSim legacy/UE4)\n- Ground Control Station for mission planning and monitoring\n- Multi-robot coordination capabilities\n- Hardware deployment tools\n...\n\u251c\u2500\u2500 simulation/isaac-sim/    # Isaac Sim (Pegasus extension)\n\u251c\u2500\u2500 simulation/ms-airsim/       # AirSim (UE4 + PX4 SITL)\n...\n| Module Type | Reference Package | Location |\n|------------|------------------|----------|\n| **Local Planner** | DROAN Local Planner | `robot/ros_ws/src/local/planners/droan_local_planner` |\n| **Local World Model** | Disparity Expansion | `robot/ros_ws/src/local/world_models/disparity_expansion` |\n| **Controller** | Trajectory Controller | `robot/ros_ws/src/local/c_controls/trajectory_controller` |\n| **Global Planner** | Random Walk | `robot/ros_ws/src/global/planners/random_walk` |\n| **Global World Model** | VDB Mapping | `robot/ros_ws/src/global/world_models/vdb_mapping_ros2` |\n| **Behavior** | Behavior Tree | `robot/ros_ws/src/behavior/behavior_tree` |\n...\n- **robot**: ROS 2 autonomy stack (Jazzy)\n- **isaac-sim**: NVIDIA Isaac Sim with Pegasus extension (profile: `desktop` or `robot`)\n- **airsim**: AirSim UE4 binary + PX4 SITL + ROS 2 bridge (profile: `ms-airsim`)\n- **gcs**: Ground Control Station\n- **docs**:"
+        ]
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/simulation/",
+        "title": "Simulation - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/simulation/",
+        "highlights": [
+          "Three simulators are supported because no single one covers every development need: Isaac Sim (primary) for high-fidelity rendering, physics, and full sensor suites; Microsoft AirSim (legacy) for native PX4-in-the-loop testing with pre-built Unreal Engine scenes and no Omniverse dependency; and Simple Sim for fast, lightweight iteration on planning and perception code without PX4 or a heavyweight GPU workload. Pick the lightest simulator that exercises what you're working on.\n...\n- Photorealistic rendering with ray-traced graphics\n- Accurate physics simulation via NVIDIA PhysX\n- ROS 2 integration through Pegasus extension\n- Multi-robot support with independent namespaces\n- Sensor simulation (cameras, depth, IMU, GPS, LiDAR)\n- Custom scene creation with USD format\n...\nAn open-source drone simulator built on Unreal Engine with native PX4 SITL integration.\n...\nwith photorealistic environments\n...\nbased obstacle avoidance testing (\n...\nUnreal Engine ecosystem\n...\nA lightweight kinematic simulator (single ROS 2 node, no PX4/MAVROS \u2014 it mocks the MAVROS interface directly) for fast iteration when full Isaac Sim fidelity isn't needed. Single robot only. See Simple Sim.\n...\n- Quick algorithm prototyping (planning/control/stereo perception)\n- Machines without an Isaac-class GPU or Omniverse credentials\n- Faster iteration cycles"
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/media/splash-poster.jpg",
+        "favicon": "https://docs.theairlab.org/main/docs/assets/StackedWhite.png"
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/simulation/isaac_sim/docker/",
+        "title": "Docker - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/simulation/isaac_sim/docker/",
+        "highlights": [
+          "Isaac Sim runs in a Docker container with NVIDIA GPU support and full integration with the AirStack ecosystem.\n...\n| Component | Purpose |\n| --- | --- |\n| Isaac Sim Base | NVIDIA Omniverse Isaac Sim with ROS 2 bridge |\n| Pegasus Extension | Multi-rotor simulation extension |\n| ROS 2 Bridge | Native ROS 2 topic publishing/subscribing |\n| GPU Acceleration | NVIDIA GPU for rendering and physics |\n...\n| Default (`\n...\nenv`) |\n| --- | --- | --- |\n| `AUTOLAUNCH` | Auto-start Isaac Sim on container launch | `true` |\n...\n| `ISAAC_\n...\n| `true`: run `ISAAC_SIM_SCRIPT_NAME`; `false`: open the `ISA\n...\n` USD | `true` |\n...\n| `ISAAC_SIM_SCRIPT_NAME` | Standalone launch script in `simulation/isaac-sim/launch_scripts/` | `example_one\n...\nlaunch_script.py` |\n...\n| `PX4_PHYSICS_HZ` | Physics step rate for PX4 SITL \u2014 also sets PX4 `IMU_INTEG_RATE` | `250` |\n| `PX4_RENDERING_HZ` | Rendering frame rate for PX4 profiles (independent of physics) | `60` |\n| `ARDUPILOT_PHYSICS_HZ` | Physics step rate for ArduPilot SITL | `800` |\n| `ARDUPILOT_RENDERING_HZ` | Rendering frame rate for ArduPilot profiles | `120` |\n...\n`PX4_PHYSICS_HZ` and `PX4_RENDERING_HZ` are set in the isaac-sim compose file (defaults 100/60 there; the Pegasus code default is 250). AirStack runs PX4 at 100 Hz for near-real-time performance. See Pegasus Scene Setup \u2192 Physics Rate for valid values and the full configuration flow."
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://docs.theairlab.org/0.17.0/docs/getting_started/",
+        "title": "Getting Started - AirStack",
+        "url": "https://docs.theairlab.org/0.17.0/docs/getting_started/",
+        "highlights": [
+          "You will need to have an account with AirLab to access the AirLab Docker registry, Nucleus server, and other resources. The API and functionality are not stable and are subject to change. \n\nBy the end of this\n...\n, you will have the\n...\nyour machine.\n...\nthe hardware requirements for\n...\nSim here. A GPU of GeForce\n...\nor higher is\n...\nNow you have two options on how to proceed. You can build the docker image from scratch or pull the existing image on the airlab docker registry. Building the image from scratch can be useful if you would like to add new dependencies or add new custom functionality. For most users just pulling the existing image will be more conveninent and fast since it doesn't require access to the Nvidia registry.\n...\n2: Build\n...\nDownload the Ascent Spirit SITL software package by running this script: \n\n```\ncd AirStack/\nbash simulation/isaac-sim/installation/download_sitl.bash\n...\n2. Next, gain access to NVIDIA NGC Containers by following these instructions. Then: \n\n```\ncd AirStack/\ndocker compose build  # build\n...\n```\nxhost +     # This is needed every system boot to allow Docker to access the X server\nairstack up # This will launch the robot, ground control station, and isaac sim\n\n```\n...\nThis will automatically launch and play the Isaac scene specified under `AirStack/.env` (default is the Fire Academy)."
+        ],
+        "image": "https://docs.theairlab.org/0.17.0/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://docs.theairlab.org/main/docs/simulation/isaac_sim/spawning_drones/",
+        "title": "Spawning Drones - AirStack",
+        "url": "https://docs.theairlab.org/main/docs/simulation/isaac_sim/spawning_drones/",
+        "highlights": [
+          "All launch scripts under `simulation/isaac-sim/launch_scripts/` are thin scenario declarations on top of one shared base class, `pegasus_app.PegasusApp`, which owns the boilerplate every scene needs (SimulationApp creation incl. headless/livestream env handling, Kit extension enabling, Pegasus world + environment loading, stage prep, drone/sensor spawning, the run loop). The reference scripts cover the progression from an empty world up to multiple drones in a custom imported scene with per-drone GPS origins:\n...\nlayout. |\n| `stage_scale` | Uniform scale applied to `/World/stage` (`0.01` for cm-authored assets). |\n| `enable_camera` / `enable_lidar` + offsets | Standard ZED stereo + RTX lidar sensor stack per drone. |\n| `dome_light` | `True` (defaults), `False`, or a kwargs dict for `add_dome_light`. |\n| `world_gps_origin` | If set, calls `gps_utils.set_gps_origins(drone_configs, world_origin=\u2026)` before PX4 boots. |\n|\n...\nPX4 needs a GPS home per vehicle. `simulation/isaac-sim/launch_scripts/gps_utils.py` derives one from each drone's world-frame spawn position so all drones share a consistent geographic anchor and end up at distinct GPS coordinates spaced according to their spawn offsets. Pass `world_gps_origin=` to `PegasusApp` (as `example_multi_drone_scene_import.py` does) and the base class makes this call for you before PX4 boots; the underlying helper is:"
+        ],
+        "image": "https://docs.theairlab.org/main/docs/assets/airstack_white.png"
+      },
+      {
+        "id": "https://pegasussimulator.github.io/PegasusSimulator/",
+        "title": "Pegasus Simulator documentation",
+        "url": "https://pegasussimulator.github.io/PegasusSimulator/",
+        "highlights": [
+          "Pegasus Simulator is a framework built on top of NVIDIA Omniverse and Isaac Sim. It is designed to provide an easy yet powerful way of simulating the dynamics of multirotors vehicles. It provides a simulation interface for PX4 integration as well as custom python control interface. At the moment, only multirotor vehicles are supported, with support for other vehicle topologies planned for future versions.\n...\n\u26a0\ufe0f For users of versions prior to`v5.1.0`: A new command line tool named`isaac_run` is now used to launch Isaac Sim. This is a function that should be added to your .bashrc or .zshrc file during the installation of Isaac Sim. See Installation Instructions for more details.\n...\nThis was done to simplify the launching of Isaac Sim from the terminal with ROS2 support. All previous instructions that mentioned launching Isaac Sim examples from the examples folder using the`ISAACSIM_\n...\n## Guidance, Control and Navigation\n...\nIn parallel to this project, the Pegasus (GNC) guidance, control, and navigation project serves as the foundation control code for performing real-world experiments for my Ph.D. More information can be found at this link: Pegasus GNC.\n...\n- Project Founder\n- Architecture\n- Multirotor Dynamic Simulation and Control\n- Example Applications\n- Ardupilot Integration (Experimental)\n...\n[MHP15] PX4-SITL simulation plugin for gazebo"
+        ],
+        "image": "https://pegasussimulator.github.io/PegasusSimulator/_static/logo.png"
+      },
+      {
+        "id": "https://github.com/castacks/PegasusSimulator-AirStack-Integration/blob/main/README.md",
+        "title": "README.md at main \u00b7 castacks/PegasusSimulator-AirStack-Integration",
+        "url": "https://github.com/castacks/PegasusSimulator-AirStack-Integration/blob/main/README.md",
+        "highlights": [
+          "- Repository: castacks/PegasusSimulator-AirStack-Integration | A framework built on top of NVIDIA Isaac Sim for simulating drones with PX4 support and much more. This fork will focus more on multi-agent orchestration on the ROS2 sensor backends. | 0 stars | Python\n- Branch: main\n...\n**Pegasus Simulator** is a framework built on top of [NVIDIA Omniverse](https://docs.omniverse.nvidia.com/) and [IsaacSim](https://docs.omniverse.nvidia.com/app_isaacsim/app_isaacsim/overview.html). It is designed to provide an easy yet powerful way of simulating the dynamics of vehicles. It provides a simulation interface for [PX4](https://px4.io/) and [ArduPilot](https://ardupilot.org/) integration, as well as a custom python control interface. At the moment, only multirotor vehicles are supported, with support for other vehicle topologies planned for future versions.\n...\ntool named `isa\n...\n_run` is now used\n...\n**This is a\n...\nulator.github\n...\n/PegasusSimulator/\n...\n/installation.html\n...\n## Guidance, Control and Navigation Project\n...\nIn parallel to this project, the Pegasus (GNC) guidance, control, and navigation project serves as the foundation control code for performing real-world experiments for my Ph.D. More information can be found at this link:\n...\nPX4-Autopilot is available as an open-source project under [BSD-3 License](https://github.com/PX4/PX4-"
+        ]
+      },
+      {
+        "id": "https://github.com/Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "title": "Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "url": "https://github.com/Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "author": "Zhefan-Xu",
+        "highlights": [
+          "# CERLAB UAV Autonomy Framework\n\n \n\nWelcome to the CERLAB UAV Autonomy Framework, a versatile and modular framework for autonomous unmanned aerial vehicles (UAVs). This framework comprises distinct components (simulator, perception, mapping, planning, and control) to achieve autonomous navigation, unknown exploration, and target inspection.\n...\n- `autonomous_flight`: The autonomous flight package integrating all other modules for various tasks. details\n- `global_planner`: The global waypoint planner library for autonomous robots. details\n- `map_manager`: The 3D mapping library for autonomous robots. details\n- `onboard_detector`: The dynamic obstacle detection and tracking algorithm for autonomous robots. details\n- `remote_control`: The Rviz configuration and launch files for easy visualization. details\n- `time_optimizer`: The optimal trajectory time allocation library for autonomous robots. details\n- `tracking_controller`: The trajectory tracking controller for autonomous robots. details\n- `trajectory_planner`: The trajectory olanning library for autonomous robots. details\n- `uav_simulator`: The lightweight Gazebo/ROS-based simulator for unmanned aerial vehicles. details\n...\nThis section talks about running this framework in the PX4-based simulation or conducting real flight experiments. Please first follow the PX4 simulation installation guide as provided in uav_simulator."
+        ],
+        "image": "https://opengraph.githubassets.com/cb688b33c9dedad535f10da269fe7b0010b44589fffd4d2fe9ce31751c2c1230/Zhefan-Xu/CERLAB-UAV-Autonomy"
+      }
+    ],
+    "searchTime": 1030.5,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

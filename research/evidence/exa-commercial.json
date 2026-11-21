@@ -1,0 +1,212 @@
+{
+  "query": {
+    "query": "Skydio X10 obstacle avoidance half inch wire Pathfinder NightSense limitations DJI waypoint missions APAS bypass",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "10a2564ef3b18fb8868faecbb967a598",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://support.skydio.com/hc/article_attachments/48924056567067",
+        "title": "Skydio X10",
+        "url": "https://support.skydio.com/hc/article_attachments/48924056567067",
+        "highlights": [
+          "Skydio X10 obstacle avoidance can be impaired when in low light and poor visibility when flying without NightSense. Fly with extreme caution under these conditions.\n...\n\u2022 Skydio X10 requires good visibility to retain its obstacle avoidance capabilities. Obstacle avoidance can also be impaired when in low light (without NightSense) and poor visibility. Fly with extreme caution and care under these conditions.\n...\n\u2022 Skydio X10 can\u2019t see certain visually challenging obstacles. Do not fly around thin branches, telephone or power lines, ropes, netting, wires, chain link fencing, or other objects less than 0.5 inch (1.3 centimeters) in diameter. This type of crash is not covered under the Skydio Limited Warranty.\n...\nUse of Waypoint Missions on the X10 Controller and the\n...\nMissions tab in\n...\nplan Map Captures) are recommended during this phase\n...\nwhen applicable.\n...\n\u2022 Parachute + NightSense \n\u2022 Parachute + Spotlight \n\u2022 Parachute + Speaker \n\u2022 Parachute + Fusion+ \n\u2022 Parachute + RTK/PPK \n\u2022 NightSense + Spotlight \n\u2022 NightSense + Speaker \n\u2022 NightSense + Fusion+ \n\u2022 Spotlight + Speaker \n\u2022 Spotlight + Fusion+ \n\u2022 Speaker\n...\nFusion+\n...\n\u2022 Real-time 3D mapping \n\u2022 Skydio Visual Navigator \n\u2022 Subject Detection \n\u2022 Thermal Tools \n\u2022 Track in Place (subject tracking) \n\u2022 Visual Return-to-Home \n\u2022 Waypoint Missions \n\u2022 Zoom \n\u2022 360\u00b0 Obstacle Avoidance \n\u2022 Low Light Flight \n\u2022 Manual Flight \n\u2022 Map Capture \n\u2022 Motion Planning \n\u2022 Object/Scene Recognition \n\u2022 O ine Maps/Map Importing \n\u2022 Point of Interest Orbit"
+        ]
+      },
+      {
+        "id": "https://support.skydio.com/hc/en-us/articles/21479288051867-How-to-fly-Skydio-X10-at-night",
+        "title": "How to fly Skydio X10 at night \u2013 Skydio",
+        "url": "https://support.skydio.com/hc/en-us/articles/21479288051867-How-to-fly-Skydio-X10-at-night",
+        "highlights": [
+          "- Obstacle avoidance will be disabled and X10 can fly at speeds up to 45 mph (20 m/s)\n...\n- X10 will climb to 16.4 ft (5 m), hover, and rotate 360\u00b0 during launch to calibrate its Inertial Measurement Unit (IMU) and navigation system.\n...\nNightSense ON: Obstacle avoidance is active when NightSense is on. Enable the AR Depth View to visually display where Skydio X10 detects obstacles in the environment, especially when using Infrared NightSense attachments, to assist with situational awareness.\n...\nNightSense OFF: When in Low Light mode, obstacle avoidance is disabled. Take extra caution when piloting the drone to avoid obstacles and stay clear of people.\n...\nNightSense OFF: Skydio X10 does not avoid obstacles when in Low Light mode and NightSense off, so you may want to set the drone\u2019s return height such that it will be above any potential obstacles.\n...\nEnable GPS Only when flying Skydio X10 in low-light conditions. When in this mode, Skydio X10 will disable obstacle avoidance and use GPS sensors, instead of its vision system, to navigate. Skydio X10 will display an alert message if the environment is too dark to fly using the vision navigation system and will prompt you to fly using GPS Flight.\n...\nthe return behavior height setting in\n...\nGlobal Settings menu\n...\nSkydio X\n...\navoid obstacles when in GPS Only flight mode, so you may want to set the drone\u2019s return height such that it will be above any potential obstacles\n...\nWhen GPS Flight\n...\nFlying at night with full obstacle avoidance is possible with the Skydio NightSense attachment and software."
+        ],
+        "image": "https://support.skydio.com//static.zdassets.com/hc/assets/logo.png",
+        "favicon": "https://support.skydio.com/hc/theming_assets/01J3GRK8J5YS07J2X43CHDQJYQ"
+      },
+      {
+        "id": "https://support.skydio.com/hc/en-us/articles/26084250806555-Getting-Started-with-NightSense-for-Skydio-X10",
+        "title": "Getting Started with NightSense for Skydio X10 \u2013 Skydio",
+        "url": "https://support.skydio.com/hc/en-us/articles/26084250806555-Getting-Started-with-NightSense-for-Skydio-X10",
+        "highlights": [
+          "The Skyd\n...\nSense attachments and add-\n...\nyou to leverage Skydio X\n...\navoidance capabilities even when flying at\n...\nwhen flying at night and in low\n...\n- Skydio X10 is limited to a max speed of 18 mph (8 m/s) while NightSense is on\n...\n[note] When flying with NightSense on, your X10 will be limited to a max speed of 18 mph (8 m/s). You may temporarily override this limit and fly at speeds up to 45 mph (20 m/s) by toggling ON Max Boost Speed and holding down the L1 button on your controller. This requires GPS and will temporarily disable NightSense and therefore also disable obstacle avoidance. [/note]\n...\non, your\n...\n0 will be\n...\n18 mph\n...\nIf Max Boost Speed is enabled, holding down the L1 button on your controller temporarily disables NightSense lights (thus also disabling obstacle avoidance) but enables top speeds up to 45 mph (20 m/s) when GPS is available.\n...\nReleasing L1 will exit Boost, turn the NightSense lights back on, and re-enable obstacle avoidance\n...\na maximum top speed of 18 mph (8 m/s).\n...\nIf disabled, after entering Low Light mode, you will need to manually turn on NightSense to fly at night and in low-light conditions with obstacle avoidance.\n...\n| | Infrared (IR) | Visible |\n| --- | --- | --- |\n| Dimensions | 2.9\u2019\u2019 x 2.6\n...\n| 2.9\u2019\u2019 x\n...\n2.6\u2019\u2019 x\n...\n| 55\n...\n0.12\n...\n18 mph\n...\n18 mph (8\n...\n46.5 W\n...\n45 W |\n...\n\u00b0 to 95\u00b0\n...\n(-20\n...\n-4\u00b0 to\n...\n5\u00b0F\n...\nC) |\n| Storage temperature\n...\n176"
+        ],
+        "image": "https://support.skydio.com//static.zdassets.com/logo.png"
+      },
+      {
+        "id": "https://www.adorama.com/col/productManuals/SKYD4ESKT2K2.pdf",
+        "title": "Skydio X10",
+        "url": "https://www.adorama.com/col/productManuals/SKYD4ESKT2K2.pdf",
+        "highlights": [
+          "Skydio X10 obstacle avoidance can be impaired when in low light and poor visibility when flying without NightSense. Fly with extreme caution under these conditions.\n...\n\u2022 Skydio X10 requires good visibility to retain its obstacle avoidance capabilities. Obstacle avoidance can also be impaired when in low light (without NightSense) and poor visibility. Fly with extreme caution and care under these conditions.\n...\n\u2022 Skydio X10 can\u2019t see certain visually challenging obstacles. Do not fly around thin branches, telephone or power lines, ropes, netting, wires, chain link fencing, or other objects less than 0.5 inch (1.3 centimeters) in diameter. This type of crash is not covered under the Skydio Limited Warranty.\n...\n\u2022 Real-time 3D mapping \n\u2022 Skydio Visual Navigator \n\u2022 Subject Detection \n\u2022 Track in Place (subject tracking) \n\u2022 Visual Return-to-Home \n\u2022 Waypoint Missions \n\u2022 Zoom \n\u2022 360\u00b0 Obstacle Avoidance \n\u2022 Low Light Flight \n\u2022 Manual Flight \n\u2022 Map Capture \n\u2022 Motion Planning \n\u2022 Object/Scene Recognition \n\u2022 Offline Maps/Map Importing \n\u2022 Point of Interest Orbit\n...\nLow Light to best\n...\nflight at night\n...\nconditions with poor visibility\n...\nObstacle Avoidance \nWhen flying near obstacles your drone will follow \nyour selected distance setting. Choose between \nStandard, Close, and Minimal. \nStandard (default) - Drone stays 24 in (60 cm) \naway from obstacles (15 in, 39 cm in narrow \nspaces) \n\u2022 Top ground speed: ~36 mph (16 m/s) Close - Drone stays 6 in (15 cm) away from obstacles (5 in, 13 cm in narrow spaces)"
+        ]
+      },
+      {
+        "id": "https://www.skydio.com/blog/unlocking-the-night-skydio-x10-s-nightsense-technology",
+        "title": "Unlocking the Night: Skydio X10's NightSense Technology | Skydio",
+        "url": "https://www.skydio.com/blog/unlocking-the-night-skydio-x10-s-nightsense-technology",
+        "publishedDate": "2024-03-27T13:00:00.000Z",
+        "highlights": [
+          "The challenge of low-light obstacle navigation has long prevented industries ranging from public safety to infrastructure inspection from benefitting from safe drone operations after dark. Enter Skydio X10 with NightSense, the first drone of its kind capable of navigating autonomously in complete darkness. This innovative system allows for fully autonomous around-the-clock drone operations that significantly expand the possibilities of drone use.\n...\nNightSense enhances Skydio's world-class autonomy for use in complete darkness. With advanced AI flight assistance and obstacle avoidance, operators with minimal training can conduct expert-level flights even when the lights are out.\n...\nAs the drone navigates through low or no-light environments, it continuously adapts to efficiently maneuver around potential obstructions, ensuring a safe flight. This capability allows operators to concentrate on mission objectives rather than the risk of collision, significantly reducing operational stress. We have found that our customers using NightSense gain more confidence in the system through this capability, which further feeds their ability to fly confident, useful flights in service of their\n...\nNightSense takes the unparalleled obstacle avoidance and autonomy Skydio is known for and makes it accessible 24/7, opening up a host of new indoor and night-time mission capabilities. For those looking to enable safe operation regardless of low-light conditions, Skydio X10 with NightSense technology offers a solution suited for the needs of public safety, defense, and inspection use-cases."
+        ],
+        "image": "https://cdn.sanity.io/images/mgxz50fq/production-v3-red/3aa058e2ed500f320728e1c6aa4a1cc68423f1ce-1600x1066.jpg?w=3000&fit=max&auto=format"
+      },
+      {
+        "id": "https://support.skydio.com/hc/en-us/articles/30481657855643-Skydio-X10-Known-Issues",
+        "title": "Skydio X10 Known Issues \u2013 Skydio",
+        "url": "https://support.skydio.com/hc/en-us/articles/30481657855643-Skydio-X10-Known-Issues",
+        "highlights": [
+          "Below is a list of known issues in the current Skydio X10 software. Review this list to understand limitations and stay informed. Our team is actively addressing these, and we encourage you to check back for updates as we resolve each issue.\n...\nmay not be\n...\nfor areas with large terrain elevation changes.\n...\n- When using LiveU systems for controller connectivity (\n...\n., in patrol vehicles), ensure the LiveU\n...\nconfigured to Data Bridge > Multi-path mode, not Gateway mode.\n...\n- - Gateway mode blocks the cellular communication between X10 and the X10 controller. The controller may show that it has internet access or be able to load maps, but it will fail to connect to the drone over cellular, and Fusion will show a disconnected status in the 5G section of the menu. This issue is under active investigation.\n...\n- On rare occasions, Skydio X10 may fail to connect to Skydio Cloud over cellular when it is powered on, even though cellular coverage is good in the area. In this case, the drone lights may never turn solid green. This issue can be resolved by rebooting the drone, which takes about 60 seconds. We are actively investigating the root cause of the issue."
+        ],
+        "image": "https://support.skydio.com//static.zdassets.com/logo.png",
+        "favicon": "https://support.skydio.com/hc/theming_assets/01J3GRK8J5YS07J2X43CHDQJYQ"
+      },
+      {
+        "id": "https://support.skydio.com/hc/en-us/articles/18919821734683-Skydio-X10-Frequently-Asked-Questions",
+        "title": "Skydio X10 Frequently Asked Questions \u2013 Skydio",
+        "url": "https://support.skydio.com/hc/en-us/articles/18919821734683-Skydio-X10-Frequently-Asked-Questions",
+        "highlights": [
+          "- Six 32\n...\nnavigation cameras provide a\n...\nspatially reason in all directions\n...\nonce.\n-\n...\n10 automatically\n...\nGPS navigation to ensure mission completion.\n...\n- Skydio X10 is the first drone with 360 degree\n...\nvision for night flight, enabling full autonomy in darkness.\n...\nSkydio X10 comes with the following software features:\n...\n- Real-time 3D mapping\n- Object/scene recognition\n- Motion planning\n- 360 degree obstacle avoidance\n- Subject detection\n- Skydio Visual Navigator\n- Waypoint Missions\n- GPS Flight\n- Offline maps\n- Vertical View\n- Point-of-Interest Orbit\n- Digital Zoom\n- Visual Return-to-Home\n- Close Proximity Obstacle Avoidance\n- Precision Mode\n- Subject tracking\n- Track in Place\n- Map Capture\n- ATAK integration\n...\nYou can additionally purchase the following flight and data apps:\n...\n- Remote Flight Deck (Skydio Connect 5G only)\n- Scout\n- NightSense\n- Crosshair Coordinates\n- Dynamic Mode\n- 3D Scan with Onboard Modeling\n- Mission Planning\n- Multi-Viewer Live Streaming\n- Model Viewer\n- Media Sync\n- Cloud Storage"
+        ],
+        "image": "https://support.skydio.com//static.zdassets.com/logo.png"
+      },
+      {
+        "id": "https://support.skydio.com/hc/en-us/articles/27646999683483-Skydio-X10-v34-1-106-29-May-2024",
+        "title": "Skydio X10: v34.1.106 - 29 May 2024",
+        "url": "https://support.skydio.com/hc/en-us/articles/27646999683483-Skydio-X10-v34-1-106-29-May-2024",
+        "publishedDate": "2024-07-23T00:00:00.000Z",
+        "highlights": [
+          "Skydio NightSense attachments provide bright visible or infrared 360\u00b0 illumination, unlocking Skydio visual navigation and obstacle avoidance when flying at night and in low-light conditions.\n...\n| Flying at night | Select Low Light. Calibrate if prompted (not required with NightSense). |\n| --- | --- |\n| Flying in precipitation (during the day) | Select Standard. Disable obstacle avoidance via the quick action or the settings menu, and only fly with a strong GPS signal. |\n| Flying in precipitation (at night) | Select Low Light. Disable obstacle avoidance, disable NightSense (if you have NightSense attachments installed), and only fly with a strong GPS signal. |\n...\n- The Low Light selection\n...\nNightSense is on,\n...\nSkydio X10 now uses the Time of Flight sensor to detect the ground/landing surface and slow the drone's descent before it makes contact with the ground, even when obstacle avoidance is disabled.\n...\nYou may now adjust yaw and pitch to\n...\na point of interest while X10 traverses to\n...\n### Updated Obstacle Avoidance Margins and Speed\n...\nStandard Obstacle Avoidance is now flatter on the Z axis or shaped more like a pancake and less like a bubble. The margins remain the same, but this is a more accurate margin shaped around the form factor of your drone.\n...\nClose obstacle avoidance radius has been reduced from 8 inches (21 cm) to 6 inches (15 cm)\n...\nDisabling obstacle avoidance will now allow you to fly up to 45 mph (20 m/s). Previously this speed was only achievable when in GPS Only mode."
+        ],
+        "image": "https://support.skydio.com//static.zdassets.com/logo.png",
+        "favicon": "https://support.skydio.com/hc/theming_assets/01J3GRK8J5YS07J2X43CHDQJYQ"
+      },
+      {
+        "id": "https://www.skydio.com/x10/faqs",
+        "title": "Frequently Asked Questions About the Skydio X10 Drone | Skydio",
+        "url": "https://www.skydio.com/x10/faqs",
+        "highlights": [
+          "- Skydio Autonomy for obstacle avoidance, 360\u00b0 environmental awareness, and GPS-denied flight\n- Map Capture for capturing high-resolution nadir and oblique imagery optimized for 2D orthomosaic generation\n- Onboard Modeling for generating low-resolution 3D previews on-device, supporting faster field decision-making\n- Visual Return-to-Home and Track in Place for responsive autonomous flight management\n- In-flight tools including offline maps, HDR, bitrate control, and low-resolution video (LRV) generation\n...\n- RTK/PPK GPS \u2013 Unlocks centimeter-level accuracy for workflows like surveying, reconstruction, and photogrammetry.\n- Spotlight \u2013 Unlocks visibility in dark environments for night inspections, search and rescue, or scene documentation.\n- Speaker \u2013 Unlocks real-time or pre-recorded audio communication for evacuations, public address, or tactical coordination.\n- NightSense \u2013 Unlocks obstacle avoidance in total darkness. The visible-light version improves inspection visibility; the infrared variant supports light-sensitive or covert operations.\n- Parachute \u2013 Unlocks added safety for operations over people or sensitive areas by slowing descent in emergencies.\n- Dropper \u2013 Unlocks precision payload delivery for radios, medkits, or other equipment in remote or urgent scenarios.\n...\nFR Command builds\n...\nwith additional tools for\n...\nsafety, including AR overlays\n...\nrouting. These\n...\nthe browser and\n...\ntime, including\n...\ncoordination via AR overlays and remote route planning, supporting Drone as First\n...\n(DFR)\n...\nremote inspect."
+        ],
+        "image": "https://cdn.sanity.io/images/mgxz50fq/production-v3-red/1aba86a818bf78bb4939b4de3b1d4f8d10784455-1200x650.png?w=3000&fit=max&auto=format"
+      },
+      {
+        "id": "https://support.skydio.com/hc/en-us/articles/25687611805979-Skydio-X10D-ATO-v34-1-125-25-July-2024",
+        "title": "Skydio X10D ATO: v34.1.125 - 25 July 2024",
+        "url": "https://support.skydio.com/hc/en-us/articles/25687611805979-Skydio-X10D-ATO-v34-1-125-25-July-2024",
+        "publishedDate": "2024-07-25T00:00:00.000Z",
+        "highlights": [
+          "Skydio NightSense attachments provide bright visible or infrared 360\u00b0 illumination, unlocking Skydio visual navigation and obstacle avoidance when flying at night and in low-light conditions.\n...\nin dim environments.\n...\n- The Low Light selection replaces the GPS Only toggle. Low\n...\nflight mode will use\n...\n. navigation if there is ambient light; however, GPS will remain the\n...\nnavigation system. If NightSense is on, X10 will use\n...\n| Flying at night | Select Low Light. Calibrate if prompted (not required with NightSense). |\n| --- | --- |\n| Flying in precipitation (during the day) | Select Standard. Disable obstacle avoidance via the quick action or the settings menu, and only fly with a strong GPS signal. |\n| Flying in precipitation (at night) | Select Low Light. Disable obstacle avoidance, disable NightSense (if you have NightSense attachments installed), and only fly with a strong GPS signal. |\n...\n- Standard Obstacle Avoidance is now flatter on the Z axis or shaped more like a pancake and less like a bubble. The margins remain the same, but this is a more accurate margin shaped around the form factor of your drone.\n- Close obstacle avoidance radius has been reduced from 8 inches (21 cm) to 6 inches (15 cm)\n- Disabling obstacle avoidance will allow you to fly up to 45 mph (20 m/s) \n- Alerts if there is degraded motor performance, related to our recent Notice to Operators. Propeller Wear Detected: Check all propeller hubs to verify they are secure and free of wear prior to the vehicle\u2019s next flight. Unresolved prop wear can result in a vehicle crash."
+        ],
+        "image": "https://support.skydio.com//static.zdassets.com/logo.png"
+      },
+      {
+        "id": "https://support.skydio.com/hc/en-us/articles/27602226175259-Skydio-X10D-INTL-v34-1-114-11-June-2024",
+        "title": "Skydio X10D INTL: v34.1.114 - 11 June 2024 \u2013 Skydio",
+        "url": "https://support.skydio.com/hc/en-us/articles/27602226175259-Skydio-X10D-INTL-v34-1-114-11-June-2024",
+        "highlights": [
+          "Skydio NightSense attachments provide bright visible or infrared 360\u00b0 illumination, unlocking Skydio visual navigation and obstacle avoidance when flying at night and in low-light conditions.\n...\n- Use Standard (default) for normal\n...\nand Low Light at\n...\nand in dim environments.\n...\n- The Low Light selection replaces the GPS Only toggle. Low Light flight mode will use vision. navigation if there is any ambient light; however, GPS will remain the primary navigation system. If NightSense is on, X10 will use vision navigation.\n...\nguidance for flying at\n...\n| Flying at night | Select Low Light. Calibrate if prompted (not required with NightSense). |\n| --- | --- |\n| Flying in precipitation (during the day) | Select Standard. Disable obstacle avoidance via the quick action or the settings menu, and only fly with a strong GPS signal. |\n| Flying in precipitation (at night) | Select Low Light. Disable obstacle avoidance, disable NightSense (if you have NightSense attachments installed), and only fly with a strong GPS signal. |\n...\n### Updated Obstacle Avoidance Margins and Speed\n...\n- Standard Obstacle Avoidance is now flatter on the Z axis or shaped more like a pancake and less like a bubble. The margins remain the same, but this is a more accurate margin shaped around the form factor of your drone.\n- Close obstacle avoidance radius has been reduced from 8 inches (21 cm) to 6 inches (15 cm)\n- Disabling obstacle avoidance will now allow you to fly up to 45 mph (20 m/s). Previously this speed was only achievable when in GPS Only mode. \n\n## FIXES\n...\nADDITIONAL IMPROVEMENTS"
+        ],
+        "image": "https://support.skydio.com//static.zdassets.com/logo.png"
+      },
+      {
+        "id": "https://www.youtube.com/watch?v=6OtrUQ3p9Jo",
+        "title": "How well do drones really avoid obstacles? - YouTube",
+        "url": "https://www.youtube.com/watch?v=6OtrUQ3p9Jo",
+        "publishedDate": "2024-07-23T00:00:00.000Z",
+        "author": "CANDRONE",
+        "highlights": [
+          "We tested the obstacle avoidance systems of the @DJI Mini 3, Mavic 3 Enterprise, and Matrice 350 against different gauges of wires, and the results were eye-opening. \n\nThe DJI Mini 3 struggled with thin wires but managed larger objects well. The Mavic 3 Enterprise stood out by consistently detecting the thickest wire from the front and rear, (although the rear sensor did struggle to detect the thinner wire), making it the top performer in our tests. Surprisingly, the Matrice 350, despite its infrared sensors and higher price tag, had difficulty detecting the wires at all, which was a bit disappointing.\n...\n't think it sees it at all but here's on this side it's a bit trickier cuz the ground is a little higher so we're going to try from the other side I'm inching forward here cuz right now it's not seeing anything and this is quite a bigger aircraft so really sketchy and we're just like inches away from the cable uh and it's starting to pick up something but see it's definitely picking up the pole but the cable I'm not too sure about I mean it kind of hesitates a little bit but doesn't fully break so it looks like the obstacle voidance cameras are are very similar to the uh the mini there so it's not picking up at all and and the near infrared is probably the beam is probably too narrow for it to to see it so I'm willing to bet that the red cable is not going to be any better no it doesn't see it at all it's just picking us up on the side here oh do you see that it's a little violent I was expecting a little bit better for from the m350 here considering it's about $10,000 or"
+        ],
+        "image": "https://i.ytimg.com/vi/6OtrUQ3p9Jo/sddefault.jpg"
+      },
+      {
+        "id": "https://support.skydio.com/hc/en-us/articles/24173276530075-How-to-fly-Skydio-X10-in-precipitation",
+        "title": "How to fly Skydio X10 in precipitation \u2013 Skydio",
+        "url": "https://support.skydio.com/hc/en-us/articles/24173276530075-How-to-fly-Skydio-X10-in-precipitation",
+        "highlights": [
+          "- Select Standard as your Flight Environment\n- Disable obstacle avoidance via the quick action or the settings menu\n- Only fly with a strong GPS signal\n...\nFlying in precipitation at night\n...\n- Select Low Light as your Flight Environment\n- Disable obstacle avoidance, disable NightSense (if you have NightSense attachments installed)\n- Only fly with a strong GPS signal\n...\nStep 5 - Disable obstacle avoidance\n...\n- Navigate to Global Settings > Sensing and toggle OFF Obstacle Avoidance\n- You may also disable obstacle avoidance from the quick action menu on the Flight Screen\n...\n- Your drone will automatically rotate 360\u00b0 its calibrate its Inertial Measurement Unit (IMU). Obstacle avoidance will be disabled.\n...\nObstacle Avoidance\n...\nWhen flying in precipitation, obstacle avoidance must be disabled. Take extra caution when piloting the drone to avoid obstacles and stay clear of people.\n...\nMaintaining a strong GPS signal is paramount when operating in Low Light/GPS Only modes. If Skydio X10 loses GPS, it will enter Attitude Mode.\n...\nReview the return behavior height setting in the Global Settings menu. Skydio X10 does not avoid obstacles when in Low Light/GPS Flight mode, so you may want to set the drone\u2019s return height such that it will be above any potential obstacles."
+        ],
+        "image": "https://support.skydio.com//static.zdassets.com/logo.png"
+      },
+      {
+        "id": "https://forum.flylitchi.com/t/air-3-dji-fly-waypoint-obstacle-avoidance/28148",
+        "title": "Air 3, DJI Fly, Waypoint, Obstacle Avoidance - Litchi Forum",
+        "url": "https://forum.flylitchi.com/t/air-3-dji-fly-waypoint-obstacle-avoidance/28148",
+        "publishedDate": "2026-04-09T00:00:00.000Z",
+        "highlights": [
+          "In the Fly app, while in Waypoint (WP) mode with Obstacle Avoidance (OA) enabled, the drone automatically performs a \u201cBrake\u201d action when it encounters an obstacle. This happens regardless of whether \u201cBypass\u201d is selected for the mission.\n...\nThis presents a significant problem, especially if the drone is on the other side of a mountain when it loses signal with the controller. The only failsafe in this scenario is that when the drone enters \u201cBrake\u201d or hovering mode and subsequently reaches a low battery level, it will trigger Return to Home (RTH).\n...\nIs there any way within the Litchi ecosystem to add an event that fires when an OA action is triggered? If so, could it perform a bypass and then continue to the next waypoint?\n...\n6, 1\n...\nthat I can think\n...\nrun into an obstacle\n...\n, I initially\n...\nfollow way line mode. This\n...\nMad_Pup April 10, 2026, 5:5\n...\nFor drone operators seeking\n...\nmaximize flight time per battery charge,\n...\nbattery power and allows drones to remain aloft for a few precious minutes and seconds longer than they would with obstacle avoidance sensors left on, and drawing current during flights.\n...\nsensors, the\n...\nAn important detail that isn\u2019t well documented is that altitude is set only at waypoints. This means that if there is a ridgeline or treetops between two waypoints, you will hit them. In mountainous terrain, it\u2019s crucial to use an abundance of waypoints to ensure that you\u2019re adjusting for each peak and valley to avoid obstructions."
+        ],
+        "image": "https://forum.flylitchi.com/uploads/default/original/1X/4edceb670488f9170a89a81d8e6d2c1d03348081.png"
+      },
+      {
+        "id": "https://mavicpilots.com/threads/waypoint-flights-and-obstacle-avoidance.148008/",
+        "title": "Waypoint flights and obstacle avoidance - Mavic Pilots",
+        "url": "https://mavicpilots.com/threads/waypoint-flights-and-obstacle-avoidance.148008/",
+        "publishedDate": "2024-08-30T00:00:00.000Z",
+        "highlights": [
+          "South Africa](https://mavicpilots.com/misc/location-info?location=Western+Cape%2C+South+Africa) \n\nThis is related to the DJI [Air 3](https://amzn.to/45ucLId) and RC2 controller during WAYPOINT flights. I need to be able to complete a waypoint mission, irrespective of the obstacle e.g. seagull \n \n**First Issue:** DJI mentions that in Sport mode, there is no obstacle avoidance. However, I have experienced the following during waypoint flights in Sport mode: It seems as if the \"Obstacle Avoidance Action\" setting under the RC2 Safety tab has a higher priority than the \"S\" mode setting on the RC2 mode switch \n \nWhen I initiate a waypoint flight and switch the mode to \"S,\" the [Air 3](https://amzn.to/45ucLId) still stops and aborts the waypoint mission when it encounters an obstacle. I tested this both before and during the flight. \n \nHowever, when I set the \"Obstacle Avoidance Action\" in the Safety tab on the RC2 to \"OFF,\" the [Air 3](https://amzn.to/45ucLId) ignores all obstacles (This is what I need) during the\n...\nThx a lot. I have tested this many times now. If your WP flight is aborted due to an obstacle (e.g. seagull too close), it will abort the flight. If you press Continue on the controller (RC2), the drone will fly back to WP1 and start the mission again. The ONLY way to get passed this abort of a WP mission, is if you switch OFF Obstacle avoidance in the SETUP menu. But then you need to be 100% sure the mission flight do not have obstacles, or be prepared to fly into one.. Setting the Control Switch on the RC2 to Sport, will not help. It will still abort the mission."
+        ]
+      },
+      {
+        "id": "https://www.skydio.com/x10d/technical-specs",
+        "title": "Skydio X10D technical specs | Skydio",
+        "url": "https://www.skydio.com/x10d/technical-specs",
+        "highlights": [
+          "Max angular velocity | Yaw:\n...\n100\u00b0 deg/s Roll / pitch: 225\u00b0 deg/s |\n| Max tilt angle | 40\u00b0 |\n| Max ascent/decent speed | Ascent: 13.4mph / 6 m/s Descent: 9.0mph / 4 m/s |\n| Max non-vertical descent speed | 13.4mph / 6 m/s |\n| Max horizontal speed (at sea level) | 45mph / 20 m/s |\n| Max horizontal speed with obstacle avoidance | 36mph / 16 m/s |\n| Max service ceiling above sea level (without other payload) | 15,000' / 4,572m density altitude |\n| Max gust handling | At or under 28 mph / 12.8 m/s |\n| Max hover time | 35 minutes |\n| Max flight time* | 40 minutes |\n| Processors | NVIDIA Jetson Orin SoC Qualcomm QRB5165 SoC |\n| Ingress protection rating | IP55 |\n| GNSS | GPS + Galileo + GLONASS + BeiDou |\n| Geofence limitations | No |\n| Operational temperature range | -4\u00b0F to 113\u00b0F / -20\u00b0C to +45\u00b0C |\n| Wireless range (no interference, line of sight operation) | Connect SL: 12km / 7.5 miles Connect MH: 10km / 6.2 miles |\n| Wireless networking (media offload) | N/A |\n| Obstacle avoidance coverage | True 360\u00b0 |\n...\n| Vision systems / navigation cameras | |\n| --- | --- |\n| Configuration | 6x cameras in trinocular configuration top and bottom |\n| Sensor | Samsung 1/2.8\" 32MP color CMOS |\n| Light sensitivity | Visible light |\n| Aperture | f/1.8 |\n| Diagonal field of view | 200\u00b0 |\n| Obstacle sensing range | 65' 7.4\" / 20 meters |\n| Environment coverage | True 360\u00b0 |"
+        ],
+        "image": "https://cdn.sanity.io/images/mgxz50fq/production-v3-red/1aba86a818bf78bb4939b4de3b1d4f8d10784455-1200x650.png?w=3000&fit=max&auto=format"
+      },
+      {
+        "id": "https://www.skydio.com/platform/reliability-dashboard",
+        "title": "Skydio reliability dashboard | Skydio",
+        "url": "https://www.skydio.com/platform/reliability-dashboard",
+        "highlights": [
+          "- Technical factors saw a 15% improvement; obstacle avoidance failures are still the largest single category among thin objects and large textureless obstacles. We also continued to have a small trickle of several mitigated issues, with some users not yet replacing Rev 1 propellers or updating to the latest available\n...\n- Human factors improved by roughly 30% over the prior quarter and 70% year over year. Approximately 40% of these incidents are collisions that occur when obstacle avoidance is disabled or unavailable. Many of these incidents happen at night and, unsurprisingly, incident rates are much higher when flying at night. Overall incident rates at night are nearly 1.5x higher than during the day, and human-factor incidents are more than twice as likely at night. We see this even when NightSense is installed on the aircraft, as operators often disable it, typically to maximize flight time. In Cayley, we introduced several features aimed at reducing these occurrences: lower power consumption for IR NightSense modules via strobing (reducing the need for pilots to manually manage NightSense to stay on scene), plus automatic disabling and re-enabling between Pathfinder waypoints (eliminating the need for pilots to manually track these transitions). To further address these risks, we\u2019re also extending the Pathfinder geofences to manual flight modes as part of the Draper release, which we anticipate will continue to drive these rates down in Q3 and beyond by enabling obstacle avoidance against everything in our data sets, even when visual detection is unavailable."
+        ],
+        "image": "https://cdn.sanity.io/images/mgxz50fq/production-v3-red/118371022838cf382ef49b5a3657a4f1f869d885-1200x628.png?w=3000&fit=max&auto=format"
+      },
+      {
+        "id": "https://pages.skydio.com/rs/784-TUF-591/images/Technical%20White%20Paper%20-%20Skydio%20X10D_%20Small%2C%20Smart%2C%20Survivable.pdf?version=0",
+        "title": "Technical White Paper - Skydio X10D: Small, Smart, Survivable",
+        "url": "https://pages.skydio.com/rs/784-TUF-591/images/Technical%20White%20Paper%20-%20Skydio%20X10D_%20Small%2C%20Smart%2C%20Survivable.pdf?version=0",
+        "highlights": [
+          "X10D harnesses AI to become the world\u2019s first drone with an autonomous night\n...\nnavigation system, able to navigate in dark environments while deftly avoiding\n...\nobstacles. A first-of-its-kind infrared sensor navigation system, paired with\n...\nalgorithms designed for 360\u00b0 Obstacle Avoidance, allows X10D to conduct \ncomplex nighttime missions.\n...\nSkydio\n...\n. Obstacle\n...\nance enables X10D to navigate challenging terrain responsively and provide up-close inspection of assets, providing critical and reliable reconnaissance without crashes\n...\nthe real-time coordinates of\n...\n, use Crosshair Coordinates coupled with Digital Terrain Elevation Data (\n...\nThe X1\n...\nD is equipped with a narrow lens featuring a 4x zoom level and surround\n...\n5x zoom,\n...\n32x\n...\nthermal palette and tuning\n...\nhave used\n...\ndarkness to their advantage\n...\nwhen conducting crucial\n...\na critical\n...\ntactical advantage. X10D addresses the challenges associated with flight at night or in low light and poor visibility conditions, providing bright visible or infrared 360\u00b0 illumination so the X10D can see and access the autonomy system for vision and GPS navigation with obstacle avoidance with Skydio NightSense. The X10D radiometric thermal camera provides ultra-high resolution image quality and a selection of thermal palettes to highlight specific warm or cold people, objects, or points of interest for better identification, confidence, and decision-making."
+        ]
+      },
+      {
+        "id": "https://www.skydio.com/x10d",
+        "title": "Skydio X10D | Skydio",
+        "url": "https://www.skydio.com/x10d",
+        "highlights": [
+          "Fly the most complex missions confidently, even in contested environments. With superior AI flight assistance and obstacle avoidance, Skydio X10D reduces operators\u2019 cognitive load and requires a fraction of the training hours demanded by traditional drones.\n...\n### Visionary autonomous obstacle avoidance for night operations: Mission success could depend on it.\n\n \n\n## Another industry first: Autonomy in the dark.\n...\nConfidently operate 24/7 in NightSense mode for zero-light navigation \u2014 only available with the groundbreaking Skydio X10D.\n...\nSee in the dark. Skydio X10D uses visible or infrared illumination to avoid obstacles, understand its environment, and make the right decisions, every time.\n\n \n\nIR Navigation Camera and Illuminator. Using IR illumination, the X10D averts visibility at night.\n...\nVisible Light Nav Cam\n...\nUsing visible illumination, the X10D provides bright 360-degree light.\n...\nVisible/IR light Module Using visible illumination, the X10D provides bright\n...\n360-degree light.\n...\nWatch video \n\nLearn more about\n...\ninnovations behind NightSense.\n...\n### Start with Skydio attachments\n\n \n\nParachute The ultimate safety fallback for operations over or near people. \n\n \n\nDropper Carry payloads for release above targeted areas.\n\n \n\nNightSense Visible Light Conduct autonomous flight in the dark navigating with visual cameras.\n\n \n\nNightSense IR Light Conduct autonomous flight in the dark navigating with infrared cameras.\n\n \n\nSpotlight Improve visibility during nighttime operations.\n\n \n\nSpeaker Communicate and coordinate in high-risk situations."
+        ],
+        "image": "https://cdn.sanity.io/images/mgxz50fq/production-v3-red/49fded83d4ba104d90abd0ea821424b94a7cd8c9-2400x1300.png?w=3000&fit=max&auto=format"
+      },
+      {
+        "id": "https://www.commercialuavnews.com/international/skydio-s-nightsense-enables-autonomous-flight-in-zero-light-environments",
+        "title": "Skydio's NightSense Enables Autonomous Flight in Zero-Light ...",
+        "url": "https://www.commercialuavnews.com/international/skydio-s-nightsense-enables-autonomous-flight-in-zero-light-environments",
+        "publishedDate": "2024-02-29T00:00:00.000Z",
+        "highlights": [
+          "Available on the Skydio X10 drone, NightSense enables drone operators to fly in zero-light environments. This revolutionary system makes the X10 the ideal platform for inspections, mapping, public safety, and other critical operations that take place GPS-denied or high EMI environments.\n...\n\u201cNightSense enables operators to fly with confidence 24/7\u2014no matter how much light is available,\u201d said Jason Tillman, Director of Product Marketing at Skydio. \u201cThis is a first in the drone world. No other drone can provide obstacle avoidance in complete darkness. It's only available on the Skydio X10.\u201d\n...\nthe way\u201d for the X\n...\n0 navigation cameras, unlocking their\n...\neven in total\n...\nAccording to Tillman, the pairing of NightSense with the Skydio X10 will benefit drone operators performing a wide variety of missions. \u201cThere are many industries, notably public safety and defense, where missions are not limited to only daylight hours,\u201d he said. \u201cPolice are often most active during the evening and late-night hours, typically from 6 PM to 2 AM.\n...\nAlthough the capabilities enabled by NightSense are particularly valuable for nighttime operations, the system can bring real value to almost any drone-based application. \u201cDrone autonomy (e.g. obstacle avoidance) is useful in every type of mission,\u201d he asserted. \u201cKnowing you can focus on the mission at hand and not about crashing into trees, buildings, or other obstacles enables operators to complete their tasks faster, more accurately and with less stress.\u201d"
+        ],
+        "image": "https://s3.divcom.com/www.commercialuavnews.com/images/Skydio%20X10.jpg.small.400x400.jpg"
+      }
+    ],
+    "searchTime": 1462.4,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

@@ -133,7 +133,7 @@ class SensorStream:
         if self.ended:
             return
         now_ms = None
-        try:  # called from C (lockstep.c), which cannot see a Python exception
+        try:
             now_ms = int(round(self.robot.getTime() * 1000))
             if now_ms % 100 == 0 and (self.run / "sensing-end").exists():
                 self._end(None if self.started else "the ROS bridge never connected")
@@ -166,12 +166,25 @@ class SensorStream:
             pointer = self._wb.wb_lidar_get_point_cloud(self.lidar._tag)
             if not (count and pointer):
                 raise RuntimeError("the LiDAR returned no points")
-            points = ctypes.string_at(pointer, count * protocol.LIDAR_POINT_BYTES)
-            self._put(protocol.pack(protocol.LIDAR, stamp, protocol.COUNT.pack(count) + points))
+            self._put(_message(protocol.LIDAR, stamp, protocol.COUNT.pack(count),
+                               pointer, count * protocol.LIDAR_POINT_BYTES))
         if now_ms % self.camera_period == 0:
-            image = self.camera.getImage()  # raises without an image
-            size = protocol.SIZE.pack(self.camera.getWidth(), self.camera.getHeight())
-            self._put(protocol.pack(protocol.IMAGE, stamp, size + bytes(image)))
+            width, height = self.camera.getWidth(), self.camera.getHeight()
+            self._wb.wb_camera_get_image.restype = ctypes.c_void_p
+            pointer = self._wb.wb_camera_get_image(self.camera._tag)
+            if not pointer:
+                raise RuntimeError("the camera returned no image")
+            self._put(_message(protocol.IMAGE, stamp, protocol.SIZE.pack(width, height), pointer, 4 * width * height))
+
+
+def _message(kind, stamp, prefix, pointer, size):
+    """protocol.pack(kind, stamp, prefix + the size bytes at pointer), copying Webots' data once instead of three times."""
+    start = protocol.HEADER.size + len(prefix)
+    message = bytearray(start + size)
+    protocol.HEADER.pack_into(message, 0, protocol.MAGIC, kind, stamp, len(prefix) + size)
+    message[protocol.HEADER.size:start] = prefix
+    ctypes.memmove((ctypes.c_char * size).from_buffer(message, start), pointer, size)
+    return message
 
 
 def enabled():

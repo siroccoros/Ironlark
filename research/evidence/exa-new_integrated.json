@@ -1,0 +1,284 @@
+{
+  "query": {
+    "query": "ROS2 autonomous drone full stack lidar obstacle avoidance github Aerial Autonomy Stack SUPER FAST LIVO2",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "3d2ca035f4d3740018b6dda2e17b681a",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/jacopopan/aerial-autonomy-stack/",
+        "title": "JacopoPan/aerial-autonomy-stack",
+        "url": "https://github.com/jacopopan/aerial-autonomy-stack/",
+        "highlights": [
+          "An open framework to simulate and deploy perception-based PX4/ArduPilot drone swarms with ROS2, YOLO, LiDAR, NVIDIA Jetson\n...\n*Aerial autonomy stack* (AAS) is a \"batteries included\",\n...\n-proven, open software and the\n...\n1. **Develop** multi-drone autonomy\u2014with PX4, ArduPilot, and ROS2\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLO and 3D LiDAR\n3. **Deploy** in real drones\u2014with JetPack, DeepStream, and NVIDIA Orin\n...\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors, quadplane VTOLs, and tailsitters**)\n...\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n...\n- **YOLO** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n- 3D worlds for perception-based simulation\n...\nN#nbsp;x]#nbsp\n...\naircraft#nbsp;\n...\ns)#nbsp;(\n...\n4,#nbsp;arm64\n...\n):::algo\n...\ngraph control [Control\n...\nsplit( ):\n...\n{{\"ux\n...\nce_dds <\n...\n/> || MAVROS\n...\n<br/> /TBD\n...\n<br/> /state_drone_\n...\ntrack_split --> offboard\n...\n_split --> mission\n...\nzenoh_air\n...\nc_commands\n...\n| dtc\n...\nautopilot_interface\n...\nyolo\n...\n\"| detection\n...\ndetection_split --> offboard_control\n...\ndetection_split\n...\noffboard_control\n...\nautopilot_interface\n...\nautopilot_interface\n...\n_air <-->\n...\nautopilot_\n...\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500\n...\nlidar                          # LiDAR model"
+        ]
+      },
+      {
+        "id": "https://github.com/JacopoPan/aerial-autonomy-stack/blob/main/README.md",
+        "title": "README.md",
+        "url": "https://github.com/JacopoPan/aerial-autonomy-stack/blob/main/README.md",
+        "highlights": [
+          "1. **Develop** multi-drone autonomy\u2014with PX4, ArduPilot, and ROS2\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLO and 3D LiDAR\n3. **Deploy** in real drones\u2014with JetPack, DeepStream, and NVIDIA Orin\n...\n(**quadrot\n...\n, quadplane VT\n...\ns, and tailsitters**)\n...\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n...\n- **YOLO** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n...\n- 3D worlds for perception-based simulation\n...\n> `BUILD_ADVANCED_ODOM=true ./sim_build.sh` adds to the `aircraft-image` several VIO and LIVO packages, including `openv\n...\n`, `rovio`, `fastlio`, `superodom`, and `mimosa`\n...\n--> |\"/\n...\n):::algo\n...\ncontrol [Control\n...\n_link{{\"ux\n...\n_dds <br/> || M\n...\n\"}}:::bridge\n...\n-.-> |\"/\n...\nBD\"| ap_link\n...\n_data <br/> /TBD\"| ap\n...\nzenoh_air --> |\"/tracks <br/> /state_\n...\ntrack_split\n...\ntrack_split -->\n...\nboard_control\n...\ntrack_split --> mission\n...\nzenoh_air\n...\n|\"/dtc_commands\"| dtc_client\n...\nap_\n...\n--> state_sharing\n...\nlink <--> autopilot_interface\n...\nyolo_py --> |\"/\n...\nctions\"| detection_split\n...\ndetection_split --> offboard_control\n...\ndetection_split --> mission\n...\noffboard_control\n...\n|\"/ctrl_ref\"| autopilot_interface\n            mission\n...\n|\"ros2 action\"| autopilot_interface\n            dtc_client\n...\n|\"ros2 action\"| autopilot\n...\ninterface\n            zen\n...\n_air <--> |\"/state_drone_\n...\n\"| state_sharing\n            autopilot_"
+        ]
+      },
+      {
+        "id": "https://github.com/JacopoPan/aerial-autonomy-stack",
+        "title": "JacopoPan/aerial-autonomy-stack - GitHub",
+        "url": "https://github.com/JacopoPan/aerial-autonomy-stack",
+        "highlights": [
+          "An open framework to simulate and deploy perception-based PX4/ArduPilot drone swarms with ROS2, YOLO, LiDAR, NVIDIA Jetson\n...\n*Aerial autonomy stack* (AAS) is a \"batteries included\", flight-proven, open software and the simplest/\n...\nway to:\n...\n1. **Develop** multi-drone autonomy\u2014with PX4, ArduPilot, and ROS2\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLO and 3D LiDAR\n3. **Deploy** in real drones\u2014with JetPack, DeepStream, and NVIDIA Orin\n...\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors, quadplane VTOLs, and tailsitters**)\n...\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n...\n- **YOLO** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n- 3D worlds for perception-based simulation\n...\nbridge}}:::bridge\n\n            ground\n...\nsystem --> |\"/\n...\nN#nbsp;x]#nbsp;aircraft#nbsp;\n...\n(s)#nbsp\n...\namd64,#nbsp;arm\n...\n(yolo\n...\n(kiss_icp\n...\nalgo\n...\n(livo\n...\ncontrol [Control\n...\nap_link{{\"ux\n...\n_dds <\n...\nBD\"|\n...\n<br/> /state_\n...\ntrack_split -->\n...\n_split --> mission\n...\nzenoh_air\n...\n\"| dtc_\n...\nstate_sharing\n...\ndetection_split\n...\ndetection_split --> offboard_control\n...\ndetection_split\n...\noffboard_control\n...\n_ref\"| autopilot_interface\n...\nros2 action\"\n...\nautopilot_interface\n...\noh_air\n...\nautopilot_\n...\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\n...\nlidar                          # LiDAR model"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/pdf/2602.07264",
+        "title": "",
+        "url": "https://arxiv.org/pdf/2602.07264",
+        "highlights": [
+          "greater autonomy to these systems can simultaneously make them more effective as well as reliable. Thus, the ability to rapidly engineer and deploy autonomous aerial systems has become of strategic importance. In the 2010s, a combination of high-performance compute, data, and open-source software led to the current deep learning and AI boom, unlocking decades of prior theoretical work. Robotics is on the cusp of a similar transformation. However, physical AI faces unique hurdles, often combined under the umbrella term \u201csimulation-to-reality gap\u201d. These span from modeling shortcomings to the complexity of vertically integrating the highly heterogeneous hardware and software systems typically found in field robots. To address the latter, we introduce aerial-autonomy-stack, an open-source, end-to-end framework designed to streamline the pipeline from (GPU-accelerated) perception to (flight controller-based) action. Our stack allows the development of aerial autonomy using ROS2 and provides a common interface for two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20 $\\times$ faster-than-real-time, end-to-end simulation of a complete development and deployment stack\u2014including edge compute and networking\u2014significantly compressing the build-test-release cycle of perception-based autonomy.\n...\n360\u00b0 LiDAR: a 3D laser scanner modeled after the Livox Mid-360. It provides 360\u00b0 horizontal and 60\u00b0 vertical FOV (with 240 and 40 channels at 4Hz, respectively), generating point clouds for KISS-ICP odometry, obstacle avoidance, and SLAM."
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/46gh9849vdv",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "aerial-autonomy-stack -- a Faster-than-real-time, Autopilot-agnostic, ROS2 Framework to Simulate and Deploy Perception-based Drones",
+              "year": 2026,
+              "date": "2026-02-06",
+              "type": "article",
+              "language": null,
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Jacopo Panerati",
+                  "id": null
+                },
+                {
+                  "name": "Sina Sajjadi",
+                  "id": null
+                },
+                {
+                  "name": "Sina Soleymanpour",
+                  "id": null
+                },
+                {
+                  "name": "Varun Mehta",
+                  "id": null
+                },
+                {
+                  "name": "Iraj Mantegh",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Unmanned aerial vehicles are rapidly transforming multiple applications, from agricultural and infrastructure monitoring to logistics and defense. Introducing greater autonomy to these systems can simultaneously make them more effective as well as reliable. Thus, the ability to rapidly engineer and deploy autonomous aerial systems has become of strategic importance. In the 2010s, a combination of high-performance compute, data, and open-source software led to the current deep learning and AI boom, unlocking decades of prior theoretical work. Robotics is on the cusp of a similar transformation. However, physical AI faces unique hurdles, often combined under the umbrella term \"simulation-to-reality gap\". These span from modeling shortcomings to the complexity of vertically integrating the highly heterogeneous hardware and software systems typically found in field robots. To address the latter, we introduce aerial-autonomy-stack, an open-source, end-to-end framework designed to streamline the pipeline from (GPU-accelerated) perception to (flight controller-based) action. Our stack allows the development of aerial autonomy using ROS2 and provides a common interface for two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20x faster-than-real-time, end-to-end simulation of a complete development and deployment stack -- including edge compute and networking -- significantly compressing the build-test-release cycle of perception-based autonomy.",
+              "doi": "10.48550/arxiv.2602.07264"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/v4rl-ucy/FAST-LIVO2-ROS2",
+        "title": "v4rl-ucy/FAST-LIVO2-ROS2",
+        "url": "https://github.com/v4rl-ucy/FAST-LIVO2-ROS2",
+        "highlights": [
+          "# v4rl-ucy/FAST-LIVO2-ROS2\n...\nFAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\n# FAST-LIVO2 ROS2 HUMBLE\n...\n## FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\nFAST-LIVO2 is an efficient and accurate LiDAR-inertial-visual fusion localization and mapping system, demonstrating significant potential for real-time 3D reconstruction and onboard robotic localization in severely degraded environments.\n\n \n \n \n\n### 1.1 Related video\n...\nWe open-source our handheld device, including CAD files, synchronization scheme, STM32 source code, wiring instructions, and sensor ROS driver. Access these resources at this repository: [**LIV_handhold**](https://github.com/xuankuzcr/LIV_handhold).\n...\n### 2.5 **livox_ros_driver2**\n...\nFollow [livox_ros_driver2 Installation](https://github.\n...\n-SDK/\n...\n_ros_driver2\n...\nwhy not use `livox_ros_driver`? Because it is not compatible with ROS2 directly. actually i am not think there s any difference between [livox ros driver](https://github.com/Livox-SDK/livox_ros_driver.git) and [livox ros driver2](https://github.com/Livox-SDK/livox_ros_driver2.git) 's `CustomMsg`, the latter 's ros2 version is sufficient.\n...\n```\ngit clone https://github.com/Rhymer-Lcy/FAST-LIVO2-ROS2-MID360-Fisheye.git\ncd livox_ros_driver2\n./build.sh humble\nsource ~/fast_ws/install/setup.bash\n```\n...\n```bash\nros2 launch fast_livo mapping_aviz.launch.py use_rviz:=True use_sim_time:=True\nros2 bag play -p Retail_Street  # Use space bar to play/pause\n```\n...\niz:=True use_\n...\n360-Fisheye dataset\n...\np $BAG\n...\nUse space bar\n...\n-collected MID360-Fisheye dataset"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2602.07264v2",
+        "title": "aerial-autonomy-stack\u2014a Faster-than-real-time, Autopilot ...",
+        "url": "https://arxiv.org/html/2602.07264v2",
+        "publishedDate": "2026-05-02T00:00:00.000Z",
+        "highlights": [
+          "greater autonomy to these systems can simultaneously make them more effective as well as reliable. Thus, the ability to rapidly engineer and deploy autonomous aerial systems has become of strategic importance. In the 2010s, a combination of high-performance compute, data, and open-source software led to the current deep learning and AI boom, unlocking decades of prior theoretical work. Robotics is on the cusp of a similar transformation. However, physical AI faces unique hurdles, often combined under the umbrella term \u201csimulation-to-reality gap\u201d. These span from modeling shortcomings to the complexity of vertically integrating the highly heterogeneous hardware and software systems typically found in field robots. To address the latter, we introduce aerial-autonomy-stack, an open-source, end-to-end framework designed to streamline the pipeline from (GPU-accelerated) perception to (flight controller-based) action. Our stack allows the development of aerial autonomy using ROS2 and provides a common interface for two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20 $\\times$ faster-than-real-time, end-to-end simulation of a complete development and deployment stack\u2014including edge compute and networking\u2014significantly compressing the build-test-release cycle of perception-based autonomy.\n...\n360\u00b0 LiDAR: a 3D laser scanner modeled after the Livox Mid-360. It provides 360\u00b0 horizontal and 60\u00b0 vertical FOV (with 240 and 40 channels at 4Hz, respectively), generating point clouds for KISS-ICP odometry, obstacle avoidance, and SLAM."
+        ],
+        "image": "https://arxiv.org/html/2602.07264v2/x1.jpeg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://exa.ai/library/publication/46gh9849vdv",
+        "title": "aerial-autonomy-stack -- a Faster-than-real-time, Autopilot-agnostic, ROS2 Framework to Simulate and Deploy Perception-based Drones",
+        "url": "https://doi.org/10.48550/arxiv.2602.07264",
+        "publishedDate": "2026-02-06T00:00:00.000Z",
+        "author": "Jacopo Panerati, Sina Sajjadi, Sina Soleymanpour, Varun Mehta, Iraj Mantegh",
+        "highlights": [
+          "-we provide a development playground that supports perception-enabled (with RGB cameras and 3D LiDARs) autonomy for both the PX4 and ArduPilot ecosystems, streamlining cross-platform research; \u2022 a standardized autopilot interface-our stack introduces an autopilot-agnostic ROS2 action-based interface for PX4 and ArduPilot, to implement autonomy using modern software design principles; \u2022 high-performance simulation-we demonstrate fasterthan-real-time, multi-vehicle, software-in-the-loop capa- bilities, performing end-to-end simulation that includes RGB camera feeds, LiDAR odometry, and onboard GPU-accelerated YOLO inference; \u2022 a containerized architecture-we leverage Docker\n...\n\u2022 RGB camera: a fixed front-facing EO sensor. It is configured to output a 320-by-240 pixel stream at 8Hz with a 100\u00b0horizontal field-of-view (FOV), supporting visual servoing and YOLO-based object detection. This mimics the de-warped frame of a wide-angle CSI camera such as the IMX219-200. \u2022 360\u00b0LiDAR: a 3D laser scanner modeled after the Livox Mid-360. It provides 360\u00b0horizontal and 60\u00b0v ertical FOV (with 240 and 40 channels at 4Hz, respectively), generating point clouds for KISS-ICP odometry, obstacle avoidance, and SLAM. These default sensor parameters are chosen to balance performance (see Section VIII) with realism. Nevertheless, they can be easily customized to simulate different or higher resolution sensors (e.g., increasing the sensor rate of the camera-for high-speed visual servoing-or that of the LiDAR-to more accurately model the 10Hz frequency of a real-life Livox Mid-360)."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/46gh9849vdv",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "aerial-autonomy-stack -- a Faster-than-real-time, Autopilot-agnostic, ROS2 Framework to Simulate and Deploy Perception-based Drones",
+              "year": 2026,
+              "date": "2026-02-06",
+              "type": "article",
+              "language": null,
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Jacopo Panerati",
+                  "id": null
+                },
+                {
+                  "name": "Sina Sajjadi",
+                  "id": null
+                },
+                {
+                  "name": "Sina Soleymanpour",
+                  "id": null
+                },
+                {
+                  "name": "Varun Mehta",
+                  "id": null
+                },
+                {
+                  "name": "Iraj Mantegh",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Unmanned aerial vehicles are rapidly transforming multiple applications, from agricultural and infrastructure monitoring to logistics and defense. Introducing greater autonomy to these systems can simultaneously make them more effective as well as reliable. Thus, the ability to rapidly engineer and deploy autonomous aerial systems has become of strategic importance. In the 2010s, a combination of high-performance compute, data, and open-source software led to the current deep learning and AI boom, unlocking decades of prior theoretical work. Robotics is on the cusp of a similar transformation. However, physical AI faces unique hurdles, often combined under the umbrella term \"simulation-to-reality gap\". These span from modeling shortcomings to the complexity of vertically integrating the highly heterogeneous hardware and software systems typically found in field robots. To address the latter, we introduce aerial-autonomy-stack, an open-source, end-to-end framework designed to streamline the pipeline from (GPU-accelerated) perception to (flight controller-based) action. Our stack allows the development of aerial autonomy using ROS2 and provides a common interface for two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20x faster-than-real-time, end-to-end simulation of a complete development and deployment stack -- including edge compute and networking -- significantly compressing the build-test-release cycle of perception-based autonomy.",
+              "doi": "10.48550/arxiv.2602.07264"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/JacopoPan/aerial-autonomy-stack/pull/90",
+        "title": "LIVO Integrations",
+        "url": "https://github.com/JacopoPan/aerial-autonomy-stack/pull/90",
+        "highlights": [
+          "Follows #85 \n \nTODOs \n \n- [ ] Interface synthetic sensor data (IMU, camera, LiDAR)/TF \n- [ ] Create a 3D world.sdf for LIVO-based navigation and mapping (i.e., textured and obstacle rich, e.g. [`subt_cave_sim`](https://github.com/ntnu-arl/subt_cave_sim)) \n- [ ] Update instructions/dependencies/external repos/build times in README \n- [ ] Update architectural diagram \n- [ ] Use LIVO for PX4/ArduPilot SITL control (e.g., [PX4-Multiagent-Simulation](https://github.com/TannerGilbert/PX4-Multiagent-Simulation), [Ardupilot_Multiagent_Simulation](https://github.com/aau-cns/Ardupilot_Multiagent_Simulation)) \n- [ ] (?) Add DeepStream to amd64 build \n- [ ] (?) ArUco OpenCV module on L4T of OpenVINS \n- [ ] (?) Add [VSLAM-LAB](https://github.com/VSLAM-LAB/VSLAM-LAB) \n \nTutorials \n- https://docs.openvins.com/getting-started.html \n- https://github.com/MIT-SPARK/spark-fast-lio#-how-to-run \n- https://github.com/MIT-SPARK/KISS-Matcher/tree/main/ros#gear-how-to-build--run \n- https://github.com/superxslam/SuperOdom#-5-launch-superodometry \n- https://github.com/ntnu-arl/mimosa/tree/dev/ros2#usage \n \n```\n...\n# SUPERODOM INPUTS\n...\n/data\n...\nNone\n...\nnode, imu\n...\n/integrated_to_init\n...\n/Odometry                    | None                                     | feature_extraction_node\n...\n/lidar/\n...\n| livox_ros_driver2/msg/CustomMsg          | None                                     | feature_extraction_node"
+        ]
+      },
+      {
+        "id": "https://discuss.px4.io/t/github-jacopopan-aerial-autonomy-stack-multi-drone-px4-ardupilot-ros2-control-of-quads-and-vtols-with-yolo-lidar-dockerized-gym-simulation-and-jetpack-deployment/48601",
+        "title": "JacopoPan/aerial-autonomy-stack: Multi-drone PX4/ArduPilot ROS2 ...",
+        "url": "https://discuss.px4.io/t/github-jacopopan-aerial-autonomy-stack-multi-drone-px4-ardupilot-ros2-control-of-quads-and-vtols-with-yolo-lidar-dockerized-gym-simulation-and-jetpack-deployment/48601",
+        "publishedDate": "2026-03-07T00:00:00.000Z",
+        "highlights": [
+          "GitHub - JacopoPan/aerial-autonomy-stack: Multi-drone PX4/ArduPilot ROS2 control of quads and VTOLs, with YOLO, LiDAR, Dockerized Gym simulation, and JetPack deployment - Dronecode Forum | Open Source Drone Development\n\n# GitHub - JacopoPan/aerial-autonomy-stack: Multi-drone PX4/ArduPilot ROS2 control of quads and VTOLs, with YOLO, LiDAR, Dockerized Gym simulation, and JetPack deployment \n\n Ahmed_Osama March 7, 2026, 11:41am 1 \n\nI was working on a swarm of quadrotors using the stack up there but I failed in making each drone follow a trajectory of set points in a csv file if anyone can help\n\n system Closed June 5, 2026, 11:42am 2 \n\nThis topic was automatically closed 90 days after the last reply. New replies are no longer allowed."
+        ],
+        "image": "https://discuss.px4.io/uploads/default/original/2X/8/8e57a75c46cb1671adfbeafd161616d7a26a0e01.jpeg"
+      },
+      {
+        "id": "https://github.com/HarveyZhang26/FAST-LIVO2_PX4-1.13_XTDrone_Gazebo",
+        "title": "HarveyZhang26/FAST-LIVO2_PX4-1.13_XTDrone_Gazebo",
+        "url": "https://github.com/HarveyZhang26/FAST-LIVO2_PX4-1.13_XTDrone_Gazebo",
+        "highlights": [
+          "The FAST-LIVO2 UAV experimental platform based on PX4, ROS and Gazebo ignition. \u57fa\u4e8ePX4 1.13\u3001XTDrone\u548cGazebo\u7684FAST-LIVO2\u4eff\u771f\u5e73\u53f0\u3002\n...\n- fast-livo2\n- gazebo\n- px4\n- ros\n- ros-noetic\n- slam\n- uav\n- xtdrone\n...\n# FAST-LIVO2 simulation platform based on PX4-1.13_XTDrone_Gazebo\n...\nThis project aims to build a simulation platform for FAST-LIVO2 based on PX4 1.13, XTDrone, and Gazebo.\n...\n\u672c\u9879\u76ee\u65e8\u5728\u6784\u5efa\u57fa\u4e8ePX4 1.13\u3001XTDrone\u548cGazebo\u7684FAST-LIVO2\u4eff\u771f\u5e73\u53f0\u3002\n...\n## Setting up XTDrone environment with PX4 v1.13\n...\n## Livox Plugin Setup\n...\n-1.\n...\n_customMsg\n...\nAccording to the XTDrone documentation, you need to modify line 54 in `Livox-simulation-customMsg/src/livox_points_plugin.cpp` to point to your local CSV path. You can also change this path to select different Livox LiDAR models (e.g., Avia, Mid40, etc.).\n...\nImportantly, on line 101 of `src/livox_points_plugin.cpp`, you can set:\n...\npublishPointCloudType =\n...\nto switch among three message types: PointCloud, PointCloud2, and CustomMsg, corresponding to parameters 1, 2, and 3 respectively.\n...\nNote that FAST-LIVO2 and FAST-LIO2 use CustomMsg by default.\n...\n## FAST-LIVO2 Environment Setup\n...\nhttps://github.com/hku-mars/FAST-LIVO2 \n\nRequirements:\n...\nYou can choose a custom launch file. This repository currently supports the `iris_realsense_livox` drone. It is recommended to modify the drone section as follows:\n...\nRun the following command to start Gazebo simulation:\n...\n```bash\nroslaunch px4 outdoor_my.launch\n```\n...\nLaunch FAST-LIVO2:\n...\n```bash\nroslaunch fast_livo mapping_avia.launch\n```"
+        ]
+      },
+      {
+        "id": "https://github.com/grisrobotics/SC_FAST_LIVO2",
+        "title": "grisrobotics/SC_FAST_LIVO2",
+        "url": "https://github.com/grisrobotics/SC_FAST_LIVO2",
+        "highlights": [
+          "Tightly coupled **LiDAR\u2013inertial\u2013visual odometry** built on [**FAST-LIVO2**](https://github.com/hku-mars/FAST-LIVO2), extended with a **pose-graph optimization (PGO) hook**: the front end keeps the FAST-LIVO2 EKF estimate while loop-closure results are fed back over ROS for state correction and optional local map rebuild. **SC** is intended to be used together with **Scan Context**-style place recognition (actual loop detection and factor-graph solving live in an external PGO package).\n...\nThis project extends **[FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry](https://github.com/hku-mars/FAST-LIVO2)** from HKU Mars Lab. Use the official repository for the original implementation, datasets, and build prerequisites (ROS, PCL, Eigen, OpenCV, Vikit, Sophus, etc.):\n...\n- **FAST-LIVO2 front end:** direct VO + voxel-map LiDAR + IMU; Livox and spinning LiDAR configs supported.\n- **PGO integration:** subscribes to optimized keyframe poses/IDs; periodically updates the filter state and can rebuild the local map.\n- **Dataset launches:** AVIA, NTU VIRAL, HILTI 2022, MARS LVIG, and more under `launch/`.\n- **Scripts:** meshing and COLMAP export helpers in `scripts/` (optional, environment-dependent).\n...\n- `mapping_with_pgo.launch` includes `aloam_velodyne`'s `fastlivo2_pgo.launch`. Build that package in your workspace\n...\nrun your own PGO/back-end nodes with matching topic names.\n...\n### FAST-LIVO2 + PGO (requires e.g. `aloam_velodyne`)\n...\n_ouster_\n...\nEnvironment variable **`SC_FASTLIVO2`** is set in `mapping_avia.launch` to this package's path for external nodes."
+        ]
+      },
+      {
+        "id": "https://github.com/RafiqBUTEX/Autonomous-UAV-AI-Vision-Simulation-Platform",
+        "title": "RafiqBUTEX/Autonomous-UAV-AI-Vision-Simulation-Platform",
+        "url": "https://github.com/RafiqBUTEX/Autonomous-UAV-AI-Vision-Simulation-Platform",
+        "highlights": [
+          "An autonomous quadrotor stack built on **PX4 SITL**, **Gazebo Classic 11**, **MAVROS**, and **ROS 2 Humble**, with a custom multi-sensor drone (forward depth camera, downward-facing camera, 2D LiDAR) and a ROS 2 offboard control node for autonomous flight. The project is extending into obstacle-aware navigation, SLAM, reinforcement learning, and a computer-vision payload for real-world applications such as precision agriculture, search & rescue, and environmental monitoring.\n...\n| Status |\n|---|---|---|\n| 0 | Environment setup (PX4 v1.14.0 built from source, Gazebo Classic SITL) | \u2705 Complete |\n| 1 | Offboard control \u2014 MAVROS bridge, arm/mode state-machine, autonomous waypoint missions | \u2705 Complete |\n| 2 | Sensors \u2014 custom multi-sensor drone model (forward depth camera, downward camera, LiDAR, IMU), full TF tree, RViz visualization | \u2705 Complete |\n| 3 | Mapping & obstacle awareness \u2014 custom obstacle world, occupancy mapping (octomap), SLAM | \ud83d\udd36 In progress |\n| 4 | Path planning & obstacle avoidance | \u2b1c Planned |\n| 5 | Reinforcement learning layer | \u2b1c Planned |\n| 6 | Unity digital twin | \u2b1c Planned |\n| 7 | Multi UAV Extension | \u2b1c Planned |\n| 8 |\n...\nSee the diagram above. In short: Gazebo simulates the world and drone sensors \u2192 PX4 handles flight control over the simulated airframe \u2192 MAVROS bridges PX4's MAVLink stream into ROS 2 \u2192 sensor data and a full TF tree flow into RViz for visualization and (in progress) into an occupancy-mapping / SLAM / planning stack \u2192 a ROS 2 offboard control node closes the loop back to PX4 for autonomous flight."
+        ]
+      },
+      {
+        "id": "https://github.com/JacopoPan/aerial-autonomy-stack/releases",
+        "title": "Releases \u00b7 JacopoPan/aerial-autonomy-stack",
+        "url": "https://github.com/JacopoPan/aerial-autonomy-stack/releases",
+        "author": "JacopoPan",
+        "highlights": [
+          "Releases \u00b7 JacopoPan/aerial-autonomy-stack \u00b7 GitHub\n...\nLIVO Packages (open_vins, SPARK-FAST-LIO, SuperOdom)#83\n...\n- Includes Gazebo simulation stereo camera and ArduPilot MAVROS/PX4 uDDS IMU topic multiplexer\n- mimosa and custom ROS2 porting of rovio#85\n...\n- YAML-configurable simulated camera and LiDAR intrinsics and extrinsics#52\n- 3-axis simulated camera gimbal with position control via ROS2#69\n- DeepStream 7.1 in`Dockerfile.aircraft` compiled for Jetson Orin to support edge GPU-accelerated image processing (`nvdewarp`,`nvinfer`, etc.)#63\n...\n- Jetson to ground station multivideo-stream#48\n- Support for multi-radio ground telemetry (SiK, Microhard)#47\n...\nopilot firmware updates\n...\n3)#43\n...\n- End-to-end simulation/gymnasium; images published to registry in CI/CD#39\n- Livox 360 SDK and ROS2 driver in aircraft-image#36\n- Expanded state sharing with velocity and heading#32\n- YAML-based mission definitions#30\n...\nThis release includes:\n...\n- 10x faster-than-real-time SITL simulation for PX4 and ArduPilot with Gazebo Sim, YOLO, and LiDAR\n- Multiple simultaneous simulation instances on a single host computer\n- Gymnasium wrapper with synchronous stepping and`AsyncVectorEnv`\n- Jetson-in-the-loop and comms-in-the-loop simulation to test edge and wireless devices\n- ROS2 interface for 50Hz YOLOv8 on Jetson Orin's CSI IMX219-200 Camera\n...\nFirst complete SITL/HITL and faster-than-real-time release. This release includes both the original Python and newer CPP versions of`gz_gst_bridge` and`ground_system`/`ground_system_py`"
+        ],
+        "image": "https://repository-images.githubusercontent.com/1005678829/0fcb6f81-34b3-4e05-9acc-abbb61fb6418"
+      },
+      {
+        "id": "https://github.com/algoleotan/FAST-LIVO2-ATS360",
+        "title": "algoleotan/FAST-LIVO2-ATS360",
+        "url": "https://github.com/algoleotan/FAST-LIVO2-ATS360",
+        "highlights": [
+          "# algoleotan/FAST-LIVO2-ATS360\n...\nFAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\n## FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\nFAST-LIVO2 is an efficient and accurate LiDAR-inertial-visual fusion localization and mapping system, demonstrating significant potential for real-time 3D reconstruction and onboard robotic localization in severely degraded environments.\n...\nLIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry\n...\n-Constrained Platforms\n...\nWe open-source our handheld device, including CAD files, synchronization scheme, STM32 source code, wiring instructions, and sensor ROS driver. Access these resources at this repository: [**LIV_handhold**](https://github.com/xuankuzcr/LIV_handhold).\n...\nThe [**FAST-Calib**](https://github.com/hku-mars/FAST-Calib) toolkit is recommended. Its output extrinsic parameters can be directly filled into the YAML file. \n\n## 2. Prerequisited\n...\norg/ROS/\n...\nVikit contains camera models, some math and interpolation functions that we need. Vikit is a catkin project, therefore, download it into your catkin workspace source folder.\n...\n## 3. Build\n...\nClone the repository and catkin_make:\n\n```\ncd ~/catkin_ws/src\ngit clone https://github.com/hku-mars/FAST-LIVO2\ncd ../\ncatkin_make\nsource ~/catkin_ws/devel/setup.bash\n```\n...\nDownload our collected rosbag files via OneDrive ([**FAST-LIVO2-Dataset**](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/zhengcr_connect_hku_hk/ErdFNQtjMxZOorYKDTtK4ugBkogXfq1OfDm90GECouuIQA?e=KngY9Z)). \n\n```\nroslaunch fast_livo mapping_avia.launch\nrosbag play YOUR_DOWNLOADED.bag\n```"
+        ]
+      },
+      {
+        "id": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "title": "GaryLee1210/UAV-Navigation-System",
+        "url": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "publishedDate": "2026-02-10T11:39:01.000Z",
+        "highlights": [
+          "- **Localization** (`Drone/localization/`) \u2014 FAST-LIO2 or DLIO, both publishing `/Odometry` + `/Odometry_highrate` + `/cloud_registered`.\n- **Planner** (`Drone/planner/`) \u2014 `ego_planner` (point-to-point / waypoint navigation) and `FUEL` (frontier-based autonomous exploration). Start with `scripts/run_fastlio_ego_px4.sh` / `scripts/run_dlio_ego_px4.sh`.\n...\n/dlio_ws`) | [vectr-ucla/direct_lidar_inertial_odometry](https://github.com/vectr-ucla/direct_lidar_inertial_odometry) `fc8d183` | \u2460 New `imu/accelScale` parameter \u2014 the Mid-360 IMU reports acceleration in **g**, not m/s\u00b2, so it is rescaled by 9.80665. \u2461 Mid-360 extrinsics in `cfg/dlio.yaml` (aligned with FAST-LIO2's `mid360.yaml`). \u2462 New `launch/dlio_mid360_drone.launch` remaps DLIO outputs to\n...\n| **EGO-Planner** (`Drone/planner/ego_planner`, from [Fast-Drone-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) `8ff6427`) | launch/config | \u2460 Odometry source switched from VINS-Fusion (`/vins_fusion/imu_propagate`) to LIO (`/Odometry`). \u2461 `grid_map` is built directly from the LiDAR registered cloud (`cloud_registered`) instead of the depth camera. \u2462 `max_acc` lowered 6.0 \u2192 2.0 for safe indoor flight. Full diff in `patches/`. |\n...\n| **FUEL** (`Drone/planner/FUEL`) | [HKUST-Aerial-Robotics/FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL) `662dd23` | Frontier-based autonomous exploration reproduced on the real platform: takes the Mid-360 LiDAR cloud + LIO odometry as input and drives exploration through `exploration_real.launch`. Reproduced and verified in a real indoor corridor (see demo). |"
+        ]
+      },
+      {
+        "id": "https://ros-aerial.github.io/aerial_robotic_landscape/aerial_autonomy_stacks/",
+        "title": "Aerial Autonomy Stacks - Aerial Robotics Landscape",
+        "url": "https://ros-aerial.github.io/aerial_robotic_landscape/aerial_autonomy_stacks/",
+        "publishedDate": "2026-08-31T00:00:00.000Z",
+        "highlights": [
+          "| Flight stack | Middleware | last update |\n| --- | --- | --- |\n| Aerostack(1) | ROS | 11/2021 |\n| Aerostack2 | ROS 2 | 05/2026 |\n| Aerial autonomy stack (AAS) | ROS 2 | 05/2026 |\n| Agilicious | ROS | 03/2023 |\n| KumarRobotics Autonomy Stack | ROS | 04/2026 |\n| CrazyChoir | ROS 2 | 06/2025 |\n| UAL | ROS | 12/2022 |\n| XTDrone | ROS | 08/2025 |\n| RotorS | ROS | 07/2021 |\n| GAAS | ROS | 10/2021 |\n| MRS AUV System | ROS / ROS 2 | 05/2026 |\n| Crazyswarm2 | ROS 2 | 03/2026 |\n| Crazyswarm(1) | ROS | 12/2022 |\n| Dynamic Swarms Crazyflies | ROS 2 | 12/2025 |\n...\n| Package name | OS/OC | Sensors required | Middleware | Simulator | Platform/controller | Last updated |\n| --- | --- | --- | --- | --- | --- | --- |\n| Ardupilot ROS | \u2713 | LiDAR | ROS 2 | Gazebo | Iris coptor,Ardupilot | 04/2026 |\n| as2_behaviour_tree | \u2713 | Unknown | ROS 2 | Gazebo | Crazyflie,DJI,Tello | 05/2026 |\n...\n| Teach-Repeat-Replan | \u2713 | Stereo camera | ROS 1 | MockaFly | DJI N3 | 10/2021 |\n...\n| rtabmap | \u2713 | Stereo camera | ROS 1 | Gazebo | PX4 | 03/2026 |\n...\n| ORB_SLAM_3 | \u2713 | Mono/stereo camera | ROS 1 | N/A | Bebop 2 | 06/2025 |\n...\n| relative_nav | \u2717 | Stereo camera | ROS 1 | N/A | Rotorcraft | 04/2017 |\n...\n| zephyr | \u2713 | LiDAR | ROS 1 | RotorS/Gazebo | AscTec Firefly | 11/2018 |\n...\n| tum_ardrone | \u2713 | Mono camera | ROS 1 | N/A | AR.Drone | 05/2014 |\n...\n| kr_autonomous_flight | \u2713 | Stereo camera/LiDAR/IMU | ROS 1 | Gazebo | Pixhawk | 04/2026 |\n...\n| px4_sim_ros2 | \u2713 | Stereo camera | ROS 2 | Gazebo | PX4 | 06/2025 |\n...\n_pkg | \u2713 | Mono camera/IR | ROS 1 | N/A | Duckiedrone | 05/2024 |"
+        ]
+      },
+      {
+        "id": "https://www.alphaxiv.org/overview/2602.07264",
+        "title": "aerial-autonomy-stack -- a Faster-than-real-time, Autopilot-agnostic, ROS2 Framework to Simulate and Deploy Perception-based Drones | alphaXiv",
+        "url": "https://www.alphaxiv.org/overview/2602.07264",
+        "publishedDate": "2026-05-02T00:00:00.000Z",
+        "author": "Iraj Mantegh",
+        "highlights": [
+          "- Developed `aerial-autonomy-stack`, a vertically integrated, open-source framework combining multi-agent and multi-autopilot flexibility with a perception-heavy focus using ROS2.\n...\n- Provided an autopilot-agnostic ROS2 action-based interface for PX4 and ArduPilot, facilitating high-performance, faster-than-real-time multi-vehicle simulation with GPU-accelerated perception (YOLO, KISS-ICP).\n...\nfor two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20x faster-than-real-time,\n...\n2. Aircraft Image: This is the heart of the autonomy system. It contains the ROS2 (Robot Operating System 2) nodes, perception models (YOLOv8 and KISS-ICP), and the autopilot interface. Crucially, this image is built for both standard computers (`amd64`) and ARM-based edge devices (`arm64`), ensuring identical behavior across platforms.\n...\nOne of the most practical contributions of AAS is its autopilot-agnostic ROS2 interface. Historically, developers had to write different code depending on whether they used PX4 or ArduPilot, as each uses different messaging protocols (uORB vs. MAVLink).\n...\n- Visual Detection: It utilizes Ultralytics YOLOv8n for real-time object detection. The stack is configured to use GPU acceleration via the ONNX Runtime, leveraging CUDA on desktops and TensorRT on NVIDIA Jetson modules.\n...\n- LiDAR Odometry: For environments where GPS is unreliable, AAS incorporates KISS-ICP, a computationally efficient LiDAR-based odometry tool. It allows the drone to estimate its position and orientation by \"matching\" successive 3D point clouds."
+        ],
+        "image": "https://api.alphaxiv.org/open-graph/v1/paper/2602.07264.png"
+      },
+      {
+        "id": "https://github.com/DeepRoboticsLab/fast-livo2-deep-robotics",
+        "title": "DeepRoboticsLab/fast-livo2-deep-robotics",
+        "url": "https://github.com/DeepRoboticsLab/fast-livo2-deep-robotics",
+        "highlights": [
+          "This repo documents the process of installing and reproducing FAST-LIVO2 on DEEP Robotics Lite3 robot, including camera/lidar installation, onboard compute extension and how to test this in an outdoor environment. Original [repo](https://github.com/hku-mars/FAST-LIVO2) and [paper](https://arxiv.org/abs/2408.14035). And you can watch our tutorial videos on Bilibili or Youtube.\n...\n### 2.1 Install Livox_ros_driver2 and Livox-SDK2\n...\nThis repo supports two Livox lidar variants:\n...\n- **Mid-360** (original): use the `MID360` launch files and `MID360_config.json`.\n- **Mid-360s** (new variant): use the `MID360s` launch files and `MID360s_config.json`. Both the Livox-SDK2 and `livox_ros_driver2` in this repo have been extended to support the Mid-360s protocol (new command handler, host net info schema, and dedicated config samples under `src/Livox-SDK2/samples/*/mid360s_config.json`).\n...\n483\n...\n351370894/\n...\n-360s user manual](https://\n...\ng.djicdn\n...\ncom/65c028cd298f4669a7f0e40e50ba1131/\n...\n-360S/UM/Livox_\n...\n-360s_User_Manual_en.pdf\n...\nYou will need a cable like this:\n...\nPlug the xt30 end to the 24V xt30 of lite3 and plug the ethernet end to a normal x86 ubuntu system. If you open Livoxviewer2 and see that\n...\nis connected, this step is successful. \n\n####\n...\n2.3\n...\n## 4. Run FAST-LIVO2 on real Lite3 robot\n...\n_ros_driver2\n...\nMID360_launch.\n...\nbash \n# 2\n...\ncd fast-livo2-deep-robotics\n...\nsource install/setup.bash\n...\nros2 launch realsense2_camera rs_launch.py enable_rgbd:=false enable_sync:=false align_depth.enable:=false enable_color:=true enable_depth:=false"
+        ]
+      },
+      {
+        "id": "https://github.com/nomoto39/FAST_LIO_NAV2",
+        "title": "nomoto39/FAST_LIO_NAV2",
+        "url": "https://github.com/nomoto39/FAST_LIO_NAV2",
+        "highlights": [
+          "This package implements mapless, short-distance autonomous navigation using FAST_LIO and Nav2. It utilizes the real-time odometry and point cloud data generated by FAST_LIO for the Nav2 stack.\n...\nThis repository provides an experimental mapless, short-distance autonomous navigation system. It seamlessly integrates real-time LiDAR odometry and point cloud generation from FAST_LIO with the ROS 2 Nav2 stack. \n\n**Notably, this single package provides a full-stack integration: covering everything from sensor data processing, SLAM, and autonomous path planning, all the way down to direct hardware motor control.**\n...\n* **OS:** Ubuntu 22.04\n* **ROS 2:** Humble Hawksbill\n* **Hardware (Compute):** Intel NUC (Core i7) or NVIDIA Jetson Orin Nano\n* **Hardware (Sensor):** Livox Mid-360 (Assumed to be mounted horizontally, facing upwards)\n* **Hardware (Controller):** Arduino Mega (or compatible microcontroller)+ **Cytron MDDS30 Motor Driver**\n...\n, and Robot Controller),\n...\n### 2. Nav2 Parameters (robot_radius)\n...\nOpen your Nav2 configuration YAML file located at src/robot_controller/config/nav2_params.yaml and update the robot_radius (or footprint) parameter to match the physical size of your robot.\n...\nYou must change this value in both the local_costmap and global_costmap sections to ensure safe obstacle avoidance.\n...\n```yaml\nlocal_costmap:\n  local_costmap:\n    ros__parameters:\n      robot_radius: 0.3 # Change this to your robot's radius in meters\n...\nglobal_costmap:\n  global_costmap:\n    ros__parameters:\n      robot_radius: 0.3 # Change this to your robot's radius in meters"
+        ]
+      },
+      {
+        "id": "https://p.rst.im/q/Github.com/cviss-lab/maviss",
+        "title": "GitHub - cviss-lab/maviss: MAVISS is an open-source Micro Aerial Vehicle for precision infrastructure inspection, featuring high-resolution cameras, LiDAR, GPS, an NVIDIA Orin board for autonomous operations. \u00b7 GitHub",
+        "url": "https://p.rst.im/q/Github.com/cviss-lab/maviss",
+        "publishedDate": "2025-03-27T00:00:00.000Z",
+        "author": "cviss-lab",
+        "highlights": [
+          "GitHub - cviss-lab/maviss: MAVISS is an open-source Micro Aerial Vehicle for precision infrastructure inspection, featuring high-resolution cameras, LiDAR, GPS, an NVIDIA Orin board for autonomous operations. \u00b7 GitHub\n...\n| Name | Name | Last commit message | Last commit date |\n| --- | --- | --- | --- |\n| FAST-LIVO2 @ 7af05b9 | FAST-LIVO2 @ 7af05b9 | | |\n| docs | docs | | |\n| livox_laser_simulation_RO2 @ 58ae16b | livox_laser_simulation_RO2 @ 58ae16b | | |\n| maviss_description | maviss_description | | |\n| misc | misc | | |\n| rpg_vikit @ 49a0ecb | rpg_vikit @ 49a0ecb | | |\n| .gitmodules | .gitmodules | | |\n| .nojekyll | .nojekyll | | |\n| README.md | README.md | | |\n| View all files | | | |\n...\nMAVISS is an open-source Micro Aerial Vehicle (MAV) for precision infrastructure inspection, featuring high-resolution cameras, LiDAR, GPS, and NVIDIA Orin board for autonomous operations. This repository, `maviss`, contains the full software stack required to operate the MAVISS drone, including:\n...\n- ROS 2 packages\n- 3D description packages\n- Sensor integration packages\n- Flight control configurations\n...\nmight need refinements\n...\n1. Build Livox-SDK2 in '[work_space]/src/' folder \n\n```\ngit clone https://p.rst.im/q/github.com/Livox-SDK/Livox-SDK2.git\n...\nLivox-SDK2/\n...\n2. Clone the Livox ROS Driver2 in '[work_space]/src/' folder \n\n```\ngit clone https://p.rst.im/q/github.com/Livox-SDK/livox_ros_driver2.git\n...\n6. Build the Livox ROS Driver2 in '[work_space]/src/livox_ros_driver2/' folder \n\n```\ncd livox_ros_driver2\nsource /opt/ros/humble/setup.sh\n./build.sh humble"
+        ],
+        "image": "https://opengraph.githubassets.com/b75912d46c17c01120fb248367c3ea686e44b8b1eea536bf8dd100568f98ee10/cviss-lab/maviss"
+      }
+    ],
+    "searchTime": 1446.3,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "tests": [
+    {
+      "name": "Two modes and all assembly clusters render",
+      "pass": true
+    },
+    {
+      "name": "Project identity is unique; no internal directory nodes",
+      "pass": true
+    },
+    {
+      "name": "Every edge resolves to a project and has a source",
+      "pass": true
+    },
+    {
+      "name": "Removed subject absent from embedded dataset",
+      "pass": true
+    },
+    {
+      "name": "CERLAB exposes all nine separate module repositories",
+      "pass": true
+    },
+    {
+      "name": "Some component nodes occur in several assembly contexts",
+      "pass": true
+    },
+    {
+      "name": "Initial camera fits a readable assembly",
+      "pass": true
+    },
+    {
+      "name": "Unfolding a component adds project dependencies inside its assembly",
+      "pass": true
+    },
+    {
+      "name": "Expanded dependency level collapses",
+      "pass": true
+    },
+    {
+      "name": "A nested bundle unfolds independent subprojects",
+      "pass": true
+    },
+    {
+      "name": "Inspector closes without leaving the canvas",
+      "pass": true
+    },
+    {
+      "name": "Focused landscape starts with independent points",
+      "pass": true
+    },
+    {
+      "name": "Focused project opens a real relationship neighborhood",
+      "pass": true
+    },
+    {
+      "name": "Back restores focused landscape",
+      "pass": true
+    },
+    {
+      "name": "Hybrid project is a single record in both modes",
+      "pass": true
+    },
+    {
+      "name": "Edge evidence opens with typed explanation",
+      "pass": true
+    },
+    {
+      "name": "Research and evaluation overlays retain their distinct types",
+      "pass": true
+    },
+    {
+      "name": "Search spans complete project inventory",
+      "pass": true
+    },
+    {
+      "name": "Search locates the project and closes search",
+      "pass": true
+    },
+    {
+      "name": "Contextual comparison caps at four projects",
+      "pass": true
+    },
+    {
+      "name": "Comparison removal works",
+      "pass": true
+    },
+    {
+      "name": "Audit is a secondary sheet with direct claim focus",
+      "pass": true
+    },
+    {
+      "name": "Audit filters correctly",
+      "pass": true
+    },
+    {
+      "name": "All-record library provides a meaningful empty state",
+      "pass": true
+    },
+    {
+      "name": "Reference-only records remain discoverable",
+      "pass": true
+    },
+    {
+      "name": "Methodology explains project identity and inspection limits",
+      "pass": true
+    },
+    {
+      "name": "Wheel zoom changes the real camera",
+      "pass": true
+    },
+    {
+      "name": "Zoom remains anchored under the pointer",
+      "pass": true
+    },
+    {
+      "name": "Pointer drag pans the canvas",
+      "pass": true
+    },
+    {
+      "name": "Keyboard can pan the canvas",
+      "pass": true
+    },
+    {
+      "name": "Two-finger pinch zooms the canvas",
+      "pass": true
+    },
+    {
+      "name": "Mobile has no page-level overflow",
+      "pass": true
+    },
+    {
+      "name": "Mobile inspector remains within viewport",
+      "pass": true
+    },
+    {
+      "name": "Third tab opens an essay and hides canvas controls",
+      "pass": true
+    },
+    {
+      "name": "Essay is continuous prose with no lists or unfinished markers",
+      "pass": true
+    },
+    {
+      "name": "Returning to the same canvas preserves its camera",
+      "pass": true
+    },
+    {
+      "name": "Mobile essay and all three tabs fit the viewport",
+      "pass": true
+    },
+    {
+      "name": "Essay scrolls independently",
+      "pass": true
+    },
+    {
+      "name": "Direct essay URL survives reload",
+      "pass": true
+    },
+    {
+      "name": "Canvas renders after loading the essay directly",
+      "pass": true
+    },
+    {
+      "name": "Project navigation can leave the essay",
+      "pass": true
+    },
+    {
+      "name": "No runtime exceptions",
+      "pass": true
+    },
+    {
+      "name": "Standalone atlas makes no network requests",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "network": []
+}

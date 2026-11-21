@@ -1,0 +1,275 @@
+[
+  {
+    "repo": "Zhefan-Xu/CERLAB-UAV-Autonomy",
+    "commit": "e045ce55b4d06b4e04c1c2c7ef066a54368d36a9 2025-04-02T11:34:58-04:00 Update Ubuntu20.04-build.yaml",
+    "file_count": 14,
+    "dependency_files": [
+      ".gitmodules",
+      "LICENSE"
+    ],
+    "path": "/tmp/drone-repos/Zhefan-Xu__CERLAB-UAV-Autonomy"
+  },
+  {
+    "repo": "ntnu-arl/unified_autonomy_stack",
+    "commit": "cb78bf7f57d074fc0999dd23bb1cfa1b1754d44d 2026-06-28T09:18:36+02:00 Add Zenodo DOI badge to README",
+    "file_count": 150,
+    "dependency_files": [
+      "LICENSE",
+      "repos/robot_bringup.repos",
+      "repos/robot_bringup_exact.repos",
+      "repos/ws_cam_sync.repos",
+      "repos/ws_cam_sync_exact.repos",
+      "repos/ws_cbf.repos",
+      "repos/ws_cbf_exact.repos",
+      "repos/ws_ethzasl_msf.repos",
+      "repos/ws_ethzasl_msf_exact.repos",
+      "repos/ws_gbplanner.repos",
+      "repos/ws_gbplanner_exact.repos",
+      "repos/ws_mavros.repos",
+      "repos/ws_mavros_exact.repos",
+      "repos/ws_mimosa.repos",
+      "repos/ws_mimosa_exact.repos",
+      "repos/ws_mmwave_ti_ros.repos",
+      "repos/ws_mmwave_ti_ros_exact.repos",
+      "repos/ws_nmpc.repos",
+      "repos/ws_nmpc_exact.repos",
+      "repos/ws_rl.repos",
+      "repos/ws_rl_exact.repos",
+      "repos/ws_ros1_bridge.repos",
+      "repos/ws_ros1_bridge_exact.repos",
+      "repos/ws_ros1_launcher.repos",
+      "repos/ws_ros1_launcher_exact.repos",
+      "repos/ws_ros_gst_bridge.repos",
+      "repos/ws_ros_gst_bridge_exact.repos",
+      "repos/ws_rslidar_sdk.repos",
+      "repos/ws_rslidar_sdk_exact.repos",
+      "repos/ws_sim.repos",
+      "repos/ws_sim_exact.repos",
+      "repos/ws_vectornav.repos",
+      "repos/ws_vectornav_exact.repos",
+      "repos/ws_vlm.repos",
+      "repos/ws_vlm_exact.repos"
+    ],
+    "path": "/tmp/drone-repos/ntnu-arl__unified_autonomy_stack"
+  },
+  {
+    "repo": "HKUST-Aerial-Robotics/OmniNxt",
+    "commit": "79ce1d4b69a5a8c861417716adaac00c2bc6f594 2025-03-09T12:24:17+08:00 Update bibtex",
+    "file_count": 4,
+    "dependency_files": [
+      "LICENSE"
+    ],
+    "path": "/tmp/drone-repos/HKUST-Aerial-Robotics__OmniNxt"
+  },
+  {
+    "repo": "uzh-rpg/agilicious",
+    "commit": "50bba456156f6f438bea212c643b02e162442fa7 2023-03-07T19:30:25+01:00 Merge pull request #37 from uzh-rpg/lbfd-patch-2",
+    "file_count": 38,
+    "dependency_files": [
+      "docs/license.rst"
+    ],
+    "path": "/tmp/drone-repos/uzh-rpg__agilicious"
+  },
+  {
+    "repo": "aerostack2/aerostack2",
+    "commit": "82d85abcd90445ced2fb8fe8c986eb12751be027 2026-09-07T14:59:33+02:00 fix: upgrade pixi-build-ros / pin ros2 distro mutex (temporarily) (#997)",
+    "file_count": 1203,
+    "dependency_files": [
+      "LICENSE",
+      "as2_aerial_platforms/more_platforms.repos",
+      "as2_behavior_tree/LICENSE",
+      "as2_cli/projects.repos",
+      "as2_map_server/LICENSE",
+      "as2_simulation_assets/as2_gazebo_assets/LICENSE",
+      "as2_user_interfaces/as2_alphanumeric_viewer/LICENSE"
+    ],
+    "path": "/tmp/drone-repos/aerostack2__aerostack2"
+  },
+  {
+    "repo": "ctu-mrs/mrs_uav_system",
+    "commit": "3340bfe3ff7cf5cc694d0dfd23c5f34d4605ec43 2026-08-03T17:48:40+02:00 Remove redundant lines in Dockerfile",
+    "file_count": 41,
+    "dependency_files": [
+      "LICENSE"
+    ],
+    "path": "/tmp/drone-repos/ctu-mrs__mrs_uav_system"
+  },
+  {
+    "repo": "Yarok14Technologies/No-GPS_Autonomous-Drone-System",
+    "commit": "e94e962e7d38653e3e19ae28225e99e5a491234f 2025-11-23T20:04:04+05:30 Update README.md",
+    "file_count": 2,
+    "dependency_files": [
+      "LICENSE"
+    ],
+    "path": "/tmp/drone-repos/Yarok14Technologies__No-GPS_Autonomous-Drone-System"
+  },
+  {
+    "repo": "altnautica/ADOSDroneAgent",
+    "commit": "6ddd9ae6bc37777c893fbf137afaab847cccf3bc 2026-09-04T03:40:29+05:30 Move MAVLink to 0.18 and drop two packages doing it",
+    "file_count": 1900,
+    "dependency_files": [
+      ".gitmodules",
+      "LICENSE",
+      "data/overlays/upstream/LICENSE",
+      "pyproject.toml",
+      "tools/api-conformance/requirements.txt",
+      "tools/logd-conformance/requirements.txt"
+    ],
+    "path": "/tmp/drone-repos/altnautica__ADOSDroneAgent"
+  },
+  {
+    "repo": "KumarRobotics/kr_autonomous_flight",
+    "commit": "385e7e34fd97cb18dd0c9169fe2f510d30314548 2026-04-12T21:18:19-07:00 Add link the ros2_dev branch from master README",
+    "file_count": 396,
+    "dependency_files": [
+      "LICENSE.txt"
+    ],
+    "path": "/tmp/drone-repos/KumarRobotics__kr_autonomous_flight"
+  },
+  {
+    "repo": "hku-mars/SUPER",
+    "commit": "2ad3419c127a617c6d7df6925e81a14175a9c096 2025-06-04T13:05:00+08:00 [fea] minor typo in readme",
+    "file_count": 756,
+    "dependency_files": [
+      "super_planner/include/cereal/external/LICENSE",
+      "super_planner/include/cereal/external/rapidjson/LICENSE",
+      "super_planner/include/cereal/external/rapidjson/msinttypes/LICENSE",
+      "super_planner/include/cereal/external/rapidxml/license.txt"
+    ],
+    "path": "/tmp/drone-repos/hku-mars__SUPER"
+  },
+  {
+    "repo": "amov-lab/Prometheus",
+    "commit": "5dcd8cfa764d558f3e15dcb88aa7d49e32c54cce 2025-11-21T11:10:06+08:00 communication simulation timestamp modification",
+    "file_count": 4812,
+    "dependency_files": [
+      ".gitmodules",
+      "LICENSE",
+      "Modules/FAST_LIO/LICENSE",
+      "Modules/ego_planner_swarm/drone_detect/LICENSE",
+      "Scripts/installation/prometheus_mavros/mavros.rosinstall",
+      "Simulator/airsim_simulator/airsim_ros/external/rpclib/rpclib-2.3.0/LICENSE.md",
+      "Simulator/airsim_simulator/airsim_ros/external/rpclib/rpclib-2.3.0/doc/requirements.txt",
+      "Simulator/airsim_simulator/airsim_ros/external/rpclib/rpclib-2.3.0/installer/license.txt"
+    ],
+    "path": "/tmp/drone-repos/amov-lab__Prometheus"
+  },
+  {
+    "repo": "JacopoPan/aerial-autonomy-stack",
+    "commit": "b5ac7d537d6deb27ccdaae9b1dcec9b6863bd87d 2026-09-07T16:38:07-04:00 Merge branch 'jetpack6'",
+    "file_count": 224,
+    "dependency_files": [
+      "LICENSE",
+      "aas-gym/pyproject.toml"
+    ],
+    "path": "/tmp/drone-repos/JacopoPan__aerial-autonomy-stack"
+  },
+  {
+    "repo": "generalized-intelligence/GAAS",
+    "commit": "29ab17d3e8a4ba18edef3a57c36d8db6329fac73 2021-10-25T18:21:04+08:00 Update README.md",
+    "file_count": 10043,
+    "dependency_files": [
+      "LICENSE",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/LICENSE",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/Eigen/scripts/relicense.py",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/Sophus/LICENSE.txt",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/nvbio/BOOST.license",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/nvbio/LICENSE",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/nvbio/contrib/lz4/LICENSE",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/pybind11/LICENSE",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/pybind11/docs/requirements.txt",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/pybind11/pyproject.toml",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/pybind11/tests/requirements.txt",
+      "algorithms/src/LocalizationAndMapping/icp_lidar_localization/fast_gicp/thirdparty/pybind11/tools/pyproject.toml",
+      "algorithms/src/LocalizationAndMapping/lidar_localization/ndt_cpu/LICENSE",
+      "algorithms/src/LocalizationAndMapping/lidar_localization/ndt_gpu/LICENSE",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/LICENSE",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/Eigen/scripts/relicense.py",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/Sophus/LICENSE.txt",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/nvbio/BOOST.license",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/nvbio/LICENSE",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/nvbio/contrib/lz4/LICENSE",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/pybind11/LICENSE",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/pybind11/docs/requirements.txt",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/pybind11/pyproject.toml",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/pybind11/tests/requirements.txt",
+      "algorithms/src/LocalizationAndMapping/registration_localization/fast_gicp/thirdparty/pybind11/tools/pyproject.toml",
+      "algorithms/src/LocalizationAndMapping/registration_localization/ndt_cpu/LICENSE",
+      "algorithms/src/LocalizationAndMapping/registration_localization/ndt_gpu/LICENSE",
+      "algorithms/src/SystemManagement/json_request_response_lib/src/third_party/cpp-httplib/LICENSE",
+      "algorithms/src/SystemManagement/json_request_response_lib/src/third_party/nlohmann_json/LICENSE.MIT",
+      "algorithms/src/SystemManagement/json_request_response_lib/src/third_party/nlohmann_json/doc/mkdocs/docs/home/license.md",
+      "algorithms/src/SystemManagement/json_request_response_lib/src/third_party/nlohmann_json/doc/mkdocs/requirements.txt",
+      "algorithms/src/SystemManagement/json_request_response_lib/src/third_party/nlohmann_json/test/thirdparty/doctest/LICENSE.txt",
+      "algorithms/src/SystemManagement/json_request_response_lib/src/third_party/nlohmann_json/test/thirdparty/fifo_map/LICENSE.MIT",
+      "algorithms/src/SystemManagement/json_request_response_lib/src/third_party/nlohmann_json/third_party/amalgamate/LICENSE.md",
+      "algorithms/src/SystemManagement/json_request_response_lib/src/third_party/nlohmann_json/third_party/cpplint/LICENSE",
+      "deprecated/LICENSE",
+      "deprecated/algorithms/GlobalOptimizationGraph/Thirdparty/g2o/license-bsd.txt",
+      "deprecated/algorithms/GlobalOptimizationGraph_GTSAM/Thirdparty/g2o/license-bsd.txt",
+      "deprecated/algorithms/loop_closing/DBow3/LICENSE.txt",
+      "deprecated/algorithms/scene_retrieving/src/nlohmann_json/LICENSE.MIT",
+      "deprecated/algorithms/scene_retrieving/src/nlohmann_json/benchmarks/thirdparty/benchmark/LICENSE",
+      "deprecated/algorithms/scene_retrieving/src/nlohmann_json/test/thirdparty/catch/LICENSE_1_0.txt",
+      "deprecated/algorithms/scene_retrieving/src/nlohmann_json/test/thirdparty/fifo_map/LICENSE.MIT",
+      "deprecated/algorithms/scene_retrieving/src/nlohmann_json/third_party/amalgamate/LICENSE.md",
+      "deprecated/algorithms/sfm/OpenSfM/.gitmodules",
+      "deprecated/algorithms/sfm/OpenSfM/LICENSE",
+      "deprecated/algorithms/sfm/OpenSfM/licenses.csv",
+      "deprecated/algorithms/sfm/OpenSfM/opensfm/src/third_party/akaze/LICENSE",
+      "deprecated/algorithms/sfm/OpenSfM/requirements.txt",
+      "deprecated/software/Obstacle_Map/LICENSE",
+      "deprecated/software/SLAM/ygz_slam_ros/LICENSE",
+      "deprecated/software/SLAM/ygz_slam_ros/Thirdparty/DBow3/LICENSE.txt",
+      "deprecated/software/SLAM/ygz_slam_ros/Thirdparty/fast/LICENSE",
+      "deprecated/software/scene_retrieving/loop_closing/DBow3/LICENSE.txt",
+      "deprecated/software/scene_retrieving/src/nlohmann_json/LICENSE.MIT",
+      "deprecated/software/scene_retrieving/src/nlohmann_json/benchmarks/thirdparty/benchmark/LICENSE",
+      "deprecated/software/scene_retrieving/src/nlohmann_json/test/thirdparty/catch/LICENSE_1_0.txt",
+      "deprecated/software/scene_retrieving/src/nlohmann_json/test/thirdparty/fifo_map/LICENSE.MIT",
+      "deprecated/software/scene_retrieving/src/nlohmann_json/third_party/amalgamate/LICENSE.md",
+      "simulation/simulation_with_velodyne_in_gazebo9_ws/src/velodyne_simulator/LICENSE"
+    ],
+    "path": "/tmp/drone-repos/generalized-intelligence__GAAS"
+  },
+  {
+    "repo": "ZJU-FAST-Lab/ego-planner",
+    "commit": "bfda51284c8c1b476043255a8145ef925a3778a5 2025-03-08T17:23:46+08:00 Update README.md",
+    "file_count": 566,
+    "dependency_files": [
+      "LICENSE"
+    ],
+    "path": "/tmp/drone-repos/ZJU-FAST-Lab__ego-planner"
+  },
+  {
+    "repo": "ZJU-FAST-Lab/ego-planner-swarm",
+    "commit": "92fe9f7227b2da819133eb8e0e8c7fc000f6ae20 2025-03-08T17:21:50+08:00 Update README.md",
+    "file_count": 596,
+    "dependency_files": [
+      "LICENSE",
+      "src/planner/drone_detect/LICENSE"
+    ],
+    "path": "/tmp/drone-repos/ZJU-FAST-Lab__ego-planner-swarm"
+  },
+  {
+    "repo": "ntnu-arl/gbplanner_ros",
+    "commit": "7301b5350915cf3a4055072ad559842db37b4ca9 2024-06-13T13:07:57+02:00 Updated the link for darpa subt final event simulation model",
+    "file_count": 135,
+    "dependency_files": [
+      "LICENSE",
+      "packages_https.rosinstall",
+      "packages_ssh.rosinstall"
+    ],
+    "path": "/tmp/drone-repos/ntnu-arl__gbplanner_ros"
+  },
+  {
+    "repo": "TJU-Aerial-Robotics/YOPO",
+    "commit": "bd8a7f91953cfef9f1aa9a48d7ff0ab7bceee132 2026-08-14T18:44:07+08:00 Update README.md",
+    "file_count": 514,
+    "dependency_files": [
+      "LICENSE",
+      "YOPO/requirements.txt"
+    ],
+    "path": "/tmp/drone-repos/TJU-Aerial-Robotics__YOPO"
+  }
+]

@@ -1,0 +1,231 @@
+{
+  "query": {
+    "query": "open source UAV autonomous exploration FUEL RACER FAEL GBPlanner2 PANTHER MADER exploration code",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "f80d7b02e45cd38b3a166c4c50cb611d",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/FUEL",
+        "title": "HKUST-Aerial-Robotics/FUEL - GitHub",
+        "url": "https://github.com/HKUST-Aerial-Robotics/FUEL",
+        "publishedDate": "2020-10-18T14:06:42.000Z",
+        "highlights": [
+          "# Repository: HKUST-Aerial-Robotics/FUEL\n...\nAn Efficient Framework for Fast UAV Exploration\n...\n- Feb 24, 2023: the code for **multi-UAV exploration** is released! check [this link](https://github.com/SYSU-STAR/RACER).\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n...\n**FUEL** is a powerful framework for **F**ast **U**AV **E**xp**L**oration.\n...\ncomplete challenging exploration tasks **3-\n...\n-the-art approaches at the time of publication.\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes!\n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE TRO. Check code [here](https://github.com/SYSU-STAR/RACER).\n\n \n \n \n \n\n__Complete videos__: [video1](https://www.youtube.com/watch?v=_dGgZUrWk-8), [video2](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://github.com/Robotics-STAR-Lab/RACER",
+        "title": "Robotics-STAR-Lab/RACER",
+        "url": "https://github.com/Robotics-STAR-Lab/RACER",
+        "highlights": [
+          "Rapid Exploration with Multiple Unmanned Aerial Vehicles (UAV)\n...\n# RACER \n \n**RACER**, a **RA**pid **C**ollaborative **E**xplo**R**ation approach using a \nfleet of decentralized UAVs. \n \nWe develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The proposed system features robustness against unstable communication and a high degree of coordination. The quadrotor team operates with asynchronous and limited communication and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE Transactions on Robotics and is selected as the **2023 IEEE TRO Best Paper**! \n \n \nTry [Quick Start](#quick-start) to run a demo in a few minutes! \n \n \n \n \n \n \n__Complete video__: [video](https://www.bilibili.com/video/BV1ec411J7ps/?spm_id_from=333.999.0.0&vd_source=ce9122be0193fcad2e9384dacc62f4fa). \n \n__Authors__: [Boyu Zhou](http://sysu-star.com) from SYSU STAR Group, and Hao Xu, [Shaojie Shen](http://uav.ust.hk/group/) from the [HKUST Aerial Robotics Group](http://uav.ust.hk/). \n \nPlease cite our paper if you use this project in your research: \n- [__RACER: Rapid Collaborative Exploration with a \nDecentralized Multi-UAV System__](https://arxiv.org/abs/2209.08533), Boyu Zhou, Hao Xu, Shaojie Shen, IEEE Transactions on Robotics (**T-RO**) , \n \n```\r\n@\n...\n023racer,\n...\n-uav\n...\n},\r\n  publisher={IEEE}\n...\nPlease kindly star\n...\nif it helps"
+        ]
+      },
+      {
+        "id": "https://github.com/TIERS/FAEL-TIERS",
+        "title": "TIERS/FAEL-TIERS",
+        "url": "https://github.com/TIERS/FAEL-TIERS",
+        "highlights": [
+          "FAEL: Fast Autonomous Exploration for Large-Scale Environments with a Mobile Robot\n...\n**FAEL** is a systematic framework for **F**ast **A**utonomous **E**xploration for **L**arge-scale environment. In **FAEL**, a fast preprocessing of environmental information is presented, providing fundamental information to support high-frequency path planning. An path optimization formulation that comprehensively considers key factors about fast exploration is introduced. Further, an heuristic algorithm is devised to solve the NP-hard optimization problem, which empirically finds optimal solution in real time. Our method is demonstrated to completes exploration with the least time and shortest movement distance compared to state-of-the-art methods at the time of publication.\n\n \n \n \n \n\n__Real-world experiment video__: [video](https://www.bilibili.com/video/BV1rv4y1i7Sg/?spm_id_from=333.999.0.0&vd_source=4b11429ea8ba8725f0fc457cc4442883)\n...\n## Run FAEL in simulation\n...\n```bash\nsource devel/setup.bash && roslaunch exploration_manager explorer.launch\n...\nBy default you can see an outdoor environment **scene_1.world\n...\nstart exploring after the file\n...\nWe use [jackal](https://github.com/jackal) for ground robot simulation, [RotorS](https://github.com/ethz-asl/rotors_simulator) for generic odometry sensor simulation, [cmu_planner](https://github.com/jizhang-cmu/ground_based_autonomy_basic) for local_planner and terrain_analysis, and [ufomap](https://github.com/UnknownFreeOccupied/ufomap) for 3D environment representation. We really appreciate these open source projects!"
+        ]
+      },
+      {
+        "id": "https://github.com/ntnu-arl/gbplanner_ros",
+        "title": "ntnu-arl/gbplanner_ros",
+        "url": "https://github.com/ntnu-arl/gbplanner_ros",
+        "highlights": [
+          "# ntnu-arl/gbplanner_ros\n...\nGraph-based Exploration Planner for Subterranean Environments\n...\n- Stars: 832\n- Forks: 171\n- Watchers: 832\n- Open issues: 31\n- License: BSD 3-Clause \"New\" or \"Revised\" License\n- Default branch: gbplanner2\n- Created: 2020-06-28T01:47:08Z\n...\n# Graph-based Exploration Planner 2.0\n...\nPlease refer to the [wiki](https://github.com/ntnu-arl/gbplanner_ros/wiki) page for detailed instructions to install and run the demo simulations as well as documentation of the planner interface and parameters.\n...\n## Running Planner Demo \n### Aerial Robot Demo\n...\n```bash\nroslaunch\n...\nplanner rmf_sim.launch\n...\nAutonomous exploration mission in the Prize Round of the DARPA Subterranean Challenge Final Event using four ANYmal C legged robots (Chimera, Cerberus, Camel, Caiman), all running GBPlanner2 independantly.\n\n![final_circuit_all_robots](img/cerberus_final_run_compiled_hd.png)\n...\n**Autonomous Teamed Exploration of Subterranean Environments using Legged and Aerial Robots**\n...\n```\n@INPROCEEDINGS{9812401,\n  author={Kulkarni, Mihir and Dharmadhikari, Mihir and Tranzatto, Marco and Zimmermann, Samuel and Reijgwart, Victor and De Petris, Paolo and Nguyen, Huan and Khedekar, Nikhil and Papachristos, Christos and Ott, Lionel and Siegwart, Roland and Hutter, Marco and Alexis, Kostas},\n  booktitle={2022 International Conference on Robotics and Automation (ICRA)}, \n  title={Autonomous Teamed Exploration of Subterranean Environments using Legged and Aerial Robots}, \n  year={2022},\n  volume={},\n  number={},\n  pages={3306-3313},\n  doi={10.1109/ICRA46639.2022.9812401}}"
+        ]
+      },
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/Fast-Planner",
+        "title": "GitHub - HKUST-Aerial-Robotics/Fast-Planner",
+        "url": "https://github.com/HKUST-Aerial-Robotics/Fast-Planner",
+        "publishedDate": "2019-02-27T13:16:48.000Z",
+        "highlights": [
+          "**Fast-Planner** is developed aiming to enable quadrotor fast flight in complex unknown environments. It contains a rich set of carefully designed planning algorithms. It also provides a foundational code framework and algorithms that support several popular open-source drone projects, including [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner),\n...\n[FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL) and [RACER](https://github.com/SYSU-STAR/RACER), etc.\n...\n- __Mar 13, 2021__: Code for fast autonomous exploration is available now! Check this [repo](https://github.com/HKUST-Aerial-Robotics/FUEL) for more details.\n\n- __Oct 20, 2020__: Fast-Planner is extended and applied to fast autonomous exploration. Check this [repo](https://github.com/HKUST-Aerial-Robotics/FUEL) for more details.\n...\nB-spline trajectory.\n...\nPerception-aware planning strategy\n...\nactively observe and avoid unknown obstacles, to\n...\nin the future\n...\nplan_manage__:\n...\nschedule and call the mapping and planning algorithms. Interfaces for launching the whole system, as well as the\n...\n- __Oct 20, 2020__: Fast-Planner is extended and applied to fast autonomous exploration. Check this [repo](https://github.com/HKUST-Aerial-Robotics/FUEL) for more details.\n\n- __July 5, 2020__: We will release the implementation of paper: _RAPTOR: Robust and Perception-aware Trajectory Replanning for Quadrotor Fast Flight_ (submitted to TRO, under review) in the future.\n...\n- __April 1\n...\n, 2020\n...\nimplementation of the IC\n...\n2020 paper:\n...\n-time UAV Replanning Using\n...\n-based Optimization and Topological"
+        ]
+      },
+      {
+        "id": "https://github.com/ntnu-arl/gbplanner_ros/blob/gbplanner2/README.md",
+        "title": "README.md at gbplanner2 \u00b7 ntnu-arl/gbplanner_ros",
+        "url": "https://github.com/ntnu-arl/gbplanner_ros/blob/gbplanner2/README.md",
+        "highlights": [
+          "- Repository: ntnu-arl/gbplanner_ros | Graph-based Exploration Planner for Subterranean Environments | 836 stars | C++\n- Branch: gbplanner2\n...\n```md\n# Graph-based Exploration Planner 2.0\n...\nPlease refer to the [wiki](https://github.com/ntnu-arl/gbplanner_ros/wiki) page for detailed instructions to install and run the demo simulations as well as documentation of the planner interface and parameters.\n...\n## Running Planner Demo \n### Aerial Robot Demo\n...\n```bash\nroslaunch gbplanner rmf_sim.launch\n...\nAutonomous exploration mission in the Prize Round of the DARPA Subterranean Challenge Final Event using four ANYmal C legged robots (Chimera, Cerberus, Camel, Caiman), all running GBPlanner2 independantly.\n\n![final_circuit_all_robots](img/cerberus_final_run_compiled_hd.png)\n...\n**Graph-based subterranean exploration path planning using aerial and legged robots**\n...\n**Autonomous Teamed Exploration of Subterranean Environments using Legged and Aerial Robots**\n...\n```\n@INPROCEEDINGS{9812401,\n  author={Kulkarni, Mihir and Dharmadhikari, Mihir and Tranzatto, Marco and Zimmermann, Samuel and Reijgwart, Victor and De Petris, Paolo and Nguyen, Huan and Khedekar, Nikhil and Papachristos, Christos and Ott, Lionel and Siegwart, Roland and Hutter, Marco and Alexis, Kostas},\n  booktitle={2022 International Conference on Robotics and Automation (ICRA)}, \n  title={Autonomous Teamed Exploration of Subterranean Environments using Legged and Aerial Robots}, \n  year={2022},\n  volume={},\n  number={},\n  pages={3306-3313},\n  doi={10.1109/ICRA46639.2022.9812401}}"
+        ]
+      },
+      {
+        "id": "https://github.com/unr-arl/gbplanner_ros",
+        "title": "ntnu-arl/gbplanner_ros",
+        "url": "https://github.com/unr-arl/gbplanner_ros",
+        "highlights": [
+          "# ntnu-arl/gbplanner_ros\n...\nGraph-based Exploration Planner for Subterranean Environments\n...\n- Stars: 825\n- Forks: 168\n- Watchers: 825\n- Open issues: 30\n- License: BSD 3-Clause \"New\" or \"Revised\" License\n- Default branch: gbplanner2\n- Created: 2020-06-28T01:47:08Z\n...\n# Graph-based Exploration Planner 2.0\n...\nPlease refer to the [wiki](https://github.com/ntnu-arl/gbplanner_ros/wiki) page for detailed instructions to install and run the demo simulations as well as documentation of the planner interface and parameters.\n...\n## Running Planner Demo \n### Aerial Robot Demo\n...\n```bash\nroslaunch gbplanner rmf_sim.launch\n...\nAutonomous exploration mission in the Prize Round of the DARPA Subterranean Challenge Final Event using four ANYmal C legged robots (Chimera, Cerberus, Camel, Caiman), all running GBPlanner2 independantly.\n\n![final_circuit_all_robots](img/cerberus_final_run_compiled_hd.png)\n...\n**Autonomous Teamed Exploration of Subterranean Environments using Legged and Aerial Robots**\n...\n```\n@INPROCEEDINGS{9812401,\n  author={Kulkarni, Mihir and Dharmadhikari, Mihir and Tranzatto, Marco and Zimmermann, Samuel and Reijgwart, Victor and De Petris, Paolo and Nguyen, Huan and Khedekar, Nikhil and Papachristos, Christos and Ott, Lionel and Siegwart, Roland and Hutter, Marco and Alexis, Kostas},\n  booktitle={2022 International Conference on Robotics and Automation (ICRA)}, \n  title={Autonomous Teamed Exploration of Subterranean Environments using Legged and Aerial Robots}, \n  year={2022},\n  volume={},\n  number={},\n  pages={3306-3313},\n  doi={10.1109/ICRA46639.2022.9812401}}"
+        ]
+      },
+      {
+        "id": "https://github.com/amashry/FUEL-PX4-Ubuntu-20",
+        "title": "amashry/FUEL-PX4-Ubuntu-20",
+        "url": "https://github.com/amashry/FUEL-PX4-Ubuntu-20",
+        "highlights": [
+          "An Efficient Framework for Fast UAV Exploration \n\n- Stars: 0\n- Forks: 1\n- Watchers: 0\n...\n- Open issues: 0\n...\nLicense: GNU General Public License\n...\nDefault branch: main\n...\n- Feb 24, 2023: the code for **multi-UAV exploration** is released! check [this link](https://github.com/SYSU-STAR/RACER).\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n \n**FUEL** is a powerful framework for **F**ast **U**AV **E**xp**L**oration.\n...\ntime of publication\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes! \n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE TRO. Check code [here](https://github.com/SYSU-STAR/RACER).\n\n \n \n \n \n\n__Complete videos__: [video1](https://www.youtube.com/watch?v=_dGgZUrWk-8), [video2](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://github.com/934120701/FUEL",
+        "title": "934120701/FUEL",
+        "url": "https://github.com/934120701/FUEL",
+        "highlights": [
+          "# 934120701/FUEL\n...\nFast UAV Exploration using Incremental Frontier Structure and Hierarchical Planning\n...\n**FUEL** is a hierarchical framework for **F**ast **U**AV **E**xp**L**oration.\nIt contains a Frontier Information Structure (FIS), which can be incrementally updated with the online built map and facilitate exploration planning in high frequency.\nBased on FIS, a hierarchical planner plans optimal global coverage paths, refine local viewpoints, and generates minimum-time local trajectories successively. \nOur method is demonstrated to complete challenging exploration tasks **3-8 times** faster than state-of-the-art approaches.\n...\nThis project is mostly based on [Fast-Planner](https://github.com/HKUST-Aerial-Robotics/Fast-Planner). \nIt has been tested on Ubuntu 16.04(ROS Kinetic) and 18.04(ROS Melodic). Take Ubuntu 18.04 as an example, run the following commands to setup:\n...\n```\n  cd ${YOUR_WORKSPACE_PATH}/src\n  git clone https://github.com/HKUST-Aerial-Robotics/FUEL.git\n  cd ../ \n  catkin_make\n```\n...\nstart the visualization\n...\nsimulation (run in\n...\nnew terminals):\n...\n```\n  source devel/setup\n...\nbash && roslaunch exploration_manager exploration.launch\n...\nYou will find a cluttered scene to be explored (20m x 12m x 2m) and the drone in ```Rviz```. You can trigger the exploration to start by the ```2D Nav Goal``` tool. A sample simulation is shown in the figure. The unknown obstacles are shown in grey, while the frontiers are shown as colorful voxels. The planned and executed trajectories are also displayed.\n\n \n \n \n\n## Acknowledgements"
+        ]
+      },
+      {
+        "id": "https://github.com/MassLab-Whu/FAEP",
+        "title": "MassLab-Whu/FAEP",
+        "url": "https://github.com/MassLab-Whu/FAEP",
+        "publishedDate": "2023-07-09T11:25:39.000Z",
+        "highlights": [
+          ": MassLab\n...\n[**FAEP**](https://arxiv.org/abs/2302.02293) is a nove fast autonomous exploration planner based on the framework of [FUEL](https://ieeexplore.ieee.org/abstract/document/9324988). It contains a comprehensive exploration sequence generation method for global tour planning, which not only considers the flight-level factors but also innovatively considers the frontier-level factors to reduce the back-and-forth maneuvers. In addition, an adaptive yaw planning strategy is designed to achieve efficient exploration by yaw change during flight. \nOur method is demonstrated to reduce the flight time and flight distance by more than 20% compared with the state-of-the-art approache FUEL.\n\n \n \n \n \n\nComplete videos (include simulation experiments and real-world experiments): [video](https://www.youtube.com/watch?v=0Y671mEwJ_A).\n...\nUnknown Environment Mapping\n...\nThis project is mostly based on [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL). Therefore, the configuration of this method is the same as FUEL.\n...\nOur code is developed based on [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL). We use **NLopt** for non-linear optimization and use **LKH** for travelling salesman problem."
+        ]
+      },
+      {
+        "id": "https://github.com/Adamaser/FUEL",
+        "title": "Adamaser/FUEL",
+        "url": "https://github.com/Adamaser/FUEL",
+        "highlights": [
+          "An Efficient Framework for Fast UAV Exploration \n\n- Stars: 0\n- Forks: 0\n- Watchers: 0\n- Open issues: 0\n- License: GNU General Public License v3.0\n- Default branch: main\n- Created: 20\n...\n4-04-1\n...\nT13:12:\n...\n- Feb 24, 2023: the code for **multi-UAV exploration** is released! check [this link](https://github.com/SYSU-STAR/RACER).\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n \n**FUEL** is a powerful framework for **F**ast **U**AV **E**xp**L**oration.\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes! \n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE TRO. Check code [here](https://github.com/SYSU-STAR/RACER).\n\n \n \n \n \n\n__Complete videos__: [video1](https://www.youtube.com/watch?v=_dGgZUrWk-8), [video2](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://github.com/AKJ457/FUEL",
+        "title": "AKJ457/FUEL",
+        "url": "https://github.com/AKJ457/FUEL",
+        "highlights": [
+          "An Efficient Framework for Fast UAV Exploration \n\n- Stars: 0\n- Forks: 0\n- Watchers: 0\n- Open issues: 0\n- License: GNU General Public License v3.0\n- Default branch: main\n- Created: 20\n...\n5-02-1\n...\nT20:30:\n...\n- Feb 24, 2023: the code for **multi-UAV exploration** is released! check [this link](https://github.com/SYSU-STAR/RACER).\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n \n**FUEL** is a powerful framework for **F**ast **U**AV **E**xp**L**oration.\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes! \n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE TRO. Check code [here](https://github.com/SYSU-STAR/RACER).\n\n \n \n \n \n\n__Complete videos__: [video1](https://www.youtube.com/watch?v=_dGgZUrWk-8), [video2](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://github.com/eliabntt/FUEL/",
+        "title": "eliabntt/FUEL",
+        "url": "https://github.com/eliabntt/FUEL/",
+        "highlights": [
+          "An Efficient Framework for Fast UAV Exploration \n\n- Stars: 3\n- Forks: 0\n- Watchers: 3\n- Open issues: 0\n...\n- License: GNU General Public License v3.0\n...\n- Default branch: main\n...\n- Created: 20\n...\n2-04-2\n...\nT10:\n...\nForked FUEL project used in the [GRADE](https://eliabntt.github.io/GRADE-RR) project.\n...\nPlease note that this is a TAILORED FUEL that is usable only as an autonomous exploration system based on a simulation environment different than the one created by the original authors. \n\nIf you want to use the original simulation or other parts of the code please check commit [5d61a8](https://github.com/eliabntt/FUEL/commit/5d61a8c4e531cf8d3e828143e4fc6c85db5f8637) and rollback ALL changes related to TOPICS.\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes! \n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of\n...\nrotors.\n...\nquadrotor team operates with\n...\nworkload allocations of the\n...\nare optimized and balanced in order to fully realize the\n...\n's potential\n...\nThe associated paper is under review\n...\n__\n...\nvideo1](https://www.youtube.com/watch?v\n...\n](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://github.com/civy-1014/FUEL",
+        "title": "civy-1014/FUEL",
+        "url": "https://github.com/civy-1014/FUEL",
+        "highlights": [
+          "An Efficient Framework for Fast UAV Exploration \n\n- Stars: 0\n- Forks: 0\n- Watchers: 0\n- Open issues: 0\n- License: GNU General Public License v3.0\n...\n- Default branch: main\n...\n- Created:\n...\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n \n**FUEL** is a powerful framework for **F**ast **U**AV **E**xp**L**oration.\n...\nOur method is demonstrated to complete challenging exploration tasks **3-8\n...\n** faster than state-of-the-art approaches at the time of publication.\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes! \n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper is under review, so code of this part will be released in the future.\n\n \n \n \n \n\n__Complete videos__: [video1](https://www.youtube.com/watch?v=_dGgZUrWk-8), [video2](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/cheesepeaches/FUEL",
+        "title": "GitHub - cheesepeaches/FUEL: An Efficient Framework for Fast UAV Exploration \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/cheesepeaches/FUEL",
+        "publishedDate": "2026-06-08T00:00:00.000Z",
+        "author": "cheesepeaches",
+        "highlights": [
+          "GitHub - cheesepeaches/FUEL: An Efficient Framework for Fast UAV Exploration \u00b7 GitHub\n...\n- Feb 24, 2023: the code for multi-UAV exploration is released! check this link.\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n...\nFUEL is a powerful framework for F ast U AV E xp L oration. Our method is demonstrated to complete challenging exploration tasks 3-8 times faster than state-of-the-art approaches at the time of publication. Central to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try Quick Start to run a demo in a few minutes!\n\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE TRO. Check code here.\n\n \n\nComplete videos: video1, video2.\n...\nFUEL: Fast UAV Exploration using\n...\nHierarchical Planning\n...\nour simulator are represented by .pcd files. We provide several sample environments,\n...\ncan be selected"
+        ],
+        "image": "https://opengraph.githubassets.com/ae38cc8e1efe1cc26e95b8e9ce920666f9adf4e03b90ac22b5c8978301f12626/cheesepeaches/FUEL"
+      },
+      {
+        "id": "https://github.com/AmyGanLU/FUEL",
+        "title": "AmyGanLU/FUEL",
+        "url": "https://github.com/AmyGanLU/FUEL",
+        "highlights": [
+          "An Efficient Framework for Fast UAV Exploration \n\n- Stars: 0\n- Forks: 0\n- Watchers: 0\n- Open issues: 0\n- License: GNU General Public License v3.0\n- Default branch: main\n- Created: 20\n...\n- Fork: yes\n...\n- Feb 24, 2023: the code for **multi-UAV exploration** is released! check [this link](https://github.com/SYSU-STAR/RACER).\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n \n**FUEL** is a powerful framework for **F**ast **U**AV **E**xp**L**oration.\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes! \n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper has been published in IEEE TRO. Check code [here](https://github.com/SYSU-STAR/RACER).\n\n \n \n \n \n\n__Complete videos__: [video1](https://www.youtube.com/watch?v=_dGgZUrWk-8), [video2](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://github.com/Zyhlibrary/FAEP",
+        "title": "Zyhlibrary/FAEP",
+        "url": "https://github.com/Zyhlibrary/FAEP",
+        "highlights": [
+          "[**FAEP**](https://arxiv.org/abs/2302.02293) is a nove fast autonomous exploration planner based on the framework of [FUEL](https://ieeexplore.ieee.org/abstract/document/9324988). It contains a comprehensive exploration sequence generation method for global tour planning, which not only considers the flight-level factors but also innovatively considers the frontier-level factors to reduce the back-and-forth maneuvers. In addition, an adaptive yaw planning strategy is designed to achieve efficient exploration by yaw change during flight. \nOur method is demonstrated to reduce the flight time and flight distance by more than 20% compared with the state-of-the-art approache FUEL.\n\n \n \n \n \n\nComplete videos (include simulation experiments and real-world experiments): [video](https://www.youtube.com/watch?v=0Y671mEwJ_A).\n...\nThis project is mostly based on [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL). Therefore, the configuration of this method is the same as FUEL.\n...\n## Acknowledgements\n Our code is developed based on [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL). We use **NLopt** for non-linear optimization and use **LKH** for travelling salesman problem."
+        ]
+      },
+      {
+        "id": "https://github.com/Kerou-Z/FUEL",
+        "title": "Kerou-Z/FUEL",
+        "url": "https://github.com/Kerou-Z/FUEL",
+        "highlights": [
+          "# Kerou-Z/FUEL\n...\nAn Efficient Framework for Fast UAV Exploration \n\n- Stars: 0\n- Forks: 0\n- Watchers: 0\n- Open issues: 0\n...\n- License: GNU General Public License v3.0\n...\n- Created:\n...\nT19:\n...\n- Aug 24, 2021: The CPU-based simulation is released, CUDA is no longer required. Richer exploration environments are provided.\n \n**FUEL** is a powerful framework for **F**ast **U**AV **E**xp**L**oration.\n...\nOur method is demonstrated to complete challenging exploration tasks **3-8 times** faster than state-of-the-art approaches at the time of publication.\n...\nCentral to it is a Frontier Information Structure (FIS), which maintains crucial information for exploration planning incrementally along with the online built map. Based on the FIS, a hierarchical planner plans frontier coverage paths, refine local viewpoints, and generates minimum-time trajectories in sequence to explore unknown environment agilely and safely. Try [Quick Start](#quick-start) to run a demo in a few minutes! \n\n \n \n \n \n \n -->\n \n\nRecently, we further develop a fully decentralized approach for exploration tasks using a fleet of quadrotors. The quadrotor team operates with asynchronous and limited communication, and does not require any central control. The coverage paths and workload allocations of the team are optimized and balanced in order to fully realize the system's potential. The associated paper is under review, so code of this part will be released in the future.\n\n \n \n \n \n\n__Complete videos__: [video1](https://www.youtube.com/watch?v=_dGgZUrWk-8), [video2](https://www.bilibili.com/video/BV1yf4y1P7Vj)."
+        ]
+      },
+      {
+        "id": "https://arxiv.org/pdf/2010.11561",
+        "title": "[PDF] FUEL: Fast UAV Exploration using Incremental Frontier Structure and ...",
+        "url": "https://arxiv.org/pdf/2010.11561",
+        "highlights": [
+          "Autonomous exploration is a fundamental problem for various applications of unmanned aerial vehicles(UAVs). Existing methods, however, were demonstrated to insufficient exploration rate, due to the lack of efficient global coverage, conservative motion plans and low decision frequencies. In this paper, we propose FUEL, a hierarchical framework that can support Fast UAV ExpLoration in complex unknown environments. We maintain crucial information in the entire space required by exploration planning by a frontier information structure (FIS), which can be updated incrementally when the space is explored. Supported by the FIS, a hierarchical planner plans exploration motions in three steps, which find efficient global coverage paths, refine a local set of viewpoints and generate minimum-time trajectories in sequence. We present extensive benchmark and real-world tests, in which our method completes the exploration tasks with unprecedented efficiency (3-8 times faster) compared to state-of-the-art approaches. Our method will be made open source to benefit the community111To be released at https://github.com/HKUST-Aerial-Robotics/FUEL.\n...\nscenario and a large maze scenario. Three methods are compared: the NBVP [12], the classic frontier method[7] and the rapid frontier method[1]. Note that no open source code is available for [1], so we use our implementation. In all tests the dynamic limits are set as $v_{\\text{max}}=2.0$ m/s and $\\dot{\\xi_{\\text{max}}}=0.9$ rad/s for all methods. The FOVs of the sensors are set as $[80\\times 60]\\ \\text{deg}$ with a maximum range of $4.5$"
+        ],
+        "image": "https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/l5cw9dh0hpb",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "FUEL: Fast UAV Exploration using Incremental Frontier Structure and Hierarchical Planning",
+              "year": 2020,
+              "date": "2020-10-22",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 5,
+              "authors": [
+                {
+                  "name": "Boyu Zhou",
+                  "id": null
+                },
+                {
+                  "name": "Yichen Zhang",
+                  "id": null
+                },
+                {
+                  "name": "Xinyi Chen",
+                  "id": null
+                },
+                {
+                  "name": "Shaojie Shen",
+                  "id": null
+                }
+              ],
+              "referenceCount": 34,
+              "abstract": "Autonomous exploration is a fundamental problem for various applications of unmanned aerial vehicles. Existing methods, however, were demonstrated to insufficient exploration rate, due to the lack of efficient global coverage, conservative motion plans and low decision frequencies. In this paper, we propose FUEL, a hierarchical framework that can support Fast UAV Exploration in complex unknown environments. We maintain crucial information in the entire space required by exploration planning by a frontier information structure (FIS), which can be updated incrementally when the space is explored. Supported by the FIS, a hierarchical planner plans exploration motions in three steps, which find efficient global coverage paths, refine a local set of viewpoints and generate minimum-time trajectories in sequence. We present extensive benchmark and real-world tests, in which our method completes the exploration tasks with unprecedented efficiency (3-8 times faster) compared to state-of-the-art approaches. Our method will be made open source to benefit the community.",
+              "doi": "10.48550/arxiv.2010.11561"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://www.mdpi.com/2504-446X/9/6/423",
+        "title": "FAEM: Fast Autonomous Exploration for UAV in Large-Scale Unknown ...",
+        "url": "https://www.mdpi.com/2504-446X/9/6/423",
+        "publishedDate": "2025-06-10T13:34:37.000Z",
+        "highlights": [
+          "(FAEM) built upon the FUEL framework and designed to\n...\nThe autonomous exploration system framework presented in this work, depicted in Figure 1, is an enhancement and development based on the FUEL [36] framework. Initially, the SLAM module processes sensor data to generate Unmanned Aerial Vehicle (UAV) localization estimates and registered point clouds. Based on the SLAM output, a local 3D occupancy grid map centered around the UAV\u2019s current location is maintained. This map also incorporates frontier updates. The map serves purposes including the detection of frontier clusters, the generation of effective viewpoints, the construction of a topological roadmap, and provides foundational support for global planning and local refinement phases. Secondly, global exploration planning is conducted by comprehensively considering flight factors and frontier-level factors. Subsequently, the hierarchical planning exploration module executes path planning based on the global planning results, initializes multi-objective optimization using candidate paths, and generates kinodynamically feasible topological search paths. The local refinement stage samples candidate viewpoints near frontiers requiring initial observation. It then identifies an observation trajectory passing through a subset of these viewpoints to effectively cover adjacent frontiers. Finally, based on the planned path, the trajectory optimization component generates smooth, safe trajectories for execution by the flight control system. This entire process repeats iteratively based on the defined replanning strategy."
+        ],
+        "image": "https://pub.mdpi-res.com/drones/drones-09-00423/article_deploy/html/images/drones-09-00423-g001-550.jpg?1749624019",
+        "favicon": "https://pub.mdpi-res.com/img/mask-icon-128.svg?c1c7eca266cd7013?1777446772"
+      }
+    ],
+    "searchTime": 975.4,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

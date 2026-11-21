@@ -1,0 +1,254 @@
+{
+  "query": {
+    "query": "quadrotor planning open source mav_voxblox_planning mav_local_planner rpg_quadrotor_control RotorS msckf_vio PX4",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "9fd6e2578a0fa77e2f4e6275c31996cc",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/ethz-asl/mav_voxblox_planning/",
+        "title": "ethz-asl/mav_voxblox_planning",
+        "url": "https://github.com/ethz-asl/mav_voxblox_planning/",
+        "highlights": [
+          "MAV planning tools using voxblox as the map representation.\n...\n* Global Planning\n * RRT*, RRT Connect, BIT*, PRM... (OMPL interface\n...\nvoxblox_rrt_planner`\n * Planning on skeleton sparse graphs `voxblox_skeleton_planner`\n * Skeleton sparse graphs (topology) generation from ESDF voxblox maps `vox\n...\nskeleton`\n * Randomized benchmark on a variety of real maps `mav\n...\n* Local Planning -- `mav_local_planner`\n * Interface to MAV controller, sending timed, dynamically feasible trajectories and replanning online `mav_local_planner`\n * Planning in a short horizon in unknown or partially unknown spaces, using trajectory optimization in ESDFs `voxblox_loco_planner`\n * Path smoothing between waypoints if all waypoints are in known free space `mav_path_smoothing`\n...\n* RVIZ Planning Plugin -- `mav_planning_rviz`\n * Allows dragging around start and goal markers, sending planning requests to global planners `mav_planning_rviz`\n * Allows sending goal points either directly to controller or to the local planner `mav_local_planner`\n...\nThis demo is about using the **mav_local_planner** to do live replanning at 4 Hz in a simulation environment.\n...\nplanner uses `\n...\no` to\n...\na list of\n...\n```roslaunch mav_local_planner fire\n...\nYou can then control the MAV using the planning panel. Enter `firefly` as the `Namespace` in the planning panel, then either type a position for the goal or edit the goal to drag it around. To send it to the local planner, press the `Send Waypoint` button.\n...\ndisplay with the topic"
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/rpg_quadrotor_control",
+        "title": "uzh-rpg/rpg_quadrotor_control: Quadrotor control ...",
+        "url": "https://github.com/uzh-rpg/rpg_quadrotor_control",
+        "publishedDate": "2017-12-15T16:51:51.000Z",
+        "highlights": [
+          "# Repository: uzh-rpg/rpg_quadrotor_control\n...\nQuadrotor control framework developed by the Robotics and Perception Group\n...\n# RPG Quadrotor Control\n...\nThis repository contains a complete framework for flying quadrotors based on control algorithms developed by the [Robotics and Perception Group](http://www.ifi.uzh.ch/en/rpg.html).\n...\nWe also provide an interface to the [RotorS](https://github.com/ethz-asl/rotors_simulator) Gazebo plugins to use our algorithms in simulation.\nTogether with the provided simple trajectory generation library, this can be used to test our sofware entirely in simulation.\n...\nWe also provide some utility to command a quadrotor with a gamepad through our framework as well as some calibration routines to compensate for varying battery voltage.\n...\nFinally, we provide an interface to communicate with flight controllers used for First-Person-View racing.\n...\nThis repository makes use of some basic functionalities from the [rpg_quadrotor_common](https://github.com/uzh-rpg/rpg_quadrotor_common) repository and when working with real hardware, the GPIO and ADC functionalities in the [rpg_single_board_io](https://github.com/uzh-rpg/rpg_single_board_io) repository might come in handy."
+        ]
+      },
+      {
+        "id": "https://github.com/KumarRobotics/msckf_vio",
+        "title": "KumarRobotics/msckf_vio: Robust Stereo Visual Inertial ...",
+        "url": "https://github.com/KumarRobotics/msckf_vio",
+        "highlights": [
+          "# KumarRobotics/msckf_vio\n...\nRobust Stereo Visual Inertial Odometry for Fast Autonomous Flight\n...\n# MSCKF\\_VIO\n...\nThe `MSCKF_VIO` package is a stereo version of MSCKF. The software takes in synchronized stereo images and IMU messages and generates real-time 6DOF pose estimation of the IMU frame.\n...\ntwo cameras, you have to\n...\nManually setting\n...\nparameters will not\n...\n.** [Kalibr](https://github\n...\ncom/ethz-asl/kalibr\n...\nby Kalibr can be\n...\n. See calibration files in the\n...\nconfig` folder\n...\n. The two calibration files\n...\nthe `config` folder should work\n...\nwith the EuRoC and\n...\nflight](https://github.com/Kumar\n...\n/msckf_vio/wiki) datasets. The convention\n...\nas follows:\n...\nOnce the `msckf_vio` is built and sourced (via `source /devel/setup.bash`), there are two launch files prepared for the [EuRoC](https://projects.asl.ethz.ch/datasets/doku.php?id=kmavvisualinertialdatasets) and [UPenn fast flight](https://github.com/KumarRobotics/msckf_vio/wiki/Dataset) dataset named `msckf_vio_euroc.launch` and `msckf_vio_fla.launch` respectively. Each launch files instantiates two ROS nodes:\n...\n* `image_processor` processes stereo images to detect and track features\n* `vio` obtains feature measurements from the `image_processor` and tightly fuses them with the IMU messages to estimate pose.\n...\n## ROS Nodes\n...\n### `vio` node\n...\n`features` (`msckf_vio/CameraMeasurement`)\n...\n`image_processor\n...\n**Published Topics**\n\n`odom` (`nav_msgs/Odometry`)\n\nOdometry of the IMU frame including a proper covariance."
+        ]
+      },
+      {
+        "id": "https://github.com/jaeyoung-lim/mavros_controllers",
+        "title": "Jaeyoung-Lim/mavros_controllers",
+        "url": "https://github.com/jaeyoung-lim/mavros_controllers",
+        "highlights": [
+          "Aggressive trajectory tracking using mavros for PX4 enabled vehicles\n...\n- drone\n- gazebo\n- mavros\n- px4\n- quadrotor\n- robotics\n- ros\n- trajectory\n...\nControllers for controlling MAVs using the [mavros](https://github.com/mavlink/mavros) package in OFFBOARD mode.\n...\nThe repository contains controllers for controlling MAVs using the mavros package. The following packages are included in the repo\n...\n- geometric_controller: Trajectory tracking controller based on geometric control\n- controller_msgs: custom message definitions\n- trajectory_publisher: Node publishing setpoints as states from motion primitives / trajectories for the controller to follow.\n...\n### Install PX4 SITL(Only to Simulate)\n...\n`mavros_controllers` include the following packages.\n...\n### geometric_controller\n...\n### trajectory_publisher\n...\nTrajectory publisher publishes continous trajectories to the trajectory_controller.\n...\n- Parameters\n - /trajectory_publisher/initpos_x (default:\n...\n0.0)\n - /trajectory_publisher/initpos_y (default: 0.0)\n - /trajectory_publisher/initpos_z (default: 1.0)\n - /trajectory_publisher/updaterate (default: 0.01)\n - /trajectory_publisher/horizon (default: 1.0)\n - /trajectory_publisher/maxjerk (default: 10.0)\n - /trajectory_publisher/trajectory_type (default: 0)\n - /trajectory_publisher/number_of_primitives (default: 7)\n - /trajectory_publisher/shape_radius (default: 1.0)\n...\n](http://docs.ros.org\n...\n- /mavros\n...\n](http://docs.\n...\n.org/api/geometry_\n...\n/html/msg\n...\nistStamped.html"
+        ]
+      },
+      {
+        "id": "https://px4.io/",
+        "title": "PX4 Autopilot: Open Source Autopilot for Drones",
+        "url": "https://px4.io/",
+        "highlights": [
+          "Open Source Autopilot for Drones - PX4 Autopilot\n...\nPX4 is used in a wide range of use-cases, from consumer drones to industrial applications. It is also the leading research platform for drones and has been successfully applied to under water vehicles and boats.\n...\n#### Open Source Community\n...\nPX4 provides a standard to deliver drone hardware support and software stack, allowing an ecosystem to build and maintain hardware and software in a scalable way.\n...\nPX4 is an open source flight control software for drones and other unmanned vehicles. The project provides a flexible set of tools for drone developers to share technologies to create tailored solutions for drone applications. PX4 is hosted by Dronecode, a Linux Foundation non-profit."
+        ],
+        "image": "https://px4.io/wp-content/uploads/2020/12/compatible_hw.svg",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/organization/70kkdqm4d42",
+            "type": "company",
+            "version": 1,
+            "properties": {
+              "name": "PX4 Autopilot",
+              "foundedYear": 2008,
+              "description": "PX4 is the open source flight control software that powers any vehicle from commercial and cargo drones through to ground vehicles. ",
+              "workforce": {
+                "total": 14
+              },
+              "headquarters": {
+                "address": "Zurich, ZH 8092, CH",
+                "city": "Zurich",
+                "postalCode": null,
+                "country": "Switzerland"
+              },
+              "financials": {
+                "revenueAnnual": 4330000,
+                "fundingTotal": null,
+                "fundingLatestRound": null
+              },
+              "webTraffic": {
+                "visitsMonthly": 338941,
+                "countryRank": 7616,
+                "avgDurationSeconds": 121,
+                "history": [
+                  {
+                    "value": 362544,
+                    "dateFrom": "2026-03",
+                    "dateTo": "2026-03"
+                  },
+                  {
+                    "value": 346911,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 382883,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 420917,
+                    "dateFrom": "2026-05",
+                    "dateTo": "2026-05"
+                  },
+                  {
+                    "value": 420917,
+                    "dateFrom": "2026-05",
+                    "dateTo": "2026-05"
+                  },
+                  {
+                    "value": 338941,
+                    "dateFrom": "2026-06",
+                    "dateTo": "2026-06"
+                  }
+                ]
+              },
+              "research": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-asl/mav_active_3d_planning/",
+        "title": "ethz-asl/mav_active_3d_planning",
+        "url": "https://github.com/ethz-asl/mav_active_3d_planning/",
+        "highlights": [
+          "Modular framework for online\n...\npath planning.\n...\n**mav\\_active\\_3d\\_planning** is a modular framework for online informative path planner (IPP) design. \nWe provide a modular framework for creating, evaluating and employing primarily sampling based, receding horizon algorithms that optimize a gain while minimizing a cost.\n...\n* **voxblox:**\n\n Using voxblox as map representation and modules specific to voxblox. Dependencies:\n * `voxblox` ([https://github.com/ethz-asl/voxblox](https://github.com/ethz-asl/voxblox))\n...\nDependencies:\n * `unreal_cv_ros` ([https://github.com/ethz-asl/unreal_cv_ros](https://github.com/ethz-asl/unreal_cv_ros))\n * `rotors_simulator` ([https://github.com/ethz-asl/rotors_simulator](https://github.com/ethz-asl/rotors_simulator))\n * `mav_control_rw` ([https://github.com/ethz-asl/mav_control_rw](https://github.com/ethz-asl/mav_control_rw))\n...\nThe `active_3d_planning_app_reconstruction` is an application package, that launches an active\\_3d\\_planner.\nA verbose example of how planner configurations are specified is given in `cfg/planners/example_config.yaml`.\n...\nThe example planner uses local motion primitives to expand new segments and the number of unknown voxels as gain formulation. \nTo see the planner in action, start an unreal\\_cv\\_ros game, e.g. [CityBuilding](#Data-Repository), make sure to tab out of game control (Alt+Tab for Binary, Ctrl+Shift+F1 for Editor) and then run \n```\nroslaunch active_3d_planning_app_reconstruction example.launch\n...\ngiven in `active_3d\n...\nreconstruction/cfg/planners/re\n...\n_planner.yaml\n...\nYou can run it using"
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-asl/mav_voxblox_planning/blob/master/README.md",
+        "title": "README.md at master \u00b7 ethz-asl/mav_voxblox_planning",
+        "url": "https://github.com/ethz-asl/mav_voxblox_planning/blob/master/README.md",
+        "highlights": [
+          "- Repository: ethz-asl/mav_voxblox_planning | MAV planning tools using voxblox as the map representation. | 560 stars | Makefile\n- Branch: master\n...\n* Global Planning\n  * RRT*, RRT Connect, BIT*, PRM... (OMPL interface) `voxblox_rrt_planner`\n  * Planning on skeleton sparse graphs `voxblox_skeleton_planner`\n  * Skeleton sparse graphs (topology) generation from ESDF voxblox maps `\n...\nblox_skeleton`\n  * Randomized benchmark on a variety of real maps `mav_planning_benchmark`\n...\n* Local Planning -- `mav_local_planner`\n  * Interface to MAV controller, sending timed, dynamically feasible trajectories and replanning online `mav_local_planner`\n  * Planning in a short horizon in unknown or partially unknown spaces, using trajectory optimization in ESDFs `voxblox_loco_planner`\n  * Path smoothing between waypoints if all waypoints are in known free space `mav_path_smoothing`\n...\n* RVIZ Planning Plugin -- `mav_planning_rviz`\n  * Allows dragging around start and goal markers, sending planning requests to global planners `mav_planning_rviz`\n  * Allows sending goal points either directly to controller or to the local planner `mav_local_planner`\n...\nThis demo is about using the **mav_local_planner** to do live replanning at 4 Hz in a simulation environment.\n...\n```roslaunch mav_local_planner firefly_sim.launch```\n...\nYou can then control the MAV using the planning panel. Enter `firefly` as the `Namespace` in the planning panel, then either type a position for the goal or edit the goal to drag it around. To send it to the local planner, press the `Send Waypoint` button."
+        ]
+      },
+      {
+        "id": "https://github.com/AerialRobotics-IITK/ariitk_planning_library",
+        "title": "AerialRobotics-IITK/ariitk_planning_library",
+        "url": "https://github.com/AerialRobotics-IITK/ariitk_planning_library",
+        "highlights": [
+          "Planning library for MAVs\n...\nPlanning library for MAVs\n...\nThis repository contains two packages:\n...\nskeleton_global_planner: An online planner based on the voxblox_skeleton_planner, uses mav_local_planner for trajectory execution.\n...\nfollowing repositories:\n...\n[ethz-asl/mav_voxblox_planning](https://www.github.com/ethz-asl/mav_voxblox_planning): MAV planning tools using voxblox as the map representation.\n...\n[ethz-asl/mav_active_3d_planning](https://www.github.com/ethz-asl/mav_active_3d_planning): A modular framework for online informative path planner (IPP) design."
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-asl/voxblox",
+        "title": "ethz-asl/voxblox",
+        "url": "https://github.com/ethz-asl/voxblox",
+        "highlights": [
+          "**If you're looking for skeletonization/sparse topology or planning applications, please refer to the [mav_voxblox_planning](https://github.com/ethz-asl/mav_voxblox_planning) repo.**\n...\n* [Using Voxblox for Planning](https://voxblox.readthedocs.io/en/latest/pages/Using-Voxblox-for-Planning.html)\n...\nA video of voxblox being used for\n...\n[here](https://youtu\n...\nHelen Oleynikova, Zachary Taylor, Marius Fehr, Juan Nieto, and Roland Siegwart, \u201c**Voxblox\n...\nIncremental 3\n...\nEuclidean Signed Distance Fields for On-Board MAV Planning**\u201d, in *IEEE/RSJ\n...\nConference on Intelligent Robots and Systems (IROS)*, 2017."
+        ]
+      },
+      {
+        "id": "https://github.com/ZhiangChen/uav_motion",
+        "title": "ZhiangChen/uav_motion",
+        "url": "https://github.com/ZhiangChen/uav_motion",
+        "highlights": [
+          "minimum-snap trajectory generation and attitude control for PX4-based rotary wing drones\n...\nThis repository generates a minimum-snap polynomial trajectory and controls a quadrotor with PX4 framework. It depends on [ethz-asl/mav_trajectory_generation](https://github.com/ethz-asl/mav_trajectory_generation) and [Jaeyoung-Lim\n/mavros_controllers](https://github.com/Jaeyoung-Lim/mavros_controllers).\n...\nThis gives you an example of using this package in gazebo. \n\n1. Launch a quadrotor with px4 and mavros in gazebo \n```\nroslaunch px4 mavros_posix_sitl.launch\n```\n...\n2. Define your keyframe waypoints in waypoint_generator.py and run the following commands\n...\n```\nroslaunch uav_motion uav_motion.launch\nrosrun uav_motion waypoint_generator.py\n...\n### 1. trajectory_generator\n...\n- \"path_segments\": mav_planning_msgs::PolynomialTrajectory 1 \n- \"path_segments_4D\": mav_planning_msgs::PolynomialTrajectory4D 1 \n\n 1 Either will be remapped to \"trajecotry\" depending on if yaw is included in key waypoints.\n...\n- \"/reference/pose\": geometry_msgs::PoseStamped\n...\n- \"waypoints\":\n...\nav_motion::waypointsGoal 2\n...\n2 It is a\n...\nvelocity\n-\n...\nang_a\": maximum angular acceleration\n...\n### 2. trajectory_sampler\n...\n- \"path_segments\": mav_planning_msgs::PolynomialTrajectory 1 \n- \"path_segments_4D\": mav_planning_msgs::PolynomialTrajectory4D 1\n...\n### 3. geometric_controller\n...\n- \"/command/bodyrate_command\" -> \"/mavros/setpoint_raw/attitude\": mavros_msgs::AttitudeTarget\n...\nabout this node can be found in [Jaeyoung-Lim\n...\n/mavros_controllers](https://github.com/Jaeyoung-Lim/mavros_controllers)."
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-asl/mav_trajectory_generation",
+        "title": "ethz-asl/mav_trajectory_generation",
+        "url": "https://github.com/ethz-asl/mav_trajectory_generation",
+        "highlights": [
+          "# ethz-asl/mav_trajectory_generation\n...\nPolynomial trajectory generation and optimization, especially for rotary-wing MAVs.\n...\n# mav_trajectory_generation\n...\nThis repository contains tools for polynomial trajectory generation and optimization based on methods described in [1].\nThese techniques are especially suitable for rotary-wing micro aerial vehicles (MAVs).\nThis README provides a brief overview of our trajectory generation utilities with some examples.\n...\nThis implementation is largely based on the work of C. Richter *et al*, who should be cited if this is used in a scientific publication (or the preceding conference papers): \n[1] C. Richter, A. Bry, and N. Roy, \u201c**Polynomial trajectory planning for aggressive quadrotor flight in dense indoor environments,**\u201d in *International Journal of Robotics Research*, Springer, 2016.\n...\n1 IEEE International Conference\n...\nWe adapted [RapidQuadrocopterTrajectories](https://github.com/markwmuller/RapidQuadrocopterTrajectories) to\ncheck arbitrary polynomial order trajectories for yaw and velocity feasibility.\n...\n`FeasibilityAnalytic` analytically checks the magnitudes except for the roll and\npitch rates, where it runs the recursive test (recommended: low in computation\ntime, no false positives).\n...\nThe package also contains a method to check if a trajectory or segment is inside\nan arbitrary set of half spaces based on [RapidQuadrocopterTrajectories](https://github.com/markwmuller/RapidQuadrocopterTrajectories).\n...\nThis is useful to check if a segment is inside\n...\nbox or above ground."
+        ]
+      },
+      {
+        "id": "https://github.com/futlab/rpg_quadrotor_control",
+        "title": "futlab/rpg_quadrotor_control",
+        "url": "https://github.com/futlab/rpg_quadrotor_control",
+        "highlights": [
+          "# futlab/rpg_quadrotor_control\n...\nQuadrotor control framework developed by the Robotics and Perception Group\n...\n# RPG Quadrotor Control\n...\nThe RPG Quadrotor Control repository provides packages that are intended to be used with [ROS](http://www.ros.org/).\nThis is research code, expect that it changes often and any fitness for a particular purpose is disclaimed.\n\nThe source code is released under a MIT license.\n...\nThis repository contains a complete framework for flying quadrotors based on control algorithms developed by the [Robotics and Perception Group](http://www.ifi.uzh.ch/en/rpg.html).\n...\nWe also provide an interface to the [RotorS](https://github.com/ethz-asl/rotors_simulator) Gazebo plugins to use our algorithms in simulation.\nTogether with the provided simple trajectory generation library, this can be used to test our sofware entirely in simulation.\n...\nWe also provide some utility to command a quadrotor with a gamepad through our framework as well as some calibration routines to compensate for varying battery voltage.\nFinally, we provide an interface to communicate with flight controllers used for First-Person-View racing.\n...\nThis repository makes use of some basic functionalities from the [rpg_quadrotor_common](https://github.com/uzh-rpg/rpg_quadrotor_common) repository and when working with real hardware, the GPIO and ADC functionalities in the [rpg_single_board_io](https://github.com/uzh-rpg/rpg_single_board_io) repository might come in handy."
+        ]
+      },
+      {
+        "id": "https://voxblox.readthedocs.io/en/latest/",
+        "title": "",
+        "url": "https://voxblox.readthedocs.io/en/latest/",
+        "highlights": [
+          "Voxblox is a volumetric mapping library based mainly on Truncated Signed Distance Fields (TSDFs). It varies from other SDF libraries in the following ways:\n...\n- CPU-only, can be run single-threaded or multi-threaded for some integrators\n- Support for multiple different layer types (containing different types of voxels)\n- Serialization using protobufs\n- Different ways of handling weighting during merging\n- Different ways of inserting pose information about scans\n- Tight ROS integration (in voxblox_ros package)\n- Easily extensible with whatever integrators you want\n- Features an implementation of building Euclidean Signed Distance Fields (ESDFs, EDTs) directly from TSDFs.\n...\nInput Transform Parameters Output Parameters\n...\n- Transformations in Voxblox\n- Using Voxblox for Planning\n- Library API Class Hierarchy File Hierarchy Full\n...\nA video showing sample output from voxblox can be seen here. A video of voxblox being used for online planning on-board a multicopter can be seen here.\n...\nHelen Oleynikova, Zachary Taylor, Marius Fehr, Juan Nieto, and Roland Siegwart, \u201c Voxblox: Incremental 3D Euclidean Signed Distance Fields for On-Board MAV Planning\u201d, in IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2017.:\n...\n@inproceedings{oleynikova2017voxblox,\nauthor={Oleynikova, Helen and Taylor, Zachary and Fehr, Marius and Siegwart, Roland and Nieto, Juan},\nbooktitle={IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},\ntitle={Voxblox: Incremental 3D Euclidean Signed Distance Fields for On-Board MAV Planning},\nyear={2017}"
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/team-vinsight/jetvio-ros",
+        "title": "GitHub - team-vinsight/jetvio-ros \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/team-vinsight/jetvio-ros",
+        "publishedDate": "2026-06-27T00:00:00.000Z",
+        "author": "team-vinsight",
+        "highlights": [
+          "A ROS 2 autonomy stack for a quadrotor that navigates warehouse aisles without GPS. Visual-inertial odometry (cuVSLAM) provides the pose estimate, EGO-Planner produces obstacle-aware trajectories from depth, and a guarded bridge converts those trajectories into PX4 setpoints. A three-piece failsafe detects VIO dropout and hands the vehicle to an optical-flow-held hover under a safety pilot.\n...\nTwo data paths leave perception: the VIO path (cuVSLAM \u2192 external-vision relay \u2192 EKF2) supplies PX4's pose estimate, and the depth path feeds EGO-Planner's local occupancy map. EGO's trajectory is consumed only by `setpoint_bridge`, the single node permitted to command the vehicle.\n...\n| Package | Build | Role |\n| --- | --- | --- |\n| `jetvio_perception` | ament_cmake | Camera + splitter + cuVSLAM launch; emitter-heal helper |\n| `jetvio_localization` | ament_cmake | cuVSLAM map load / relocalization (scaffold \u2014 not yet implemented) |\n| `jetvio_mapping` | ament_cmake | nvblox occupancy load/replay launches |\n| `jetvio_planning` | ament_cmake | EGO-Planner live launch + camera-pose relay |\n| `jetvio_flight` | ament_python | VIO relay, setpoint bridge, health monitor, EKF origin setter |\n| `jetvio_description` | ament_cmake | Static camera \u2194 base_link transform |\n| `jetvio_bringup` | ament_cmake | Top-level orchestration launch + Foxglove launch |\n| `realsense_splitter` | ament_cmake | Vendored nvblox splitter (infra + depth fan-out) |\n...\nv3).\n...\nquadrotor_msgs` lives in `ego\n...\nws`, so any node that touches `/ego/pos_cmd` needs both workspaces sourced."
+        ],
+        "image": "https://opengraph.githubassets.com/b8a969c754c7c2eee7ebaab2cddfda1d23b9d96a0c9c15c7c94f5418ac34d354/team-vinsight/jetvio-ros"
+      },
+      {
+        "id": "https://github.com/Jaeyoung-Lim/mavros_controllers/blob/master/README.md",
+        "title": "README.md at master \u00b7 Jaeyoung-Lim/mavros_controllers",
+        "url": "https://github.com/Jaeyoung-Lim/mavros_controllers/blob/master/README.md",
+        "highlights": [
+          "- Repository: Jaeyoung-Lim/mavros_controllers | Aggressive trajectory tracking using mavros for PX4 enabled vehicles | 499 stars | C++\n- Branch: master\n...\nControllers for controlling MAVs using the [mavros](https://github.com/mavlink/mavros) package in OFFBOARD mode.\n...\nThe repository contains controllers for controlling MAVs using the mavros package. The following packages are included in the repo\n...\n- geometric_controller: Trajectory tracking controller based on geometric control\n- controller_msgs: custom message definitions\n- trajectory_publisher: Node publishing setpoints as states from motion primitives / trajectories for the controller to follow.\n...\n### Install PX4 SITL(Only to Simulate)\n...\nsource the PX4 environment in every new terminal you open to launch mavros_controllers. \n\n### Installing mavros_controllers\n...\nthe following packages.\n...\n### geometric_controller\n...\n### trajectory_publisher\n...\nTrajectory publisher publishes continous trajectories to the trajectory_controller.\n...\n- Parameters\n - /trajectory_publisher/initpos_x (default:\n...\n0.0)\n - /trajectory_publisher/initpos_y (default: 0.0)\n - /trajectory_publisher/initpos_z (default: 1.0)\n - /trajectory_publisher/updaterate (default: 0.01)\n - /trajectory_publisher/horizon (default: 1.0)\n - /trajectory_publisher/maxjerk (default: 10.0)\n - /trajectory_publisher/trajectory_type (default: 0)\n - /trajectory_publisher/number_of_primitives (default: 7)\n - /trajectory_publisher/shape_radius (default: 1.0)\n...\ndocs.ros\n...\nhtml/msg\n...\nhtml) )\n...\nhttp://docs\n...\n.org/api/"
+        ]
+      },
+      {
+        "id": "https://github.com/johyunyoung/mbplanner_ros",
+        "title": "johyunyoung/mbplanner_ros",
+        "url": "https://github.com/johyunyoung/mbplanner_ros",
+        "highlights": [
+          "# johyunyoung/mbplanner_ros\n...\nMotion-primitives Based Planner for Fast & Agile Exploration\n...\n# mbplanner_ros\n...\n### Select the mapping framework\n...\nThe planner supports two mapping frameworks: Voxblox and Octomap\n...\n#### Voxblox\n...\nBy default, the planner is compiled with Voxblox. Voxblox can be used with two mapping modes, Euclidean Signed Distance Fields (ESDF) and Truncated Signed Distance Fields (TSDF). By default TSDF is used in which the distance (to the closest occupied voxel) of a voxel is truncated to a fixed value. \nIn order to switch to ESDF make the following changes: \nIn the file ``` planner_common/include/planner_common/map_manager_voxblox_impl.h``` comment the following line: \n```C++\n#define TSDF\n```  \nIn the file ```mbplanner/launch/mbplanner_m100_sim.launch``` comment the following line: \n```xml\n<remap from=\"global_planner_node/tsdf_map_in\" to=\"mbplanner_node/tsdf_map_out\"/>\n```  \nUncomment the following line:\n...\n```xml\n<!-- <remap from=\"global_planner_node/esdf_map_in\" to=\"mbplanner_node/esdf_map_out\"/> -->\n```\n...\n#### Octomap\n...\nTo compile with Octomap, set the flag USE_OCTOMAP to 1:\n...\n```\ncatkin build -DCMAKE_BUILD_TYPE=Release -DUSE_OCTOMAP=1 mbplanner\n```\n...\nAlso change the config to Octomap in the ```mbplanner/launch/mbplanner_m100_sim.launch``` file\nReplace: \n```xml\n<arg name=\"map_config_file\" default=\"$(arg voxblox_config_file)\"/>\n```\n...\n```xml\n<arg name=\"map_config_file\" default=\"$(arg octomap_config_file)\"/>\n```\n...\nYou could find a\n...\narchitecture on our website: [Link\n...\ninproceedings{mbplanner2020,"
+        ]
+      },
+      {
+        "id": "https://github.com/Priyanka-2703-code/quadcopter",
+        "title": "Priyanka-2703-code/quadcopter",
+        "url": "https://github.com/Priyanka-2703-code/quadcopter",
+        "highlights": [
+          "An open-source, full-stack autonomous aerial navigation framework developed by the **Robotronics Club at IIT Mandi**. Designed specifically for rugged mountain environments, this system integrates high-performance state estimation, trajectory planning, and computer vision onboard standard multirotor platforms.\n...\n![PX4](https://img.shields.io/badge/PX4\n...\n1.14+-8A2BE2\n...\n* **Autonomous Navigation:** Real-time 3D path planning using dynamic occupancy grid mapping and trajectory optimization.\n* **State Estimation:** Visual-Inertial Odometry (VIO) integrated with extended Kalman filtering (EKF) for GPS-denied environments.\n* **Target Detection & Tracking:** Edge-computed YOLOv8 pipeline for object detection, precise landing zone recognition, and visual tracking.\n* **Fail-Safe Systems:** Automated Return-to-Launch (RTL), obstacle fallback avoidance, and low-battery management triggers.\n* **Simulation Support:** Full Software-In-The-Loop (SITL) environment integrated with Gazebo and PX4.\n...\nThe platform is built on a **Holybro X500 V2** 500 mm carbon-fiber airframe\nwith a Pixhawk 6C flight controller (PX4) and an NVIDIA Jetson companion\ncomputer running the ROS 2 autonomy stack.\n...\n* **Operating System:** Ubuntu 22.04 LTS / JetPack 5.x\n* **Middleware:** ROS 2 (Humble Hawksbill)\n* **Flight Stack:** PX4 Autopilot (v1.14+) via `px4_ros_com` and MicroXRCE-DDS\n* **Computer Vision:** OpenCV, CUDA, TensorRT\n* **Simulation:** Gazebo Garden / Ignition\n...\nTo launch the PX4 SITL environment with Gazebo and the ROS 2 autonomy node:"
+        ]
+      },
+      {
+        "id": "https://github.com/gnos2010/rpg_quadrotor_control",
+        "title": "gnos2010/rpg_quadrotor_control",
+        "url": "https://github.com/gnos2010/rpg_quadrotor_control",
+        "highlights": [
+          "# gnos2010/rpg_quadrotor_control\n...\nQuadrotor control framework developed by the Robotics and Perception Group\n...\n# RPG Quadrotor Control\n...\nThe RPG Quadrotor Control repository provides packages that are intended to be used with [ROS](http://www.ros.org/).\nThis is research code, expect that it changes often and any fitness for a particular purpose is disclaimed.\n\nThe source code is released under a MIT license.\n...\nThis repository contains a complete framework for flying quadrotors based on control algorithms developed by the [Robotics and Perception Group](http://www.ifi.uzh.ch/en/rpg.html).\n...\nWe also provide an interface to the [RotorS](https://github.com/ethz-asl/rotors_simulator) Gazebo plugins to use our algorithms in simulation.\nTogether with the provided simple trajectory generation library, this can be used to test our sofware entirely in simulation.\n...\nWe also provide some utility to command a quadrotor with a gamepad through our framework as well as some calibration routines to compensate for varying battery voltage.\n...\nFinally, we provide an interface to communicate with flight controllers used for First-Person-View racing.\n...\nThis repository makes use of some basic functionalities from the [rpg_quadrotor_common](https://github.com/uzh-rpg/rpg_quadrotor_common) repository and when working with real hardware, the GPIO and ADC functionalities in the [rpg_single_board_io](https://github.com/uzh-rpg/rpg_single_board_io) repository might come in handy."
+        ]
+      },
+      {
+        "id": "https://github.com/the-robotronics-club/quadcopter/blob/main/README.md",
+        "title": "README.md",
+        "url": "https://github.com/the-robotronics-club/quadcopter/blob/main/README.md",
+        "highlights": [
+          "An open-source, full-stack autonomous aerial navigation framework developed by the **Robotronics Club at IIT Mandi**. Designed specifically for rugged mountain environments, this system integrates high-performance state estimation, trajectory planning, and computer vision onboard standard multirotor platforms.\n...\n* **Autonomous Navigation:** Real-time 3D path planning using dynamic occupancy grid mapping and trajectory optimization.\n...\n* **State Estimation:** Visual-Inertial Odometry (VIO) integrated with extended Kalman filtering (EKF) for GPS-denied environments.\n...\n* **Target Detection &\n...\n:** Edge-computed YOLOv8\n...\nlanding zone recognition, and visual tracking\n...\n* **Fail-\n...\n* **Simulation Support:** Full Software-In-The-Loop (SITL) environment integrated with Gazebo and PX4.\n...\nThe platform is built on a **Holybro X500 V2** 500 mm carbon-fiber airframe\nwith a Pixhawk 6C flight controller (PX4) and an NVIDIA Jetson companion\ncomputer running the ROS 2 autonomy stack.\n...\n* **Operating System:** Ubuntu 22.04 LTS / JetPack 5.x\n* **Middleware:** ROS 2 (Humble Hawksbill)\n* **Flight Stack:** PX4 Autopilot (v1.14+) via `px4_ros_com` and MicroXRCE-DDS\n* **Computer Vision:** OpenCV, CUDA, TensorRT\n* **Simulation:** Gazebo Ignition\n...\nThe node publishes `OffboardControlMode` and `TrajectorySetpoint` at 20 Hz,\n...\nswitches PX4 to **Offboard** mode after ~15 setpoints, and **arms** after ~30.\n...\n-- quadcopter\n...\n# Autonomy package (teleop control node\n...\n|   |-- px4_ros_com\n...\nPX4 <-> ROS 2 bridge + example nodes\n...\n|   |\n...\nmsgs/"
+        ]
+      },
+      {
+        "id": "https://github.com/vuluongd/aerial-autonomy-stack",
+        "title": "vuluongd/aerial-autonomy-stack",
+        "url": "https://github.com/vuluongd/aerial-autonomy-stack",
+        "highlights": [
+          "1. **Develop** multi-drone autonomy\u2014with ROS2, PX4, and ArduPilot\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLOv8 and 3D LiDAR \n3. **Deploy** in real drones\u2014with JetPack and NVIDIA Orin\n\n \n Feature list (click to expand) \n\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors and VTOLs**)\n...\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n...\n- **YOLOv8** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n- 3D worlds for perception-based simulation\n...\n\u2502\n...\nautopilot_interface\n...\n# Ardupilot/PX4\n...\n\u2514\u2500\u2500 simulation\n \u00a0\u00a0 \u251c\u2500\u2500 simulation_resources\n \u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 aircraft_models\n \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 alti_transition_quad                # ArduPilot VTOL model\n \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 iris_with_ardupilot                 # ArduPilot quad model\n \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 sensor_camera                       # Camera model\n \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 sensor_lidar                        # LiDAR model\n \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 standard_vtol                       # PX4 VTOL model\n \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 x500                                # PX4 quad model\n \u00a0\u00a0 \u2502\u00a0\u00a0 \u2514\u2500\u2500 simulation_worlds\n \u00a0\u00a0 \u2502\u00a0\u00a0     \u251c\u2500\u2500 apple_orchard.sdf\n \u00a0\u00a0 \u2502\u00a0\u00a0     \u251c\u2500\u2500 impalpable_greyness.sdf\n \u00a0\u00a0 \u2502\u00a0\u00a0     \u251c\u2500\u2500 shibuya_crossing.sdf\n \u00a0\u00a0 \u2502\u00a0\u00a0     \u2514\u2500\u2500 swiss_town.sdf\n    \u2502\n \u00a0\u00a0 \u2514\u2500\u2500 simulation.yml.erb                          # Simulation docker tmux entrypoint"
+        ]
+      }
+    ],
+    "searchTime": 990.4,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

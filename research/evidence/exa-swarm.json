@@ -1,0 +1,199 @@
+{
+  "query": {
+    "query": "open source aerial robotics swarm navigation obstacle avoidance EGO Swarm Swarm Planner swarm playground Crazyswarm2 Crazyflie",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "90f3c71fb6f3e6fbf7afefa32f2376dc",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/zju-fast-lab/ego-planner-v2",
+        "title": "ZJU-FAST-Lab/EGO-Planner-v2",
+        "url": "https://github.com/zju-fast-lab/ego-planner-v2",
+        "highlights": [
+          "# ZJU-FAST-Lab/EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \"Swarm of micro flying robots in the wild\"\n...\n# EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \"[Swarm of micro flying robots in the wild](https://www.science.org/doi/10.1126/scirobotics.abm5954)\".\n\n# Installation-Free Usage\n...\nPlease follow the [tutorial PDF file](swarm-playground/[README]_Brief_Documentation_for_Swarm_Playground.pdf) with corresponding videos ([1](swarm-playground/main_ws/WatchMe_main.mp4), [2](swarm-playground/formation_ws/WatchMe_formation.mp4), [3](swarm-playground/tracking_ws/WatchMe_tracking.mp4), [4](swarm-playground/interlaced_flight_ws/WatchMe_interlaced_flights.mp4)) to run the code.\n...\nThis work was born out of [MINCO](https://github.com/ZJU-FAST-Lab/GCOPTER)."
+        ]
+      },
+      {
+        "id": "https://github.com/IMRCLab/crazyswarm2/",
+        "title": "IMRCLab/crazyswarm2",
+        "url": "https://github.com/IMRCLab/crazyswarm2/",
+        "highlights": [
+          "# IMRCLab/crazyswarm2\n...\nA Large Quadcopter Swarm\n...\n# Crazyswarm2\n...\nA ROS 2-based stack for Bitcraze Crazyflie multirotor robots.\n...\nThe documentation is available here: https://imrclab.github.io/crazyswarm2/."
+        ]
+      },
+      {
+        "id": "https://github.com/zju-fast-lab/ego-planner-swarm",
+        "title": "ZJU-FAST-Lab/ego-planner-swarm",
+        "url": "https://github.com/zju-fast-lab/ego-planner-swarm",
+        "highlights": [
+          "# ZJU-FAST-Lab/ego-planner-swarm\n...\nAn efficient single/multi-agent trajectory planner for multicopters.\n...\n- This work extends [EGO-Planner](https://github.com/ZJU-FAST-Lab/ego-planner) to swarm navigation.\n...\nEGO-Swarm: A Fully Autonomous and Decentralized Quadrotor Swarm System in Cluttered Environments\n...\n**EGO-Swarm** is a decentralized and asynchronous systematic solution for multi-robot autonomous navigation in unknown obstacle-rich scenes using merely onboard resources.\n\n \n \n \n \n \n \n\n**Video Links:** [YouTube](https://www.youtube.com/watch?v=K5WKg8meb94&ab_channel=FeiGao), [bilibili](https://www.bilibili.com/video/BV1Nt4y1e7KD) (for Mainland China)\n...\n## 5. Use Drone Simulation Considering Dynamics or Not\n...\nTypical simulations use a dynamic model to calculate the motion of the drone under given commands.\nHowever, it requires continuous iterations to solve a differential equation, which consumes quite a lot computation.\nWhen launching a swarm of drones, this computation burden may cause significant lag.\n...\nOn an i7 9700KF CPU I use, 15 drones are the upper limit.\n...\nTherefore, for compatibility and scalability purposes, I use a \"[fake_drone](https://github.com/ZJU-FAST-Lab/ego-planner-swarm/tree/master/src/uav_simulator/fake_drone)\" package to convert commands to drone odometry directly by default.\n...\n, you can un\n...\nnode `quadrotor_simulator_so3` and `so3_control/SO3ControlNodelet` in [simulator.xml](https://github.com/ZJU\n...\nFAST-Lab/ego-planner-swarm/blob/master/\n...\nplanner/plan_manage/launch/\n...\n.xml)\n...\nquadrotor simulation considering dynamics"
+        ]
+      },
+      {
+        "id": "https://github.com/ZJU-FAST-Lab/ego-planner-swarm/tree/ros2_version",
+        "title": "GitHub - ZJU-FAST-Lab/ego-planner-swarm at ros2_version \u00b7 GitHub",
+        "url": "https://github.com/ZJU-FAST-Lab/ego-planner-swarm/tree/ros2_version",
+        "publishedDate": "2020-10-14T05:06:22.000Z",
+        "author": "ZJU-FAST-Lab",
+        "highlights": [
+          "GitHub - ZJU-FAST-Lab/ego-planner-swarm at ros2_version \u00b7 GitHub\n...\n## 3. Running the Code\n...\n### 3\n...\n```\nros2 launch ego_planner rviz.launch.py \n\n```\n...\n### 3.2 Run the planning program\n...\n```\nros2 launch ego_planner single_run_in_sim.launch.py \n\n```\n...\n```\nros2 launch ego_planner swarm.launch.py \n\n```\n...\n- large swarm\n...\n```\nros2 launch ego_planner swarm_large.launch.py  \n\n```\n...\n- Additional parameters (optional):\n- - use_mockamap:Map generation method. Default: False (uses Random Forest), True uses mockamap.\n- use_dynamic:Whether to consider dynamics. Default: False (disabled), True enables dynamics.\n...\n```\nros2 launch ego_planner single_run_in_sim.launch.py use_mockamap:=True use_dynamic:=False\n\n```\n...\n### 3\n...\n_planner single\n...\n```\nros2 launch ego_planner swarm.launch.py \n\n```\n...\n- large swarm\n...\n```\nros2 launch ego_planner swarm_large.launch.py  \n\n```\n...\n- - use_mockamap:\u5730\u56fe\u751f\u6210\u65b9\u5f0f\uff0c\u9ed8\u8ba4\u4e3aFalse\uff0cFalse\u65f6\u4f7f\u7528Random Forest, True\u65f6\u4f7f\u7528mockamap\n...\n- use_dynamic:\u662f\u5426\u8003\u8651\u52a8\u529b\u5b66\uff0c\u9ed8\u8ba4\u4e3aFalse, False\u65f6\u4e0d\u8003\u8651, True\u65f6\u8003\u8651\n...\nAn efficient single/multi-agent trajectory planner for multicopters."
+        ],
+        "image": "https://opengraph.githubassets.com/377d4d81714386c2124aa5f5618817ae46202a03aaf76ee06743cbcd9d542000/ZJU-FAST-Lab/ego-planner-swarm",
+        "favicon": "https://github.com/fluidicon.png"
+      },
+      {
+        "id": "https://imrclab.github.io/crazyswarm2/index.html",
+        "title": "Crazyswarm2: A ROS 2 testbed for Aerial Robot Teams \u2014 Crazyswarm2 1.0a1 documentation",
+        "url": "https://imrclab.github.io/crazyswarm2/index.html",
+        "highlights": [
+          "Crazyswarm2\n...\nA ROS 2 testbed for Aerial Robot Teams \u2014 Crazyswarm2 1.0a1 documentation\n...\nCrazyswarm2 is a ROS 2 stack to use aerial robots that use flight computers from Bitcraze AB, including the Crazyflie 2.1(+), Crazyflie 2.1 Brushless, Flapper Nimble+, and custom drones built using Crazyflie Bolt.\n...\nOn the technical side Crazyswarm2 is a port of the original Crazyswarm to ROS 2. It is fully open-source (MIT) and available on github.\n...\nA good starting point is the Aerial Swarm Tools and Applications Tutorial/Workshop. If you use our work in academic research, please cite the original paper (we are actively working on a dedicated publication for Crazyswarm2):"
+        ]
+      },
+      {
+        "id": "https://imrclab.github.io/crazyswarm2/",
+        "title": "Crazyswarm2: A ROS 2 testbed for Aerial Robot Teams",
+        "url": "https://imrclab.github.io/crazyswarm2/",
+        "highlights": [
+          "Crazyswarm2: A ROS 2 testbed for Aerial Robot Teams \u2014 Crazyswarm2 1.0a1 documentation\n\n# Crazyswarm2: A ROS 2 testbed for Aerial Robot Teams\uf0c1\n\nCrazyswarm2 is a ROS 2 stack to use aerial robots that use flight computers from Bitcraze AB, including the Crazyflie 2.1(+), Crazyflie 2.1 Brushless, Flapper Nimble+, and custom drones built using Crazyflie Bolt.\n\nOn the technical side Crazyswarm2 is a port of the original Crazyswarm to ROS 2. It is fully open-source (MIT) and available on github.\n\nA good starting point is the Aerial Swarm Tools and Applications Tutorial/Workshop. If you use our work in academic research, please cite the original paper (we are actively working on a dedicated publication for Crazyswarm2):\n\n```\n@inproceedings{crazyswarm,\n  author    = {James A. Preiss* and\n               Wolfgang  H\\\"onig* and\n               Gaurav S. Sukhatme and\n               Nora Ayanian},\n  title     = {Crazyswarm: {A} large nano-quadcopter swarm},\n  booktitle = {{IEEE} International Conference on Robotics and Automation ({ICRA})},\n  pages     = {3299--3304},\n  publisher = {{IEEE}},\n  year      = {2017},\n  url       = {https://doi.org/10.1109/ICRA.2017.7989376},\n  doi       = {10.1109/ICRA.2017.7989376},\n  note      = {Software available at \\url{https://github.com/USC-ACTLab/crazyswarm}},\n}\n\n```\n\nRelated Packages:\n\nWarning\n\nCrazyswarm2 is being actively used and developed. There are currently the following major limitations:\n\nSometimes unicast packets get lost, which is a known firmware bug.\n\n## Contents\uf0c1"
+        ]
+      },
+      {
+        "id": "https://github.com/matthewoots/crazyswarm2_application",
+        "title": "matthewoots/crazyswarm2_application",
+        "url": "https://github.com/matthewoots/crazyswarm2_application",
+        "publishedDate": "2023-01-06T06:16:45.000Z",
+        "highlights": [
+          "Application layer for crazyswarm2 (using a mission managed with path planning and april tag relocalization)\n...\n# CRAZYSWARM APPLICATION (ROS2)\n...\nCrazyswarm application layer, which provides a **path planning layer** to reach desired setpoints, **apriltag detection** for relocalization to global map and static and reciprocal avoidance and on-user commands. Also included capability, to \"allocate\" themselves to targets as seen below.\n...\n1. [For relocalization] `gtsam` at https://github.com/borglab/gtsam using version 4.1.1\n2. [For reciprocal avoidance] `kdtree` to organize agents into a kdtree\n3. [For reciprocal avoidance] `orca` has been taken from `agent.c` and `agent.h`and heavily modified to work with this module (making it more of a standalone) https://github.com/snape/RVO2-3D\n4. [For static avoidance] `3dvg` for visibility graph planning in structured environment https://github.com/matthewoots/3dvg\n5. [Crazyflie firmware for mellinger velocity control] `crazyflie-firmware` at my fork https://github.com/matthewoots/crazyflie-firmware\n6. The rest of the additional modules below are forks since there are modifications I have done to make them work with this module\n...\nAn environment consists of 2 things, obstacles and april tags, which can be used for relocalization and other task depending on usage. To create an environment:\n...\nros2 launch\n...\nros2\n...\nFor real life application, to activate the `relocalization` portion of this repository, `apriltag_ros` will have to be activated, this can be seen in `app_w_april.py` under the `camera_node` and `tag_node`."
+        ]
+      },
+      {
+        "id": "https://github.com/Temasek-Dynamics/STAR",
+        "title": "Temasek-Dynamics/STAR",
+        "url": "https://github.com/Temasek-Dynamics/STAR",
+        "publishedDate": "2024-10-16T10:12:04.000Z",
+        "highlights": [
+          "# STAR (Swarm Technology for Aerial Robotics Research)\n...\nSTAR ia a framework developed explicitly to improve the accessibility of aerial swarm research experiments. Our framework introduces a swarm architecture based on the Crazyflie, a low-cost, open-source, palm-sized aerial platform, well suited for experimental swarm algorithms. To augment cost-effectiveness and mitigate the limitations of employing low-cost robots in experiments, we propose a landmark-based localization module leveraging fiducial markers. This module, also serving as a target detection module, enhances the adaptability and versatility of the framework. Additionally, collision and obstacle avoidance are implemented through velocity obstacles. The presented work strives to bridge the gap between theoretical advances and tangible implementations, thus fostering progress in the field.\n...\n## Obstacles generation\n...\nDevelopers has the options to develop polygon shapes to represent obstacles in the environment. The obstacle are used for virtusal collison avoidance and the safety buffer from the obstacles can be adjusted as well.\n...\nAn environment consists of 2 things, obstacles and fiducial markers, which can be used for landmark localisation and other task depending on usage. To create an environment:\n...\n```bash\n# 1. Launch crazyswarm server\nros2 launch crazyflie launch.py rviz:=none # Real\n# or\nros2 launch crazyflie launch.py backend:=sim rviz:=none # Simulation\n...\nmain crazys\n...\nros2 launch crazyswarm_application launch.py sim\n...\nsimulation\n# or\nros2\n...\ncrazyswarm_application launch."
+        ]
+      },
+      {
+        "id": "https://github.com/KimHyungSub/adaptive_swarm",
+        "title": "KimHyungSub/adaptive_swarm",
+        "url": "https://github.com/KimHyungSub/adaptive_swarm",
+        "highlights": [
+          "Multiple robots layered path planning algorithm implemented as a ROS node to control a swarm of nano quadrotors, Crazyflies 2.X, with real-time obstacle avoidance.\n...\nThis project is a layered path planner algorithm to solve multiple agents navigation problem in a cluttered environment.\n...\nThe proposed approach provides a solution based on a leader-followers architecture with a prescribed formation geometry that adapts dynamically to the environment and avoids collisions.\n\n \n \n\nThe path generated by the global planner based on rapidly-exploring random tree (RRT) algorithm is corrected with the artificial potential fields (APF) method that ensures robots trajectories to be collision-free, reshaping the geometry of the formation when required by environmental conditions. Take a look at [motion_planning](https://github.com/RuslanAgishev/motion_planning) repository for more examples.\n...\nHere I would like to describe how to use the package for autonomous path planning of a group of nano-quadrotors\n[Crazyflies](https://www.bitcraze.io/products/old-products/crazyflie-2-0/).\n...\n* [ROS](https://www.ros.org/)\n* [crazyflie_ros](https://github.com/whoenig/crazyflie_ros)\n* [vicon_bridge](https://github.com/ethz-asl/vicon_bridge)\n...\nThe path planning algrithm is built with a known map assumption.\nYou can define obstacles location of your environment in\n[`layered_planner.py`](https://github.com/RuslanAgishev/adaptive_swarm/blob/master/scripts/layered_planner/layered_planner.py#L92).\n...\n- Command the drones to fly in a formation through a map of obstacles:"
+        ]
+      },
+      {
+        "id": "https://imrclab.github.io/crazyswarm2/usage.html",
+        "title": "Usage \u2014 Crazyswarm2 1.0a1 documentation",
+        "url": "https://imrclab.github.io/crazyswarm2/usage.html",
+        "highlights": [
+          "Usage \u2014 Crazyswarm2 1.0a1 documentation\n...\nAll configuration files are in crazyflie/config.\n...\ncrazyflies.yaml : setting up everything related to the robots.\n...\n## Positioning\uf0c1\n...\nThe Crazyflie can be positioned in different ways, including motion capture and onboard positioning. This blogpost provides a good overview of the different positioning systems if you are unsure about which one you are using: Positioning System Overview.\n...\n### Onboard positioning\uf0c1\n...\nThe Crazyflie also supports several alternative positioning systems that provide direct onboard position or pose estimation. In this case you do not need to receive positioning from an external system like with MoCap.\n...\n## Simulation\uf0c1\n...\nAny usage of the ROS API, including high-level Python scripts, can be visualized before execution. The initial position and number of robots is taken from the crazyflies.yaml configuration file. The simulation uses the firmware code as software-in-the-loop, and can optionally include the robot dynamics. The configuration of the simulation (physics simulator, controller, etc.) can be changed in server.yaml.\n...\nassume an XBox\n...\nteleop.\n...\nin different modes\n...\n## Swarm Management\uf0c1\n...\nThe launch file will also start a swarm management tool that is a ROS node and web-based GUI. In the upper pane is the location of the drone visualized in a 3D window, similar to rviz. In the lower pane, the status as well as log messages are visible (tabbed per drone). In the future, we are planning to add support for rebooting and other actions."
+        ]
+      },
+      {
+        "id": "https://github.com/prakash-aryan/crazyswarm2_gazebo",
+        "title": "prakash-aryan/crazyswarm2_gazebo",
+        "url": "https://github.com/prakash-aryan/crazyswarm2_gazebo",
+        "highlights": [
+          "Crazyflie swarm simulation using Crazyswarm2 + Gazebo Harmonic on ROS 2 Jazzy\n...\nCrazyflie swarm simulation using **Crazyswarm2** + **Gazebo Harmonic** on **ROS 2 Jazzy**.\n...\nWrite your swarm scripts once using the Crazyswarm2 Python API (`takeoff`, `land`, `goTo`, trajectories) and run them in Gazebo simulation. The architecture is designed so the same scripts can later run on real Crazyflie hardware by switching the backend.\n...\niranger](https://github.com/knmcguire/crazyflie_ros2_multiranger) submodule provides a simple occupancy-grid mapper and a\n...\n- **Gazebo backend** for Crazyswarm2 \u2014 a new `gazebo.py` backend that bridges the SIL firmware to Gazebo Harmonic via velocity commands and odometry\n...\n- **3-drone world** SDF with Crazyflie multirotor physics (\n...\n, velocity controllers)\n...\n- **Simulated multi-ranger deck** \u2014 4-ray `gpu_lidar` on each drone's body link, same topology as the real Bitcraze multi-ranger\n...\n- **Swarm demo script** showing\n...\n- **PD controller tuning** with velocity clamping for\n...\n- **Single-drone and swarm mapping + wall-following** launches that drive the `crazyflie_ros2_multiranger` mapper/wall-follower\n...\n- [x] Multi-ranger + Flow deck mapping and wall following (via [crazyflie_ros2_multiranger](https://github.com/knmcguire/crazyflie_ros2_multiranger))\n- [ ] Test with real Crazyflie hardware (switch backend to `cflib` or `cpp`)\n...\n- [ ] Full SLAM with slam_toolbox and Nav2 autonomous navigation\n- [ ] Leader-follower formation flying\n- [ ] Scale to 10+ drones\n- [ ] Integration with motion planning (db-CBS trajectory planner)"
+        ]
+      },
+      {
+        "id": "https://github.com/KTH-SML/crazyswarm2",
+        "title": "KTH-SML/crazyswarm2",
+        "url": "https://github.com/KTH-SML/crazyswarm2",
+        "highlights": [
+          "A Large Quadcopter Swarm, set up for SML\n...\nA ROS 2-based stack for Bitcraze Crazyflie multirotor robots, with the necessary configurations to make the setup easier here at SML.\n...\nAt SML, we are soon going to have 12 Crazyflies 2.1+ with LED ring deck. This repository contains all setup files necessary for using them.\n...\n- The Crazywarm2 library for autonomous flying (that's what you cloned here)\n- The CFClient with joystick (Attention: This requires some training. Also take care to not have a Crazyflie connected when choosing the appropriate keymapping - The drone might start flying before it should)\n- The Crazyflie Android/iOS app - as the joystick solution, this is hard to control and only good for debugging\n...\nThe library supports both position estimates from Qualisys directly, and own estimates using `librigidbodytracker`. \n\nThe default configuration is using `librigidbodytracker`. If you don't have special reasons, the simplest is to go along with `librigidbodytracker`.\n...\n`librigidbodytracker` is used currently, as it supports multiple crazyflies with the same marker setup. Each crazyflie has a unique number on one of the arms. \n- Select the crazyflies that you are using in `crazyflies.yaml` by setting `enabled: true`.\n- Select the starting positions for each crazyflie also in `crazyflies.yaml`.\n...\ncf\n...\nIn Qualisys, go\n...\n`Processing` >\n...\ncheck `Calculate\n...\nConfirm with `Apply\n...\nmaker setup,\n...\nQualisys\n...\ncrazyflies."
+        ]
+      },
+      {
+        "id": "https://github.com/dataking-AI/ego-planner-swarm-ros2",
+        "title": "dataking-AI/ego-planner-swarm-ros2",
+        "url": "https://github.com/dataking-AI/ego-planner-swarm-ros2",
+        "highlights": [
+          "# dataking-AI/ego-planner-swarm-ros2\n...\nAn efficient single/multi-agent trajectory planner for multicopters.\n...\n- This work extends [EGO-Planner](https://github.com/ZJU-FAST-Lab/ego-planner) to swarm navigation.\n...\nEGO-Swarm: A Fully Autonomous and Decentralized Quadrotor Swarm System in Cluttered Environments\n...\n**EGO-Swarm** is a decentralized and asynchronous systematic solution for multi-robot autonomous navigation in unknown obstacle-rich scenes using merely onboard resources.\n\n \n \n \n \n \n \n\n**Video Links:** [YouTube](https://www.youtube.com/watch?v=K5WKg8meb94&ab_channel=FeiGao), [bilibili](https://www.bilibili.com/video/BV1Nt4y1e7KD) (for Mainland China)\n...\nSwarm: A Fully Autonomous and Decentralized Quadrotor Swarm System in Cluttered Environments, Xin Zhou, Jiangchao Zhu, Hongyu Zhou, Chao Xu, and\n...\nGao (Published\n...\n021). [Paper\n...\nnews/202\n...\n## 5. Use Drone Simulation Considering Dynamics or Not\n...\nTypical simulations use a dynamic model to calculate the motion of the drone under given commands.\nHowever, it requires continuous iterations to solve a differential equation, which consumes quite a lot computation.\nWhen launching a\n...\nof drones, this computation burden may cause significant lag.\n...\nOn an i7 970\n...\nKF CPU I\n...\nTherefore, for compatibility and scalability purposes, I use a \"[fake_drone](https://github.com/ZJU-FAST-Lab/ego-planner-swarm/tree/master/src/uav_simulator/fake_drone)\" package to convert commands to drone odometry directly by default.\n...\n-planner-"
+        ]
+      },
+      {
+        "id": "https://github.com/KaireRiemann/EGO-Planner-v2",
+        "title": "KaireRiemann/EGO-Planner-v2",
+        "url": "https://github.com/KaireRiemann/EGO-Planner-v2",
+        "highlights": [
+          "# KaireRiemann/EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \"Swarm of micro flying robots in the wild\"\n...\n# EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \"[Swarm of micro flying robots in the wild](https://www.science.org/doi/10.1126/scirobotics.abm5954)\".\n\n# Installation-Free Usage\n...\nPlease follow the [tutorial PDF file](swarm-playground/[README]_Brief_Documentation_for_Swarm_Playground.pdf) with corresponding videos ([1](swarm-playground/main_ws/WatchMe_main.mp4), [2](swarm-playground/formation_ws/WatchMe_formation.mp4), [3](swarm-playground/tracking_ws/WatchMe_tracking.mp4), [4](swarm-playground/interlaced_flight_ws/WatchMe_interlaced_flights.mp4)) to run the code.\n...\n## main_ws Build and Run\n...\n```bash\ncd /home/zdp/Codefield/EGO-Planner-v2/swarm-playground/main_ws\ncatkin_make\n```\n...\nLaunch RViz:\n...\n```bash\nroslaunch ego_planner rviz.launch\n```\n...\nLaunch circle exchange:\n...\n```bash\nroslaunch ego_planner circle_exchange.launch\n```"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2402.19033v2",
+        "title": "High-Speed Motion Planning for Aerial Swarms in ...",
+        "url": "https://arxiv.org/html/2402.19033v2",
+        "highlights": [
+          "do not require periodic communication between agents. EGO-Swarm [12], an extension of a gradient-based planner for a single agent [4], is a recent example of an asynchronous multi-drone planner. However, it cannot handle communication delay between the agents and assumes perfect knowledge of occluded obstacles. EGO-Swarm2 [13] uses the MINCO [14] trajectory parametrization instead of B-Splines [15] of EGO-Swarm to produce smoother trajectories and a lower optimization time. However, it cannot handle communication delay and it flies slower in unknown environments [16]. EDG-Team [17] improves over EGO-Swarm2 by dealing with deadlocks between multiple agents that pass through narrow gaps. This is achieved by switching the method to a centralized and synchronous planner in dense environments. The method was proven to be more robust to communication delay but could not guarantee collision-free navigation in unknown environments. MADER [11] and its delay-robust version RMADER [18] are another family of asynchronous planners. They both use the MINVO basis [19] to generate trajectories that can pass through narrow gaps. Both approaches assume perfect knowledge of the obstacle positions and shapes within a bounding box around each agent and do not account for the unknown part of the environment, which could lead to collisions. PUMA [20] builds on RMADER to make it more robust to unknown environments by pushing the trajectory to be in the field of view of the agent. This, however, does not guarantee safety. DREAM [21] is another asynchronous planning method for aerial swarms that"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://gitblind.noratr.app/ZJU-FAST-Lab/EGO-Planner-v2",
+        "title": "GitHub - ZJU-FAST-Lab/EGO-Planner-v2: Swarm Playground, the codebase of the paper \"Swarm of micro flying robots in the wild\" \u00b7 GitHub",
+        "url": "https://gitblind.noratr.app/ZJU-FAST-Lab/EGO-Planner-v2",
+        "publishedDate": "2022-05-07T00:00:00.000Z",
+        "author": "ZJU-FAST-Lab",
+        "highlights": [
+          "GitHub - ZJU-FAST-Lab/EGO-Planner-v2: Swarm Playground, the codebase of the paper \"Swarm of micro flying robots in the wild\" \u00b7 GitHub\n...\n# EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \" Swarm of micro flying robots in the wild\".\n...\n# Installation-Free Usage\n...\nPlease follow the tutorial PDF file with corresponding videos (1, 2, 3, 4) to run the code.\n...\nSwarm Playground, the codebase of the paper \"Swarm of micro flying robots in the wild\""
+        ],
+        "image": "https://gitblind.noratr.app/ZJU-FAST-Lab/EGO-Planner-v2/raw/main/images/cover.jpg"
+      },
+      {
+        "id": "https://github.com/prakash-aryan/crazyswarm2_gazebo/blob/main/README.md",
+        "title": "README.md",
+        "url": "https://github.com/prakash-aryan/crazyswarm2_gazebo/blob/main/README.md",
+        "highlights": [
+          "Crazyflie swarm simulation using **Crazyswarm2** + **Gazebo Harmonic** on **ROS 2 Jazzy**.\n...\nWrite your swarm scripts once using the Crazyswarm2 Python API (`takeoff`, `land`, `goTo`, trajectories) and run them in Gazebo simulation. The architecture is designed so the same scripts can later run on real Crazyflie hardware by switching the backend.\n...\nCrazyswarm2 server runs the actual Crazyflie firmware (compiled to Python bindings) in a software-in-the-loop setup. A PD velocity controller converts desired states to `cmd_vel` commands, which flow through the ROS-Gazebo bridge to Gazebo Harmonic's multirotor physics engine. Odometry flows back the same way.\n...\n- **Gazebo backend** for Crazyswarm2 \u2014 a new `gazebo.py` backend that bridges the SIL firmware to Gazebo Harmonic via velocity commands and odometry\n...\n- **ROS-Gazebo bridge** config for cmd_vel, odometry, enable, scan, and clock topics\n...\n- **Swarm demo script** showing coordinated multi-drone flight\n...\n- **PD controller tuning** with velocity clamping for stable trajectory tracking\n...\n- **Single-drone and swarm mapping + wall-following** launches that drive the `crazyflie_ros2_multiranger` mapper/wall-follower from\n...\n- [x] Multi-ranger + Flow deck mapping and wall following (via [crazyflie_ros2_multiranger](https://github.com/knmcguire/crazyflie_ros2_multiranger))\n- [ ] Test with real Crazyflie hardware (switch backend to `cflib` or `cpp`)\n- [ ] Full SLAM with slam_toolbox and Nav2 autonomous navigation\n- [ ] Leader-follower formation flying\n- [ ] Scale to 10+ drones\n- [ ] Integration with motion planning"
+        ]
+      },
+      {
+        "id": "https://github.com/ypat999/ego-planner-swarm",
+        "title": "ypat999/ego-planner-swarm",
+        "url": "https://github.com/ypat999/ego-planner-swarm",
+        "highlights": [
+          "An efficient single/multi-agent trajectory planner for multicopters.\n...\n# EGO-Planner-Swarm (XTDrone2\u7248\u672c)\n...\n\u8fd9\u662fEGO-Planner-Swarm\u7684\u589e\u5f3a\u7248\u672c\uff0c\u652f\u6301ROS2\u3001TF2\u5750\u6807\u8f6c\u6362\u548c\u6539\u8fdb\u7684\u70b9\u4e91\u5904\u7406\uff0c\u4e13\u4e3aXTDrone2\u6846\u67b6\u4f18\u5316\u3002\n...\n- **ROS2\u652f\u6301**: \u5b8c\u6574\u8fc1\u79fb\u5230ROS2\uff0c\u6027\u80fd\u4f18\u5316\n- **TF2\u96c6\u6210**: \u9ad8\u7ea7\u5750\u6807\u6846\u67b6\u8f6c\u6362\uff0c\u652f\u6301\u70b9\u4e91\u6570\u636e\n- **\u589e\u5f3a\u70b9\u4e91\u5904\u7406**: \u9c81\u68d2\u7684\u9519\u8bef\u5904\u7406\u548c\u5750\u6807\u7cfb\u8f6c\u6362\n- **\u65e0\u4eba\u673a\u68c0\u6d4b**: \u96c6\u6210\u65e0\u4eba\u673a\u68c0\u6d4b\u529f\u80fd\n- **\u96c6\u7fa4\u534f\u8c03**: \u590d\u6742\u73af\u5883\u4e2d\u7684\u591a\u65e0\u4eba\u673a\u8f68\u8ff9\u89c4\u5212\n...\n```\nros2 launch ego_planner swarm.launch.py \n```\n...\n* \u96c6\u6210\u65e0\u4eba\u673a\u68c0\u6d4b\u529f\u80fd\n* \u5b9e\u65f6\u969c\u788d\u7269\u8bc6\u522b\n* \u591a\u4f20\u611f\u5668\u6570\u636e\u878d\u5408\n...\n# EGO-Planner-Swarm (XTDrone2\n...\nThis is an enhanced version of EGO-Planner-Swarm with ROS2 support, TF2 coordinate transformations, and improved point cloud processing for XTDrone2 framework.\n...\n- **ROS2 Support**: Full migration to ROS2 with improved performance\n- **TF2 Integration**: Advanced coordinate frame transformations for point cloud data\n- **Enhanced Point Cloud Processing**: Robust error handling and coordinate system conversions\n- **Drone Detection**: Integrated drone detection capabilities\n- **Swarm Coordination**: Multi-drone trajectory planning in cluttered environments\n...\n2 launch ego\n...\nplanner swarm.\n...\n* Integrated drone detection function\n* Real-time obstacle recognition\n* Multi-sensor data fusion\n...\nROS2 Migration\n...\nMigrated from ROS1 to ROS2,\n...\nTF2 Integration\n...\nAdded complete TF2 coordinate transformation support\n...\nEnhanced Error Handling\n...\nXTDrone2"
+        ]
+      },
+      {
+        "id": "https://github.com/BDRC-com/EGO-Planner-v2",
+        "title": "BDRC-com/EGO-Planner-v2",
+        "url": "https://github.com/BDRC-com/EGO-Planner-v2",
+        "highlights": [
+          "# BDRC-com/EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \"Swarm of micro flying robots in the wild\"\n...\n# EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \"[Swarm of micro flying robots in the wild](https://www.science.org/doi/10.1126/scirobotics.abm5954)\".\n...\n# Installation-Free Usage\n...\nPlease follow the [tutorial PDF file](swarm-playground/[README]_Brief_Documentation_for_Swarm_Playground.pdf) with corresponding videos ([1](swarm-playground/main_ws/WatchMe_main.mp4), [2](swarm-playground/formation_ws/WatchMe_formation.mp4), [3](swarm-playground/tracking_ws/WatchMe_tracking.mp4), [4](swarm-playground/interlaced_flight_ws/WatchMe_interlaced_flights.mp4)) to run the code."
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/IMRCLab/crazyswarm2",
+        "title": "GitHub - IMRCLab/crazyswarm2: A Large Quadcopter Swarm \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/IMRCLab/crazyswarm2",
+        "publishedDate": "2021-11-04T00:00:00.000Z",
+        "author": "IMRCLab",
+        "highlights": [
+          "GitHub - IMRCLab/crazyswarm2: A Large Quadcopter Swarm \u00b7 GitHub\n...\n# Crazyswarm2\n...\nA ROS 2-based stack for Bitcraze Crazyflie multirotor robots.\n...\nThe documentation is available here: https://imrclab.github.io/crazyswarm2/."
+        ],
+        "image": "https://opengraph.githubassets.com/f5051b42e0df6892d530403667d37bed99b088f4fae80116c347544775f66c38/IMRCLab/crazyswarm2"
+      }
+    ],
+    "searchTime": 1293.8,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

@@ -1,0 +1,284 @@
+{
+  "query": {
+    "query": "survey open source autonomous UAV navigation obstacle avoidance github awesome aerial robotics motion planning repositories",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "3e128f40e17a7b6eecfaf6675a61c8af",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/Fast-Planner",
+        "title": "HKUST-Aerial-Robotics/Fast-Planner: A Robust ...",
+        "url": "https://github.com/HKUST-Aerial-Robotics/Fast-Planner",
+        "publishedDate": "2019-02-27T13:16:48.000Z",
+        "highlights": [
+          "- Stars: 3237\n- Forks: 757\n- Watchers: 3237\n- Open issues: 84\n- Primary language: C++\n- Languages: C++ (52.0%), Makefile (19.2%), Python (9.7%), CMake (9.1%), Common Lisp (4.4%), C (2.5%), Shell (1.5%), Cuda (1.1%), CSS (0.4%), Fortran, HTML\n- License: GNU General Public License v3.0 (GPL-3.0)\n- Topics: aerial-robotics, autonomous-navigation, motion-planning, uav\n- Default branch: master\n- Created: 2019-02-27T13:16:48Z\n- Last push: 2024-10-24T13:12:43Z\n- Contributors: 3 (top: ZbyLGsc, Zager-Zhang, bharat787)\n...\n**Fast-Planner** is developed aiming to enable quadrotor fast flight in complex unknown environments. It contains a rich set of carefully designed planning algorithms. It also provides a foundational code framework and algorithms that support several popular open-source drone projects, including [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner),\n...\n- Kinodynamic path searching\n...\n- B-spline-based trajectory optimization\n- Topological path searching and path-guided optimization\n- Perception-aware planning strategy (to appear)\n...\n- __bspline__: A implementation of the B-spline-based trajectory representation.\n- __bspline_opt__: The gradient-based trajectory optimization using B-spline trajectory.\n- __active_perception__: Perception-aware planning strategy, which enable to quadrotor to actively observe and avoid unknown obstacles, to appear in the future.\n- __plan_manage__: High-level modules that schedule and call the mapping and planning algorithms. Interfaces for launching the whole system, as well as the configuration files are contained here."
+        ]
+      },
+      {
+        "id": "https://github.com/brandonhimpfen/awesome-uav-autonomy/",
+        "title": "brandonhimpfen/awesome-uav-autonomy",
+        "url": "https://github.com/brandonhimpfen/awesome-uav-autonomy/",
+        "highlights": [
+          "A curated list of frameworks, algorithms, research, simulators, datasets, flight controllers, onboard software, path-planning tools, and autonomy stacks for UAV autonomy.\n...\n> A curated list of frameworks, algorithms, research, simulators, datasets, flight controllers, onboard software, path-planning tools, and autonomy stacks for **UAV autonomy**, including perception, planning, SLAM, control, swarm intelligence, and safety systems.\n...\n- [RRT*, RRT, RRT-Connect Implementations](https://github.com/ompl/ompl) \u2013 Sampling-based planners.\n- [OMPL (Open Motion Planning Library)](https://ompl.kavrakilab.org/) \u2013 Widely used motion-planning toolkit.\n- [PX4 Mission Planning Tools](https://docs.px4.io/main/en/flying/missions.html)\n- [MAVROS Offboard Control](https://github.com/mavlink/mavros)\n- [MoveIt (ROS)](https://moveit.ros.org/) \u2013 Motion planning for robotics.\n- [TEB Local Planner](https://github.com/rst-tu-dortmund/teb_local_planner) \u2013 Efficient local trajectory optimization.\n...\n- [PX4 Collision Prevention](https://docs.px4.io/main/en/computer_vision/collision_prevention.html)\n- [ArduPilot Rangefinder + Avoidance APIs](https://ardupilot.org/copter/docs/ac2_simple_avoidance.html)\n- [VOXL Avoidance](https://modalai.com/pages/voxl) \u2013 Qualcomm-based perception/avoidance.\n- [ROS Costmap_2D](https://wiki.ros.org/costmap_2d) \u2013 Local obstacle maps for avoidance.\n- [Safety Pilot / Failsafe Modules](https://docs.px4.io/main/en/config/safety.html)\n...\ngithub.com/awesomelistsio/awesome-uav-drone-ai)\n- [Awesome Robotics](https://github.com/awesomelistsio/awesome-robotics)\n-"
+        ]
+      },
+      {
+        "id": "https://www.mdpi.com/2079-9292/13/23/4785",
+        "title": "A Survey of Open-Source UAV Autopilots",
+        "url": "https://www.mdpi.com/2079-9292/13/23/4785",
+        "publishedDate": "2024-12-04T22:26:28.000Z",
+        "highlights": [
+          "This survey provides a comprehensive comparison of prominent open-source unmanned aerial vehicle (UAV) autopilots, focusing on their hardware compatibility, software features, and communication protocols. Additionally, it assesses the impact of these autopilots on research and education by examining their potential for integration with companion computers, compatibility with robot operating system (ROS) middleware and the MATLAB/Simulink environment, and the availability of simulation-in-the-loop (SITL) and hardware-in-the-loop (HITL) simulation tools. The paper concludes with a discussion of the advantages and disadvantages of these leading open-source autopilots.\n...\nin streamlining UAVs\u2019 application development, including their potential for pairing with companion computers, their compatibility with ROS middleware and/or the MATLAB/Simulink environment, and the availability of simulation-in-the-loop (SITL) and hardware-in-the-loop (HITL) tools.\n...\niNAV is designed for advanced navigation capabilities, supporting a variety of UAV types. It can be easily combined with companion computers, providing advanced navigation and control features. It has some compatibility with ROS, but it is not as extensive as Ardupilot or PX4, and its limited compatibility with MATLAB/Simulink PSP restricts its use in research and education. It also offers SITL and HITL tools, but they are not as comprehensive as those provided by Ardupilot or PX4. Its strength lies in its focus on navigation and control systems, making it a good choice for applications requiring precise navigation."
+        ],
+        "image": "https://pub.mdpi-res.com/electronics/electronics-13-04785/article_deploy/html/images/electronics-13-04785-g001-550.jpg?1733302585",
+        "favicon": "https://pub.mdpi-res.com/img/mask-icon-128.svg?c1c7eca266cd7013?1782465688"
+      },
+      {
+        "id": "https://github.com/awesomelistsio/awesome-uav-autonomy",
+        "title": "brandonhimpfen/awesome-uav-autonomy",
+        "url": "https://github.com/awesomelistsio/awesome-uav-autonomy",
+        "highlights": [
+          "A curated list of frameworks, algorithms, research, simulators, datasets, flight controllers, onboard software, path-planning tools, and autonomy stacks for UAV autonomy.\n...\n> A curated list of frameworks, algorithms, research, simulators, datasets, flight controllers, onboard software, path-planning tools, and autonomy stacks for **UAV autonomy**, including perception, planning, SLAM, control, swarm intelligence, and safety systems.\n...\n- [RRT*, RRT, RRT-Connect Implementations](https://github.com/ompl/ompl) \u2013 Sampling-based planners.\n- [OMPL (Open Motion Planning Library)](https://ompl.kavrakilab.org/) \u2013 Widely used motion-planning toolkit.\n- [PX4 Mission Planning Tools](https://docs.px4.io/main/en/flying/missions.html)\n- [MAVROS Offboard Control](https://github.com/mavlink/mavros)\n- [MoveIt (ROS)](https://moveit.ros.org/) \u2013 Motion planning for robotics.\n- [TEB Local Planner](https://github.com/rst-tu-dortmund/teb_local_planner) \u2013 Efficient local trajectory optimization.\n...\n- [PX4 Collision Prevention](https://docs.px4.io/main/en/computer_vision/collision_prevention.html)\n- [ArduPilot Rangefinder + Avoidance APIs](https://ardupilot.org/copter/docs/ac2_simple_avoidance.html)\n- [VOXL Avoidance](https://modalai.com/pages/voxl) \u2013 Qualcomm-based perception/avoidance.\n- [ROS Costmap_2D](https://wiki.ros.org/costmap_2d) \u2013 Local obstacle maps for avoidance.\n- [Safety Pilot / Failsafe Modules](https://docs.px4.io/main/en/config/safety.html)\n...\n- [Awesome Robotics](https://github.com/awesomelistsio/awesome-robot\n...\n](https://\n...\nistsio/awesome-rein\n...\n.com/"
+        ]
+      },
+      {
+        "id": "https://github.com/saviodp7/nav3d",
+        "title": "saviodp7/nav3d",
+        "url": "https://github.com/saviodp7/nav3d",
+        "highlights": [
+          "A Nav2-inspired 3D navigation stack for UAVs, integrating ROS 2, MoveIt 2, OctoMap, Behavior Trees and PX4 offboard control.\n...\nNav3D is a ROS 2 navigation stack that reformulates the Nav2 architectural model for\nthree-dimensional UAV navigation. It keeps the parts of Nav2 that are valuable as a\nnavigation framework, such as action-based task interfaces, lifecycle-managed servers,\nplugin-oriented planning and Behavior Tree execution, while replacing the planar costmap\nassumption with a 3D collision-aware pipeline based on MoveIt, OctoMap and PX4 offboard\nsetpoint streaming.\n...\n- **MoveIt-based 3D global planner plugin** that adapts a navigation goal into an SE(3)\n planning request for a floating-base UAV.\n...\n- **OctoMap-backed PlanningScene integration** through depth point-cloud updates and\n MoveIt collision checking.\n...\n| Package | Role |\n| --- | --- |\n| `nav3d_bringup` | Launch files, RViz config and runtime parameters. |\n| `nav3d_bt_navigator` | Behavior Tree based navigation action server. |\n| `nav3d_behavior_tree` | BT action, condition, decorator and utility nodes. |\n| `nav3d_planner` | Planner server exposing `ComputePathToPose` and path validity services. |\n...\n| `nav3d_planner_plugin_moveit` | MoveIt/OMPL global planner plugin for 3D path generation and validity queries. |\n...\n| `nav3d_controller` | Path execution server and waypoint-streaming controller. |\n...\n| `nav3d_px4_bridge` | VIO/odometry bridge and PX4 offboard trajectory-setpoint bridge. |\n...\n| `nav3d_gz_bridge` | Gazebo to ROS 2 topic bridges and static transforms for simulation. |\n...\nstack. |"
+        ]
+      },
+      {
+        "id": "https://github.com/zhefan-xu/cerlab-uav-autonomy",
+        "title": "Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "url": "https://github.com/zhefan-xu/cerlab-uav-autonomy",
+        "highlights": [
+          "Welcome to the **CERLAB UAV Autonomy Framework**, a versatile and modular framework for autonomous unmanned aerial vehicles (UAVs). This framework comprises distinct components (simulator, perception, mapping, planning, and control) to achieve autonomous navigation, unknown exploration, and target inspection.\n...\npackage integrating all other modules for various tasks. [details](https://github.com/Zhefan-Xu/autonomous_flight)\n - ```global_planner```: The global waypoint planner library for autonomous robots. [details](https://github.com/Zhefan-Xu/global_planner)\n - ```map_manager```: The 3D mapping library for autonomous robots. [details](https://github.com/Zhefan-Xu/map_manager)\n - ```onboard_detector```: The dynamic obstacle detection and tracking algorithm for autonomous robots. [details](https://github.com/Zhefan-Xu/onboard_detector)\n - ```remote_control```: The Rviz configuration and launch files for easy visualization. [details](https://github.com/Zhefan-Xu/remote_control)\n - ```time_optimizer```: The optimal trajectory time allocation library for autonomous robots. [details](https://github.com/Zhefan-Xu/time_optimizer)\n - ```tracking_controller```: The trajectory tracking controller for autonomous robots. [details](https://github.com/Zhefan-Xu/tracking_controller)\n - ```trajectory_planner```: The trajectory olanning library for autonomous robots. [details](https://github.com/Zhefan-Xu/trajectory_planner)\n - ```uav_simulator```: The lightweight Gazebo/ROS-based simulator for unmanned aerial vehicles. [details](https://github.com/Zhefan-Xu/uav_simulator)\n \n\n## II."
+        ]
+      },
+      {
+        "id": "https://github.com/nzhenev/autonomous-uav-guide",
+        "title": "nzhenev/autonomous-uav-guide",
+        "url": "https://github.com/nzhenev/autonomous-uav-guide",
+        "highlights": [
+          "# nzhenev/autonomous-uav-guide\n...\nPython sample codes and documents about Autonomous Quadrotors algorithms. This project can be used as a technical guide book to study the algorithms and the software architectures for beginners.\n...\nFrom-scratch Python implementations of algorithms for **autonomous UAVs**: multirotor, VTOL, and fixed-wing. Every algorithm comes with a runnable simulation, academic references, and a GIF preview.\n...\n, Particle Filter\n...\n\u251c\u2500\u2500 perception/      # Occupancy mapping, obstacle detection, visual servoing\n...\n\u251c\u2500\u2500 path_planning/   # A*, RRT*, PRM, Potential Field, Coverage Planning\n\u251c\u2500\u2500 path_tracking/   # PID, LQR, MPC, Pure Pursuit, Geometric SO(3)\n...\n\u251c\u2500\u2500 trajectory_planning/  # Min-Snap, Polynomial, Quintic, Frenet Optimal\n...\n\u251c\u2500\u2500 trajectory_tracking/  #\n...\nLin., MPPI, NMPC\n...\n\u251c\u2500\u2500 costmap/         # Occupancy grid, Inflation, Social, Footprint layers\n...\n\u251c\u2500\u2500 environment/     # World, obstacles, buildings, env presets (city/indoor/field)\n...\n\u251c\u2500\u2500 swarm/           # Reynolds, Consensus, Virtual Structure, Leader-Follower\n...\n## Path Planning\n...\n| Algorithm | Preview |\n|---|---|\n| **3D A\\*** | |\n| **RRT\\*** | |\n| **PRM 3D** | |\n| **Potential Field** | |\n| **Coverage Planning** | |\n...\n## Trajectory Planning\n...\n## Environment & Costmaps\n...\n| Feature | Preview |\n|---|---|\n| **Dynamic Costmap Navigation** | |\n...\n## Swarm Algorithms\n...\nReynolds Flocking** | |\n| **Consensus Formation** | |\n| **Virtual Structure** | |\n| **Leader-Follower** | |\n...\n**Potential Swarm** | |\n|\n...\nVoronoi Coverage** | |"
+        ]
+      },
+      {
+        "id": "https://github.com/Ajinkya-001/Autonomous-UAV-Navigation-System",
+        "title": "Ajinkya-001/Autonomous-UAV-Navigation-System",
+        "url": "https://github.com/Ajinkya-001/Autonomous-UAV-Navigation-System",
+        "highlights": [
+          "Autonomous UAV navigation system featuring real-time 2.5D occupancy-grid mapping, A* global path planning, and depth + LiDAR sensor fusion for dynamic obstacle avoidance in complex urban environments. Fully integrated with ROS 2, PX4 Offboard control, and Gazebo simulation for high-fidelity testing and deployment.\n...\nhttps://github.com/user-attachments/assets/b0f48266-6d4b-462f-b512-fa1474267b89\n \n Dynamic A* path replanning on an evolving occupancy grid. \n \n\nAutonomous UAV navigation system featuring real-time 2.5D occupancy-grid mapping, A* global path planning, and depth + LiDAR sensor fusion for dynamic obstacle avoidance in complex urban environments. Fully integrated with ROS 2, PX4 Offboard control, and Gazebo simulation for high-fidelity testing and deployment.\n\n \n \n \n \n \n \n \n \n \n \n\n## System\n...\n| Capability | Technical Summary |\n| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |\n| **Mapping** | Height-aware voxel occupancy grid updated with Bresenham ray tracing and yaw-rate filtering to prevent distortion during rotation. |\n| **Global Planning** | Continuous A* replanning with safety-inflated costmap and smoothed trajectory publishing. |\n| **Local Navigation & Safety** | Reactive velocity commands, corridor-centering and collision overrides based on depth and LiDAR fusion. |\n| **Flight Control** | PX4 Offboard position setpoints applied through ROS 2 middleware for stable navigation. |\n| **Visualization** | voxel map + global path + UAV pose in"
+        ]
+      },
+      {
+        "id": "https://github.com/KumarRobotics/kr_autonomous_flight",
+        "title": "KumarRobotics/kr_autonomous_flight",
+        "url": "https://github.com/KumarRobotics/kr_autonomous_flight",
+        "publishedDate": "2020-11-17T16:52:31.000Z",
+        "highlights": [
+          "KR (KumarRobotics) autonomous flight system for GPS-denied quadrotors\n...\n- Stars: 771\n- Forks: 136\n- Watchers: 24\n- Open issues: 16\n- Primary language: C++\n- Languages: C++ (85.7%), Python (7.3%), CMake (4.6%), Shell (1.4%), Dockerfile (0.8%), C (0.2%)\n- License: Other (NOASSERTION)\n- Topics: autonomous-flight, autonomous-navigation, autonomous-quadcoptor, autonomous-uav, ros, uav\n- Default branch: master\n- Created: 2020-11-17T16:52:31Z\n- Last push: 2026-04-18T16:07:08Z\n- Contributors: 20 (top: XuRobotics, fcladera, ljarin, orlando21lara, falconkumarlab, tyuezhan, versatran01, ankitVP77, gnardari, kartikmohta)\n...\nThis is the autonomous flight code stack used at KumarRobotics, providing a complete solution for GPS-denied quadcopter autonomy. It has been tested extensively in challenging urban and rural (under forest canopy) environments.\n...\nAn experimental ROS2 Jazzy Jalisco (Ubuntu 24.04) port of this stack lives on the [`ros2_dev`](https://github.com/KumarRobotics/kr_autonomous_flight/tree/ros2_dev) branch. It is built on top of [`feature/integrate_lidar_3d_planner_default`](https://github.com/KumarRobotics/kr_autonomous_flight/tree/feature/integrate_lidar_3d_planner_default), which adds two capabilities beyond `master`:\n...\n- a **3D optimization-based planner** (gcopter-family trajectory optimization integrated into the action planner), and\n- support for both **LIDAR + VIO** and **LIDAR-only** autonomous flight modalities (the stack can now fly without a visual-inertial frontend when lighting / texture conditions make VIO unreliable)."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/organization/7zyg9hf64sx",
+            "type": "company",
+            "version": 1,
+            "properties": {
+              "name": "Vijay Kumar Lab",
+              "foundedYear": null,
+              "description": null,
+              "workforce": {
+                "total": 1
+              },
+              "headquarters": {
+                "address": "220 S 33rd St, Philadelphia, Pennsylvania 19104, US",
+                "city": "Philadelphia",
+                "postalCode": null,
+                "country": "United States"
+              },
+              "financials": null,
+              "webTraffic": {
+                "visitsMonthly": 10675,
+                "countryRank": 148367,
+                "avgDurationSeconds": 214,
+                "history": [
+                  {
+                    "value": 6322,
+                    "dateFrom": "2026-02",
+                    "dateTo": "2026-02"
+                  },
+                  {
+                    "value": 4991,
+                    "dateFrom": "2026-03",
+                    "dateTo": "2026-03"
+                  },
+                  {
+                    "value": 4794,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 4794,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 4405,
+                    "dateFrom": "2026-05",
+                    "dateTo": "2026-05"
+                  },
+                  {
+                    "value": 10675,
+                    "dateFrom": "2026-06",
+                    "dateTo": "2026-06"
+                  }
+                ]
+              },
+              "research": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "title": "TJU-Aerial-Robotics/YOPO",
+        "url": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "publishedDate": "2023-12-14T00:00:00.000Z",
+        "highlights": [
+          "# TJU-Aerial-Robotics/YOPO\n...\nYou Only Plan Once: A Learning Based Quadrotor Planner\n...\nWe propose **a learning-based planner for autonomous navigation in obstacle-dense environments** which integrates (i) perception and mapping, (ii) front-end path searching, and (iii) back-end optimization of classical methods into a single network. \n\n**Learning-based Planner:** Considering the multi-modal nature of the navigation problem and to avoid local minima around initial values, our approach adopts a set of motion primitives as anchor to cover the searching space, and predicts the offsets and scores of primitives for further improvement (like the one-stage object detector YOLO). \n\n**Training Strategy:** Compared to giving expert demonstrations as labels in imitation learning or exploring by trial-and-error in reinforcement learning, we directly back-propagate the gradients of trajectory costs (e.g. from ESDF) to the weights of network, which is simple, straightforward, accurate, and sequence-independent (free of online simulator interaction or rendering).\n...\n- **[2026-08-1\n...\n]** We adopt [\n...\n](https://github.com/ZJU-FAST-Lab/GCOPTER) as YOPO'\n...\ntrajectory representation, along with several other improvements\n...\nPO-MINCO](https://github.com/TJU-Aerial-Robotics/YOPO/tree/YOPO\n...\n25-6-\n...\ncode is greatly simplified and refactored in Python/PyTorch\n...\nWe also replaced the simulator\n...\nour CUDA-accelerated randomized environment,\n...\nis faster, lightweight, and boundless\n...\nour paper,\n...\nto the [main](https://github.com/TJU-Aerial-Robotics/YOPO/tree/main) branch."
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/JacopoPan/aerial-autonomy-stack",
+        "title": "GitHub - JacopoPan/aerial-autonomy-stack: An open framework to simulate and deploy perception-based PX4/ArduPilot drone swarms with ROS2, YOLO, LiDAR, NVIDIA Jetson \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/JacopoPan/aerial-autonomy-stack",
+        "publishedDate": "2025-06-20T16:11:46.000Z",
+        "author": "JacopoPan",
+        "highlights": [
+          "GitHub - JacopoPan/aerial-autonomy-stack: An open framework to simulate and deploy perception-based PX4/ArduPilot drone swarms with ROS2, YOLO, LiDAR, NVIDIA Jetson \u00b7 GitHub\n...\nAerial autonomy stack (AAS) is a \"batteries included\", flight-proven, open software and the simplest/fastest way to:\n...\n1. Develop multi-drone autonomy\u2014with PX4, ArduPilot, and ROS2\n2. Simulate faster-than-real-time perception and control\u2014with YOLO and 3D LiDAR\n3. Deploy in real drones\u2014with JetPack, DeepStream, and NVIDIA Orin\n...\n- PX4 and ArduPilot multi-vehicle simulation (quadrotors, quadplane VTOLs, and tailsitters)\n- ROS2 action-based autopilot interface (via XRCE-DDS or MAVROS)\n- YOLO (with ONNX GPU Runtimes) and LiDAR Odometry (with KISS-ICP)\n- 3D worlds for perception-based simulation\n...\n- Steppable Gymnasium environment and faster-than-real-time, multi-instance simulation\n- Gazebo's wind effects and waves plugins\n...\n- Dockerized simulation based on Ubuntu with CUDA and cuDNN\n...\n- Dockerized deployment based on NVIDIA JetPack with DeepStream\n...\n- Dual network to separate\n...\nsensors (`SIM_SUBNET`) and inter-vehicle comms (`AIR_SUBNET`)\n...\n- Zenoh inter-vehicle ROS2 bridge\n...\n- PX4 Offboard interface (e.g. CTBR/`VehicleRatesSetpoint` for agile, GNSS-denied flight)\n...\n- ArduPilot Guided interface (i.e.`setpoint_velocity`,`setpoint_accel` references)\n...\n\u2502\u00a0\u00a0 \u2502\n...\n# Ardupilot/PX4 high-level actions (Takeoff, Orbit, Offboard,\n...\nAn open framework to simulate and deploy perception-based PX4/ArduPilot drone swarms with ROS2, YOLO, LiDAR, NVIDIA Jetson"
+        ],
+        "image": "https://repository-images.githubusercontent.com/1005678829/0fcb6f81-34b3-4e05-9acc-abbb61fb6418",
+        "favicon": "https://github.laiyagushi.com/fluidicon.png"
+      },
+      {
+        "id": "https://github.com/hku-mars/SUPER",
+        "title": "hku-mars/SUPER",
+        "url": "https://github.com/hku-mars/SUPER",
+        "publishedDate": "2024-12-19T09:07:25.000Z",
+        "highlights": [
+          "# Repository: hku-mars/SUPER\n...\n---\n\n \n SUPER: Safety-assured High-speed Navigation for MAVs \n Science Robotics' 25 \n \n Yunfan REN,\n Fangcheng Zhu,\n Guozheng Lu,\n Yixi Cai,\n Longji Yin,\n Fanze Kong,\n Jiarong Lin,\n Nan Chen, and\n Fu Zhang \n \n \n \n \n \n \n \n \n \n \n \n\n# Updates\n...\nSUPER has been successfully deployed in various applications, including large-scale autonomous exploration in an ongoing project by [@jackykongfz](https://github.com/jackykongfz) and [@ZbyLGsc](https://github.com/ZbyLGsc) from [STAR Lab](sysu-star.com), among others, as well as object tracking under both day and night conditions.\n...\nBuilding on SUPER, a similar planning system has been successfully validated in [Autonomous Navigation for Tail-Sitter UAVs](https://github.com/hku-mars/EFOPT) by [@genegzl](https://github.com/genegzl) et al.\n...\nSUPER serves as the flight platform and navigation system in the video demonstration of [FAST-LIVO2: Fast, Direct LiDAR-Inertial-Visual Odometry](https://github.com/hku-mars/FAST-LIVO2) by [@xuankuzcr](https://\n...\n.com/xuankuzcr) et al.\n\n \n\n# 2\n...\nSUPER is built upon several outstanding open-source projects. We extend our\n...\nto the developers of the following repositories:\n...\n- **[ROG-Map](https://github.com/hku-mars/ROG-Map)** - A high-performance mapping framework that influenced our approach to map representation and optimization.\n...\n- **[Mockamap](https://github.com/HKUST-Aerial-Robotics/mockamap)** - A simple ROS-based map generator that assisted in our development and testing.\n...\n- [**\n...\n**](https://github\n...\ncompact yet powerful hardware platform"
+        ]
+      },
+      {
+        "id": "https://github.com/larasupernovae/nmpc_flash_multi_obstacle",
+        "title": "larasupernovae/nmpc_flash_multi_obstacle",
+        "url": "https://github.com/larasupernovae/nmpc_flash_multi_obstacle",
+        "highlights": [
+          "Repository for Enhanced Path Planning and Nonlinear Model Predictive Control (NMPC) for DJI UAVs. Features robust obstacle avoidance, lidar distance from the wall, complex trajectory tracking (B-spline) and ROS integration on DJI Matrice 100. Includes simulation code, real-world testing results, and documentation.\n...\nWelcome to **NMPC_Flash_Multi_Obstacle**: a robust framework for Nonlinear Model Predictive Control (NMPC) tailored for autonomous navigation of DJI Matrice 100 and other UAVs equipped with similar black-box systems. Central to this framework is its real-time optimization capability, enabled by the CasADi library and ROS topics and nodes, which efficiently solves the NMPC problem under tight computational constraints. This allows for adaptive and agile navigation even in dynamic environments. Our approach supports a wide range of trajectory types and obstacle configurations, ensuring flexibility and robustness in various testing scenarios.\n...\nI provide for future usage.\n\n - `MPC_lidar_control_WALL_cvxgen_granso.cpp` : Implements the core NMPC algorithm, integrating LIDAR data for obstacle detection and avoidance. Its my old code using a linearized MPC with cvxgen to keep a distance to the wall this paper will never be published so I was like add it here why not? \n \n - `lidar_python_code_skelet.py`: A Python script skeleton that processes LIDAR data to identify obstacles and calculate safe paths. This is for whoever want to continue my mission of dynamical obstacles, helper code.\n \n - `py_nmpc_dji100_DYNAMIC_OBSTACLE.py`: A Python script for dynamic obstacle"
+        ]
+      },
+      {
+        "id": "https://github.com/SJTU-ViSYS-team/avoid-mpc",
+        "title": "SJTU-ViSYS-team/Avoid-MPC",
+        "url": "https://github.com/SJTU-ViSYS-team/avoid-mpc",
+        "highlights": [
+          "# SJTU-ViSYS-team/\n...\nMapless Collision-Free Flight via MPC using Dual KD-Trees in Cluttered Environments(IROS 2025)\n...\nCollision-free navigation in cluttered environments is essential for autonomous quadrotors. Traditional approaches typically rely on a cascade pipeline involving detailed 3D mapping, trajectory generation, and tracking. However, such methods can suffer from accumulated errors and computational latency, which limits agility and safety.\n...\nIn this work, we propose a novel **mapless** method for collision-free flight without constructing explicit 3D maps or generating collision-free trajectories. Instead, we use **Model Predictive Control (MPC)** to directly generate safe control actions from sparse waypoints and point cloud data obtained from a depth camera.\n...\nOur approach introduces a **dual KD-tree** mechanism:\n...\n- The **Obstacle KD-Tree** identifies nearby obstacles for real-time avoidance.\n- The **Edge KD-Tree** provides a strong initial guess to the MPC solver, helping it escape local minima.\n...\n- Outperforms traditional mapping-based approaches;\n- Surpasses imitation learning-based methods;\n- Achieves speeds of up to **12 m/s in simulation** and **6 m/s in real-world** scenarios.\n...\nThis framework offers a robust and streamlined alternative to complex map-based planning systems.\n...\n- [ ] Release a simulation version based on [Flightmare](https://github.com/uzh-rpg/flightmare) to support richer visual-physical interaction scenarios\n- [ ] Develop a ROS 2 compatible version to enable broader integration with modern robotic platforms"
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/gfmgsk2g8vg2khrsbzhcbqr6",
+        "title": "A review of autonomous obstacle avoidance and path planning technology for micro-UAVs in complex environments",
+        "url": "https://doi.org/10.1109/icsi70302.2026.11544395",
+        "publishedDate": "2026-04-24T00:00:00.000Z",
+        "author": "Xunyao Wang",
+        "highlights": [
+          "# A review of autonomous\n...\navoidance and path planning technology for micro-UAVs in complex environments\n...\nMicro UAVs are widely used in inspection, rescue, logistics and environmental monitoring, but autonomous flight in urban, woodland and unknown environments is still constrained by limited perception, dynamic obstacles, onboard computation and safety requirements. This paper reviews micro-UAV obstacle avoidance and path planning from the \u201cperception-modeling-planning-control\u201d chain. It summarizes airborne sensing, environment modeling and control information flow, compares traditional search/sampling methods, heuristic/swarm intelligence optimization methods, and deep learning/reinforcement learning methods in terms of real-time performance, optimality, environmental dependence, computational cost and engineering deployability, and discusses trends including lightweight deployment, multi-sensor fusion, hybrid planning, sim-to-real transfer, multi-UAV collaboration and safety reinforcement learning. The field is shifting from single-algorithm competition to hybrid frameworks and system-level optimization for real scenarios.\n...\ndrones806\n...\n- Yuexia Tang, Muhammad Aizzat Zakaria, Muhammad Younas. Path Planning Trends for Autonomous Mobile Robot Navigation: A Review. Sensors. 2025;25(4):1206. doi:10.3390/s25041206.\n...\n- Pengxiang Sun, Wei Sun, Wei Ding, Yadan Li, Jingang Zhao. Optimized real-time path planning for micro UAVs in dynamic environments aided by reciprocal velocity obstacle algorithm. PLoS ONE. 2025;20(11):e0336098. doi:10.1371/journal.pone.0336098."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/gfmgsk2g8vg2khrsbzhcbqr6",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "A review of autonomous obstacle avoidance and path planning technology for micro-UAVs in complex environments",
+              "year": 2026,
+              "date": "2026-04-24",
+              "type": null,
+              "language": null,
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Xunyao Wang",
+                  "id": null
+                }
+              ],
+              "referenceCount": 23,
+              "abstract": "Micro UAVs are widely used in inspection, rescue, logistics and environmental monitoring, but autonomous flight in urban, woodland and unknown environments is still constrained by limited perception, dynamic obstacles, onboard computation and safety requirements. This paper reviews micro-UAV obstacle avoidance and path planning from the \u201cperception-modeling-planning-control\u201d chain. It summarizes airborne sensing, environment modeling and control information flow, compares traditional search/sampling methods, heuristic/swarm intelligence optimization methods, and deep learning/reinforcement learning methods in terms of real-time performance, optimality, environmental dependence, computational cost and engineering deployability, and discusses trends including lightweight deployment, multi-sensor fusion, hybrid planning, sim-to-real transfer, multi-UAV collaboration and safety reinforcement learning. The field is shifting from single-algorithm competition to hybrid frameworks and system-level optimization for real scenarios.",
+              "doi": "10.1109/icsi70302.2026.11544395"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/Svvipee/uav-lidar-autonomy",
+        "title": "Svvipee/uav-lidar-autonomy",
+        "url": "https://github.com/Svvipee/uav-lidar-autonomy",
+        "highlights": [
+          "Autonomous LiDAR-guided quadrotor navigation in a simulated warehouse \u2014 ROS Noetic, Gazebo 11, VLP-16, reactive avoidance + A* planning.\n...\n> **Autonomous quadrotor navigation through a cluttered indoor environment using real-time LiDAR perception and reactive obstacle avoidance \u2014 no GPS, no prebuilt map, no hardcoded path.**\n...\nThis project implements a full sensor-to-motion autonomy pipeline for a simulated quadrotor UAV equipped with a **Velodyne VLP-16 LiDAR**. The drone navigates a 16 m \u00d7 16 m indoor warehouse \u2014 filled with storage racks, boxes, partition walls, and pillars \u2014 flying from an arbitrary start pose to a goal pose entirely on the basis of what its LiDAR sees in real time.\n...\nThere is no GPS, no prebuilt map loaded at startup, and no hand-authored waypoint sequence. The system builds a 2D occupancy map incrementally as the drone moves, uses a goal-directed potential-field controller to maintain forward progress, and steers around obstacles by reasoning about which direction offers the most clearance. The entire perception, mapping, and navigation stack is implemented from scratch in Python on top of **ROS Noetic + Gazebo 11 Classic**.\n...\n- **Dual-layer navigation**: 50 Hz reactive potential-field controller paired with a 0.2 Hz background A\\* planner on the occupancy grid\n...\n- **Front-steering obstacle avoidance**: when a wall appears ahead, the drone steers\n...\n> Autonomous LiDAR-guided quadrotor navigation in a simulated cluttered warehouse \u2014 ROS Noetic, Gazebo 11, VLP-16, reactive avoidance + A\\* planning, full Python implementation."
+        ]
+      },
+      {
+        "id": "https://github.com/theunknowninfinite/Real-Time-UAV-Obstacle-Avoidance-Using-Nonlinear-Programming",
+        "title": "theunknowninfinite/Real-Time-UAV-Obstacle-Avoidance-Using-Nonlinear-Programming",
+        "url": "https://github.com/theunknowninfinite/Real-Time-UAV-Obstacle-Avoidance-Using-Nonlinear-Programming",
+        "highlights": [
+          "Real-time obstacle avoidance utilizing the ModalAI Sentinel Drone with the PX4 flight stack and an Intel Realsense D435i .\n...\n# Real-Time UAV Obstacle Avoidance Using Nonlinear\n...\nThis project showcases real-time obstacle avoidance in UAVs by utilizing the ModalAI Voxl 2 Sentinel Drone with the PX4 flight stack and an Intel Realsense D435i camera to precisely detect obstacles in its environment. The detected object positions are incorporated as constraints in a non-linear programming-based path planning algorithm, allowing the UAV to autonomously generate safe flight paths with a defined distance threshold around these obstacles. To ensure continuous paths, reference velocities and accelerations are calculated at each waypoint. By accounting for room dimensions and drone dynamics as constraints in the optimizer, these paths ensure efficient and secure navigation, enabling the drone to reach its designated destination accurately and reliably.\n...\nThis code is designed to run on a ModalAI Voxl2-based drone, specifically tested on a Sentinel drone for this project. To ensure optimal performance, connect an Intel Realsense D435i camera to the drone. While a USB 2.0 connection was utilized in this project, it is highly recommended to use a USB 3.0 connection for the camera if available.\n...\nThe `autonomous_obstacle_avoidance` maintains a 1-meter distance threshold from detected obstacles. In the event that no obstacle is detected, the optimizer generates a straight line trajectory to the goal point. \nTo run the obstacle avoidance nodes, execute the following commands:"
+        ]
+      },
+      {
+        "id": "https://github.com/tudelft/AvoidBench",
+        "title": "tudelft/AvoidBench",
+        "url": "https://github.com/tudelft/AvoidBench",
+        "highlights": [
+          "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotor.\n...\nThis work is based on [Flightmare](https://github.com/uzh-rpg/flightmare). In this project, we propose AvoidBench as a benchmarking suite for evaluating the performance of vision-based obstacle avoidance algorithms. We choose Flightmare as the basic backbone of AvoidBench, because it is lighter and can achieve higher simulation speed than Airsim. Based on Flightmare, we have for now built two simulation scenes for benchmarking: a forest environment and an indoor environment. It is easy to change the distribution of obstacles and complexity of map so that researchers can reveal the potential of drones using their algorithms. And we propose a complete set of metrics which contain the flight performance and environment complexity to evaluate the obstacle avoidance algorithms.\n\n \n \n \n\n \n \n \n\n# 2. Installation\n...\n.yaml](https://github.com/tudelft/AvoidBench/tree/main/src/avoidbench/avoid_manage/params/task_outdoor.yaml) as\n...\nWe tested several mainstream, state-of-the-art obstacle avoidance algorithms, including: [Agile-Autonomy](https://github.com/uzh-rpg/agile_autonomy)(learning-based), [Ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner)(optimization-based), and [MBPlanner](https://github.com/ntnu-arl/mbplanner_ros)(motion-primitive-based, the original version is designed for explorationm, we changed the exploration gain to the distance of current point to the goal point so that the drone can always fly to a fixed goal). Here is the testing video:\n \n \n \n\n# 7. Citation"
+        ]
+      },
+      {
+        "id": "https://github.com/caochao39/aerial_navigation_development_environment/blob/0dcc4b1b0d11b6d9291ac7a6befa8e1244e37a8f/README.md",
+        "title": "README.md at 0dcc4b1b0d11b6d9291ac7a6befa8e1244e37a8f \u00b7 caochao39/aerial_navigation_development_environment",
+        "url": "https://github.com/caochao39/aerial_navigation_development_environment/blob/0dcc4b1b0d11b6d9291ac7a6befa8e1244e37a8f/README.md",
+        "highlights": [
+          "- Repository: caochao39/aerial_navigation_development_environment | Leveraging system development and robot deployment for aerial autonomous navigation. | 408 stars | C++\n- Branch: 0dcc4b1b0d11b6d9291ac7a6befa8e1244e37a8f\n...\n```md\nThe repository is meant for leveraging system development and robot deployment for autonomous aerial navigation. Integrating Gazebo and AirSim simulators and containing autonomous navigation modules such as collision avoidance, waypoint following, and manual flight, users can develop autonomous navigation systems and later on port those systems onto real flying robots for deployment.\n...\nThe repository has been tested on our [1.8kg drone](https://youtu.be/k6jKkpmj4-k) and [10kg drone](https://youtu.be/VYtQt2NcY0Q), flying at high speeds in cluttered environments completely unknown *a priori*. Unlike many of the existing aerial systems relying on visual fiducials for detecting narrow passages and/or external motion tracking systems for acquiring state estimation, our systems use onboard range sensor data alone to compute free space and guide the vehicle through the free space safely, with all processing onboard. This repository is meant to be used for developing aerial navigation systems for real-world applications, e.g. survey, patrol, scout, and delivery, and supports our internal development of [aerial exploration](https://youtu.be/ZYNUSVqeeac).\n...\nOur 1.8kg drone is equipped with a single Raspberry PI 4 computer with a 1.8GHz ARM processor. The repository consumes only ~20% of a single core on the computer, with a planning time <0.1ms. The"
+        ]
+      },
+      {
+        "id": "https://github.com/topics/autonomous-drones?o=desc&s=stars",
+        "title": "autonomous-drones",
+        "url": "https://github.com/topics/autonomous-drones?o=desc&s=stars",
+        "highlights": [
+          "akouris / awesome-dronecraft\n...\n### dronefreak / dji-tello-collision-avoidance-pydnet\n...\nReal-time monocular depth estimation for DJI Tello drone collision avoidance. Modern TF2.x implementation with webcam support, comprehensive tests, and autonomous navigation. PyDNet-based with MiDaS support.\n...\n### Ajinkya-001 / Autonomous-UAV-Navigation-System\n...\nAutonomous UAV navigation system featuring real-time 2.5D occupancy-grid mapping, A* global path planning, and depth + LiDAR sensor fusion for dynamic obstacle avoidance in complex urban environments. Fully integrated with ROS 2, PX4 Offboard control, and Gazebo simulation for high-fidelity testing and deployment.\n...\n### hayatPMT / Autonomous-UAV-Navigation-System\n...\n\ud83d\udef8 Navigate urban environments with this autonomous UAV system using real-time occupancy grid mapping and dynamic obstacle avoidance for safe and efficient flights.\n...\nThis repository contains simulations of drones movement according to Autonomous Drone Model.\n...\n### amoghj98 / neuroNav\n...\nThis repository contains code associated with Real-Time Neuromorphic Navigation: Integrating Event-Based Vision and Physics-Driven Planning on a Parrot Bebop2 Quadrotor (ICRA@40)\n...\n### tommasocalzolari / autonomous-drone-rrt-mpc\n...\nAutonomous quadrotor navigation in PyBullet using RRT* global planning and MPC trajectory tracking.\n...\n### Manas-arumalla / swarm-autonomy\n...\nDecentralized multi-drone autonomy for GPS-denied urban search & pursuit \u2014 onboard VIO, CPU/GPU mapping, decentralized planning & cooperative interception on PX4 + Gazebo + ROS 2."
+        ],
+        "image": "https://github.githubassets.com/assets/github-octocat-13c86b8b336d.png",
+        "favicon": "https://github.com/fluidicon.png"
+      }
+    ],
+    "searchTime": 1011.4,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

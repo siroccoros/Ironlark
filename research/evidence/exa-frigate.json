@@ -1,0 +1,152 @@
+{
+  "query": {
+    "query": "Frigate open source NVR local object detection not generic threat detection official documentation",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "ab4dab8a9355cf5124752838435889e8",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/dev/docs/docs/configuration/object_detectors.md",
+        "title": "docs/docs/configuration/object_detectors.md",
+        "url": "https://github.com/blakeblackshear/frigate/blob/dev/docs/docs/configuration/object_detectors.md",
+        "highlights": [
+          "Object detection is what allows Frigate to identify _what_ is in your camera's view (people, cars, animals, and more) rather than just reacting to pixel changes. When Frigate's motion detection finds activity in a frame, that region is sent to an **object detector**, which returns the objects it recognizes along with their location and a confidence score. These detections are what drive tracked objects, alerts, detections, and notifications.\n...\nObject detection is computationally intensive, so Frigate is designed to run it on a dedicated AI accelerator or GPU rather than the CPU. A **detector** is the specific hardware-and-model backend Frigate uses to run inference. Choosing a detector that matches your hardware is one of the most important steps in getting good performance, and the right choice depends on what device Frigate is running on.\n...\nFrigate provides a number of builtin detector types. By default, Frigate will use a single CPU detector. Other detectors may require additional configuration as described below. When using multiple detectors they will run in dedicated processes, but pull from a common queue of detection requests from across all cameras.\n...\nONNX is an open format for building machine learning models, Frigate supports running ONNX models on CPU, OpenVINO, ROCm, and TensorRT. On startup Frigate will automatically try to use a GPU if one is available."
+        ]
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate",
+        "title": "Frigate NVR\u2122 - Realtime Object Detection for IP Cameras",
+        "url": "https://github.com/blakeblackshear/frigate",
+        "highlights": [
+          "NVR with realtime local object detection for IP cameras\n...\n## README\n\n \n \n \n\n# Frigate NVR\u2122 - Realtime Object Detection for IP Cameras\n...\nA complete and local NVR designed for [Home Assistant](https://www.home-assistant.io) with AI object detection. Uses OpenCV and Tensorflow to perform realtime object detection locally for IP cameras.\n...\nUse of a GPU or AI accelerator is highly recommended. AI accelerators will outperform even the best CPUs with very little overhead. See Frigate's supported [object detectors](https://docs.frigate.video/configuration/object_detectors/).\n...\n- Tight integration with Home Assistant via a [custom component](\n...\n://github.com/blakeblackshear/frigate-hass-integration)\n...\n- Designed to minimize resource use and maximize performance by only\n...\nand where it is\n...\n- Leverages multiprocessing heavily with an emphasis on realtime over processing every frame\n...\n- Uses a very low overhead motion detection to\n...\nwhere to run object\n...\n- Object detection with TensorFlow runs in separate processes for maximum FPS\n...\n- Communicates\n...\n24\n...\nView the documentation at https://docs.frigate.video"
+        ]
+      },
+      {
+        "id": "https://docs.frigate.video/configuration/object_detectors/",
+        "title": "Object Detectors",
+        "url": "https://docs.frigate.video/configuration/object_detectors/",
+        "highlights": [
+          "Object Detectors |\n...\nFrigate supports multiple different detectors that work on different types of hardware:\n...\n# Officially Supported Detectors\n...\nFrigate provides a number of builtin detector types. By default, Frigate will use a single CPU detector. Other detectors may require additional configuration as described below. When using multiple detectors they will run in dedicated processes, but pull from a common queue of detection requests from across all cameras.\n...\non AMD and Intel\n...\n## ONNX\u200b\n...\nONNX is an open format for building machine learning models, Frigate supports running ONNX models on CPU, OpenVINO, ROCm, and TensorRT. On startup Frigate will automatically try to use a GPU if one is available.\n...\nDeGirum is a detector that can use any type of hardware listed on their website. DeGirum can be used with local hardware through a DeGirum AI Server, or through the use of `@local`. You can also connect directly to DeGirum's AI Hub to run inferences. Please Note: This detector cannot be used for commercial purposes.\n...\n#### Local Inference\u200b\n...\ndirectly. The benefit\n...\nthat occur when\n...\nis different for every\n...\ncombination, so\n...\n's worth. A general guideline to achieve this"
+        ],
+        "image": "https://docs.frigate.video/img/branding/logo.svg"
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/047ae191/docs/docs/configuration/object_detectors.md",
+        "title": "docs/docs/configuration/object_detectors.md",
+        "url": "https://github.com/blakeblackshear/frigate/blob/047ae191/docs/docs/configuration/object_detectors.md",
+        "highlights": [
+          "that work on\n...\nof hardware:\n...\n# Officially Supported Detectors\n...\nFrigate provides the following builtin detector types: `cpu`, `edgetpu`, `hailo8l`, `memryx`, `onnx`, `openvino`, `rknn`, and `tensorrt`. By default, Frigate will use a single CPU detector. Other detectors may require additional configuration as described below. When using multiple detectors they will run in dedicated processes, but pull from a common queue of detection requests from across all cameras.\n...\ncontainer, so\n...\nis recommended to use the\n...\ndocker image with `-\n...\n## ONNX\n...\nONNX is an open format for building machine learning models, Frigate supports running ONNX models on CPU, OpenVINO, ROCm, and TensorRT. On startup Frigate will automatically try to use a GPU if one is available.\n...\nDeGirum is a detector that can use any type of hardware listed on [their website](https://hub.degirum.com). DeGirum can be used with local hardware through a DeGirum AI Server, or through the use of `@local`. You can also connect directly to DeGirum's AI Hub to run inferences. **Please Note:** This detector _cannot_ be used for commercial purposes.\n...\n#### Local Inference\n...\neliminate any bottlenecks\n...\nis different for every\n...\nto achieve this"
+        ]
+      },
+      {
+        "id": "https://frigate.video/",
+        "title": "Frigate NVR",
+        "url": "https://frigate.video/",
+        "highlights": [
+          "Frigate is an open source NVR built around real-time AI object detection. All processing is performed locally on your own hardware, and your camera feeds never leave your home.\n...\n### Reduce false positives with local object detection\n...\nTraditional NVRs can require hours of fine tuning to reduce false positive rates because they rely on simple motion detection. By offloading object detection to a supported AI accelerator, even modest hardware can run advanced analysis to determine if the motion is actually a person, car, or other object of interest. With Frigate's local processing, there is no need to pay for your personal camera footage to be sent to the cloud for analysis.\n...\nLet Frigate's AI scrub your video feeds for you. With a supported AI accelerator, Frigate can run 100+ object detections per second so it doesn't miss a single frame.\n...\nGive your home eyes by integrating object detection into Home Assistant, OpenHab, NodeRed, or anything with MQTT support. Frigate integrates directly into Home Assistant's media browser, provides low latency camera entities, and exposes real-time sensors and switches to power automations and notifications to your heart's content.\n...\nFrigate's high level of customizability, fast object detection and tight integration with Home Assistant creates the perfect open source, locally controlled, security camera system."
+        ],
+        "image": "https://frigate.video/images/ui.jpg",
+        "favicon": "https://frigate.video/images/favicon.png"
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate?tab=readme-ov-file",
+        "title": "blakeblackshear/frigate",
+        "url": "https://github.com/blakeblackshear/frigate?tab=readme-ov-file",
+        "highlights": [
+          "NVR with realtime local object detection for IP cameras\n...\n## README\n\n \n \n \n\n# Frigate NVR\u2122 - Realtime Object Detection for IP Cameras\n...\nA complete and local NVR designed for [Home Assistant](https://www.home-assistant.io) with AI object detection. Uses OpenCV and Tensorflow to perform realtime object detection locally for IP cameras.\n...\nUse of a GPU or AI accelerator is highly recommended. AI accelerators will outperform even the best CPUs with very little overhead. See Frigate's supported [object detectors](https://docs.frigate.video/configuration/object_detectors/).\n...\n- Tight integration with Home Assistant via a [custom component](\n...\n://github.com/blakeblackshear/frigate-hass-integration)\n...\n- Designed to minimize resource use and maximize performance by only\n...\nand where it is\n...\n- Leverages multiprocessing heavily with an emphasis on realtime over processing every frame\n...\n- Uses a very low overhead motion detection to\n...\nwhere to run object\n...\n- Object detection with TensorFlow runs in separate processes for maximum FPS\n...\n- Communicates\n...\n24\n...\nView the documentation at https://docs.frigate.video"
+        ]
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/39a3667f/docs/docs/configuration/reference.md",
+        "title": "docs/docs/configuration/reference.md at 39a3667f \u00b7 blakeblackshear/frigate",
+        "url": "https://github.com/blakeblackshear/frigate/blob/39a3667f/docs/docs/configuration/reference.md",
+        "highlights": [
+          "# Required:\n...\nuse plus://<model\n...\npath: /ed\n...\n# Required: path\n...\nheight: 320\n...\nbgr, or yuv\n...\n(default: shown below)\n...\nformat\n...\n: shown below\n...\n(default: shown below)\n...\nssd\n  # Required: Label name modifications. These are merged into the standard\n...\nmap.\n  label\n...\n:\n    2: vehicle\n  #\n...\n: depends on\n...\nperson:\n      - amazon\n      - face\n    car:\n      - amazon\n      - fedex\n      - license_plate\n      - ups\n...\n(default: same\n...\n# When\n...\nto 1\n...\n# If set to 10,\n...\nobject still exists on every\n...\n#\n...\nconsidered stationary (default: 10x the frame rate or 10s)\n    threshold\n...\n50\n    # Optional\n...\na maximum number of frames for tracking a stationary\n...\n(default: not set, track forever)\n    # This can help\n...\nfalse positives for objects that should only be stationary for a limited amount of time.\n    # It can also be used to disable stationary object tracking. For example, you may\n...\nto set a value for person, but leave\n    # car at the default.\n    # WARNING:\n...\nthese values overrides default behavior and disables stationary object\n...\n.\n    #\n...\ndetect annotations by\n...\n).\n  #\n...\n# Use"
+        ]
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/dev/docs/docs/configuration/object_filters.md",
+        "title": "docs/docs/configuration/object_filters.md",
+        "url": "https://github.com/blakeblackshear/frigate/blob/dev/docs/docs/configuration/object_filters.md",
+        "highlights": [
+          "There are several types of object filters that can be used to reduce [false positive](/frigate/glossary#false-positive) rates.\n...\nmin_score\n...\ncan confuse the object tracker and may lead to\n...\nresources. If\n...\nthat are further\n...\nbe thrown out which can\n...\n`threshold` is used to determine that the object is a true positive. Once an object is detected with a score >= `threshold` object is considered a true positive. If `threshold` is too low then some higher scoring false positives may create a tracked object. If `threshold` is too high then true positive tracked objects may be missed due to the object never scoring high enough.\n...\ncan also be\n...\nin pixels or\n...\nexample,\n...\n[Required zones](/configuration/zones.md#restricting-alerts-and-detections-to-specific-zones) can be a great tool to reduce false positives that may be detected in the sky or other areas that are not of interest. The required zones will only create tracked objects for objects that enter the zone.\n...\nlast resort but can\n...\nin the relatively\n...\ndue to their\n...\nshape. Object\n...\nconfigured in."
+        ]
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/39a3667f/docs/docs/configuration/cameras.md",
+        "title": "docs/docs/configuration/cameras.md at 39a3667f \u00b7 blakeblackshear/frigate",
+        "url": "https://github.com/blakeblackshear/frigate/blob/39a3667f/docs/docs/configuration/cameras.md",
+        "highlights": [
+          "- Repository: blakeblackshear/frigate | NVR with realtime local object detection for IP cameras | 34K stars | TypeScript\n- Branch: 39a3667f\n...\nof each input can be mixed and matched based on your needs. This allows you to use a lower resolution stream for object detection, but create recordings from a higher resolution stream, or vice\n...\n| Role     | Description                                                                         |\n| -------- | ----------------------------------------------------------------------------------- |\n| `detect` | Main feed for object detection. [docs](object_detectors.md)                         |\n| `record` | Saves segments of the video feed based on configuration settings. [docs](record.md) |\n| `audio`  | Feed for audio based detection. [docs](audio_detectors.md)                          |\n...\nIf you only define one stream in your `inputs` and do not assign a `detect` role to it, Frigate will automatically assign it the `detect` role. Frigate will always decode a stream to support motion detection, Birdseye, the API image endpoints, and other features, even if you have disabled object detection with `enabled: False` in your config's `detect` section.\n...\nIf you plan to use Frigate for recording only, it is still recommended to define a `detect` role for a low resolution stream to minimize resource usage from\n...\nrequired stream decoding."
+        ]
+      },
+      {
+        "id": "https://deepwiki.com/blakeblackshear/frigate/4.4-object-detection-system",
+        "title": "Object Detection System | blakeblackshear/frigate | DeepWiki",
+        "url": "https://deepwiki.com/blakeblackshear/frigate/4.4-object-detection-system",
+        "publishedDate": "2026-05-27T00:00:00.000Z",
+        "highlights": [
+          "The Object Detection System manages the execution of machine learning inference to identify objects in camera frames. It implements a multi-process architecture that uses hardware accelerators efficiently and coordinates detection requests from multiple cameras through a shared detection queue.\n...\nlayer (`Remote\n...\n`RemoteObjectDetector`\n...\nFrigate supports multiple hardware accelerators through a plugin architecture. Each detector implements the `DetectionApi` interface and provides hardware-specific inference execution.\n...\nFrigate supports a wide variety of hardware accelerators, ranging from dedicated NPUs like the Coral EdgeTPU to GPU-based acceleration via OpenVINO or ONNX docs/docs/configuration/object_detectors.md 11-63\n...\n| Detector Type | Hardware | Key Features |\n| --- | --- | --- |\n| `edgetpu` | Google Coral TPU | USB/PCIe/M.2 support, TFLite models docs/docs/configuration/object_detectors.md 77-81 |\n| `openvino` | Intel CPU/GPU/NPU | Optimized for Intel hardware, Arc GPUs docs/docs/configuration/object_detectors.md 35-37 |\n| `onnx` | Nvidia/AMD/Intel | Multi-vendor support, CUDA/ROCm/OpenVINO backends frigate/detectors/plugins/onnx.py 22-43 |\n| `rknn` | Rockchip NPU | Native support for RK3566/3568/3588 frigate/const.py 100 |\n| `hailo` | Hailo-8/8L | High throughput M.2 accelerators docs/docs/configuration/object_detectors.md 20 |"
+        ],
+        "image": "https://deepwiki.com/blakeblackshear/frigate/og-image.png?page=4.4"
+      },
+      {
+        "id": "https://deepwiki.com/blakeblackshear/frigate/8.1-detector-plugins-and-hardware-support",
+        "title": "Detector Plugins and Hardware Support | blakeblackshear/frigate | DeepWiki",
+        "url": "https://deepwiki.com/blakeblackshear/frigate/8.1-detector-plugins-and-hardware-support",
+        "publishedDate": "2026-08-13T00:00:00.000Z",
+        "highlights": [
+          "This document describes Frigate's detector plugin architecture and hardware acceleration support for object detection. It covers the plugin system design, supported hardware accelerators, model configuration, and the detector process architecture.\n...\nFrigate uses a plugin-based architecture to support multiple hardware accelerators for object detection. All detector implementations inherit from the `DetectionApi` abstract base class and are automatically discovered at runtime.\n...\nThe OpenVINO detector supports Intel CPUs, iGPUs, Arc GPUs, and NPUs frigate/detectors/plugins/openvino.py 23-34 It utilizes the `OpenVINOModelRunner` to compile and run models on specific hardware devices frigate/detectors/plugins/openvino.py 61-65\n...\n- Supported Architectures: SSD, YOLO-NAS, YOLOX, YOLO-generic, RF-\n...\nR, D-FINE frigate/detectors/\n...\n/openvino.py 39-46\n- Validation: It performs strict validation of model inputs and outputs based on\n...\n`model_type` frigate/detectors/plugins/openvino.py\n...\n1-121\n...\nThe ONNX detector leverages ONNX Runtime and its execution providers (CUDA, ROCm, OpenVINO, TensorRT) frigate/detectors/plugins/onnx.py 27-39\n...\nRequires privileged mode\n...\naccess the NPU via `/proc/device-tree/compatible` and NPU devices fr\n...\n/detectors/plugins\n...\nHailoRT driver\n...\n(OpenVINO\n...\ncan run on CPUs, GPUs, and\n...\n/docs/\n...\n5 docs/docs"
+        ],
+        "image": "https://deepwiki.com/blakeblackshear/frigate/og-image.png?page=8.1"
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/f3a352ef/docs/docs/configuration/face_recognition.md",
+        "title": "docs/docs/configuration/face_recognition.md",
+        "url": "https://github.com/blakeblackshear/frigate/blob/f3a352ef/docs/docs/configuration/face_recognition.md",
+        "highlights": [
+          "Face recognition identifies known individuals by matching detected faces with previously learned facial data. When a known `person` is recognized, their name will be added as a `sub_label`. This information is included in\n...\nUI, filters, as well\n...\nWhen running a Frigate+ model (or any custom model that natively detects faces) should ensure that `face` is added to the [list of objects to track](../plus/index.md#available-label-types) either globally or for a specific camera. This will allow face detection to run at the same time as object detection and be more efficient.\n...\n- **small**: Frigate will run a FaceNet embedding model to recognize faces, which runs locally on the CPU. This model is optimized for efficiency and is not as accurate.\n- **large**: Frigate will run a large ArcFace embedding model that is optimized for accuracy. It is only recommended to be run when an integrated or dedicated GPU / NPU is available.\n...\nAll of these features run locally on your system.\n...\n- Set **Enable face recognition** to on\n\n \n \n\n```yaml\nface_recognition:\n  enabled: true\n...\nLike the other real-time processors in Frigate, face recognition runs on the camera stream defined by the `detect` role in your config. To ensure optimal performance, select a suitable resolution for this stream in your camera's firmware that fits your specific scene and requirements."
+        ]
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/39a3667f/frigate/config/config.py",
+        "title": "frigate/config/config.py at 39a3667f \u00b7 blakeblackshear/frigate",
+        "url": "https://github.com/blakeblackshear/frigate/blob/39a3667f/frigate/config/config.py",
+        "highlights": [
+          "- Repository: blakeblackshear/frigate | NVR with realtime local object detection for IP cameras | 34K stars | TypeScript\n- Branch: 39a3667f\n...\ndetection for all cameras\n...\noverridden per-camera.\",\n...\n)\n    birdseye: BirdseyeConfig = Field(\n        default_factory=BirdseyeConfig,\n        title=\"Birdseye\",\n        description=\"\n...\nthe Birdseye composite view that composes multiple camera feeds into a single layout.\",\n    )\n...\ndetect: DetectConfig = Field(\n        default_factory=DetectConfig,\n        title=\"Object Detection\",\n        description=\"Settings for the detection/detect role used to run object detection and initialize trackers.\",\n    )\n    ffmpeg: FfmpegConfig = Field(\n        default_factory=FfmpegConfig,\n        title=\"FFmpeg\",\n        description=\"FFmpeg settings including binary path, args, hwaccel options, and per-role output args.\",\n    )\n    live: CameraLive\n...\n= Field(\n...\nLive playback\",\n...\ncontrol the jsmpeg live stream resolution and quality. This does not affect restreamed cameras that use go2rtc for live view.\",\n    )\n...\nmotion: Optional[Motion\n...\n] = Field(\n...\n=None,\n...\nMotion detection\",\n...\nmotion detection settings\n...\ncameras unless overridden per\n...\ncamera.\",\n    )\n...\n)\n    record\n...\n= Field(\n        default_\n...\n=RecordConfig,\n...\n=\"Recording\","
+        ]
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/dev/docs/docs/plus/first_model.md",
+        "title": "docs/docs/plus/first_model.md",
+        "url": "https://github.com/blakeblackshear/frigate/blob/dev/docs/docs/plus/first_model.md",
+        "highlights": [
+          "Before requesting your first model, you will need to\n...\n0 images to Frigate\n...\nyou upload,\n...\nthe better your\n...\nwill be. Most users start to\n...\nonce they have at least\n...\n100 verified images per camera. Keep in mind that varying conditions should be included. You will want images from cloudy days, sunny days, dawn, dusk, and night. Refer to the\n...\nintegration docs](../integrations/\n...\n-an-api-key) for instructions on\n...\nOnce you have an initial set of verified images, you can request a model on the Models page. For guidance on choosing a model type, refer to [this part of the documentation](./index.md#available-model-types). If you are unsure which type to request, you can test the base model for each version from the \"Base Models\" tab. Each model request requires 1 of the 12 trainings that you receive with your annual subscription. This model will support all [label types available](./index.md#available-label-types) even if you do not submit any examples for those labels. Model creation can take up to 36 hours.\n...\ncan be used\n...\nmodel path. No other information\n...\nmin_score`\n...\nexample of how these\n...\nbut you should expect\n...\nthreshold` and\n...\nmin_score` are\n...\nobject filters](../\n...\n** for each object type"
+        ]
+      },
+      {
+        "id": "https://github.com/blakeblackshear/frigate/blob/v0.17.1/docs/docs/configuration/genai/objects.md",
+        "title": "docs/docs/configuration/genai/objects.md",
+        "url": "https://github.com/blakeblackshear/frigate/blob/v0.17.1/docs/docs/configuration/genai/objects.md",
+        "highlights": [
+          "Generative AI can be used to automatically generate descriptive text based on the thumbnails of your tracked objects. This helps with [Semantic Search](/configuration/semantic_search) in Frigate to provide more context about your tracked objects. Descriptions are accessed via the _Explore_ view in the Frigate UI by clicking on a tracked object's thumbnail.\n...\nFrigate's thumbnail search excels at identifying specific details about tracked objects \u2013 for example, using an \"image caption\" approach to find a \"person wearing a yellow vest,\" \"a white dog running across the lawn,\" or \"a red car on a residential street.\" To enhance this further, Frigate\u2019s default prompts are designed to ask your AI provider about the intent behind the object's actions, rather than just describing its appearance.\n...\nis useful, understanding intent provides a deeper layer of\n...\nrecognizing \"what\" is in a scene, Frigate\u2019s default prompts\n...\nwhy\" it might be there or \"what\" it could do next. Descriptions tell you what\u2019s happening, but intent gives context. For instance, a person walking\n...\na door might seem like a visitor, but if they\u2019re moving quickly after hours, you can infer a potential break-in\n...\n. Detecting a person loitering near a door at night can trigger an alert sooner than simply noting \"a person standing by the door,\" helping you respond based on\n...\nsituation\u2019s context."
+        ]
+      }
+    ],
+    "searchTime": 833.8,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

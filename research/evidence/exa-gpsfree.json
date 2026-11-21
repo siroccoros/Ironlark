@@ -1,0 +1,60 @@
+{
+  "query": {
+    "query": "\"No-GPS_Autonomous-Drone-System\" \"Yarok14Technologies\"",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "75ef46d4143f89a0885c7fd3654a77f2",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/Yarok14Technologies/No-GPS_Autonomous-Drone-System",
+        "title": "Yarok14Technologies/No-GPS_Autonomous-Drone-System: PX4 + ...",
+        "url": "https://github.com/Yarok14Technologies/No-GPS_Autonomous-Drone-System",
+        "highlights": [
+          "# Yarok14Technologies/No-GPS_Autonomous-Drone-System\n...\nPX4 + ROS2 + Visual SLAM + VIO + Obstacle Avoidance + Autonomous Return Home A fully autonomous drone capable of navigating, mapping, avoiding obstacles, detecting targets, and returning to its launch position without GPS. Designed for research-grade missions, ISRO-style No-GPS challenges, DARPA-style underground navigation, and autonomous flight.\n...\n- Yarok14Technologies (6 contributions)\n...\n# \ud83d\udef0\ufe0f **No-GPS Autonomous Drone System**\n...\n**PX4 + ROS2 + Visual SLAM + VIO + Obstacle Avoidance + Autonomous Return-Home**\n...\nThis repository contains the full software stack for a **fully autonomous drone** capable of navigating, mapping, avoiding obstacles, detecting targets, and returning to its launch position **without GPS**.\n...\nDesigned for research-grade missions, ISRO-style No-GPS challenges, DARPA-style underground navigation, and indoor autonomous flight.\n...\n## \ud83d\ude80 **Key Capabilities**\n...\n\u2714 GPS-Denied Navigation\n\u2714 Visual SLAM + VIO Fusion\n\u2714 Autonomous Exploration\n\u2714 Obstacle Detection & Avoidance\n\u2714 Visual Landing Pad Detection\n\u2714 No-GPS Return-to-Home (Keyframe Homing)\n\u2714 Fully ROS2-based Modular Architecture\n\u2714 PX4 Offboard Flight Control\n\u2714 Simulation Ready (PX4 SITL + Gazebo/Ignition)\n...\n# \ud83d\udd0d **Return-Home Without GPS (Core Algorithm)**\n...\nuses **keyframe-based\n...\nhoming**:\n...\nStore positions +\n...\nRTH,\n...\nUse reprojection + homography\n...\ngenerates RTH path\n...\n7. Autonomous landing\n...\nhttps://github\n...\ncom/Yarok14Technologies/No-\n...\n_Autonomous-Drone-System"
+        ]
+      },
+      {
+        "id": "https://github.com/Yarok14Technologies",
+        "title": "Yarok14 Technologies Yarok14Technologies - GitHub",
+        "url": "https://github.com/Yarok14Technologies",
+        "highlights": [
+          "- Yarok14Technologies/No-GPS_Autonomous-Drone-System - PX4 + ROS2 + Visual SLAM + VIO + Obstacle Avoidance + Autonomous Return Home A fully autonomous drone capable of navigating, mapping, avoiding obstacles, detecting targets, and returning to its launch position without GPS. Designed for research-grade missions, ISRO-style No-GPS challenges, DARPA-style underground navigation, and autonomous flight. (4 stars)"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/organization/zpr62nbs0w7",
+            "type": "company",
+            "version": 1,
+            "properties": {
+              "name": "Yarok14 Technologies",
+              "foundedYear": 2020,
+              "description": "Yarok14 Technologies is a semiconductor and AI hardware engineering company delivering advanced ASIC design, FPGA prototyping, RTL verification, physical design, DFT, embedded systems, and AI/ML solutions for global engineering teams. We specialize in secure, NDA-driven semiconductor development workflows \u2014 from architecture definition and RTL implementation to tape-out support and silicon validation.\n\nOur core engineering capabilities include ASIC & FPGA design, RTL-to-GDSII physical design, UVM/formal verification, Design for Test (DFT), AI hardware acceleration, embedded & IoT systems, and cloud-native DevOps infrastructure. We support complex silicon programs with services spanning synthesis, floorplanning, CTS, routing, STA, IR/EM analysis, scan insertion, MBIST, ATPG, regression automation, and secure deployment pipelines.\n\nYarok14 Technologies also develops specialized products such as an Automated Front-End VLSI Design AI Tool, an IoT-Based Biomethane Optimization System, the Yarok-14 Microprocessor Unit (MuP), an AI Edge Acceleration Platform, and a portfolio of secure soft and hard IP solutions for industrial and mission-critical applications. These solutions are built for sectors including robotics, industrial automation, agriculture, automotive, drones, and other high-reliability domains.\n\nWe collaborate with semiconductor startups, fabless design houses, AI hardware innovators, and industrial automation teams worldwide, with experience supporting advanced low-power and sub-16nm FinFET technologies. Our mission is to help customers accelerate tape-outs, improve verification quality, optimize AI performance, and scale innovation from FPGA to production silicon.",
+              "workforce": {
+                "total": 1
+              },
+              "headquarters": null,
+              "financials": null,
+              "webTraffic": null,
+              "research": null
+            }
+          }
+        ]
+      }
+    ],
+    "searchTime": 1296.4,
+    "costDollars": {
+      "total": 0.007,
+      "search": {
+        "neural": 0.007
+      }
+    }
+  }
+}

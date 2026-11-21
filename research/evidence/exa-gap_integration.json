@@ -1,0 +1,283 @@
+{
+  "query": {
+    "query": "open source aerial robotics autonomy systems drone UAL Clover OpenUxAS Aerostack2 CrazyChoir ROS2 Nav2 3D navigation",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "94a0e2e868b12e5914535bd07c185c01",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/aerostack2/aerostack2",
+        "title": "Aerostack2 is a ROS 2 framework developed to create ...",
+        "url": "https://github.com/aerostack2/aerostack2",
+        "highlights": [
+          "Aerostack2 is a ROS 2 framework developed to create autonomous multi-aerial-robots systems in an easy and powerful way.\n...\n- aerial-robotics\n- drones\n- robotics\n- ros2\n- swarm-robotics\n- uavs\n...\nAerostack2 is a ROS 2 framework developed to create autonomous multi-aerial-robots systems in an easy and powerful way.\n...\nCurrently is currently developed and tested over ROS 2 humble (over Ubuntu 22.04) .\n\nVersions below 1.0.9 were also developed and tested over ROS 2 galactic (over Ubuntu 20.04), can be found in the branch\n...\nWe also have\n...\nMost important features:\n...\n- Natively developed on ROS 2.\n- Complete modularity, allowing elements to be changed or interchanged without affecting the rest of the system.\n- Independence of the aerial platform. Easy Sim2Real deployment.\n- Project-oriented, allowing to install and use only the necessary packages for the application to be developed. \n- Swarming orientation."
+        ]
+      },
+      {
+        "id": "https://aerostack2.github.io/index.html",
+        "title": "Welcome to Aerostack2\u2019s documentation! \u2014 Aerostack2 1.0 documentation",
+        "url": "https://aerostack2.github.io/index.html",
+        "highlights": [
+          "Aerostack2 is an open source software framework that helps developers design and build the control architecture of aerial robotic systems, integrating multiple heterogeneous computational solutions (e.g., computer vision algorithms, motion controllers, self-localization and mapping methods, motion planning algorithms, etc.), built for ROS 2 Humble and ROS 2 Galactic.\n...\nAerostack2 is useful for building autonomous aerial systems in complex and dynamic environments and it is also a useful research tool for aerial robotics to test new algorithms and architectures.\n...\nAerostack\n...\nteleoperation flights (\n...\nbut it can also\n...\nused for building autonomous robot systems\n...\n- Single robots or multi-robot systems. Aerostack2 can be used to fly a swarm of heterogeneous drones to perform multi-aerial-robot missions. It has been validated to operate with severals drones simultaneously, both in indoor and outdoor environments.\n...\n- Hardware independent. Aerostack2 runs on conventional laptops and it has also run on onboard computers like Nvidia Jetson NX. Aerostack2 has been used in different aerial platforms, including, but not limited to: DJI platforms (Matrice 210RTKv2, Matrice 300, Ryze Tello), Pixhawk autopilots and Crazyflie drones. The framework can operate in simulation and in a real environment in a similar way, what simplifies the Sim2Real development."
+        ],
+        "image": "https://raw.githubusercontent.com/aerostack2/aerostack2.github.io/main/docs/_images/logo.png"
+      },
+      {
+        "id": "https://github.com/afrl-rq/OpenUxAS/",
+        "title": "afrl-rq/OpenUxAS",
+        "url": "https://github.com/afrl-rq/OpenUxAS/",
+        "highlights": [
+          "Project for multi-UAV cooperative decision making\n...\n*OpenUxAS* is developed by the Air Force Research Laboratory, Aerospace System Directorate, Power and Control Division.\n...\n*OpenUxAS*\n...\nUxAS is a collection of modular services that interact via a common message-passing architecture.\nSimilar in design to Robot Operating System (ROS), each service subscribes to messages in the system and responds to queries.\n...\nUxAS uses the open-source library ZeroMQ to connect all services to each other.\n...\nSince all UxAS services communicate with LMCP formatted messages, a developer can quickly determine the input/output data for each service. In a very real sense, the message traffic in the system exposes the interaction of the services that are required to achieve autonomous behavior.\n...\nIn addition to surveillance pattern automation, UxAS contains services that automate route planning, coordinate behavior among multiple vehicles, connect with external software, validate mission requests, log and diagram message traffic, and optimize task ordering.\n...\nA core functionality provided by UxAS is the mechanism to calculate near-optimal task allocation across teams of unmanned vehicles.\n...\nWith a collection of tasks that require servicing and a pool of vehicles available to service those tasks, UxAS is able to determine which vehicle should do which task in the proper order."
+        ]
+      },
+      {
+        "id": "https://ros-aerial.github.io/aerial_robotic_landscape/aerial_autonomy_stacks/",
+        "title": "Aerial Autonomy Stacks - Aerial Robotics Landscape",
+        "url": "https://ros-aerial.github.io/aerial_robotic_landscape/aerial_autonomy_stacks/",
+        "highlights": [
+          "| Flight stack | Middleware | last update |\n| --- | --- | --- |\n| Aerostack(1) | ROS | 11/2021 |\n| Aerostack2 | ROS 2 | 05/2026 |\n| Aerial autonomy stack (AAS) | ROS 2 | 05/2026 |\n| Agilicious | ROS | 03/2023 |\n| KumarRobotics Autonomy Stack | ROS | 04/2026 |\n| CrazyChoir | ROS 2 | 06/2025 |\n| UAL | ROS | 12/2022 |\n| XTDrone | ROS | 08/2025 |\n| RotorS | ROS | 07/2021 |\n| GAAS | ROS | 10/2021 |\n| MRS AUV System | ROS / ROS 2 | 05/2026 |\n| Crazyswarm2 | ROS 2 | 03/2026 |\n| Crazyswarm(1) | ROS | 12/2022 |\n| Dynamic Swarms Crazyflies | ROS 2 | 12/2025 |\n...\n- Hector quadrotor\n- Clover\n- HKUST-Aerial-Robotics\n- Unified Autonomy Stack\n...\nGiven the above Aerial Autonomy Stacks, the list below outlines specific implementations of indoor navigation software packages in ROS, running on aerial vehicle platforms. The list, though not exhaustive, provides a good overview of available off-the-shelf non-commercial software.\n...\n| Package name |\n...\n/OC | Sensors\n...\nPlatform/controller | Last updated |\n...\n--- | --- | ---\n...\n--- | --- | --- |\n...\n| Ardupilot ROS | \u2713 | LiDAR | ROS 2 | Gazebo | Iris coptor,Ardupilot |\n...\n04/2026 |\n| as2_behaviour_tree | \u2713 | Unknown | ROS 2 | Gazebo | Crazyflie,\n...\nI,Tello | 05/2026 |\n...\n| \u2713 | Mono camera |\n...\n| kr_autonomous_flight | \u2713 | Stereo camera/LiDAR/IMU |\n...\n_sim_ros2 | \u2713 | Stereo camera | ROS 2 |\n...\n| PX4 |\n...\ncamera/IR |"
+        ]
+      },
+      {
+        "id": "https://aerostack2.github.io/",
+        "title": "Welcome to Aerostack2's documentation! \u2014 Aerostack2 1.0 ...",
+        "url": "https://aerostack2.github.io/",
+        "highlights": [
+          "Aerostack2 is an open source software framework that helps developers design and build the control architecture of aerial robotic systems, integrating multiple heterogeneous computational solutions (e.g., computer vision algorithms, motion controllers, self-localization and mapping methods, motion planning algorithms, etc.), built for ROS 2 Humble and ROS 2 Galactic.\n...\nAerostack2 is useful for building autonomous aerial systems in complex and dynamic environments and it is also a useful research tool for aerial robotics to test new algorithms and architectures.\n...\nAerostack\n...\nteleoperation flights (\n...\nbut it can also\n...\nused for building autonomous robot systems\n...\n- Single robots or multi-robot systems. Aerostack2 can be used to fly a swarm of heterogeneous drones to perform multi-aerial-robot missions. It has been validated to operate with severals drones simultaneously, both in indoor and outdoor environments.\n...\n- Hardware independent. Aerostack2 runs on conventional laptops and it has also run on onboard computers like Nvidia Jetson NX. Aerostack2 has been used in different aerial platforms, including, but not limited to: DJI platforms (Matrice 210RTKv2, Matrice 300, Ryze Tello), Pixhawk autopilots and Crazyflie drones. The framework can operate in simulation and in a real environment in a similar way, what simplifies the Sim2Real development."
+        ],
+        "image": "https://raw.githubusercontent.com/aerostack2/aerostack2.github.io/main/docs/_images/logo.png"
+      },
+      {
+        "id": "https://github.com/copterexpress/clover/",
+        "title": "CopterExpress/clover",
+        "url": "https://github.com/copterexpress/clover/",
+        "highlights": [
+          "ROS-based framework and RPi image to control PX4-powered drones \ud83c\udf40\n...\ncomputer-vision\n...\n# clover\ud83c\udf40: create autonomous drones easily\n\n \n\nClover is an open source [ROS](https://www.ros.org)-based framework, providing user-friendly tools to control [PX4](https://px4.io)-powered drones. Clover is available as a ROS package, but is shipped mainly as a preconfigured image for Raspberry Pi. Once you've installed Raspberry Pi on your drone and flashed the image to its microSD card, taking the drone up in the air is a matter of minutes.\n...\nCOEX Clover Drone is an educational programmable drone kit, suited perfectly for running clover software. The kit is shipped unassembled and includes Pixracer-compatible autopilot running PX4 firmware, Raspberry Pi 4 as a companion computer, a camera for computer vision navigation as well as additional sensors and peripheral devices. Batteries included.\n...\n* Raspbian Buster\n* [ROS Noetic](http://wiki.ros.org/noetic)\n* Configured networking\n* OpenCV\n* [`mavros`](http://wiki.ros.org/mavros)\n* Periphery drivers for ROS ([GPIO](https://clovercoex.tech/en/gpio.html), [LED strip](https://clovercoex.tech/en/leds.html), etc)\n* `aruco_pose` package for marker-assisted navigation\n* `clover` package for autonomous drone control\n...\nAPI description for autonomous flights is available [on GitBook](https://clovercoex.tech/en/simple_offboard.html)."
+        ]
+      },
+      {
+        "id": "https://index.ros.org/p/aerostack2/",
+        "title": "aerostack2 - ROS Package Overview",
+        "url": "https://index.ros.org/p/aerostack2/",
+        "highlights": [
+          "### Package Description\n\n Aerostack2 is a ROS2-based framework for the development of autonomous systems for aerial robotics. \n\n#### Maintainers\n...\n- [as\n...\n### Package Description\n\n Aerostack2 is a ROS2-based framework for the development of autonomous systems for aerial robotics. \n\n- CVAR-UPM\n\n No additional authors. \n\n README No README found. See repository README.\n...\n(2025-07-23)\n...\n### Package Description\n\n Aerostack2 is a ROS2-based framework for the development of autonomous systems for aerial robotics. \n\n- CVAR-UPM\n...\n### Package Description\n\n Aerostack2 is a ROS2-based framework for the development of autonomous systems for aerial robotics. \n\n#### Maintainers\n...\n### Package Description\n\n Aerostack2 is a ROS2-based framework for the development of autonomous systems for aerial robotics. \n\n- CVAR-UPM\n...\nNo README found. See repository README.\n...\n### Package Description\n\n Aerostack2 is a ROS2-based framework for the development of autonomous systems for aerial robotics. \n\n- CVAR-UPM\n\n No additional authors. \n\n README No README found. See repository README.\n...\n07-23)\n...\n### Package Description\n\n Aerostack2 is a ROS2-based framework for the development of autonomous systems for aerial robotics. \n\n#### Maintainers\n...\n### Package Description\n\n Aerostack2 is a ROS2-based framework for the development of autonomous systems for aerial robotics. \n\n- CVAR-UPM"
+        ],
+        "image": "https://index.ros.org/assets/rosindex_logo.svg"
+      },
+      {
+        "id": "https://arxiv.org/html/2303.18237",
+        "title": "Aerostack2: A Software Framework for Developing Multi-robot Aerial Systems",
+        "url": "https://arxiv.org/html/2303.18237",
+        "highlights": [
+          "The development of autonomous aerial systems, particularly for multi-robot configurations, is a complex challenge requiring multidisciplinary expertise. Unlike ground robotics, aerial robotics has seen limited standardization, leading to fragmented development efforts. To address this gap, we introduce Aerostack2, a comprehensive, open-source ROS 2 based framework designed for creating versatile and robust multi-robot aerial systems. Aerostack2 features platform independence, a modular plugin architecture, and behavior-based mission control, enabling easy customization and integration across various platforms. In this paper, we detail the full architecture of Aerostack2, which has been tested with several platforms in both simulation and real flights. We demonstrate its effectiveness through multiple validation scenarios, highlighting its potential to accelerate innovation and enhance collaboration in the aerial robotics community. Source code: https://github.com/aerostack2/aerostack2 Documentation: https://aerostack2.github.io/\n...\nChoir [9] offers a ROS 2 toolbox for working with swarms of Crazyflie nano-quadrotors, enabling complex distributed tasks in both simulations and real-world experiments. Similarly, Crazyswarm2 [10], is a toolbox designed for a large swarm of Crazyflies flying in dense indoor formations, obtaining accurate flights for up to 50 drones. XTDrone [16]"
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/df8n9zkdjxt",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Aerostack2: A Software Framework for Developing Multi-robot Aerial Systems",
+              "year": 2023,
+              "date": "2023-03-31",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 17,
+              "authors": [
+                {
+                  "name": "Miguel Fern\u00e1ndez-Cortizas",
+                  "id": null
+                },
+                {
+                  "name": "Mart\u00edn Molina",
+                  "id": null
+                },
+                {
+                  "name": "Pedro Arias\u2010Perez",
+                  "id": null
+                },
+                {
+                  "name": "Rafael P\u00e9rez-Segu\u00ed",
+                  "id": null
+                },
+                {
+                  "name": "David P\u00e9rez-Saura",
+                  "id": null
+                },
+                {
+                  "name": "Pascual Campoy",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "The development of autonomous aerial systems, particularly for multi-robot configurations, is a complex challenge requiring multidisciplinary expertise. Unlike ground robotics, aerial robotics has seen limited standardization, leading to fragmented development efforts. To address this gap, we introduce Aerostack2, a comprehensive, open-source ROS 2 based framework designed for creating versatile and robust multi-robot aerial systems. Aerostack2 features platform independence, a modular plugin architecture, and behavior-based mission control, enabling easy customization and integration across various platforms. In this paper, we detail the full architecture of Aerostack2, which has been tested with several platforms in both simulation and real flights. We demonstrate its effectiveness through multiple validation scenarios, highlighting its potential to accelerate innovation and enhance collaboration in the aerial robotics community.",
+              "doi": "10.48550/arxiv.2303.18237"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/jacopopan/aerial-autonomy-stack/",
+        "title": "JacopoPan/aerial-autonomy-stack",
+        "url": "https://github.com/jacopopan/aerial-autonomy-stack/",
+        "highlights": [
+          "An open framework to simulate and deploy perception-based PX4/ArduPilot drone swarms with ROS2, YOLO, LiDAR, NVIDIA Jetson\n...\n*Aerial autonomy stack* (AAS) is a \"batteries included\", flight-proven, open software and the simplest/fastest way to:\n...\n1. **Develop** multi-drone autonomy\u2014with PX4, ArduPilot, and ROS2\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLO and 3D LiDAR\n3. **Deploy** in real drones\u2014with JetPack, DeepStream, and NVIDIA Orin\n...\nhttps://github\n...\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors, quadplane VTOLs, and tailsitters**)\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n- **YOLO** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n- 3D worlds for perception-based simulation\n...\n3. From any `QUAD`/`VTOL`/`TAIL` terminal, use **ROS2 actions** for [`px4_offboard`](/aircraft/aircraft_ws/src/offboard_control/src/px4_offboard.cpp)/[`ardupilot_guided`](/aircraft/aircraft_ws/src/offboard_control/src/ardupilot_guided.cpp) controllers:\n...\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u251c\u2500\u2500 autopilot_interface                   # Ardupilot/PX4 high-level actions (Takeoff, Orbit, Offboard, Land)\n...\nArduPilot VTOL model\n...\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 sensor_lidar                          # LiDAR model"
+        ]
+      },
+      {
+        "id": "https://github.com/crazy-robotics/aerial-autonomy-stack",
+        "title": "crazy-robotics/aerial-autonomy-stack",
+        "url": "https://github.com/crazy-robotics/aerial-autonomy-stack",
+        "highlights": [
+          "Multi-drone PX4/ArduPilot ROS2 control of quads and VTOLs, with YOLO, LiDAR, Dockerized Gym simulation, and JetPack deployment\n...\n*Aerial autonomy stack* (AAS) is the all-in-one software stack to:\n...\n1. **Develop** multi-drone autonomy\u2014with ROS2, PX4, and ArduPilot\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLOv8 and 3D LiDAR \n3. **Deploy** in real drones\u2014with JetPack and NVIDIA Orin\n\n \n Feature list (click to expand) \n\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors and VTOLs**)\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n- **YOLOv8** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n- 3D worlds for perception-based simulation\n...\n- [Zenoh](https://github.com/eclipse-zenoh/zenoh-plugin-ros2dds) inter-vehicle ROS2 bridge\n...\n- [PX4 Offboard](https://docs.px4.io/main/en/flight_modes/offboard.html) interface (e.g. CTBR/`VehicleRatesSetpoint` for agile, GNSS-denied flight) \n- [ArduPilot Guided](https://ardupilot.org/copter/docs/ac2_guidedmode.html) interface (i.e. `setpoint_velocity`, `setpoint_accel` references)\n...\n\u2502\n...\nactions (Takeoff, Orbit, Offboard, Land)\n...\n> \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 alti_transition_quad # ArduPilot VTOL model\n...\n> \u00a0\u00a0 \u2502\u00a0\u00a0 \u2502\u00a0\u00a0 \u251c\u2500\u2500 iris_with_ardupilot # ArduPilot quad model\n...\nPX4 VTOL"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2303.18237v2",
+        "title": "Aerostack2: A Software Framework for Developing Multi ...",
+        "url": "https://arxiv.org/html/2303.18237v2",
+        "publishedDate": "2024-09-03T00:00:00.000Z",
+        "highlights": [
+          "for creating versatile and robust multi-robot aerial systems. Aerostack2 features platform independence, a modular plugin architecture, and behavior-based mission control, enabling easy customization and integration across various platforms. In this paper, we detail the full architecture of Aerostack2, which has been tested with several platforms in both simulation and real flights. We demonstrate its effectiveness through multiple validation scenarios, highlighting its potential to accelerate innovation and enhance collaboration in the aerial robotics community. Source code: https://github.com/aerostack2/aerostack2 Documentation: https://aerostack2.github.io/\n...\nIn the realm of simulation and experimentation, CrazyChoir [9] offers a ROS 2 toolbox for working with swarms of Crazyflie nano-quadrotors, enabling complex distributed tasks in both simulations and real-world experiments. Similarly, Crazyswarm2 [10], is a toolbox designed for a large swarm of Crazyflies flying in dense indoor formations, obtaining accurate flights for up to 50 drones. XTDrone [16] provides a comprehensive simulation platform for various types of UAV, facilitating the transition from algorithm testing in simulations to deployment in real UAVs. RotorS [14] is another modular MAV simulation framework, designed for quick research integration and easy transition from simulation to real MAV applications."
+        ],
+        "image": "https://arxiv.org/html/2303.18237v2/extracted/5830364/figures/nodes_architecture.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2602.07264",
+        "title": "aerial-autonomy-stack\u2014a Faster-than-real-time, Autopilot-agnostic, ROS2 Framework to Simulate and Deploy Perception-based Drones",
+        "url": "https://arxiv.org/html/2602.07264",
+        "highlights": [
+          "as well as reliable. Thus, the ability to rapidly engineer and deploy autonomous aerial systems has become of strategic importance. In the 2010s, a combination of high-performance compute, data, and open-source software led to the current deep learning and AI boom, unlocking decades of prior theoretical work. Robotics is on the cusp of a similar transformation. However, physical AI faces unique hurdles, often combined under the umbrella term \u201csimulation-to-reality gap\u201d. These span from modeling shortcomings to the complexity of vertically integrating the highly heterogeneous hardware and software systems typically found in field robots. To address the latter, we introduce aerial-autonomy-stack, an open-source, end-to-end framework designed to streamline the pipeline from (GPU-accelerated) perception to (flight controller-based) action. Our stack allows the development of aerial autonomy using ROS2 and provides a common interface for two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20 $\\times$ faster-than-real-time, end-to-end simulation of a\n...\nProjects such as XTDrone [15] address multi-vehicle simulation across diverse platforms but function primarily as a simulation tool rather than a deployable, containerized stack. UAL [12] provides a hardware abstraction layer for multiple autopilots but it is still based on a ROS1 framework [23]."
+        ],
+        "image": "http://arxiv.org/abs/2602.07264v2/x1.jpeg",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/46gh9849vdv",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "aerial-autonomy-stack -- a Faster-than-real-time, Autopilot-agnostic, ROS2 Framework to Simulate and Deploy Perception-based Drones",
+              "year": 2026,
+              "date": "2026-02-06",
+              "type": "article",
+              "language": null,
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Jacopo Panerati",
+                  "id": null
+                },
+                {
+                  "name": "Sina Sajjadi",
+                  "id": null
+                },
+                {
+                  "name": "Sina Soleymanpour",
+                  "id": null
+                },
+                {
+                  "name": "Varun Mehta",
+                  "id": null
+                },
+                {
+                  "name": "Iraj Mantegh",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Unmanned aerial vehicles are rapidly transforming multiple applications, from agricultural and infrastructure monitoring to logistics and defense. Introducing greater autonomy to these systems can simultaneously make them more effective as well as reliable. Thus, the ability to rapidly engineer and deploy autonomous aerial systems has become of strategic importance. In the 2010s, a combination of high-performance compute, data, and open-source software led to the current deep learning and AI boom, unlocking decades of prior theoretical work. Robotics is on the cusp of a similar transformation. However, physical AI faces unique hurdles, often combined under the umbrella term \"simulation-to-reality gap\". These span from modeling shortcomings to the complexity of vertically integrating the highly heterogeneous hardware and software systems typically found in field robots. To address the latter, we introduce aerial-autonomy-stack, an open-source, end-to-end framework designed to streamline the pipeline from (GPU-accelerated) perception to (flight controller-based) action. Our stack allows the development of aerial autonomy using ROS2 and provides a common interface for two of the most popular autopilots: PX4 and ArduPilot. We show that it supports over 20x faster-than-real-time, end-to-end simulation of a complete development and deployment stack -- including edge compute and networking -- significantly compressing the build-test-release cycle of perception-based autonomy.",
+              "doi": "10.48550/arxiv.2602.07264"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/df8n9zkdjxt",
+        "title": "Aerostack2: A Software Framework for Developing Multi-robot Aerial Systems",
+        "url": "https://doi.org/10.48550/arxiv.2303.18237",
+        "publishedDate": "2023-03-31T00:00:00.000Z",
+        "author": "Miguel Fern\u00e1ndez-Cortizas, Mart\u00edn Molina, Pedro Arias\u2010Perez, Rafael P\u00e9rez-Segu\u00ed, David P\u00e9rez-Saura, Pascual Campoy",
+        "highlights": [
+          ", we can find some so lutions, such as Aerostack [3], a ROS-based framework that integrates various computational solutions such as computer vision and motion planning, developed through extensive use in our research lab. The MRS UAV system [13] is another ROS-based system designed for onboard use with PX4 and DJI compatible controllers, suitable for both indoor and out door applications, and designed for multi-robot experiments. The UAV Abstraction Layer (UAL) [15] further standardizes the interfaces of UAVs on different autopilots, simplifying higher-level algorithm development for both simulated and real platforms. For more specialized applications, Agilicious [8], is a framework optimized for agile quadrotor flight. It features onboard vision sensors, GPU-accelerated hardware, and a versatile software stack for real-time perception and control. Similarly, the KumarRobotics flight stack [12] focuses on au tonomous navigation in cluttered, GPS-denied environments, performing all sensing and computation onboard without human intervention after launch. In the realm of simulation and experimentation, Crazy Choir [9] offers a ROS 2 toolbox for working with swarms of Crazyflie nano-quadrotors, enabling complex distributed tasks in both simulations and real-world experiments. Sim ilarly, Crazyswarm2 [10], is a toolbox designed for a large swarm of Crazyflies flying in dense indoor"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/df8n9zkdjxt",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Aerostack2: A Software Framework for Developing Multi-robot Aerial Systems",
+              "year": 2023,
+              "date": "2023-03-31",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 17,
+              "authors": [
+                {
+                  "name": "Miguel Fern\u00e1ndez-Cortizas",
+                  "id": null
+                },
+                {
+                  "name": "Mart\u00edn Molina",
+                  "id": null
+                },
+                {
+                  "name": "Pedro Arias\u2010Perez",
+                  "id": null
+                },
+                {
+                  "name": "Rafael P\u00e9rez-Segu\u00ed",
+                  "id": null
+                },
+                {
+                  "name": "David P\u00e9rez-Saura",
+                  "id": null
+                },
+                {
+                  "name": "Pascual Campoy",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "The development of autonomous aerial systems, particularly for multi-robot configurations, is a complex challenge requiring multidisciplinary expertise. Unlike ground robotics, aerial robotics has seen limited standardization, leading to fragmented development efforts. To address this gap, we introduce Aerostack2, a comprehensive, open-source ROS 2 based framework designed for creating versatile and robust multi-robot aerial systems. Aerostack2 features platform independence, a modular plugin architecture, and behavior-based mission control, enabling easy customization and integration across various platforms. In this paper, we detail the full architecture of Aerostack2, which has been tested with several platforms in both simulation and real flights. We demonstrate its effectiveness through multiple validation scenarios, highlighting its potential to accelerate innovation and enhance collaboration in the aerial robotics community.",
+              "doi": "10.48550/arxiv.2303.18237"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/Paschalis/SwarmPilot",
+        "title": "Paschalis/SwarmPilot",
+        "url": "https://github.com/Paschalis/SwarmPilot",
+        "highlights": [
+          "SwarmPilot is an autonomous multi-drone control system based on the PX4 flight stack, designed for collaborative UAV operations with edge computing and real-time video transmission capabilities. Ideal for research and development in drone swarming, surveillance, and AI-driven navigation.\n...\n## README\n\n SwarmPilot \n \nAutonomous multi-drone control and perception on ROS 2 + PX4 with edge AI and real-time video.\n \n\n![SwarmPilot Preview](Images/preview.png)\n...\nAutonomous multi\u2011drone control and perception on **ROS\u00a02 + PX4** with edge AI and real\u2011time video. Runs the same in **SITL**, **HITL**, and on **real UAVs**. A GPU/NPU **leader** detects and assigns targets; **followers** track and fly via Offboard control. Perception runs on\u2011board; only compact ROS 2 messages and encoded video leave the airframes.\n...\n- **Flight:** PX4 + uXRCE\u2011DDS (native ROS\u00a02)\n- **Middleware:** ROS\u00a02 Humble\n- **Vision:** YOLOv5 (TensorRT on leader) / RKNN (followers)\n- **Video path:** Camera \u2192 OpenCV overlay \u2192 **v4l2loopback** \u2192 external **SRT sender**\n- **Sim:** Gazebo Harmonic (via `ros_gz_bridge`)\n- **Networking:** Wi\u2011Fi AP or BATMAN\u2011adv/Babel mesh\n...\nbash\nCFG=\"$(ros2 pkg prefix --share uav_swarm_ros2)/config/swarm_sitl.yaml\"\nROS_DOMAIN_ID=30 ros2 launch uav_swarm_ros2 swarm.launch.py config:=\"$CFG\"\n...\n**Streaming (SRT ports):** Leader **8888**, F1 **8891**, F2 **8892**.\n\n##"
+        ]
+      },
+      {
+        "id": "https://github.com/ntnu-arl/unified_autonomy_stack",
+        "title": "ntnu-arl/unified_autonomy_stack",
+        "url": "https://github.com/ntnu-arl/unified_autonomy_stack",
+        "highlights": [
+          "The Unified Autonomy Stack: Toward a Blueprint for Generalizable Robot Autonomy\n...\nWelcome to the documentation for the **Unified Autonomy Stack**. \nThis stack presents an autonomy architecture integrating perception, planning, and navigation algorithms developed and field tested at the [Autonomous Robots Lab](https://www.autonomousrobotslab.com) across robot configurations. The stack consists of the software for the core algorithms along with drivers, utilities, and tools for simulation and testing. We currently support rotary-wing (e.g., multirotor) and certain ground systems (e.g., legged robots) with extension to other systems, such as underwater robots, coming soon. The software distributed as a part of this stack has been thoroughly tested in real-world scenarios demonstrating robust autonomous operation in challenging GPS-denied environments.\n...\nThe documentation of the Unified Autonomy Stack is available at [https://ntnu-arl.github.io/unified_autonomy_stack/](https://ntnu-arl.github.io/unified_autonomy_stack/)."
+        ]
+      }
+    ],
+    "searchTime": 1278.7,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "query": {
+    "query": "open source drone learned collision avoidance navigation AIM Navigation Aerial Gym Learning to Fly in Seconds DAgger LPA YOPO RAPPIDS github",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "7e8a7586d784cc4bbb9196250eb38ec5",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "title": "TJU-Aerial-Robotics/YOPO: You Only Plan Once",
+        "url": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "highlights": [
+          "# TJU-Aerial-Robotics/YOPO\n...\nYou Only Plan Once: A Learning Based Quadrotor Planner\n...\nYou Only Plan Once\n...\nTracker: An End-to-End\n...\nFramework from Perception to Action](https://arxiv.org/html/2505.06923v1)\n...\nWe propose **a learning-based planner for autonomous navigation in obstacle-dense environments** which integrates (i) perception and mapping, (ii) front-end path searching, and (iii) back-end optimization of classical methods into a single network. \n\n**Learning-based Planner:** Considering the multi-modal nature of the navigation problem and to avoid local minima around initial values, our approach adopts a set of motion primitives as anchor to cover the searching space, and predicts the offsets and scores of primitives for further improvement (like the one-stage object detector YOLO). \n\n**Training Strategy:** Compared to giving expert demonstrations as labels in imitation learning or exploring by trial-and-error in reinforcement learning, we directly back-propagate the gradients of trajectory costs (e.g. from ESDF) to the weights of network, which is simple, straightforward, accurate, and sequence-independent (free of online simulator interaction or rendering).\n...\n###\n...\n](https://github.com/TJU-\n...\ncom/TJU-\n...\n/YOPO\n...\ntree/main) branch."
+        ]
+      },
+      {
+        "id": "https://github.com/ntnu-arl/aerial_gym_simulator",
+        "title": "ntnu-arl/aerial_gym_simulator",
+        "url": "https://github.com/ntnu-arl/aerial_gym_simulator",
+        "publishedDate": "2023-04-04T00:00:00.000Z",
+        "highlights": [
+          "The Aerial Gym Simulator is a high-fidelity physics-based simulator for training Micro Aerial Vehicle (MAV) platforms such as multirotors to learn to fly and navigate cluttered environments using learning-based methods. The environments are built upon the underlying [NVIDIA Isaac Gym](https://developer.nvidia.com/isaac-gym) simulator. We offer aerial robot models for standard planar quadrotor platforms, as well as fully-actuated platforms and multirotors with arbitrary configurations. These configurations are supported with low-level and high-level geometric controllers that reside on the GPU and provide parallelization for the simultaneous control of thousands of multirotors.\n...\nsuch as LiDARs with varying properties. The simulator is open-source and is released under the [BSD-3-Clause License](https://opensource.org/licenses/BSD-3-Clause).\n...\n- **RL-based control and navigation policies** of your choice can be added for robot learning tasks. [Includes scripts to get started with training your own robots.](https://ntnu-arl.github.io/aerial_gym_simulator/6_rl_training).\n...\nThe optimized code in this newer version allows training for motor-command policies for robot control in under a minute and vision-based navigation policies in under an hour. Extensive examples are provided to allow users to get started with training their own policies for their custom robots quickly."
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/TJU-Aerial-Robotics/YOPO",
+        "title": "GitHub - TJU-Aerial-Robotics/YOPO: You Only Plan Once: A Learning Based Quadrotor Planner \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/TJU-Aerial-Robotics/YOPO",
+        "publishedDate": "2023-12-14T00:00:00.000Z",
+        "author": "TJU-Aerial-Robotics",
+        "highlights": [
+          "GitHub - TJU-Aerial-Robotics/YOPO: You Only Plan Once: A Learning Based Quadrotor Planner \u00b7 GitHub\n...\nOriginal Paper: You Only Plan Once: A Learning-Based One-Stage Planner With Guidance Learning\n...\nImprovements and Applications: YOPOv2-Tracker: An End-to-End Agile Tracking and Navigation Framework from Perception to Action\n...\ndesigned by @Mioulo is also open-source\n...\nhardware components are listed in hardware_list.pdf, and\n...\nSolidWorks file of carbon fiber\n...\ncan be found in /hardware (complete\n...\nfiles are included in the\n...\nWe propose a learning-based planner for autonomous navigation in obstacle-dense environments which integrates (i) perception and mapping, (ii) front-end path searching, and (iii) back-end optimization of classical methods into a single network.\n...\nLearning-based Planner: Considering the multi-modal nature of the navigation problem and to avoid local minima around initial values, our approach adopts a set of motion primitives as anchor to cover the searching space, and predicts the offsets and scores of primitives for further improvement (like the one-stage object detector YOLO).\n...\nStrategy: Compared to giving\n...\nlearning or exploring by trial-and-error in reinforcement\n...\n, we directly back-prop\n...\nof network, which is\n...\n, straightforward, accurate, and sequence-\n...\n(free of online simulator interaction or rendering)."
+        ],
+        "image": "https://opengraph.githubassets.com/4db2c2f0257d58658e91adf5f94bcd35e10e9f6aa404a5db50a39ce327c4c173/TJU-Aerial-Robotics/YOPO"
+      },
+      {
+        "id": "https://github.com/learnsyslab/gym-pybullet-drones",
+        "title": "GitHub - learnsyslab/gym-pybullet-drones: PyBullet Gymnasium environments for single and multi-agent reinforcement learning of quadcopter control \u00b7 GitHub",
+        "url": "https://github.com/learnsyslab/gym-pybullet-drones",
+        "publishedDate": "2020-08-10T00:00:00.000Z",
+        "author": "learnsyslab",
+        "highlights": [
+          "GitHub - learnsyslab/gym-pybullet-drones: PyBullet Gymnasium environments for single and multi-agent reinforcement learning of quadcopter control \u00b7 GitHub\n...\nFor production-grade deployment of ROS2 + PX4/ArduPilot + YOLO/LiDAR, use `aerial-autonomy-stack`\n...\nThis is a minimalist refactoring of the original `gym-pybullet-drones` repository, designed for compatibility with `gymnasium`, `stable-baselines3` 2.0, and `betaflight`/`crazyflie-firmware` SITL.\n...\n### Reinforcement learning examples (SB3\n...\ns PPO)\n...\n```\ncd gym_\n...\nbullet_d\n...\n/examples/\npython learn.py # task: single drone hover at z == 1.0\npython learn.py --multiagent true # task: 2-drone hover at z == 1.2 and 0.7\n\nLATEST_MODEL=$(ls -t results | head -n 1) && python play.py --model_path \"results/${LATEST_MODEL}/best_model.zip\" # play and visualize\n...\nmost recent learned policy after training\n...\n```\n@INPROCEEDINGS{panerati2021learning,\n      title={Learning to Fly---a Gym Environment with PyBullet Physics for Reinforcement Learning of Multi-agent Quadcopter Control}, \n      author={Jacopo Panerati and Hehui Zheng and SiQi Zhou and James Xu and Amanda Prorok and Angela P. Schoellig},\n      booktitle={2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},\n      year={2021},\n      volume={},\n      number={},\n      pages={7512-7519},\n      doi={10.1109/IROS51168.2021.9635857}\n}"
+        ],
+        "image": "https://repository-images.githubusercontent.com/286408558/64ec6f00-f20b-11ea-94e2-0c3d2c477217"
+      },
+      {
+        "id": "https://github.com/FP-Flight/AirGym",
+        "title": "emNavi/AirGym",
+        "url": "https://github.com/FP-Flight/AirGym",
+        "publishedDate": "2024-03-02T16:36:33.000Z",
+        "highlights": [
+          "A high-performance drone deep reinforcement learning platform built upon IsaacGym.\n...\nAirGym is an open souce Python quadrotor simulator based on IsaacGym, a part of AirGym series Sim-to-Real workding flow. It provides a high-fidelity dynamics and Deep Reinforcement Learning (DRL) framework for quadrotor robot learning research. Furthermore, we also provide toolkits for transferring policy from AirGym simulator to the real quadrotor [emNavi-X152b](https://emnavi.tech/droneKit/#x152b%E5%B9%B3%E5%8F%B0), making Sim-to-Real possible. The documentation website is at https://emnavi.tech/AirGym/.\n\n \n \n \n\nThe Sim-to-Real working flow of AirGym series is broken down into four parts:\n...\nGym](https://github.com/emNavi\n...\nemNavi/\n...\n- [AirGym\n...\nReal](https://github\n...\ncom/emNavi/AirGym-Real\n...\nSim-to\n...\nReal module compatible with AirGym, enabling direct loading of pretrained models, supporting onboard visual-inertial pose estimation, ROS topic publishing, and one-shot scripted deployment\n...\n, Tracking, Avoid, and\n...\ntask Planning.\n...\nX152b](https://emnavi.tech/\n...\nKit/#x1\n...\n%B3%E5%8\n...\n%B0\n...\nto-Real\n...\nTask Planning: a drone navigates and flies through a random generated woods like area, using only depth information as input. No global information is utilized in this task which means a better adaptation in a GNSS-deny environment and without a VIO."
+        ]
+      },
+      {
+        "id": "https://ntnu-arl.github.io/aerial_gym_simulator/",
+        "title": "Aerial Gym Simulator",
+        "url": "https://ntnu-arl.github.io/aerial_gym_simulator/",
+        "highlights": [
+          "The Aerial Gym Simulator is a high-fidelity physics-based simulator for training Micro Aerial Vehicle (MAV) platforms such as multirotors to learn to fly and navigate cluttered environments using learning-based methods. The environments are built upon the underlying NVIDIA Isaac Gym simulator. We offer aerial robot models for standard planar quadrotor platforms, as well as fully-actuated platforms and multirotors with arbitrary configurations. These configurations are supported with low-level and high-level geometric controllers that reside on the GPU and provide parallelization for the simultaneous control of thousands of multirotors.\n...\nThis is the second release of the simulator and includes a variety of new features and improvements. Task definition and environment configuration allow for fine-grained customization of all the environment entities without having to deal with large monolithic environment files. A custom rendering framework allows obtaining depth, and segmentation images at high speeds and can be used to simulate custom sensors such as LiDARs with varying properties. The simulator is open-source and is released under the BSD-3-Clause License.\n...\ncode in this newer version allows training for motor-command policies for robot control in under a minute and vision-based navigation policies in under an hour. Extensive examples are provided to allow users to get"
+        ],
+        "image": "https://ntnu-arl.github.io/aerial_gym_simulator/images/arl_logo.png",
+        "favicon": "https://ntnu-arl.github.io/aerial_gym_simulator/images/arl_logo.png"
+      },
+      {
+        "id": "https://github.com/agi-brain/dense_navigation",
+        "title": "agi-brain/dense_navigation",
+        "url": "https://github.com/agi-brain/dense_navigation",
+        "highlights": [
+          "# agi-brain/dense_navigation\n...\n# Deep Reinforcement Learning with Entropy-Based Intrinsic Reward for UAV Navigation in Dense-Obstacle Environments\n...\nThis repository provides an implementation of our deep reinforcement learning approach for autonomous UAV navigation in dense-obstacle environments. Our method leverages state entropy as an intrinsic reward, encouraging the UAV to explore less-visited regions, effectively balancing exploration and collision avoidance. This technique prevents the UAV from getting trapped in local optima, significantly improving navigation performance compared to standard DRL algorithms.\n...\nThis experiment is conducted within the XuanCe framework and utilizes the gym-pybullet-drones UAV simulation engine for drone simulation.\n...\n- [XuanCe Framework](https://github.com/agi-brain/xuance) - A reinforcement learning framework used for algorithm implementation.\n- [gym-pybullet-drones](https://github.com/utiasDSL/gym-pybullet-drones) - A drone simulation environment built on PyBullet."
+        ]
+      },
+      {
+        "id": "https://github.com/microsoft/AirSim",
+        "title": "microsoft/AirSim",
+        "url": "https://github.com/microsoft/AirSim",
+        "highlights": [
+          "# Welcome to AirSim \n \nAirSim is a simulator for drones, cars and more, built on [Unreal Engine](https://www.unrealengine.com/) (we now also have an experimental [Unity](https://unity3d.com/) release). It is open-source, cross platform, and supports software-in-the-loop simulation with popular flight controllers such as PX4 & ArduPilot and hardware-in-loop with PX4 for physically and visually realistic simulations. It is developed as an Unreal plugin that can simply be dropped into any Unreal environment. Similarly, we have an experimental release for a Unity plugin. \n \nAirSim was conceived and created by [Shital Shah](https://shital.com) with PX4 and hardware-in-loop code contributed by [Chris Lovett](https://lovettsoftware.com/). \n \nOur goal is to develop AirSim as a platform for AI research to experiment with deep learning, computer vision and reinforcement learning algorithms for autonomous vehicles. For this purpose, AirSim also exposes APIs to retrieve data and control vehicles in a platform independent way. \n \n**Check out the quick 1.5 minute demo** \n \nDrones\n...\n- [Video - Setting up AirSim with Pixhawk Tutorial](https://youtu.be/1oY8Qu5maQQ) by Chris Lovett \n- [Video - Using AirSim with Pixhawk Tutorial](https://youtu.be/HNWdYrtw3f0) by Chris Lovett \n- [Video - Using off-the-self environments with AirSim](https://www.youtube.com/watch?v=y09VbdQWvQY) by Jim Piavis \n-"
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/TJU-Aerial-Robotics/YOPO-Rally",
+        "title": "GitHub - TJU-Aerial-Robotics/YOPO-Rally: A Sim-to-Real Single-Stage Planner for Off-Road Terrain \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/TJU-Aerial-Robotics/YOPO-Rally",
+        "publishedDate": "2025-05-20T00:00:00.000Z",
+        "author": "TJU-Aerial-Robotics",
+        "highlights": [
+          "GitHub - TJU-Aerial-Robotics/YOPO-Rally: A Sim-to-Real Single-Stage Planner for Off-Road Terrain \u00b7 GitHub\n...\n# YOPO-Rally\n...\nA single-stage off-road terrain planner based on imitation learning, supporting Zero-Shot Sim-to-Real transfer.\n...\nThe planner takes the depth map and vehicle state as inputs, and directly outputs multiple candidate trajectories along with their cost scores. The MPC local planner then tracks the optimal trajectory. Training is conducted entirely in the simulation environment (YOPO-Sim), where expert trajectory labels are generated through terrain cost maps, achieving zero-shot transfer from simulation to real world.\n...\nFor each reference starting point, CasADi is used to solve multiple candidate Hermite curve trajectories under sector constraints. Terrain costs are queried from the cost map to generate expert trajectory labels.\n\n trajectory-optimization.mp4 \n\n \n\n## Inference\n...\nThe planner takes the depth map, velocity, and goal vector as inputs, outputting a set of candidate trajectories with cost scores. The MPC node tracks the optimal trajectory.\n\n inference.mp4 \n\n \n\n## Quick Start\n...\n1. Collect depth maps and pose data in YOPO-Sim\n2. Process the point cloud into a terrain cost map (GeoTIFF) using CloudCompare\n3. Run `generate_data.py` to generate expert trajectory labels\n4. Run `train_network.py` to train the network"
+        ],
+        "image": "https://opengraph.githubassets.com/32a4562d5f03851c52798b7a17fdf6c2fdea6d22c0bc46581a7e3f5ee6608d23/TJU-Aerial-Robotics/YOPO-Rally"
+      },
+      {
+        "id": "https://github.com/heleidsn/UAV_Navigation_DRL_AirSim",
+        "title": "heleidsn/UAV_Navigation_DRL_AirSim",
+        "url": "https://github.com/heleidsn/UAV_Navigation_DRL_AirSim",
+        "highlights": [
+          "# heleidsn/UAV_Navigation_DRL_AirSim\n...\nThis is a new repo used for training UAV navigation (local path planning) policy using DRL methods.\n...\nA platform for training UAV navigation policies in complex unknown environment.\n...\n- An Open AI Gym env is created include kinematic models for both multirotor and fixed-wing UAVs.\n- Some UE4 environments are provided to train and test the navigation policy.\n- based on AirSim and SB3.\n...\n* SimpleAvoid\n\n * This is a custom UE4 environment used for simple obstacle avoidance test. You can download it from [google drive](https://drive.google.com/file/d/1QgkZY5-GXRr93QTV-s2d2OCoVSndADAM/view?usp=sharing).\n\n \n \n \n \n* City_400_400\n\n * A custom UE4 environment used for fixedwing obstacle avoidance test. You can also get it from [google drive](https://drive.google.com/file/d/1vdT8cP2n_jTk1MdShGwdf1OFPC_YOmTr/view?usp=sharing)\n\n \n \n \n \n* Random obstacles\n\n * Some envs with random obstacles. Contributed by [Chris-cch](https://github.com/Chris-cch). You can download [here](https://mailnwpueducn-my.sharepoint.com/personal/chenchanghao_mail_nwpu_edu_cn/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fchenchanghao%5Fmail%5Fnwpu%5Fedu%5Fcn%2FDocuments%2Fnew%5Fenv&ga=1).\n\n \n \n \n \n* Other Airsim build in envrionment (AirSimNH and CityEnviron):\n\n \n \n \n \n\n**dynamic_name**\n...\n* SimpleMultirotor\n* Multirotor\n* SimpleFixedwing\n...\nSimpleAvoid environment"
+        ]
+      },
+      {
+        "id": "https://ntnu-arl.github.io/aerial_gym_simulator/6_rl_training/",
+        "title": "RL Training - Aerial Gym Simulator",
+        "url": "https://ntnu-arl.github.io/aerial_gym_simulator/6_rl_training/",
+        "highlights": [
+          "The Aerial Gym provides a ready-to-use framework for training policies for exteroceptive DRL module for the Unified Autonomy Stack.\n...\nThe inference scripts that run onboard the robot are stored as a separate package https://github.com/ntnu-arl/rl_nav. To run the inference on the trained policy, please follow the instructions in the repository. The trained policy can be deployed on the real robot using the same scripts and the same package.\n...\nWe provide a ready-to-use policy that was used for the work in Reinforcement Learning for Collision-free Flight Exploiting Deep Collision Encoding. The observation space is redefined to match the example shown in the paper and a script is provided to run the inference on the trained policy. To check out the performance of the policy yourself, please follow the steps below:\n...\n, sample-factory and CleanRL frameworks out\n...\nof-the-box with relevant scripts for the\n...\nthe simulator allows for a\n...\nthe simulator allowing the developed/user to focus on designing an\n...\nrather than spending time on\n...\nThe training takes approximately an hour on a single NVIDIA RTX 3090 GPU. The`navigation_task` uses a Deep Collision Encoder by default to represent the latent representation considering obstacles inflated by the robot size.\n...\ncontribute to this\n...\nPull Request on GitHub."
+        ],
+        "image": "https://ntnu-arl.github.io/aerial_gym_simulator/images/arl_logo.png"
+      },
+      {
+        "id": "https://github.laiyagushi.com/jisuweng/YOPO",
+        "title": "GitHub - jisuweng/YOPO: You Only Plan Once: A Learning Based Quadrotor Planner \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/jisuweng/YOPO",
+        "publishedDate": "2025-08-18T00:00:00.000Z",
+        "author": "jisuweng",
+        "highlights": [
+          "GitHub - jisuweng/YOPO: You Only Plan Once: A Learning Based Quadrotor Planner \u00b7 GitHub\n...\nOriginal Paper: You Only Plan Once: A Learning-Based One-Stage Planner With Guidance Learning\n...\nImprovements and Applications: YOPOv2-Tracker: An End-to-End Agile Tracking and Navigation Framework from Perception to Action\n...\nOur drone designed by @Mioulo is also open-source. The hardware components are listed in hardware_list.pdf, and the SolidWorks file of carbon fiber frame can be found in /hardware.\n...\nWe propose a learning-based planner for autonomous navigation in obstacle-dense environments which integrates (i) perception and mapping, (ii) front-end path searching, and (iii) back-end optimization of classical methods into a single network.\n...\nLearning-based Planner: Considering the multi-modal nature of the navigation problem and to avoid local minima around initial values, our approach adopts a set of motion primitives as anchor to cover the searching space, and predicts the offsets and scores of primitives for further improvement (like the one-stage object detector YOLO).\n...\nTraining Strategy: Compared to giving expert demonstrations as labels in imitation\n...\nor exploring by trial-and-error in reinforcement learning, we directly back-propagate the\n...\nof network, which is simple,\n...\n, accurate, and\n...\n(free of online simulator interaction or rendering)."
+        ],
+        "image": "https://opengraph.githubassets.com/54b7cfb35043aa5e67d705671e69b1246fa4c4f989bd1bf441913c05f5a44610/jisuweng/YOPO"
+      },
+      {
+        "id": "https://github.laiyagushi.com/learnsyslab/gym-pybullet-drones",
+        "title": "GitHub - learnsyslab/gym-pybullet-drones: PyBullet Gymnasium environments for single and multi-agent reinforcement learning of quadcopter control \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/learnsyslab/gym-pybullet-drones",
+        "publishedDate": "2020-08-10T07:38:09.000Z",
+        "author": "learnsyslab",
+        "highlights": [
+          "GitHub - learnsyslab/gym-pybullet-drones: PyBullet Gymnasium environments for single and multi-agent reinforcement learning of quadcopter control \u00b7 GitHub\n...\n# gym-pybullet-drones\n...\nThis is a minimalist refactoring of the original`gym-pybullet-drones` repository, designed for compatibility with gymnasium, stable-baselines3 2.0, and betaflight/ crazyflie-firmware SITL.\n...\n### Reinforcement learning examples (SB3's PPO)\n...\n```\ncd gym_pybullet_drones/examples/\npython learn.py # task: single drone hover at z == 1.0\npython learn.py --multiagent true # task: 2-drone hover at z == 1.2 and 0.7\n\nLATEST_MODEL=$(ls -t results | head -n 1) && python play.py --model_path \"results/${LATEST_MODEL}/best_model.zip\" # play and visualize the most recent learned policy\n...\n```\n@INPROCEEDINGS{panerati2021learning,\n      title={Learning to Fly---a Gym Environment with PyBullet Physics for Reinforcement Learning of Multi-agent Quadcopter Control}, \n      author={Jacopo Panerati and Hehui Zheng and SiQi Zhou and James Xu and Amanda Prorok and Angela P. Schoellig},\n      booktitle={2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},\n      year={2021},\n      volume={},\n      number={},\n      pages={7512-7519},\n      doi={10.1109/IROS51168.2021.9635857}\n}\n```\n...\nPyBullet Gymnasium environments for single and multi-agent reinforcement learning of quadcopter control"
+        ],
+        "image": "https://repository-images.githubusercontent.com/286408558/64ec6f00-f20b-11ea-94e2-0c3d2c477217"
+      },
+      {
+        "id": "https://github.com/microsoft/airsim-drone-racing-vae-imitation",
+        "title": "microsoft/AirSim-Drone-Racing-VAE-Imitation",
+        "url": "https://github.com/microsoft/airsim-drone-racing-vae-imitation",
+        "highlights": [
+          "# microsoft/AirSim-Drone-Racing-VAE-Imitation\n...\nCode associated with our paper \"Learning Visuomotor Policies for Aerial Navigation Using Cross-Modal Representations\": https://arxiv.org/abs/1909.06993\n...\n# Learning Visuomotor Policies for Aerial Navigation Using Cross-Modal Representations\n...\n![Teaser](figs/giphy.gif) \n\nThis repository provides a code base to evaluate and train models from the paper \"*Learning Visuomotor Policies for Aerial Navigation Using Cross-Modal Representations*\". \n\nArXiv pre-print: [https://arxiv.org/abs/1909.06993](https://arxiv.org/abs/1909.06993)\n\nPaper video: https://youtu\n...\nbe/VKc3\n...\nIn order to train the\n...\nrepresentations you can either use the downloaded image dataset\n...\nAirsim.\n...\n## Generating imitation learning data for racing\n...\n- Go to folder `imitation_learning`, and\n...\ntrain_bc\n...\nedit variables `base\n...\npath`, `data_dir_list`, and `\n...\ndownloaded datasets with\n...\n8m of nominal radius\n...\n## Deploying the trained policies\n...\n- In file `imitation_learning/bc_navigation.py`, modify `policy_type` and `gate_noise`. Then run:\n...\nThe policies trained in AirSim using the cross-modal representations can transferred directly towards real-world applications. Please check out the paper and video to see more results from real-life deployment."
+        ]
+      },
+      {
+        "id": "https://gitee.com/maxibooksiyi/YOPO",
+        "title": "\u9a6c\u7199/YOPO",
+        "url": "https://gitee.com/maxibooksiyi/YOPO",
+        "author": "\u9a6c\u7199",
+        "highlights": [
+          "occur in the future.)&#x000A&#x000A;&#x000A&#x000A;```&#x000A&#x000A;conda create --name yopo python=3.8&#x000A&#x000A;conda activate yopo&#x000A&#x000A;&#x000A&#x000A;conda install pytorch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 pytorch-cuda=11.8 -c pytorch -c nvidia&#x000A&#x000A;pip install opencv-python&#x000A&#x000A;pip install gym==0.21.0 stable-baselines3==1.5.0 &#x000A&#x000A;pip install scipy==1.10.1 scikit-build==0.18.1 ruamel-yaml==0.17.21 numpy==1.22.3 tensorboard==2.8.0 empy catkin\\_pkg&#x000A&#x000A;```&#x000A&#x000A;\\*\\*5. Build the flightlib\\*\\* &#x000A&#x000A;```&#x000A&#x000A;conda activate yopo&#x000A&#x000A;cd YOPO/flightlib/build&#x000A&#x000A;cmake ..&#x000A&#x000A;make -j8&#x000A&#x000A;pip install .&#x000A&#x000A;```&#x000A&#x000A;\\*\\*6. Some issues may arise when we test on different devices\\*\\*&#x000A&#x000A;&#x000A&#x000A;6.1. No module named 'flightpolicy' &#x000A&#x000A;&#x000A&#x000A;```&#x000A&#x000A;# modify \"\"\\~/YOPO/flightpolicy\"\" to your path&#x000A&#x000A;echo \"\"export PYTHONPATH=$PYTHONPATH:\\~/YOPO\"\" >>>> \\~/.bashrc&#x000A&#x000A;source \\~/.bashrc&#x000A&#x000A;```&#x000A&#x000A;6.2. No module named 'flightgym'&#x000A&#x000A;```&#x000A&#x000A;cd YOPO/flightlib/build&#x000A&#x000A;pip install -e .&#x000A&#x000A;```&#x000A&#x000A;&#x000A&#x000A;## Train the Policy&#x000A&#x000A;\\*\\*1. Data collection\\*\\* &#x000A&#x000A;&#x000A&#x000A;For"
+        ],
+        "image": "https://foruda.gitee.com/avatar/1737475863133373715/8668676_maxibooksiyi_1737475863.png",
+        "favicon": "https://cn-assets.gitee.com/assets/favicon-9007bd527d8a7851c8330e783151df58.ico"
+      }
+    ],
+    "searchTime": 1635,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

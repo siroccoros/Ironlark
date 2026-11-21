@@ -1,0 +1,298 @@
+{
+  "query": {
+    "query": "FlightBench AvoidBench SUPER autonomous drone planning benchmark comparisons collision success safety speed limitations",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "314f8f8fb24f9f73f08754e7d708b12b",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/thu-uav/FlightBench",
+        "title": "thu-uav/FlightBench",
+        "url": "https://github.com/thu-uav/FlightBench",
+        "publishedDate": "2024-05-29T12:58:20.000Z",
+        "author": "thu-uav",
+        "highlights": [
+          "FlightBench is an open-source comprehensive benchmark for planning methods on ego-vision-based navigation for quadrotors built on Flightmare. FlightBench provides cusomizable test scenarios (including three quantitative task difficulty metrics), representative planning algorithms, and comprehensive evaluation metrics. FlightBench also integrates the MAPPO algorithm, facilitating the training of RL-based planning methods.\n...\n```\n@article"
+        ],
+        "image": "https://opengraph.githubassets.com/83a7c86177fb087f22ccb2f345af393accf0a198dceccf04ff86fb4367959878/thu-uav/FlightBench"
+      },
+      {
+        "id": "https://exa.ai/library/publication/slszw9n1c9z",
+        "title": "FlightBench: Benchmarking Learning-based Methods for Ego-vision-based Quadrotors Navigation",
+        "url": "https://doi.org/10.48550/arxiv.2406.05687",
+        "publishedDate": "2024-06-09T00:00:00.000Z",
+        "author": "Shu-Ang Yu, Chao Yu, Feng Gao, Yi Wu, Yu Wang",
+        "highlights": [
+          ". Tab. IV displays the results for tests with the highest AOL in each scenario. We evaluate these methods using our proposed evaluation metrics, and computation time will be addressed separately in a subsequent discussion. In these experiments, we standardize the expected maximum speed at 3m/s for a fair comparison. Exceptions are SBMT, LMT, and LPA, whose flight speeds cannot be manually controlled. As shown in Tab. IV, the privileged methods, with a global awareness of obstacles, set the upper bound for motion performance in terms of average speed and success rate. In contrast, the success rate of ego-vision methods in the Maze and MW scenarios is generally below 0.6, indicating that our benchmark remains challenging for ego-vision methods, especially at the perception level. Learning-based methods, known for their aggressive maneu vering, tend to fly less smoothly and consume more energy. They also experience more crashes in areas with large corners, as seen in the Maze and MW scenarios. When performing a large-angle turn, an aggressive policy is more likely to cause the quadrotor to lose balance and crash. Optimization based methods are still competitive or even superior to current learning-based approaches, particularly in terms of minimizing energy costs. By contrasting the more effective Fast-Planner with the more severely impaired TGK-Planner and EGO Planner, we find"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/slszw9n1c9z",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "FlightBench: Benchmarking Learning-based Methods for Ego-vision-based Quadrotors Navigation",
+              "year": 2024,
+              "date": "2024-06-09",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Shu-Ang Yu",
+                  "id": null
+                },
+                {
+                  "name": "Chao Yu",
+                  "id": null
+                },
+                {
+                  "name": "Feng Gao",
+                  "id": null
+                },
+                {
+                  "name": "Yi Wu",
+                  "id": null
+                },
+                {
+                  "name": "Yu Wang",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Ego-vision-based navigation in cluttered environments is crucial for mobile systems, particularly agile quadrotors. While learning-based methods have shown promise recently, head-to-head comparisons with cutting-edge optimization-based approaches are scarce, leaving open the question of where and to what extent they truly excel. In this paper, we introduce FlightBench, the first comprehensive benchmark that implements various learning-based methods for ego-vision-based navigation and evaluates them against mainstream optimization-based baselines using a broad set of performance metrics. More importantly, we develop a suite of criteria to assess scenario difficulty and design test cases that span different levels of difficulty based on these criteria. Our results show that while learning-based methods excel in high-speed flight and faster inference, they struggle with challenging scenarios like sharp corners or view occlusion. Analytical experiments validate the correlation between our difficulty criteria and flight performance. Moreover, we verify the trend in flight performance within real-world environments through full-pipeline and hardware-in-the-loop experiments. We hope this benchmark and these criteria will drive future advancements in learning-based navigation for ego-vision quadrotors. Code and documentation are available at https://github.com/thu-uav/FlightBench.",
+              "doi": "10.48550/arxiv.2406.05687"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/3vhxfs0f3fn",
+        "title": "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors",
+        "url": "https://doi.org/10.1109/icra48891.2023.10161097",
+        "publishedDate": "2023-05-29T00:00:00.000Z",
+        "author": "Hang Yu, Guido C. H. E de Croon, Christophe De Wagter",
+        "highlights": [
+          ". we divide the data into five groups so that it is easy to see the tendency. Obviously, for the three algorithms, success rate increases significantly with the increase of traversability, which shows that the performance of obstacle avoidance algorithms has a great relationship with the environment metrics we proposed. Figure 5 (a) indicates that Ego-planner and MBPlanner have a similar performance concerning safety (success rate) and that both are better than Agile-Autonomy. Figure 5 (b) is the result of contrast factor calculated by success rate. The value of \"Ego / MBPlanner\" is closed to 1, meaning that they have a similar performance while \"Ego / Agile-Autonomy\" is below 1, meaning that Ego-planner has a higher success rate than Agile-Autonomy. The relationship between traversability and relative gap size is shown in Figure 5(c ). The traversability of outdoor scene does not always\n...\nAnother metric with significant differences is average goal velocity (Figure 6 (c)). Agile-Autonomy has been designed for high-speed flight, which results in higher flight speeds than those of Ego-planner and MBPlanner. Relative end distance can also indicate the safety of obstacle avoidance. As shown in Figure 6 (d), in the results of Relative end distance, Ego-planner is still the most safe algorithm and we can see relative end distance also has a decreasing trend with traversability."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/3vhxfs0f3fn",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors",
+              "year": 2023,
+              "date": "2023-05-29",
+              "type": null,
+              "language": "en",
+              "citationCount": 15,
+              "authors": [
+                {
+                  "name": "Hang Yu",
+                  "id": null
+                },
+                {
+                  "name": "Guido C. H. E de Croon",
+                  "id": null
+                },
+                {
+                  "name": "Christophe De Wagter",
+                  "id": null
+                }
+              ],
+              "referenceCount": 19,
+              "abstract": "Obstacle avoidance is an essential topic in the field of autonomous drone research. When choosing an avoidance algorithm, many different options are available, each with their advantages and disadvantages. As there is currently no consensus on testing methods, it is quite challenging to compare the performance between algorithms. In this paper, we propose AvoidBench, a benchmarking suite which can evaluate the performance of vision-based obstacle avoidance algorithms by subjecting them to a series of tasks. Thanks to the high fidelity of multi-rotors dynamics from RotorS and virtual scenes of Unity3D, AvoidBench can realize realistic simulated flight experiments. Compared to current drone simulators, we propose and implement both performance and environment metrics to reveal the suitability of obstacle avoidance algorithms for environments of different complexity. To illustrate AvoidBench's usage, we compare three algorithms: Ego-planner, MBPlanner, and Agile-autonomy. The trends observed are validated with real-world obstacle avoidance experiments. Code is available at: https://github.com/tudelft/AvoidBench",
+              "doi": "10.1109/icra48891.2023.10161097"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/tudelft/AvoidBench",
+        "title": "tudelft/AvoidBench",
+        "url": "https://github.com/tudelft/AvoidBench",
+        "highlights": [
+          "This work is based on [Flightmare](https://github.com/uzh-rpg/flightmare). In this project, we propose AvoidBench as a benchmarking suite for evaluating the performance of vision-based obstacle avoidance algorithms. We choose Flightmare as the basic backbone of AvoidBench, because it is lighter and can achieve higher simulation speed than Airsim. Based on Flightmare, we have for now built two simulation scenes for benchmarking: a forest environment and an indoor environment. It is easy to change the distribution of obstacles and complexity of map so that researchers can reveal the potential of drones using their algorithms. And we propose a complete set of metrics which contain the flight performance and environment complexity to evaluate the obstacle avoidance algorithms.\n\n \n \n \n\n \n \n \n\n# 2. Installation\n...\nWe tested several mainstream, state-of-the-art obstacle avoidance algorithms, including: [Agile-Autonomy](https://github.com/uzh-rpg/agile_autonomy)(learning-based), [Ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner)(optimization-based), and [MBPlanner](https://github.com/ntnu-arl/mbplanner_ros)(motion-primitive-based, the original version is designed for explorationm, we changed the exploration gain to the distance of current point to the goal point so that the drone can always fly to a fixed goal). Here is the testing video:\n \n \n \n\n# 7. Citation"
+        ]
+      },
+      {
+        "id": "https://www.science.org/doi/10.1126/scirobotics.ado6187",
+        "title": "Safety-assured high-speed navigation for MAVs",
+        "url": "https://www.science.org/doi/10.1126/scirobotics.ado6187",
+        "publishedDate": "2025-01-29T00:00:00.000Z",
+        "highlights": [
+          "Micro air vehicles (MAVs) capable of high-speed autonomous navigation in unknown environments have the potential to improve applications like search and rescue and disaster relief, where timely and safe navigation is critical. However, achieving autonomous, safe, and high-speed MAV navigation faces systematic challenges, necessitating reduced vehicle weight and size for high-speed maneuvering, strong sensing capability for detecting obstacles at a distance, and advanced planning and control algorithms maximizing flight speed while ensuring obstacle avoidance. Here, we present the safety-assured high-speed aerial robot (SUPER), a compact MAV with a 280-millimeter wheelbase and a thrust-to-weight ratio greater than 5.0, enabling agile flight in cluttered environments. SUPER uses a lightweight three-dimensional light detection and ranging (LIDAR) sensor for accurate, long-range obstacle detection. To ensure high-speed flight while maintaining safety, we introduced an efficient planning framework that directly plans trajectories using LIDAR point clouds. In each replanning cycle, two trajectories were generated: one in known free spaces to ensure safety and another in both known and unknown spaces to maximize speed. Compared with baseline methods, this framework reduced failure rates by 35.9 times while flying faster and with half the planning time. In real-world tests, SUPER"
+        ],
+        "image": "https://www.science.org/cms/asset/1acc45c9-48c7-4d8a-a503-c4b4d58dd7b1/scirobotics.ado6187-keyimage.gif",
+        "favicon": "https://www.science.org/products/aaas/releasedAssets/images/favicon/favicon-32x32-da7530e24672f255e6c1269e845c61a0.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2406.05687v2",
+        "title": "Benchmarking Learning-based Methods for Ego-vision- ...",
+        "url": "https://arxiv.org/html/2406.05687v2",
+        "publishedDate": "2024-10-01T00:00:00.000Z",
+        "highlights": [
+          "for ego-vision-based quadrotor navigation. We initially developed a suite of learning-based methods, encompassing both ego-vision and privileged ones for an in-depth comparative analysis. Additionally, we incorporated several representative optimization-based benchmarks for further head-to-head evaluation. Moreover, we established three criteria to measure the difficulty of scenarios, thereby creating a diverse array of tests that span a spectrum of difficulties. Finally, we compared these methods across a wide range of performance metrics to gain a deeper understanding of their\n...\nLearning-based methods, known for their aggressive maneuvering, tend to fly less smoothly and consume more energy. They also experience more crashes in areas with large corners, as seen in the Maze and MW scenarios. When performing a large-angle turn, an aggressive policy is more likely to cause the quadrotor to lose balance and crash. Optimization-based methods are still competitive or even superior to current learning-based approaches, particularly in terms of minimizing energy costs. By contrasting the more effective Fast-Planner with the more severely impaired TGK-Planner and EGO-Planner, we find that global trajectory smoothing and enhancing the speed of replanning are crucial for improving success rates in complex scenarios. Detailed analyses on the failure cases can be found in the Sec. C.2."
+        ],
+        "image": "http://arxiv.org/html/2406.05687v2/extracted/5892626/figs/overview.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2406.05687v1",
+        "title": "A Comprehensive Benchmark of Spatial Planning Methods ...",
+        "url": "https://arxiv.org/html/2406.05687v1",
+        "publishedDate": "2024-06-09T00:00:00.000Z",
+        "highlights": [
+          "Learning-based planners, known for their aggressive maneuvering, tend to fly less smoothly and consume more energy. They also experience more crashes in areas with large corners, as seen in the Maze and MW scenarios. When performing a large-angle turn, an aggressive planner is more likely to cause the quadrotor to lose balance and crash. Optimization-base methods are still competitive or even superior to current learning-based approaches, particularly in terms of minimizing energy costs. By contrasting the more effective Fast-Planner with the more severely impaired TGK-Planner and EGO-Planner, we find that global trajectory smoothing and enhancing the speed of replanning are crucial for improving success rates in complex scenarios. Detailed analyses on the failure cases can be found in the Section C.2.\n...\nexhibit agile avoidance and operate closer to dynamic limits due to their straightforward end-to-end architecture. In contrast, optimization-based methods struggle in high-speed flights because their hierarchical architecture and latency between sequential modules can cause the quadrotor to overshoot obstacles before a new path is planned. A detailed analysis of the computation time for the pipeline is discussed in Sec. 4.2.3. Additionally, privileged planners show higher success rates and faster flights, highlighting the substantial potential for improvement in current"
+        ],
+        "image": "https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png"
+      },
+      {
+        "id": "https://nicsefc.ee.tsinghua.edu.cn/nics_file/pdf/14901e59-5589-462b-b431-2ab897fe22bf.pdf",
+        "title": "FlightBench: Benchmarking Learning-Based Methods for Ego-Vision-Based Quadrotors Navigation",
+        "url": "https://nicsefc.ee.tsinghua.edu.cn/nics_file/pdf/14901e59-5589-462b-b431-2ab897fe22bf.pdf",
+        "highlights": [
+          ". Tab. IV displays the results for tests with the highest AOL in each scenario. We evaluate these methods using our proposed evaluation metrics, and computation time will be addressed separately in a subsequent discussion. In these experiments, we standardize the expected maximum speed at 3m/s for a fair comparison. Exceptions are SBMT, LMT, and LPA, whose flight speeds cannot be manually controlled. As shown in Tab. IV, the privileged methods, with a global awareness of obstacles, set the upper bound for motion performance in terms of average speed and success rate. In contrast, the success rate of ego-vision methods in the Maze and MW scenarios is generally below 0.6, indicating that our benchmark remains challenging for ego-vision methods, especially at the perception level. Learning-based methods, known for their aggressive maneu vering, tend to fly less smoothly and consume more energy. They also experience more crashes in areas with large corners, as seen in the Maze and MW scenarios. When performing a large-angle turn, an aggressive policy is more likely to cause the quadrotor to lose balance and crash. Optimization based methods are still competitive or even superior to current learning-based approaches, particularly in terms of minimizing energy costs. By contrasting the more effective Fast-Planner with the more severely impaired TGK-Planner and EGO Planner, we find"
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/ztdznwlx608",
+        "title": "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors",
+        "url": "https://doi.org/10.48550/arxiv.2301.07430",
+        "publishedDate": "2023-01-18T00:00:00.000Z",
+        "author": "Hang Yu, Guido C. H. E de Croon, Christophe De Wagter",
+        "highlights": [
+          ". Flightmare [11] is a more flexible simulator for quadrotors. It uses Unity3D for rendering and a Gazebo based quadrotor dynamics [9] as well as a parallelized implementation of classical quadrotor dynamics model used for reinforcement learning. There are also some benchmarks for autonomous drones. MAVBench [12] is a benchmark simulator to measure the performance of drones executing different missions such as search-and-rescue, mapping and planning. Using Airsim and Unreal Engine 4 as a backend, MAVBench is the first end-to end photo-realistic benchmarking suite for MAVs. Although it supports many tasks, only time and energy are considered as the metrics and the complexity of environments is ignored. BOARR [13] is a benchmarking suite specifically designed to evaluate the performance of obstacle avoidance algorithms. Unfortunately, as BOARR is using Gazebo as a simulator, the visual fidelity is quite poor. We believe that in applications such as vision-based obstacle avoidance, visual realism plays a large role in how an algorithm performs. In this article, we propose AvoidBench as a benchmarking suite for evaluating the performance of vision-based obstacle avoidance algorithms. We choose Flightmare as the basic backbone of AvoidBench, because it is lighter and can achieve higher simulation speed than Airsim. Based on Flightmare, we have for now built two simulation scenes for"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/ztdznwlx608",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors",
+              "year": 2023,
+              "date": "2023-01-18",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Hang Yu",
+                  "id": null
+                },
+                {
+                  "name": "Guido C. H. E de Croon",
+                  "id": null
+                },
+                {
+                  "name": "Christophe De Wagter",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Obstacle avoidance is an essential topic in the field of autonomous drone research. When choosing an avoidance algorithm, many different options are available, each with their advantages and disadvantages. As there is currently no consensus on testing methods, it is quite challenging to compare the performance between algorithms. In this paper, we propose AvoidBench, a benchmarking suite which can evaluate the performance of vision-based obstacle avoidance algorithms by subjecting them to a series of tasks. Thanks to the high fidelity of multi-rotors dynamics from RotorS and virtual scenes of Unity3D, AvoidBench can realize realistic simulated flight experiments. Compared to current drone simulators, we propose and implement both performance and environment metrics to reveal the suitability of obstacle avoidance algorithms for environments of different complexity. To illustrate AvoidBench's usage, we compare three algorithms: Ego-planner, MBPlanner, and Agile-autonomy. The trends observed are validated with real-world obstacle avoidance experiments.",
+              "doi": "10.48550/arxiv.2301.07430"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/vtpcj577kwy",
+        "title": "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors",
+        "url": "http://resolver.tudelft.nl/uuid:302426ff-a4a4-4f8a-967a-331ea71b1ba1",
+        "publishedDate": "2020-01-01T00:00:00.000Z",
+        "author": "Rano Veder",
+        "highlights": [
+          "The main reason d opt is used instead of d trav , is because using d trav in Equation 2 would give the average velocity. Although the average velocity seems like a good metric to measure the traversal speed, it breaks down when the drone moves in different directions than the goal direction. A drone that would be stuck in the middle of the obstacle field for a given period, flying circles at a constant velocity of 1 m/s, would have the same average velocity as a drone flying straight to the goal without interruption at 1 m/s. Using d opt better shows how fast the drone effectively moves towards the goal. c) Collision Percentage: Every mission, there is the possibility of the drone hitting an\n...\na) Collision Percentage: The Collision Percentage graph seen in Figure 12a shows there exists a general trend of the Collision Percentage increasing as the Relative Gap Size decreases. It can also be noticed that as the contrast on the obstacles decreases, the performance becomes worse. Looking at the Straight Flight line, it can be seen that for the tasks with the higher Relative Gap Size values, there exist a few generated obstacle fields where it is possible to reach the goal by only flying straight. Only at a Relative Gap Size of 5 do we see that there is always at least one obstacle with which the drone will collide when travelling on the line from the start to the goal location."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/vtpcj577kwy",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors",
+              "year": 2020,
+              "date": "2020-01-01",
+              "type": "article",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Rano Veder",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Obstacle avoidance is an essential topic in the field of autonomous drone research. When choosing an avoidance algorithm, many different options are available, each with their advantages and disadvantages. As there is currently no consensus on testing methods, it is quite challenging to compare the performance between algorithms. In this paper, we present AvoidBench, a benchmarking suite capable of evaluating the performance of vision-based obstacle avoidance algorithms for multi-rotors in simulation. Utilising a set of performance metrics, AvoidBench assigns performance scores to obstacle avoidance algorithms by subjecting them to a series of tasks. Using both Airsim and Unreal engine under the hood, we are able to provide high-fidelity visuals and dynamics, leading to a relatively small gap between simulation and reality. AvoidBench comes included with a simple, but powerful C++ and Python API which provides functionality for procedural environment generation, custom benchmark design, and an easy-to-use framework for users to implement their own vision-based obstacle avoidance methods. Implementing an obstacle avoidance method can be done entirely in a single file, allowing anyone to share and compare their obstacle detection and avoidance algorithms with others.",
+              "doi": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://research.tudelft.nl/en/publications/avoidbench-a-high-fidelity-vision-based-obstacle-avoidance-benchm/",
+        "title": "AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors\n      -  TU Delft Research Portal",
+        "url": "https://research.tudelft.nl/en/publications/avoidbench-a-high-fidelity-vision-based-obstacle-avoidance-benchm/",
+        "publishedDate": "2024-02-05T09:29:57.000Z",
+        "highlights": [
+          "Obstacle avoidance is an essential topic in the field of autonomous drone research. When choosing an avoidance algorithm, many different options are available, each with their advantages and disadvantages. As there is currently no consensus on testing methods, it is quite challenging to compare the performance between algorithms. In this paper, we propose AvoidBench, a benchmarking suite which can evaluate the performance of vision-based obstacle avoidance algorithms by subjecting them to a series of tasks. Thanks to the high fidelity of multi-rotors dynamics from RotorS and virtual scenes of Unity3D, AvoidBench can realize realistic simulated flight experiments. Compared to current drone simulators, we propose and implement both performance and environment metrics to reveal the suitability of obstacle avoidance algorithms for environments of different complexity. To illustrate AvoidBench's usage, we compare three algorithms: Ego-planner, MBPlanner, and Agile-autonomy. The trends observed are validated with real-world obstacle avoidance experiments. Code is available at: https://github.com/tudelft/AvoidBench"
+        ],
+        "image": "https://research.tudelft.nl/skin/headerImage/"
+      },
+      {
+        "id": "https://ar5iv.labs.arxiv.org/html/2301.07430",
+        "title": "[2301.07430] AvoidBench: A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors",
+        "url": "https://ar5iv.labs.arxiv.org/html/2301.07430",
+        "highlights": [
+          "the performance of vision-based obstacle avoidance algorithms by subjecting them to a series of tasks. Thanks to the high fidelity of multi-rotors dynamics from RotorS and virtual scenes of Unity3D, AvoidBench\n...\nIn this article, we propose AvoidBench as a benchmarking suite for evaluating the performance of vision-based obstacle avoidance algorithms. We choose Flightmare as the basic backbone of AvoidBench, because it is lighter and can achieve higher simulation speed than Airsim. Based on Flightmare, we have for now built two simulation scenes for benchmarking: a forest environment and an indoor environment. It is easy to change the distribution of obstacles and complexity of map so that researchers can reveal the potential of drones using their algorithms. And we propose a complete set of metrics which contain the flight performance and environment complexity to evaluate the obstacle avoidance algorithms.\n...\nAnother metric with significant differences is average goal velocity (Figure 6(c)). Agile-Autonomy has been designed for high-speed flight, which results in higher flight speeds than those of Ego-planner and MBPlanner. Mission progress can also indicate the safety of obstacle avoidance. As shown in Figure 6(d), in the results of mission progress, Ego-planner is still the most safe algorithm and we can see mission progress also has a increase trend with traversability."
+        ],
+        "image": "https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png"
+      },
+      {
+        "id": "https://mavlab.tudelft.nl/avoidbench-icra-2023/",
+        "title": "AvoidBench @ ICRA 2023 - MAVLab",
+        "url": "https://mavlab.tudelft.nl/avoidbench-icra-2023/",
+        "publishedDate": "2023-06-01T18:57:41.000Z",
+        "author": "Yilun Wu",
+        "highlights": [
+          "At ICRA (IEEE International Conference on Robotics and Automation) 2023, MAVLab presented AvoidBench, a high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors.\n...\nVision-based obstacle avoidance is popular, since vision sensor can be compact, light-weight and low cost. Unfortunately, there is currently no shared consensus on how vision-based obstacle avoidance algorithms should be tested. This makes it not only difficult to see how the field of obstacle avoidance as a whole is progressing, but it also makes it hard to compare the performance of different obstacle avoidance algorithms.\n...\nTo improve this situation, we have developed \u201cAvoidBench\u201d, a software framework for benchmarking vision-based obstacle avoidance methods on simulated quadrotor drones. The framework allows researchers to test their own avoidance algorithms in different auto-generated environments. The environments are generated to vary on important characteristics that determine the difficulty of the task, including the obstacle density and the amount of visual texture in the environment. The framework employs multiple performance metrics, including among others success rate, path and energy optimality, flight velocity, computational effort, and progress towards the desired waypoint.\n...\nBench software is\n...\ncan change both the\n...\nand avoidance algorithms, either in"
+        ],
+        "image": "https://mavlab.tudelft.nl/wp-content/uploads/2023/10/avoidbench.png"
+      },
+      {
+        "id": "https://repository.tudelft.nl/record/uuid:75c3f28d-c3b0-4b29-b1a5-5dee7e293c6c",
+        "title": "AvoidBench  | TU Delft Repository",
+        "url": "https://repository.tudelft.nl/record/uuid:75c3f28d-c3b0-4b29-b1a5-5dee7e293c6c",
+        "highlights": [
+          "### A high-fidelity vision-based obstacle avoidance benchmarking suite for multi-rotors\n\n open_in_new Preview File \n\n Conference Paper (2023) \n\nAuthor(s)\n...\n- Aerospace Engineering)\n...\nObstacle avoidance is an essential topic in the field of autonomous drone research. When choosing an avoidance algorithm, many different options are available, each with their advantages and disadvantages. As there is currently no consensus on testing methods, it is quite challenging to compare the performance between algorithms. In this paper, we propose AvoidBench, a benchmarking suite which can evaluate the performance of vision-based obstacle avoidance algorithms by subjecting them to a series of tasks. Thanks to the high fidelity of multi-rotors dynamics from RotorS and virtual scenes of Unity3D, AvoidBench can realize realistic simulated flight experiments. Compared to current drone simulators, we propose and implement both performance and environment metrics to reveal the suitability of obstacle avoidance algorithms for environments of different complexity. To illustrate AvoidBench's usage, we compare three algorithms: Ego-planner, MBPlanner, and Agile-autonomy. The trends observed are validated with real-world obstacle avoidance experiments. Code is available at: https://github.com/tudelft/AvoidBench"
+        ],
+        "image": "https://repository.tudelft.nl/static/images/logo/tudelft_logo.svg"
+      },
+      {
+        "id": "https://axi.lims.ac.uk/paper/2406.05687",
+        "title": "FlightBench: A Comprehensive Benchmark o...",
+        "url": "https://axi.lims.ac.uk/paper/2406.05687",
+        "highlights": [
+          "# FlightBench: A Comprehensive Benchmark of Spatial Planning Methods for Quadrotors\n...\nSpatial planning in cluttered environments is crucial for mobile systems, particularly agile quadrotors. Existing methods, both optimization-based and learning-based, often focus only on success rates in specific environments and lack a unified platform with tasks of varying difficulty. To address this, we introduce FlightBench, the first comprehensive open-source benchmark for 3D spatial planning on quadrotors, comparing classical optimization-based methods with emerging learning-based approaches. We also develop a suite of task difficulty metrics and evaluation metrics to quantify the characteristics of tasks and the performance of planning algorithms. Extensive experiments demonstrate the significant advantages of learning-based methods for high-speed flight and real-time planning, while highlighting the need for improvements in complex conditions, such as navigating large corners or dealing with view occlusion. We also conduct analytical experiments to justify the effectiveness of our proposed metrics. Additionally, we show that latency randomization effectively enhances performance in real-world deployments. The source code is available at \\url{https://github.com/thu-uav/FlightBench}."
+        ]
+      }
+    ],
+    "searchTime": 1055.3,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

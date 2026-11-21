@@ -1,0 +1,142 @@
+{
+  "query": {
+    "query": "Open source quadrotor motion planning obstacle avoidance trajectory optimization repositories real flight EGO-Planner Fast-Planner GCOPTER SUPER FASTER ROG-Map",
+    "type": "deep",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    },
+    "additionalQueries": [
+      "recent 2024 2025 2026 autonomous drone navigation planners released code",
+      "quadrotor dynamic obstacle avoidance perception aware planning open source"
+    ]
+  },
+  "response": {
+    "requestId": "882b2910b57054092d533e202235a374",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/Fast-Planner",
+        "title": "HKUST-Aerial-Robotics/Fast-Planner",
+        "url": "https://github.com/HKUST-Aerial-Robotics/Fast-Planner",
+        "publishedDate": "2019-02-27T13:16:48.000Z",
+        "highlights": [
+          "A Robust and Efficient Trajectory Planner for Quadrotors\n...\n**Fast-Planner** is developed aiming to enable quadrotor fast flight in complex unknown environments. It contains a rich set of carefully designed planning algorithms. It also provides a foundational code framework and algorithms that support several popular open-source drone projects, including [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner),\n...\nThe project contains a collection of robust and computationally efficient algorithms for quadrotor fast flight:\n...\n- Kinodynamic path searching\n- B-spline-based trajectory optimization\n- Topological path searching and path-guided optimization\n- Perception-aware planning strategy (to appear)\n...\nCurrently it includes a kinodynamic path searching that respects the dynamics of quadrotors\n...\nIt also contains a sampling-based topological path searching algorithm to generate\n...\n- __bspline__: A implementation of the B-spline-based trajectory representation.\n...\n- __bspline_opt__: The gradient-based trajectory optimization using B-spline trajectory.\n- __active_perception__: Perception-aware planning strategy, which enable to quadrotor to actively observe and avoid unknown obstacles, to appear in the future.\n- __plan_manage__: High-level modules that schedule and call the mapping and planning algorithms. Interfaces for launching the whole system, as well as the configuration files are contained here.\n...\nto the strategy,\n...\nsolution space is explored"
+        ]
+      },
+      {
+        "id": "https://github.com/ZJU-FAST-Lab/ego-planner",
+        "title": "ZJU-FAST-Lab/ego-planner",
+        "url": "https://github.com/ZJU-FAST-Lab/ego-planner",
+        "highlights": [
+          "Our recently developed planner [EGO-Swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm) is an evolution from EGO-Planner. \nIt is more robust and safe, and therefore, is more recommended to use.\n...\nEGO-Swarm\n...\n- The framework of this repository is based on [Fast-Planner](https://github.com/HKUST-Aerial-Robotics/Fast-Planner) by Zhou Boyu who achieves impressive proformance on quadrotor local planning.\n\n- The L-BFGS solver we use is from [LBFGS-Lite](https://github.com/ZJU-FAST-Lab/LBFGS-Lite). \nIt is a C++ head-only single file, which is lightweight and easy to use.\n\n- The map generated in simulation is from [mockamap](https://github.com/HKUST-Aerial-Robotics/mockamap) by William Wu.\n\n- The hardware architecture is based on an open source implemation from [Teach-Repeat-Replan](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan).\n...\n# EGO-Planner \nEGO-Planner: An ESDF-free Gradient-based Local Planner for Quadrotors\n...\n**EGO-Planner** is a lightweight gradient-based local planner without ESDF construction, which significantly reduces computation time compared to some state-of-the-art methods. The total planning time is only **around 1ms** and don't need to compute ESDF.\n\n \n \n \n \n \n \n\n**Video Links:** [YouTube](https://youtu.be/UKoaGW7t7Dk), [bilibili](https://www.bilibili.com/video/BV1VC4y1t7F4/) (for Mainland China)\n...\nPlanner: An ESDF\n...\nfree Gradient-based Local Planner for Quadrotors, Xin Zhou, Zhepei Wang, Chao Xu and Fei Gao (Accepted by\n...\n[arXiv Preprint\n...\n7), and\n...\nIEEE Spectrum report\n...\nieee."
+        ]
+      },
+      {
+        "id": "https://github.com/zju-fast-lab/ego-planner",
+        "title": "ZJU-FAST-Lab/ego-planner",
+        "url": "https://github.com/zju-fast-lab/ego-planner",
+        "highlights": [
+          "Our recently developed planner [EGO-Swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm) is an evolution from EGO-Planner. \nIt is more robust and safe, and therefore, is more recommended to use.\n...\n- The framework of this repository is based on [Fast-Planner](https://github.com/HKUST-Aerial-Robotics/Fast-Planner) by Zhou Boyu who achieves impressive proformance on quadrotor local planning.\n\n- The L-BFGS solver we use is from [LBFGS-Lite](https://github.com/ZJU-FAST-Lab/LBFGS-Lite). \nIt is a C++ head-only single file, which is lightweight and easy to use.\n\n- The map generated in simulation is from [mockamap](https://github.com/HKUST-Aerial-Robotics/mockamap) by William Wu.\n\n- The hardware architecture is based on an open source implemation from [Teach-Repeat-Replan](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan).\n...\n# EGO-Planner \nEGO-Planner: An ESDF-free Gradient-based Local Planner for Quadrotors\n...\n**EGO-Planner** is a lightweight gradient-based local planner without ESDF construction, which significantly reduces computation time compared to some state-of-the-art methods. The total planning time is only **around 1ms** and don't need to compute ESDF.\n\n \n \n \n \n \n \n\n**Video Links:** [YouTube](https://youtu.be/UKoaGW7t7Dk), [bilibili](https://www.bilibili.com/video/BV1VC4y1t7F4/) (for Mainland China)\n...\nEGO-\n...\nAn ESDF-free Gradient-based Local Planner for Quadrotors, Xin Zhou, Zhe\n...\nWang, Chao Xu and Fei Gao\n...\nAccepted by RA\n...\nL). [arXiv Preprint\n...\n08835),\n...\nIEEE Xplore\n...\n47), and\n...\nIEEE Spectrum report"
+        ]
+      },
+      {
+        "id": "https://github.com/ZJU-FAST-Lab/GCOPTER",
+        "title": "ZJU-FAST-Lab/GCOPTER",
+        "url": "https://github.com/ZJU-FAST-Lab/GCOPTER",
+        "highlights": [
+          "__GCOPTER__ is an efficient and versatile multicopter trajectory optimizer built upon a novel sparse trajectory representation named [__MINCO__](https://arxiv.org/pdf/2103.00190.pdf). __User-defined state-input constraints__ for dynamics involving [__nonlinear drag effects__](https://github.com/ZJU-FAST-Lab/GCOPTER/blob/main/misc/flatness.pdf) are supported.\n...\n/)!__)\n \n \n \n \n \n\n- High-Speed FPV Flight Planning: [youtube](https://www.youtube.com/watch?v=QQS0AM3iOmc) or [bilibili](https://www.bilibili.com/video/BV1pq4y1z7Jp).\n \n \n \n \n \n\n- Multicopter Swarms Planning: [youtube](https://www.youtube.com/watch?v=w5GDMpjAoVQ) or [bilibili](https://www.bilibili.com/video/BV1gK4y1g7F7). (__Reported by [IEEE Spectrum Website](https://spectrum.ieee.org/)!__) [Code](https://github.com/ZJU-FAST-Lab/EGO-Planner-v2)\n \n \n \n \n \n\n- Long-Distance Drone Racing Planning: [youtube](https://www.youtube.com/watch?v=oIqtN3zWIhM) or [bilibili](https://www.bilibili.com/video/BV1sq4y1779e). (__Published in [IEEE RA-L](https://ieeexplore.ieee.org/document/9543598)__) [Code](https://github.com/ZJU-FAST-Lab/Fast-Racing)\n \n \n \n \n \n\n- Gaze Teleoperation Planning: [youtube](https://www.youtube.com/watch?v=WYujLePQwB8) or [bilibili](https://www.bilibili.com/video/BV1Yf4y1P74v). (__Published in [IEEE RA-L](https://doi.org/10.1109/LRA.2022.3153898)__) [Code](https://github.com/ZJU-FAST-Lab/GPA-Teleoperation)\n \n \n \n \n \n\n- Formation Keeping Planning: [youtube](https://www.youtube.com/watch?v=lFumt0rJci4) or [bilibili](https://www.bilibili.com/video/BV1qv41137Si). (IEEE ICRA)"
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/faster/",
+        "title": "mit-acl/faster",
+        "url": "https://github.com/mit-acl/faster/",
+        "highlights": [
+          "3D Trajectory Planner in Unknown Environments\n...\n- autonomous-navigation\n- drone\n- ground-robot\n...\n- path-planning\n...\n- trajectory-optimization\n...\n- uav\n...\n# FASTER: Fast and Safe Trajectory Planner for Navigation in Unknown Environments #\n...\n## How do I use FASTER with a real robot?\n...\nthe mapper, you simply need\n...\nrun the node that publishes the depth image of the camera (for\n...\nIntelRealSense\n...\nrealsense-ros) if you are using an Intel RealSense camera). After launching\n...\nnode, find the name of the topic of the depth image (by doing `rostopic echo`), and finally put that name on the [launch file of the mapper](https://gitlab.com/mit-acl/lab/acl\n...\nglobal-mapper/global_mapper_ros/launch/global_mapper_node.launch#L12).\n...\nAs shown in the diagram above, the UAV should subscribe to the [Goal message](https://gitlab.com/mit-acl/fsw/snap-stack/snapstack_msgs/-/blob/46a1911faed1a5b1be479df2f969ee4e17304f29/msg/QuadGoal.msg) published by FASTER. The estimator (or the motion capture) should then publish the current state of the UAV as a [State message](https://gitlab.com/mit-acl/fsw/snap-stack/snapstack_msgs/-/blob/master/msg/State.msg). If you are using a ground robot, you need to publish a [nav_msgs/Odometry message](http://docs.ros.org/en/api/nav_msgs/html/msg/Odometry.html) (see [this](https://github.com/mit-acl/faster/blob/1baccf08908ad5a049c9e3315e577b35214ce763/faster/scripts/goal_odom_to_cmd_vel_state.py#L218)), and it will be converted directly to a [State message](https://gitlab.com/mit-acl/fsw/snap-stack/snapstack_msgs/-/blob/master/msg/State.msg)."
+        ]
+      },
+      {
+        "id": "https://github.com/XinChen-stars/AERO_MPPI",
+        "title": "XinChen-stars/AERO_MPPI",
+        "url": "https://github.com/XinChen-stars/AERO_MPPI",
+        "highlights": [
+          "[ICRA-2026] AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation\n...\n## README\n\n \n AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation \n 2026 IEEE International Conference on Robotics and Automation \n\n Xin Chen,\n Rui Huang,\n Longbin Tang,\n Lin Zhao \n\n -->\n \n[![Conference](https://img.shields.io/badge/ICRA-2026-red.svg)](https://www.ieee-ras.org/conferences-workshops/fully-sponsored/icra)\n[![IsaacSim](https://img.shields.io/badge/IsaacSim-5.\n...\n.0-silver.svg)](https://docs.isaacsim.\n...\nsvg)](https\n...\n**AERO-MPPI** is a **GPU-accelerated trajectory planner for quadrotors** based on the **Model Predictive Path Integral (MPPI)** framework.\n\nKey features:\n...\n* \ud83d\udee0\ufe0f **Native integration with Isaac Sim / Isaac Lab**\n* \ud83c\udfaf **Anchor-guided trajectory ensembles** for escaping local minima\n* \u26a1 **Warp-accelerated MPPI enabling thousands of trajectory rollouts across 1000+ parallel environments**\n\n \n \n \n\n ```bibtex\n@inproceedings{chen2026aero,\n  title={AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation},\n  author={Xin Chen, Rui Huang, Longbin Tang, Lin Zhao},\n  booktitle={2026 IEEE International Conference on Robotics and Automation (ICRA)},\n  year={2026}\n} -->"
+        ]
+      },
+      {
+        "id": "https://github.com/mit-acl/sando",
+        "title": "mit-acl/sando",
+        "url": "https://github.com/mit-acl/sando",
+        "highlights": [
+          "SANDO: Safe Autonomous Trajectory Planning for Dynamic Unknown Environments\n...\n**Submitted to the IEEE Transactions on Robotics (T-RO)**\n\n \n \n Spatiotemporal\n...\nHardware Heatmap\n...\nInteractive\n...\nSingle Dynamic \n \n \n Hardware Multiple Dynamic \n Hardware Dynamic + Static \n \n \n\nSANDO plans safe, dynamically-feasible trajectories for UAVs in environments with both static and dynamic obstacles, including previously unseen ones detected at runtime via onboard sensors.\n...\nobstacles detected via\n...\n1. **Sensor Input** \u2014 Point cloud subscriptions update the voxel grid\n2. **HGP Manager** (`include/hgp/`) \u2014 Heat map-based global planner: voxel map, A* with heat costs, convex decomposition into safety corridors\n3. **SANDO Core** (`include/sando/sando.hpp`) \u2014 Planning orchestrator with state machine (YAWING \u2192 TRAVELING \u2192 GOAL_SEEN \u2192 GOAL_REACHED)\n4. **Gurobi Solver** (`include/sando/gurobi_solver.hpp`) \u2014 Local trajectory optimization using Hermite spline parameterization with dynamic factor adaptation\n5. **SANDO Node** (`src/sando/sando_node.cpp`) \u2014 ROS 2 node wrapper\n...\n- **Spatiotemporal safe flight corridors** \u2014 convex decomposition that accounts for obstacle motion over time\n- **Variable elimination** \u2014 reduces QP solve time by analytically eliminating dependent variables\n- **Dynamic factor adaptation** \u2014 automatically adjusts time-scaling for reliable convergence\n- **Dynamic heat maps** \u2014 soft-cost global planning that steers away from predicted obstacle trajectories\n\n \n\n##"
+        ]
+      },
+      {
+        "id": "https://github.com/simpleqk/mighty",
+        "title": "simpleqk/mighty",
+        "url": "https://github.com/simpleqk/mighty",
+        "highlights": [
+          "# MIGHTY: Hermite Spline-based Efficient Trajectory Planning\n...\n| **Dynamic Obstacles** | **Long Flight** |\n| ------------------------- | ------------------------- |\n | \n\n| **Fast Flight 1** | **Fast Flight 2** |\n| ------------------------- | ------------------------- |\n | \n\n| **Dynamic Env 1** | **Dynamic Env 2** |\n| ------------------------- | ------------------------- |\n | \n\n## Paper\n...\nThe L-BFGS solver implementation in this repository (`src/mighty/lbfgs_solver.cpp`, `include/mighty/lbfgs_solver.hpp`) is adapted from [ZJU-FAST-Lab/GCOPTER](https://github.com/ZJU-FAST-Lab/GCOPTER/blob/main/gcopter/include/gcopter/lbfgs.hpp). We thank the authors for making their implementation publicly available.\n...\n## Additional Information\n\n \n Dependencies \n\n All dependencies are version-controlled in `mighty.repos`:\n - **ROS 2 packages**: acl-mapping, dynus_interfaces, gazebo_ros_pkgs, livox_laser_simulation_ros2, realsense_gazebo_plugin, uav_simulator\n - **DecompROS2**: Decomposition utilities (requires decomp_util to build first)\n - **Livox-SDK2**: Livox LiDAR SDK (non-ROS binary\n...\n- **livox_ros_driver2**: Liv\n...\nROS 2 driver (uses custom build.sh\n...\nPaper Benchmarking \n\n The simple, complex, jerk weight sweep, and reference position/velocity benchmarking is available at:\n  ```bash\n  https://github.com/kotakondo/GCOPTER\n  ```\n \n\n \n Bag Recording \n\n  ```\n...\npython3 src/mighty/scripts/bag_record.py --bag\n...\nNX01\n...\nsec:\n...\n: 'map'}, pose: {position\n...\n{x:\n...\n05.0, y: 0.0, z: 3.0}, orientation: {x\n...\n.0, y:\n...\n.0, z: 0.0, w: 1.0}}}\" --once"
+        ]
+      },
+      {
+        "id": "https://github.com/arclab-hku/FAPP",
+        "title": "arclab-hku/FAPP",
+        "url": "https://github.com/arclab-hku/FAPP",
+        "highlights": [
+          "[T-RO'24] Fast and Adaptive Perception and Planning for UAVs in Dynamic Cluttered Environments\n...\n- aerial-systems\n- dynamic-environment\n- motion-planning\n- obstacle-avoidance\n- point-cloud\n...\n**FAPP** (**F**ast and **A**daptive **P**erception and **P**lanning) is one of the first few works that consider the obstacle avoidance of UAVs in highly cluttered and dynamic environments. The performance of FAPP is validated in various simulation and experimental tests. The whole perception and planning process can be completed within a few milliseconds, which is highly efficient. (Click the image to view the video)\n...\n```\n@ARTICLE{10816005,\n  author={Lu, Minghao and Fan, Xiyu and Chen, Han and Lu, Peng},\n  journal={IEEE Transactions on Robotics}, \n  title={FAPP: Fast and Adaptive Perception and Planning for UAVs in Dynamic Cluttered Environments}, \n  year={2025},\n  volume={41},\n  number={},\n  pages={871-886},\n  keywords={Dynamics;Vehicle dynamics;Collision avoidance;Heuristic algorithms;Planning;Autonomous aerial vehicles;Real-time systems;Navigation;Motion segmentation;Robot kinematics;Aerial systems;dynamic environment;motion planning;obstacle avoidance;point cloud},\n  doi={10.1109/TRO.2024.3522187}}\n\n```\n...\nTrigger the quadrotor by the `3D Nav Goal` in Rviz.\n...\nWe would like\n...\nour gratitude to the following projects\n...\n- [GCOPTER](https://github.com/ZJU-FAST-Lab/GCOPTER): A general-purpose trajectory optimizer for multicopters.\n- [EGO-Planner](https://github.com/ZJU-FAST-Lab/EGO-Planner-v2): An efficient framework for gradient-based quadrotor local planning."
+        ]
+      },
+      {
+        "id": "https://github.com/hku-mars/IPC",
+        "title": "hku-mars/IPC",
+        "url": "https://github.com/hku-mars/IPC",
+        "highlights": [
+          "# hku-mars/IPC\n...\nIntegrated Planning and Control for Quadrotor Navigation in Presence of Sudden Crossing Objects and Disturbances\n...\n**IPC**: Integrated Planning and Control for Quadrotor Navigation in Presence of Suddenly Appearing Objects and Disturbances\n...\nIntegrated Planning and Control for Quadrotor Navigation in Presence of Suddenly Appearing Objects and Disturbances](https\n...\nOr see the pdf at: [liu2023ipc.pdf](paper/liu2023ipc.pdf) \n\nCode: [Github](https://github.com/hku-mars/IPC)\n...\nThe **IPC** is an integrated planning and control framework for quadrotors.\n...\nThe **IPC's characteristic**:\n...\n* Safety (Using safe flight corridor as hard constraints)\n* Low latency (Can run at 100Hz)\n* Strong disturbance rejection capability\n\nUsing **IPC**, the quadrotor can:\n...\n* Avoid suddenly appearing object\n* Fly safely under disturbances (i.e., external forces and wind disturbances)\n* Navigate autonomously in dense woods\n...\n(1) Navigate autonomously in a simulated environment in the woods \n\nrun ipc\n...\nThen click on the `3D goal` of `rviz` to select the target \n\n(2) Benchmark: Avoid suddenly appearing object (**Ideal simulation**)\n\nrun ipc\n...\n```\nsource devel/setup.bash\nroslaunch ipc ipc_avoid.launch\n```\n...\n```\nsource devel/setup.bash\nroslaunch ipc fast_avoid.launch\n```"
+        ]
+      },
+      {
+        "id": "https://github.com/hkust-aerial-robotics/apace/",
+        "title": "HKUST-Aerial-Robotics/APACE",
+        "url": "https://github.com/hkust-aerial-robotics/apace/",
+        "highlights": [
+          "# HKUST-Aerial-Robotics/APACE\n...\nAPACE: Agile and Perception-aware Trajectory Generation for Quadrotor Flights (ICRA2024)\n...\n- aerial-robotics\n- autonomous-navigation\n- motion-planning\n- perception-aware\n...\n## README\n\n# APACE\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\nThis is the code repository for the paper contributed to ICRA2024: \n*APACE: Agile and Perception-aware Trajectory Generation for Quadrotor Flights*.\n...\n**APACE** is a systematic, flexible and efficient framework for **A**gile and **P**erception-**A**ware traje**C**tory g**E**neration for quadrotor flights.\n...\n**APACE** empowers a quadrotor with visual sensors to maneuver in challenging environments while maintaining stable visual odometry, such as in a darkness scenario with only a few light spots.\n\n \n \n \n\nPlease cite our paper if you use this project in your research:\n...\n- [__\n...\nACE: Agile and Perception-Aware Trajectory Generation for Quadrotor Flights\n...\n(ICRA2\n...\n* Install dependency and clone\n...\nrepository\n  ```\n    sudo apt install libgoogle-glog-dev libdw-dev\n    cd ${YOUR_WORKSPACE_PATH}/src\n...\ngit clone https://github.com/HKUST-Aerial-Robotics/AP\n...\n.git\n    git clone https\n...\nchencq/VINS-Fusion.git\n    cd ..\n    catkin_make\n    source devel/setup.\n...\ncan put them in\n...\nAfter successful installation, you can run the APACE planner in the AirSim simulator.\n\n \n \n \n\n* Launch RViz visualization\n  ``` \n    roslaunch plan_manage rviz.launch\n  ```\n...\n* Launch VINS estimator\n...\n* Launch APACE planner\n  ```\n    roslaunch plan_manage agile_planner_airsim.launch\n  ```"
+        ]
+      },
+      {
+        "id": "https://github.com/Robotics-STAR-Lab/LA-Planner/blob/main/README.md",
+        "title": "README.md at main \u00b7 Robotics-STAR-Lab/LA-Planner",
+        "url": "https://github.com/Robotics-STAR-Lab/LA-Planner/blob/main/README.md",
+        "highlights": [
+          "- Repository: Robotics-STAR-Lab/LA-Planner | [IROS 2025] Perception-aware Planning for Quadrotor Flight in Unknown and Feature-limited Environments | 56 stars | C++\n- Branch: main\n...\nA novel **localization-aware** planner for quadrotor flight in **unknown** and **feature-limited** environments that properly allocates perception resources among environmental information during navigation. It tackles the issue of strong dependency on prior environmental knowledge inherent in traditional localization-aware planning methods.\n...\n**[IROS'25 oral]** This repository maintains the implementation of \"**Perception-aware Planning for Quadrotor Flight in Unknown and Feature-limited Environments**\". [arxiv Preprint](https://arxiv.org/abs/2503.15273)\n...\n**Note:** map3 is intentionally designed to be more challenging than map1 and map2. It consists of a long corridor including sharp turns, dead-ends, and staircases, which may lead to various navigation failures. The animation below shows one such failure case, where the quadrotor is considered to be unable to localize itself because the number of visible features remains below the threshold for a period of time.\n...\nerror code. You can\n...\nWe use [MINCO](https://github.com/ZJU-FAST-Lab/GCOPTER) as our yaw trajectory representation.\n...\nWe draw inspiration from the autonomous exploration framework in [FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL).\n\nOur perception-aware trajectory planning method is partially inspired by the design of [APACE](https://github.com/HKUST-Aerial-Robotics/APACE)."
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/jisuweng/YOPO",
+        "title": "GitHub - jisuweng/YOPO: You Only Plan Once: A Learning Based Quadrotor Planner \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/jisuweng/YOPO",
+        "publishedDate": "2025-08-18T00:00:00.000Z",
+        "author": "jisuweng",
+        "highlights": [
+          "GitHub - jisuweng/YOPO: You Only Plan Once: A Learning Based Quadrotor Planner \u00b7 GitHub\n...\nWe propose a learning-based planner for autonomous navigation in obstacle-dense environments which integrates (i) perception and mapping, (ii) front-end path searching, and (iii) back-end optimization of classical methods into a single network.\n...\nLearning-based Planner: Considering the multi-modal nature of the navigation problem and to avoid local minima around initial values, our approach adopts a set of motion primitives as anchor to cover the searching space, and predicts the offsets and scores of primitives for further improvement (like the one-stage object detector YOLO).\n...\nTraining Strategy: Compared to giving expert demonstrations as labels in imitation learning or exploring by trial-and-error in reinforcement learning, we directly back-propagate the gradients of trajectory costs (e.g. from ESDF) to the weights of network, which is simple, straightforward, accurate, and sequence-independent (free of online simulator interaction or rendering).\n...\nYou can refer to traj_opt.yaml for modification of the flight speed (The given weights are pretrained at 6 m/s and perform smoothly at speeds between 0 - 6 m/s).\n...\n- You may want to use the position controller like traditional planners in real flight to make it compatible with your controller. You should change `plan_from_reference: False` to `True` at the end of `test_yopo_ros.py`. You can test the changes in simulation using the position controller: `roslaunch so3_quadrotor_simulator simulator_position_control.launch `"
+        ],
+        "image": "https://opengraph.githubassets.com/54b7cfb35043aa5e67d705671e69b1246fa4c4f989bd1bf441913c05f5a44610/jisuweng/YOPO"
+      },
+      {
+        "id": "https://github.com/XuPeng23/AeroVLA",
+        "title": "XuPeng23/AeroVLA",
+        "url": "https://github.com/XuPeng23/AeroVLA",
+        "highlights": [
+          "ist End-to-\n...\nVision-Language Navigation (VLN) for Unmanned Aerial Vehicles (UAVs) demands complex visual interpretation and continuous control in dynamic 3D environments. Existing hierarchical approaches rely on dense oracle guidance or auxiliary object detectors, creating semantic gaps and limiting genuine autonomy. We propose AeroVLA, a minimalist end-to-end Vision-Language-Action framework mapping raw visual observations and fuzzy linguistic instructions directly to continuous physical control signals. First, we introduce a streamlined dual-view perception strategy that reduces visual redundancy while preserving essential cues for forward navigation and precise grounding, which additionally facilitates future simulation-to-reality transfer. To reclaim genuine autonomy, we deploy a fuzzy directional prompting mechanism derived solely from onboard sensors, completely eliminating the dependency on dense oracle guidance. Ultimately, we formulate a unified control space that integrates continuous 3-Degree-of-Freedom (3-DoF) kinematic commands with an intrinsic landing signal, freeing the agent from external object detectors for precision landing. Extensive experiments on the TravelUAV benchmark demonstrate that AeroVLA achieves state-of-the-art performance in seen environments. Furthermore, it exhibits superior generalization in unseen scenarios by achieving nearly three times the success rate of leading baselines, validating that a minimalist, autonomy-centric paradigm captures more robust visual-motor representations than complex modular systems."
+        ]
+      }
+    ],
+    "searchTime": 4226.5,
+    "costDollars": {
+      "total": 0.016
+    }
+  }
+}

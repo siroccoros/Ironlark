@@ -1,0 +1,606 @@
+                                          aerial-autonomy-stack—a Faster-than-real-time, Autopilot-agnostic,
+                                            ROS2 Framework to Simulate and Deploy Perception-based Drones
+                                                  Jacopo Panerati† , Sina Sajjadi† , Sina Soleymanpour† , Varunkumar Mehta† , and Iraj Mantegh†
+
+
+                                           Abstract— Unmanned aerial vehicles are rapidly transform-
+                                        ing multiple applications, from agricultural and infrastructure
+                                        monitoring to logistics and defense. Introducing greater au-
+                                        tonomy to these systems can simultaneously make them more
+                                        effective as well as reliable. Thus, the ability to rapidly engineer
+                                        and deploy autonomous aerial systems has become of strategic
+                                        importance. In the 2010s, a combination of high-performance
+
+
+
+
+arXiv:2602.07264v2 [cs.RO] 2 May 2026
+                                        compute, data, and open-source software led to the current deep
+                                        learning and AI boom, unlocking decades of prior theoretical
+                                        work. Robotics is on the cusp of a similar transformation.
+                                        However, physical AI faces unique hurdles, often combined
+                                        under the umbrella term “simulation-to-reality gap”. These
+                                        span from modeling shortcomings to the complexity of vertically
+                                        integrating the highly heterogeneous hardware and software
+                                        systems typically found in field robots. To address the latter, we
+                                        introduce aerial-autonomy-stack, an open-source, end-
+                                        to-end framework designed to streamline the pipeline from
+                                        (GPU-accelerated) perception to (flight controller-based) action.
+                                        Our stack allows the development of aerial autonomy using
+                                        ROS2 and provides a common interface for two of the most                   Fig. 1. Gazebo Sim scene rendering (right), FPV camera view with YOLO
+                                        popular autopilots: PX4 and ArduPilot. We show that it                     overlays (bottom left), and RViz LiDAR point cloud visualization (top left).
+                                        supports over 20× faster-than-real-time, end-to-end simulation
+                                                                                                                   deploy robust aerial autonomy represents a vital strategic
+                                        of a complete development and deployment stack—including
+                                        edge compute and networking—significantly compressing the                  capability [3]–[5].
+                                        build-test-release cycle of perception-based autonomy.                        Despite this demand, the development landscape for aerial
+                                                                                                                   robotics remains significantly fragmented [6]. Simulation
+                                          Open-source repository: aerial-autonomy-stack                            tools vary widely and tend to be tailored to specific ap-
+                                                                                                                   plications and niches [7]. A strong ecosystem of open-
+                                                                I. I NTRODUCTION                                   source autopilots exists, yet the associated development tools
+                                           The research domain of aerial robotics, encompassing                    typically focus on real-time, single-vehicle simulation, using
+                                        compact consumer drones as well as sophisticated uncrewed                  standard sensors like barometers and IMUs, for low-level
+                                        aerial systems (UAS), is witnessing explosive growth. Over                 debugging. In contrast, advanced perception tools—such
+                                        the last decade, platforms have evolved from simple aerial                 as YOLO for object detection and SLAM algorithms—are
+                                        photography tools into high-performance machines capable                   often developed independently from the control stack. This
+                                        of high-speed racing and precision agriculture. Modern appli-              disconnect results in a scarcity of fully integrated solutions—
+                                        cations range from search-and-rescue missions to automated                 at odds with the aerospace industry’s long-standing reliance
+                                        power line inspections.                                                    on vertical integration for reliability.
+                                           All of the latest developments have been driven by a                       With aerial-autonomy-stack (Figure 1), we aim
+                                        combination of priorities, pioneered by industry, academia, or             to close this gap by introducing a unified, open-source [16]
+                                        defense. Commercial companies are deploying autonomous                     research framework for the development and deployment of
+                                        delivery networks, aerial survey fleets, and drone shows with              aerial robots. The contributions of this work include:
+                                        thousands of robots. The academic community has pushed                        • a unified development environment—we provide a de-
+
+                                        the envelope of high-speed drone racing beyond human                            velopment playground that supports perception-enabled
+                                        performance [1], [2]. Recent geopolitical events highlighted                    (with RGB cameras and 3D LiDARs) autonomy for
+                                        the versatility of drones in security beyond traditional intel-                 both the PX4 and ArduPilot ecosystems, streamlining
+                                        ligence, surveillance, and reconnaissance roles. Autonomy                       cross-platform research;
+                                        can now serve as a crucial force multiplier, enabling effec-                  • a standardized autopilot interface—our stack introduces
+
+                                        tive operation within electronically degraded environments                      an autopilot-agnostic ROS2 action-based interface for
+                                        and contested airspace. Hence, the ability to engineer and                      PX4 and ArduPilot, to implement autonomy using mod-
+                                          † Jacopo Panerati, Sina Sajjadi, Sina Soleymanpour, Varunkumar Mehta,
+                                                                                                                        ern software design principles;
+                                        and Iraj Mantegh are with the National Research Council Canada; e-mails:      • high-performance simulation—we demonstrate faster-
+                                        {name.lastname}@cnrc-nrc.gc.ca.                                                 than-real-time, multi-vehicle, software-in-the-loop capa-
+                                                                  TABLE I
+                              C OMPARISON OF F RAMEWORKS TO D EVELOP, S IMULATE , AND VALIDATE A ERIAL AUTONOMY
+                               Autopilot        Middleware      Target/Edge      Types of        Multi-agent   Camera    LiDAR       SITL         HITL        Docker      Simulation
+      Software Stack
+                               Support          Integrations    Architectures    Vehicles         Support      Support   Support   Simulation   Simulation   Containers   Backend(s)
+                                                                                                                                                                            Gazebo,
+     Aerialist [8]                PX4          ROS1, MAVLink        x86         Multicopters         ✗           ✗         ✗           ✓            ✗            ✓
+                                                                                                                                                                           jMAVSim
+aerial-autonomy-stack                           ROS2, µDDS,      x86, Jetson    Multicopters,
+                             PX4, ArduPilot                                                          ✓           ✓         ✓           ✓            ✓            ✓          Gazebo
+       [this work]                             MAVROS, Zenoh        Orin         VTOLs
+                                                   ROS2,                                                                                                                    Gazebo,
+                              PX4, Tello,                        x86, Jetson
+     aerostack2 [9]                              MAVLink,                       Multicopters         ✓           ✓         ✓           ✓            ✓            ✓         DJI HITL
+                             DJI, Crazyflie                        Xavier
+                                                BehaviorTree                                                                                                               Simulator
+                               agiNuttx,        ROS1, agilib,    x86, Jetson                                                                                                 BEM,
+    agilicious [10]                                                             Quadcopters          ✗           ✓         ✗           ✓            ✓            ✓
+                               Betaflight          agiros       TX2, Xavier                                                                                               Flightmare
+    crazyswarm2 [11]           Crazyflie        ROS1, ROS2      x86, STM32       Crazyflie           ✓           ✓         ✓           ✓            ✗            ✓          Custom
+                                                   ROS1,                                                                                                                    Gazebo,
+                             PX4, ArduPilot,
+      grvc-ual [12]                              MAVROS,            x86         Multicopters         ✓           ✓         ✗           ✓            ✓            ✗        AirSim, DJI
+                              DJI, Crazyflie
+                                                  DJI SDK                                                                                                                 HITL Sim.
+kr autonomous flight [13]         PX4          ROS1, MAVROS      x86, NUC       Multicopters         ✗           ✓         ✓           ✓            ✗            ✓          Gazebo
+                                                ROS1, ROS2,                                                                                                                 Gazebo,
+   mrs uav system [14]         PX4, Tello                        x86, arm64     Multicopters         ✓           ✓         ✓           ✓            ✓            ✓
+                                                 MAVROS                                                                                                                   FlightForge
+                                                                                Multicopters,
+      XTDrone [15]                PX4          ROS1, MAVROS         x86                              ✓           ✓         ✓           ✓            ✗            ✗          Gazebo
+                                                                                VTOLs, etc.
+
+    bilities, performing end-to-end simulation that includes                                    and are not natively integrated with the multi-target archi-
+    RGB camera feeds, LiDAR odometry, and onboard                                               tecture software required by edge devices. Other simulators
+    GPU-accelerated YOLO inference;                                                             address specific niches, e.g. RotorPy [21] for aerodynamic
+  • a containerized architecture—we leverage Docker con-                                        fidelity. However, few solutions merge these capabilities into
+    tainers to achieve three critical goals:                                                    a single workflow, from simulation to the physical edge.
+      – accurately emulate the complex networking topolo-                                          Among the software stacks attempting to unify these
+          gies of multi-agent systems;                                                          components (see Table I), Aerostack2 [9], [22] offers a ROS2
+      – enable multi-target compilation, allowing the same                                      framework for multi-robot autonomy compatible with several
+          source code to be used for both simulation and                                        autopilots. It relies on a plugin architecture that can add
+          physical deployment;                                                                  flexibility but also introduce integration overhead. The MRS
+      – facilitate distributed hardware-in-the-loop simula-                                     System [14], originally built on a legacy ROS architecture,
+          tion, incorporating NVIDIA Jetson modules and RF                                      has several demonstrated successes in the field deployment
+          communication links, to validate onboard compute                                      of multi-robot systems based on PX4.
+          and wireless configurations.                                                             Projects such as XTDrone [15] address multi-vehicle sim-
+                                                                                                ulation across diverse platforms but function primarily as a
+                            II. R ELATED W ORK                                                  simulation tool rather than a deployable, containerized stack.
+   The existing landscape1 of open-source autopilots provides                                   UAL [12] provides a hardware abstraction layer for multiple
+a robust foundation for flight control, but typically does not                                  autopilots but it is still based on a ROS1 framework [23].
+include out-of-the-box high-level autonomous capabilities.                                         Newer frameworks such as Agilicious [10] and
+PX4 is a standard choice for academic research, commonly                                        Crazyswarm2 [11] are highly specialized for agile maneuvers
+paired with Gazebo for software-in-the-loop (SITL) sim-                                         and indoor nano-drone swarms, respectively, and are less
+ulation, although it currently lacks native provisions for                                      applicable to general-purpose and outdoor autonomy.
+hardware-in-the-loop (HITL) validation and advanced per-                                        Aerialist [8] focuses on automated test generation and log
+ception. ArduPilot commands significant popularity among                                        analysis rather than providing a deployment-time solution.
+hobbyists and commercial integrators, offering similar SITL                                        Our stack uniquely builds upon these precedents, offering
+features but facing comparable limitations regarding inte-                                      a vertically integrated alternative that simultaneously ad-
+grated perception-based autonomy.                                                               dresses the multi-agent and multi-autopilot flexibility of [9]
+   Meanwhile, Betaflight prevails in the drone racing niche                                     and the perception-heavy focus of [13], all while supporting
+but offers limited SITL support and minimal autonomy                                            ROS2 and vertical take-off and landing (VTOL) platforms.
+features. In most existing frameworks, perception modules                                       Furthermore, support for (i) both ArduPilot and PX4, (ii)
+are stacked in ad hoc fashion alongside the simulator, adding                                   Jetson-in-the-loop simulation, and (iii) “code parity” between
+friction to deployment and reproducibility.                                                     simulation and deployment on Jetson edge devices make our
+   Aerial simulators are equally important, yet fragmented;                                     stack especially suited for the development of new real-world
+for a comprehensive review, we refer to [7]. Researchers                                        applications with minimal or no software re-work.
+prioritizing reinforcement learning often utilize simple [17]
+or high-performance [18] engines, which can offer massive                                                                      III. R ATIONALE
+data throughput and parallelization but lack the autopilot                                         The “sim2real gap” [24], [25] is an umbrella term used
+SITL integrations that are crucial for deployment. Similarly,                                   to capture the many discrepancies—including in sensing
+high-fidelity rendering engines such as Flightmare [19],                                        and dynamic models—between simulations and the field
+AirSim [20] provide the visual richness required for vision-                                    deployment of robots. It is often blamed for stifling progress
+based navigation but impose high computational overhead                                         in physical AI and robotics. In the context of aerial robotics,
+  1 https://github.com/ROS-Aerial/                                                              sim2real research has typically focused on mitigating the
+          simulation-container                                                            N × aircraft-container [1..N]
+
+          aircraft models/                simulation worlds/                                  yolo py                                           mission
+                                                                                                         /detections
+                                                                      gz gst bridge
+                                                                      [SIM SUBNET]                                     offboard control
+             N × PX4 or                gz bridge or     Gazebo                                                                                    ros2
+                                     ardupilot gazebo                /lidar points           kiss icp                                          action/srv
+           ArduPilot SITL                                 Sim        [SIM SUBNET]                                             /reference
+
+      MAVLink
+    [SIM SUBNET]
+                                                                         UDP                 uxrce dds
+           ground-container                                          [SIM SUBNET]            or MAVROS
+                                                                                                                                 autopilot interface
+           mavlink-router                   QGroundControl
+
+
+            ground system
+                                                                        TCP
+                                              zenoh-bridge          [AIR SUBNET]           zenoh-bridge         /state drone [1..N]        state sharing
+                           /tracks
+
+
+     amd64 host
+
+Fig. 2.    Block diagram of the software-in-the-loop simulation architecture comprising of the simulation-image, ground-image, and aircraft-image containers.
+
+errors arising from aerodynamic phenomena—such as drag,                               design. It provides essential features such as clock syn-
+ground effect, and rotor downwash—that require non-linear                             chronization with ROS2 and configurable sensor plugins for
+and computationally expensive modeling [26]. However, we                              cameras and GPU-accelerated LiDARs. Crucially, the engine
+posit that the sim2real gap also has a system engineering                             supports headless operation for CI/CD pipelines, pausing,
+aspect that is frequently underestimated. It is not merely a                          and faster-than-real-time (FTRT) stepping. For its physics
+failure of physics modeling, but also a failure of integra-                           engine, it uses ODE, while rendering leverages Ogre2 and
+tion, as significant performance degradation and information                          OpenGL, optimized for NVIDIA hardware acceleration.
+loss occur at the interfaces between disparate software and                              2) Autopilot Firmware: We support the two dominant
+hardware components.                                                                  open-source flight stacks to ensure broad applicability across
+   The aerial-autonomy-stack helps mitigate the sys-                                  research and industry.
+tem engineering aspects of the sim2real gap. Its software                                   a) PX4-Autopilot: PX43 is favored for its modular
+architecture follows two cardinal principles: (i) simplicity                          architecture and widespread adoption in academic research.
+and (ii) end-to-endness. The first is paramount to maximize                           We utilize the native gz-bridge interface to let the PX4 SITL
+reliability and minimize failure modes—as code complexity                             target interact with Gazebo Sim. Our stack currently supports
+correlates with bug density and maintenance costs [27]—                               PX4’s standard quadcopter and VTOL configurations, yet
+which is crucial for aerospace and defense applications. The                          the firmware is also compatible with fixed-wing planes and,
+second principle allows for cross-layer optimization along                            experimentally, with rovers, airships, helicopters, and more.
+a single, vertically integrated stack—which leads to more                                   b) ArduPilot and ardupilot-gazebo: ArduPilot4 is in-
+effective compute power usage, lower friction in field de-                            tegrated for its proven reliability, success in commercial
+ployments, and a reduced logistical footprint. End-to-endness                         applications, and adoption by the hobbyist community. We
+also enables to run integration tests directly within CI/CD                           utilize the ardupilot-gazebo5 plugin to bridge the firmware
+pipelines, greatly expediting the development cycle.                                  SITL target with Gazebo Sim. As for PX4, we support
+                                                                                      quadcopter and quadplane (VTOL) configurations but the
+                   IV. A ERIAL AUTONOMY S TACK                                        ArduPilot ecosystem includes several more vehicle types,
+   This project aims to accelerate the iterative cycle of                             including blimps, rovers, and submarines.
+ideation, development, simulation, testing, and deployment                               3) Middleware: A robust middleware layer is essential
+of autonomous drones. We do so by unifying these stages                               to enable inter-device and inter-process communication. The
+into a single cohesive workflow (Figure 2 and Figure 5) that                          landscape of robotics middleware is often fragmented; we
+can drastically reduce the time-to-market and experimental                            select a compact but comprehensive suite of standard tools
+risk associated with creating novel aerial robotics.                                  to ensure interoperability.
+                                                                                            a) ROS2: ROS26 Humble serves as the primary ap-
+A. Third-party Integrations                                                           plication layer, handling nodes and message orchestration.
+   Integrating the necessary open-source tools requires rig-                          It acts as the backbone for high-level decision-making,
+orous version alignment and dependency management. We                                 connecting the autopilot interfaces with the perception and
+consolidate all resources into a single stack to resolve the                          mission planning modules.
+technical friction often encountered in end-to-end systems                                  b) DDS: Micro-XRCE-DDS7 is used to handle low-
+(e.g., when combining flight control firmware with AI frame-                          level, high-frequency communication, optimizing throughput
+works).                                                                                 3 https://github.com/PX4/PX4-Autopilot
+                                                                                        4 https://github.com/ArduPilot/ardupilot
+   1) Simulator: We select Gazebo Sim (Harmonic)2 as the                                5 https://github.com/ArduPilot/ardupilot_gazebo
+core engine due to its modern architecture and modular                                  6 https://github.com/ros2
+  2 https://github.com/gazebosim                                                        7 https://github.com/eProsima/Micro-XRCE-DDS
+for constrained networks. In our stack, it serves as the
+primary bridge between the PX4 uORB internal messaging
+and the ROS2 application layer.
+      c) MAVROS: MAVROS8 also acts as an autopilot-
+to-application bridge, translating MAVLink streams into
+ROS2 topics and services for a companion computer. While
+ArduPilot offers experimental DDS support, our stack also
+includes MAVROS to leverage its stabler legacy interface.
+      d) GStreamer: GStreamer9 is used for low-latency
+video streaming from both simulated and real-life cameras to
+the computer vision node. We implement a custom Gazebo-
+GStreamer bridge to capture the virtual camera buffer and
+encode it with hardware acceleration. This mimics the input       Fig. 3. Vehicle models: Holybro X500v2 (top left); 3DR Iris (top right);
+                                                                  Standard VTOL (bottom left); and ALTI Transition (bottom right).
+for the decoding pipeline used for physical CSI cameras (e.g.,
+IMX219), allowing the exact same perception code to run in
+both simulation and deployment, without modification.
+      e) Zenoh: We integrate Zenoh10 to enable efficient
+peer-to-peer bridging of isolated ROS2 domains. This allows
+each edge device (drone) to maintain its own local namespace
+while selectively replicating data across unreliable wireless
+links often found in field operations.
+   4) Ground Segment: For mission planning and monitor-
+ing, we include both graphical and command line tools.
+      a) QGroundControl: We utilize QGC11 for mission
+planning, parameter customization, and real-time flight mon-
+itoring in simulation, just as we would for real-world flights.
+      b) MAVLink: We utilize a custom MAVLink acquisi-            Fig. 4. 3D world models: Plain (top left); Empty (top right); City (bottom
+tion and routing node—bridged with Zenoh—to encapsulate           left); and Mountain (bottom right).
+select telemetry data, ensuring they are shared between the
+ground station and all vehicles controlled by our stack. We            a) Flight Review: A web-based tool for visualizing
+leverage its C-library implementation12 .                         uLog data, essential for probing into PX4 estimator states
+   5) Perception: Autonomy requires robust interpretation of      and, for real flights, vibration analysis16 .
+environmental data from high-bandwidth sensors.                        b) MAVExplorer, part of MAVProxy: Provides powerful
+      a) YOLO: We integrate Ultralytics YOLO13 [28] for           command-line log analysis for ArduPilot binary logs, sup-
+real-time object detection. We default to the nano version of     porting custom graphing and data introspection17 .
+the model to prioritize inference speed. We use it to process          c) PlotJuggler: A fast, intuitive tool for visualizing
+RGB camera streams to label objects and publish bounding          ROS2 bag files and time-series data, including PX4 logs18 .
+boxes (using ROS2) for visual servoing.
+                                                                  B. Models
+      b) ONNX Runtime: The YOLO models are exported
+to the Open Neural Network Exchange14 format to ensure              The aerial-autonomy-stack includes a library of
+portability across different GPU-accelerated inference back-      vehicles (Figure 3) and simulation worlds (Figure 4), cover-
+ends (i.e., TensorRT on Jetson/deployment and CUDA on             ing a wide spectrum of aerial applications.
+desktop/simulation).                                                1) Aerial Vehicles: We support four SDF models provided
+      c) KISS-ICP: For LiDAR-based odometry, we integrate         by the PX4 and ArduPilot SITL suites for Gazebo Sim.
+KISS-ICP15 [29] due to its speed and minimal dependencies.          • Quadcopters: for PX4, the Holybro X500v2, a simple
+It provides a robust ego-motion baseline estimation with-              carbon-fiber development platform with a 500mm frame
+out the computational overhead of full optimization-based              and 10-inch propellers; for ArduPilot, the 3DR Iris,
+SLAM frameworks.                                                       a legacy model with a 550mm frame, often used in
+   6) Analysis: Finally, we include a set of tools for post-           academic research.
+mission analysis, debugging, and performance validation.            • QuadPlane VTOLs: for PX4, the Standard VTOL model,
+  8 https://github.com/mavlink/mavros                                  based on a ∼2m wingspan airframe, with completely
+  9 https://github.com/GStreamer/gstreamer                             separate controls for multicopter (four electric lift mo-
+  10 https://github.com/eclipse-zenoh
+                                                                       tors) and fixed-wing flight (a rear pusher prop and
+  11 https://github.com/mavlink/qgroundcontrol
+  12 https://github.com/mavlink/c_library_v2                           elevons); for ArduPilot, the ALTI Transition QuadPlane,
+  13 https://github.com/ultralytics/ultralytics                     16 https://github.com/PX4/flight_review
+  14 https://github.com/microsoft/onnxruntime                       17 https://github.com/ArduPilot/MAVProxy
+  15 https://github.com/PRBonn/kiss-icp                             18 https://github.com/facontidavide/PlotJuggler
+      a 3-meter wingspan commercial endurance VTOL also                MAVROS), and the perception pipelines; crucially, it
+      combining four vertical and one pusher motor.                    is created from the same Dockerfile for both simulation
+   2) On-board Sensors: We customize all four of these                 and deployment, minimizing the sim2real gap.
+vehicle SDF models with a common suite of sensors to                 1) Multi-target Compilation: Supporting both simulation
+support advanced autonomy applications:                           and flight hardware requires multi-architecture builds to
+   • RGB camera: a fixed front-facing EO sensor. It is            enable a “write once, deploy everywhere” philosophy.
+      configured to output a 320-by-240 pixel stream at 8Hz          • amd64 images: we start from a base image supporting
+
+      with a 100° horizontal field-of-view (FOV), supporting           the x86 64 architecture for all three images (sim-
+      visual servoing and YOLO-based object detection. This            ulation, ground, aircraft) to enable high-performance
+      mimics the de-warped frame of a wide-angle CSI cam-              simulation on developer workstations and CI servers.
+      era such as the IMX219-200.                                    • arm64/Jetson images: we also include an aarch64
+
+   • 360° LiDAR: a 3D laser scanner modeled after the                  base image specifically for the aircraft-image. This sup-
+      Livox Mid-360. It provides 360° horizontal and 60°               ports compilation and deployment on NVIDIA Jetson19
+      vertical FOV (with 240 and 40 channels at 4Hz, respec-           computers (JetPack 6/L4T 36) without any code change.
+      tively), generating point clouds for KISS-ICP odometry,          a) YOLO on CUDA/TensorRT: We also adopt a dual-
+      obstacle avoidance, and SLAM.                               architecture strategy for inference. On the amd64 images
+   These default sensor parameters are chosen to balance          for simulation, we utilize the ONNX CUDA runtime, while
+performance (see Section VIII) with realism. Nevertheless,        arm64 images for deployment on Jetson leverage the ONNX
+they can be easily customized to simulate different or            TensorRT runtime. For the latter, we quantize the model
+higher resolution sensors (e.g., increasing the sensor rate of    weights to FP16, achieving inference at over 50Hz with
+the camera—for high-speed visual servoing—or that of the          the IMX219-200 CSI camera (acquiring 1280-by-720 pixel
+LiDAR—to more accurately model the 10Hz frequency of a            frames at 60Hz) on Orin NX using the nano YOLO model
+real-life Livox Mid-360).                                         with input size of 640.
+   3) Worlds: We include a diverse set of 3D environments,           2) Networking: A major differentiating aspect of the
+each designed to validate perception-based autonomy in            aerial-autonomy-stack is its ability to capture the
+different scenarios.                                              networking architecture of a multi-robot system from the
+                                                                  early stages of development. Using Docker, we isolate con-
+   • Empty: a simple world with minimal computational
+                                                                  tainers on two virtual networks, forcing their components to
+      overhead, ideal for unit testing and CI/CD pipelines.
+                                                                  communicate via standard IP protocols.
+   • Plain: a flat environment featuring a high-resolution
+                                                                     The “internal” SIM SUBNET mimics the physical cabling
+      GIS ground texture for optical flow validation, popu-       inside a drone’s frame.
+      lated with simple static obstacles (e.g., parked cars) to
+                                                                     • The UDP connection between autopilot SITL and
+      test basic object detection.
+                                                                       DDS/MAVROS simulates the high-speed Ethernet link
+   • Mountain: a 3D environment based on photogrammetry
+                                                                       between a Pixhawk 6X flight controller and the Jetson.
+      with a complex terrain topology, designed to develop
+                                                                     • The UDP GStreamer stream simulates the CSI camera
+      and test terrain-following algorithms.
+                                                                       interface, piping raw video frames from the Gazebo
+   • City: a dense urban environment with high-rise struc-
+                                                                       sensor to the perception node.
+      tures, to test obstacle avoidance planners and occlusion
+                                                                     • The ROS2 LiDAR bridge simulates the Ethernet con-
+      handling in visual tracking.
+                                                                       nection of a physical LiDAR.
+                                                                     • The UDP MAVLink connection provides telemetry
+C. Dockerization
+                                                                       streams (split by mavproxy) to QGroundControl and the
+   The aerial-autonomy-stack is distributed as a                       ground-image container.
+Dockerized application to maximize its portability. We tested
+                                                                     The “external” AIR SUBNET mimics the IP radio link
+it on Ubuntu 22.04 LTS, 24.04 LTS, and Windows 11
+                                                                  between multiple drones and a ground station computer.
+Pro/Enterprise via WSL2. Two critical requirements are (i)
+                                                                     • This is the network hosting the Zenoh-ROS2 bridge for
+the NVIDIA graphics driver and (ii) the NVIDIA Container
+                                                                       inter-robot state-sharing, optimized to handle discovery
+Toolkit, which enable containerized processes to access the
+                                                                       and serialization over lossy Wi-Fi or mesh links.
+host GPU for OpenGL rendering and CUDA inference.
+   The stack is architected around three container images:                V. S OFTWARE - IN - THE - LOOP C APABILITIES
+   • the simulation-image contains Gazebo Sim, the com-              This work expands upon traditional SITL workflows by
+     piled PX4/ArduPilot SITL binaries, and the complete          shifting the focus from a component-based approach to a
+     library of aircraft and world SDF assets; it serves as       system-holistic one. By encapsulating the entire develop-
+     the digital twin of the physical environment;                ment environment, aerial-autonomy-stack allows re-
+   • the ground-image hosts QGroundControl, for operator          searchers to validate complex behaviors—involving percep-
+     oversight, alongside the MAVLink and Zenoh bridges;          tion and control—safely and efficiently before committing to
+   • the aircraft-image contains the ROS2 autonomy stack,         expensive flight hours.
+     the autopilot interface middleware (uXRCE-DDS or               19 https://developer.nvidia.com/embedded/jetpack
+                                                                                      aircraft-container 1
+         simulation-container                                                                         /detections
+                                                                                          yolo py                                     mission
+          aircraft models/                       simulation worlds/
+                                                                                                       offboard control                   ros2
+                                                                                         kiss icp                                      action/srv
+
+             2 × PX4 or                 gz bridge or         Gazebo                                                 /reference
+                                      ardupilot gazebo
+           ArduPilot SITL                                     Sim                                                                autopilot interface
+                                                                                         uxrce dds
+   amd64 host                                     MAVLink           gz gst bridge        or MAVROS
+                                                 UDP              /lidar points        zenoh-bridge        /state drone 1           state sharing
+          ground-container
+                                                                                    Jetson Orin NX
+           QGroundControl
+                                  mavlink-router                                      aircraft-container 2
+                                                                                                      /detections
+            zenoh-bridge                                                                  yolo py                                     mission
+   TCP                  /tracks      ground system
+                                                                                                       offboard control                   ros2
+    amd64 host                                                                           kiss icp                                      action/srv
+
+                                                                                                                    /reference
+     AIR SUBNET
+                                                                                         uxrce dds                               autopilot interface
+                                                   TCP
+                                                                    router
+         radio 0              radio 1                                                    or MAVROS
+             Mobile Ad-Hoc Network                                SIM SUBNET
+                                                                                       zenoh-bridge        /state drone 2           state sharing
+                   radio 2
+                                                            TCP                     Jetson Orin NX
+
+Fig. 5.   Block diagram of the hardware-in-the-loop simulation architecture for two vehicles, with the simulation-image and ground-image containers
+running on separate amd64 hosts, and two aircraft-image containers on two dedicated NVIDIA Jetson Orin. The SIM SUBNET is created with a router
+over a wired Ethernet network while the AIR SUBNET is created over a wireless mobile ad-hoc network.
+
+A. Networked Multi-robot Simulation                                                 significant bottleneck. For rendering, we utilize the NVIDIA
+   Developing and testing multi-agent systems typically re-                         Container Toolkit to let host GPU passthrough into the
+quires a fleet of physical machines or a complex cluster. Our                       Docker containers, allowing Gazebo’s Ogre2 engine to
+stack allows to simulate networked swarms of quadcopters                            render camera and LiDAR frames at rates far exceeding
+and VTOLs on a single developer’s laptop. This consolida-                           real-time requirements. Similarly, CUDA-accelerated YOLO
+tion is typically challenging because of namespace collisions                       models leverage the mapped GPU to perform inference on
+and resource contention.                                                            every simulated frame without stalling the physics loop.
+   Implementation: We leverage Docker’s network isolation                           C. End-to-end, Vertically Integrated CI/CD
+to assign each simulated vehicle its own virtual IP address                            Finally, the aerial-autonomy-stack allows the
+and unique ROS DOMAIN ID. This architecture ensures that                            validation of an end-to-end system—from perception to
+agents communicate only through defined channels, accu-                             actuation—within a unified CI/CD pipeline.
+rately mirroring the constraints of a physical ad-hoc network                          Implementation: Traditional development often relies on
+while executing on a single host.                                                   unit tests that mock external dependencies, failing to capture
+B. Faster-than-real-time Simulation                                                 integration errors (such as version mismatches). We mitigate
+                                                                                    this by using a single Dockerfile to create the same aircraft-
+   We provide native support for FTRT simulation, incorpo-                          image for both amd64 simulation and arm64 deployment.
+rating full perception pipelines and pause/resume function-                         Vertical integration ensures that a successful pass of the
+ality, essential for reinforcement learning applications.                           CI/CD pipeline guarantees the compatibility of the entire
+   Accelerating simulation is not merely a matter of increas-                       software stack, including middleware and libraries, signif-
+ing frame rates; it requires strict temporal synchronization                        icantly reducing the “it works on my machine” syndrome
+across the entire stack. If the simulation runs faster than                         during field trials.
+the wall-clock, the autopilot and perception nodes must be
+decoupled from the system time and driven exclusively by                                    VI. H ARDWARE - IN - THE - LOOP C APABILITIES
+the synthetic clock. Failure to enforce this lockstep would                            Hardware-in-the-loop simulation is an essential validation
+result in watchdog timeouts, where estimators reject sensor                         step for safety-critical aerospace systems, narrowing the
+data, leading to catastrophic instability.                                          gap between pure simulation and flight tests. Traditionally,
+   Implementation: To address this, we configure the                                HITL has focused on the validation of the microcontroller-
+ros gz bridge to broadcast the simulation time to the                               based flight controller unit (FCU). However, with modern
+/clock topic. All ROS2 nodes are configured to subscribe                            SITL simulation—where the exact firmware binary executes
+to this source. When scaling to multiple agents, this requires                      against the simulator with synchronized clocks—the role of
+careful orchestration across ROS domains to ensure all                              FCU-level HITL is partially diminished.
+agents synchronize to the master simulation clock.                                     In perception-based autonomy, a potentially more criti-
+   Achieving FTRT with high-fidelity perception is com-                             cal “architectural sim2real gap” lies not in the flight con-
+putationally demanding. CPU-based rendering constitutes a                           troller, but in the companion computer. The disparity in
+architecture—typically x86 64 for development and arm64             PX4’s internal uORB messaging system is inherently
+for deployment—combined with vast differences in GPUs,           publisher/subscriber, and its DDS bridge exposes these topics
+thermal budgets, and memory bandwidth, often results in          directly to ROS2, requiring a developer to manage state
+severe performance degradation when moving from a devel-         machines manually. Conversely, MAVROS (which our stack
+oper’s workstation to the deployment edge device. Further-       uses for ArduPilot) was originally developed on ROS1 and
+more, accurate validation of multi-robot behaviors requires      relies heavily on blocking service/request calls, which can
+testing the actual physical communication layer, which sim-      stall the execution pipeline.
+ulations cannot perfectly model.                                    In aerial-autonomy-stack, we introduce a mod-
+   To address these blind spots, our stack supports two          ern abstraction layer that sits atop these autopilot-specific
+distinct levels of HITL validation (Figure 5).                   implementations. The autopilot interface package
+                                                                 provides a unified set of ROS2 Actions, allowing developers
+A. Jetson-in-the-loop Validation                                 to write control logic that is agnostic to the underlying (PX4
+   The primary goal is to validate the computational viability   or ArduPilot) firmware. Its interface exposes the following
+of the perception and control stack on the target hardware.      high-level behaviors (Figure 6):
+This validation ensures that deep learning models fit within        • Takeoff initiates the arming sequence and commands
+the constrained GPU memory of the edge device and that                 an ascent to a target altitude. For VTOLs, it includes a
+inference latency remains acceptable under thermal load,               transition heading and a parking loiter.
+preventing unexpected frequency throttling during flight.           • Orbit commands the vehicle to loiter around a specific
+   Implementation: We leverage the Dockerized architecture             location at a defined distance and altitude. For multi-
+to decouple the simulation and the autonomy components                 copters, it includes yaw control towards the center.
+of the stack. The simulation-image container runs on a              • Land executes a landing at home sequence, managing
+high-performance desktop workstation, handling physics and             the descent and, for VTOLs, the transition heading.
+rendering. The aircraft-image container is deployed directly        • Offboard is a flexible action for low-level control,
+onto the physical NVIDIA Jetson Orin modules. These                    allowing the companion computer to bypass the au-
+are connected via two Gigabit Ethernet interfaces (one for             topilot’s internal navigator and drive the control loops
+SIM SUBNET and one for AIR SUBNET) The workstation                     directly. It supports multiple setpoint modes:
+streams simulated camera feeds and autopilot telemetry to                – Trajectory (PX4): specific coordinates and veloci-
+the Jetson, mimicking physical sensors, while the Jetsons                   ties for precise waypoint navigation.
+perform TensorRT inference, compute control actions, and                 – Velocity (ArduPilot): 3D velocity setpoints, ideal
+send them back to the simulator via the autopilot interface.                for visual servoing and target following.
+                                                                         – Acceleration (ArduPilot): 3D acceleration set-
+B. Comms-in-the-loop Validation                                             points, useful for trajectory smoothing.
+   This mode aims to stress-test the multi-agent coordination            – Attitude (PX4): vehicle orientation and collective
+logic against the realities of RF communication—such as                     thrust for low-level control.
+bandwidth saturation, packet loss, and latency jitter—which              – Rates (PX4): direct body-rate control for the most
+are difficult to model synthetically.                                       aggressive maneuvers.
+   Implementation: Expanding on the Jetson-in-the-loop              Finally, for multicopter configurations, we also expose a
+setup, we replace the Ethernet link for the AIR SUBNET           Reposition service. This allows for simple go-to commands
+with the actual wireless hardware (e.g., Mesh radios) in-        that delegate path planning to the autopilot’s internal navi-
+tended for the mission. The simulation computer and the          gator. This serves as a lightweight alternative to Offboard
+Jetsons remain connected through the SIM SUBNET for              control for simple point-to-point navigation where the ex-
+the synthetic high-bandwidth sensor data, while the inter-       plicit enforcement of lower-level constraints is not required.
+vehicle information sharing on the AIR SUBNET moves
+exclusively over the air. This exposes the system to real-                     VIII. P ERFORMANCE R ESULTS
+world interference and connection drops, allowing developers        Table II summarizes the faster-than-real-time throughput
+to tune Quality of Service (QoS) policies and robustness         achieved by the aerial-autonomy-stack on a mobile
+logic even before the field trials.                              workstation with an 13th Gen Intel Core i9 CPU, 64GB of
+                                                                 RAM, and a 12GB NVIDIA RTX3500 Ada Generation GPU.
+       VII. AUTOPILOT- AGNOSTIC ROS2 ACTIONS
+                                                                    Column “Sim. Instances” denotes whether the workload
+   Advanced autonomy requires communication paradigms            was executed on a single instance of the stack or distributed
+that support long-running behaviors with continuous              across two parallel instances (splitting the drone fleet evenly).
+feedback—a capability often lacking in basic publisher/sub-         The ODE physics timestep for the Gazebo environment
+scriber or service/request models. ROS2 Actions address this     is maintained at the default 4ms (250Hz) for PX4-based
+gap by allowing a client to initiate a goal (e.g., Takeoff)      simulations, while for ArduPilot, we increase the default 1ms
+and receive periodic updates on progress (e.g., the current      to 2ms (500Hz) to balance fidelity with performance. On
+altitude) until the final success or failure state.              our testing hardware, the physics engine can sustain a raw
+# 1. Takeoff action (PX4/ArduPilot quads and VTOLs)
+ros2 action send_goal /Drone${DRONE_ID}/takeoff_action autopilot_interface_msgs/action/Takeoff
+    ’{takeoff_altitude: 40.0,
+    vtol_transition_heading: 0.0, vtol_loiter_nord: 0.0, vtol_loiter_east: 0.0, vtol_loiter_alt: 100.0}’
+# 2. Orbit action (PX4/ArduPilot quads and VTOLs)
+ros2 action send_goal /Drone${DRONE_ID}/orbit_action autopilot_interface_msgs/action/Orbit
+    ’{east: 500.0, north: 0.0, altitude: 150.0, radius: 200.0}’
+# 3. Land (at home) action (PX4/ArduPilot quads and VTOLs)
+ros2 action send_goal /Drone${DRONE_ID}/land_action autopilot_interface_msgs/action/Land
+    ’{landing_altitude: 60.0, vtol_transition_heading: 60.0}’
+# 4. Offboard action (PX4 quads and VTOLs, ArduPilot quads)
+# - PX4 offboard_setpoint_type: attitude = 0, rates = 1, trajectory = 2
+# - ArduPilot quads offboard_setpoint_type: velocity = 3, acceleration = 4
+ros2 action send_goal /Drone${DRONE_ID}/offboard_action autopilot_interface_msgs/action/Offboard
+    ’{offboard_setpoint_type: 1, max_duration_sec: 5.0}’
+Fig. 6.   Command-line interface for the four high-level ROS2 Actions (Takeoff, Orbit, Land, Offboard) provided by the autopilot-agnostic interface.
+                             TABLE II
+     S IMULATION C LOCK S PEED - UPS ON A M OBILE W ORKSTATION              ence capability, highlighting the efficiency of our hardware-
+   (I NTEL I 9-13 WITH 64GB RAM AND 12GB NVIDIA RTX3500).                   accelerated perception stack.
+
+  Autopilot
+                Sim.      Num.     Neither   Camera   LiDAR    Camera &                              IX. C ONCLUSIONS
+              Instances   Drones   Sensor     Only     Only     LiDAR
+                            1      10.56×    10.93×   10.89×    10.49×
+                                                                               We introduced aerial-autonomy-stack, an open-
+                 1
+                            2       9.39×     6.88×    8.45×     6.05×      source, vertically integrated framework to help overcome
+                            4       4.97×     3.05×    4.26×     2.76×
+    PX4                     6       3.19×     1.93×    2.65×     1.74×      the fragmentation of modern aerial robotics tooling. Through
+                           1 ea.   26.05×    20.01×   21.73×    17.53×      meticulous hardware-software co-design, we fulfill the need
+                 2         2 ea.   15.71×    10.72×   12.22×     9.01×      for a unified perception-to-control workflow, enabling seam-
+                           3 ea.   14.72×     9.15×   11.36×     7.02×
+                                                                            less transitions from simulation to deployment. We success-
+                            1      8.35×     8.76×    9.85×     8.39×
+                 1
+                            2      6.84×     4.93×    6.47×     4.40×       fully demonstrated that our stack supports faster-than-real-
+                            4      3.44×     2.25×    3.00×     2.09×
+  ArduPilot                 6      1.82×     1.34×    1.80×     1.22×
+                                                                            time simulation on consumer GPUs. Furthermore, using con-
+                           1 ea.   15.06×    13.05×   14.70×    12.24×
+                                                                            tainerization, we enabled networked multi-agent simulation
+                 2         2 ea.    9.47×     7.69×    7.83×     6.96×      and frictionless deployment to Jetson edge devices.
+                           3 ea.    7.50×     5.15×    6.69×     5.34×
+                                                                               Current limitations include vehicle support restricted to
+Real-Time Factor (RTF) of approximately 15–20×, however,                    multirotor and quad-plane VTOL configurations, and the
+we cap it to 15× to avoid jitter and ensure autopilot SITL                  lack of offboard multi-sensor fusion. Although reinforcement
+stability. Thus, the theoretical upper bound for faster-than-               learning APIs are part of the aerial-autonomy-stack
+real-time sample generations is ≤15× for the single-instance                package, they were excluded from this article to maintain
+experiments and ≤30× for the dual-instance configuration.                   a sharper focus on the system architecture and develop-
+                                                                            ment/deployment cycle. Future work will focus on SLAM
+   Each cell in Table II is the average of 10 runs, each
+                                                                            integration, end-to-end learning, and outdoor field validation.
+250 simulated seconds long. We evaluate the faster-than-real-
+time speed-ups when simulating 1, 2, 4, and 6 quadcopters                                        X. ACKNOWLEDGMENTS
+simultaneously. For each drone, we vary the computational                      This work is supported by National Research Council
+load by including either both, each one, or neither of two                  Canada (NRC) and Defence Research and Development
+simulated sensors: (i) a 320-by-240 pixels, 8 FPS, RGB                      Canada (DRDC), partially, by its Canadian Saftey and Se-
+camera, processed by Ultralytics YOLOv8n [28] at native                     curity program (DRDC CSS). The Canadian Safety and
+resolution; and (ii) a 4Hz LiDAR with 360° (240 samples)                    Security Program is a federally-funded program to strengthen
+horizontal FOV and 60° (40 samples) vertical FOV processed                  Canada’s ability to anticipate, prevent/mitigate, prepare for,
+by KISS-ICP [29] odometry. Note that these sensor con-                      respond to, and recover from natural disasters, serious acci-
+figurations are simplifications of the real-life sensors (see               dents, crime and terrorism through the convergence of sci-
+Section IV-B.2) and they have been selected to balance                      ence and technology with policy, operations and intelligence.
+simulation performance and realism. Nonetheless, all sensor
+parameters can be easily modified in software.                                                           R EFERENCES
+   Our results show that aerial-autonomy-stack con-                          [1] E. Kaufmann, L. Bauersfeld, A. Loquercio, M. Müller, V. Koltun, and
+                                                                                 D. Scaramuzza, “Champion-level drone racing using deep reinforce-
+sistently achieves above real-time performance across all                        ment learning,” Nature, vol. 620, no. 7976, pp. 982–987, 2023.
+tested scenarios. Furthermore, in optimized configurations, it               [2] M. Bosello, F. Pinzarrone, S. Kiade, D. Aguiari, Y. Keuter, A. AlShe-
+attains an effective aggregate speed-up in the order of ∼20×.                    hhi, G. Caminati, K. L. Wong, K. S. Chou, J. Halepota, F. Alneyadi,
+                                                                                 J. Panerati, and G. Pau, “On your own: Pro-level autonomous drone
+Multi-drone scenarios are slower but still run faster than                       racing in uninstrumented arenas,” IEEE Robotics and Automation
+real-time, e.g., between ∼3× and ∼10× for 4 PX4 drones.                          Letters, vol. 11, no. 3, pp. 2674–2681, 2026.
+Crucially, we observe that the system is primarily compute-                  [3] S. Sai, A. Garg, K. Jhawar, V. Chamola, and B. Sikdar, “A compre-
+                                                                                 hensive survey on artificial intelligence for unmanned aerial vehicles,”
+bound by CPU performance—saturated by physics updates                            IEEE Open Journal of Vehicular Technology, vol. 4, pp. 713–738,
+and inter-process communication—rather than GPU infer-                           2023.
+ [4] D. Floreano and R. J. Wood, “Science, technology and the future of            control communities,” IEEE Control Systems, vol. 44, no. 4, pp. 38–
+     small autonomous drones,” Nature, vol. 521, no. 7553, pp. 460–466,            46, 2024.
+     2015.                                                                    [17] J. Panerati, H. Zheng, S. Zhou, J. Xu, A. Prorok, and A. P. Schoellig,
+ [5] C. Zhong, Y. Zheng, W. Lijun, and W. Shen, “Cloud container                   “Learning to fly—a gym environment with pybullet physics for
+     technologies in military applications,” in 2025 21st International            reinforcement learning of multi-agent quadcopter control,” in 2021
+     Conference on Natural Computation, Fuzzy Systems and Knowledge                IEEE/RSJ International Conference on Intelligent Robots and Systems
+     Discovery (ICNC-FSKD), 2025, pp. 727–736.                                     (IROS), 2021, pp. 7512–7519.
+ [6] K. McGuire and R. Roche, “Up, Up, and Away: Adventures in                [18] M. Kulkarni, W. Rehberg, and K. Alexis, “Aerial gym simulator: A
+     Aerial Robotics,” Keynote speech at the Open Source Summit Europe,            framework for highly parallelized simulation of aerial robots,” IEEE
+     November 2025, available at: https://youtu.be/HTsXCDTch2I.                    Robotics and Automation Letters, pp. 1–8, 2025.
+ [7] C. A. Dimmig, G. Silano, K. McGuire, C. Gabellieri, W. Hönig,           [19] Y. Song, S. Naji, E. Kaufmann, A. Loquercio, and D. Scaramuzza,
+     J. Moore, and M. Kobilarov, “Survey of simulators for aerial robots:          “Flightmare: A flexible quadrotor simulator,” in Conference on Robot
+     An overview and in-depth systematic comparisons [survey],” IEEE               Learning, 2020.
+     Robotics & Automation Magazine, vol. 32, no. 2, pp. 153–166, 2025.       [20] S. Shah, D. Dey, C. Lovett, and A. Kapoor, “Airsim: High-fidelity
+ [8] S. Khatiri, S. Panichella, and P. Tonella, “Simulation-based testing          visual and physical simulation for autonomous vehicles,” in Field
+     of unmanned aerial vehicles with aerialist,” in 2024 IEEE/ACM                 and Service Robotics, M. Hutter and R. Siegwart, Eds. Springer
+     46th International Conference on Software Engineering: Companion              International Publishing, 2018, pp. 621–635.
+     Proceedings (ICSE-Companion), 2024, pp. 134–138.                         [21] S. Folk, J. Paulos, and V. Kumar, “Rotorpy: A python-based
+ [9] M. Fernandez-Cortizas, M. Molina, P. Arias-Perez, R. Perez-Segui,             multirotor simulator with aerodynamics for education and research,”
+     D. Perez-Saura, and P. Campoy, “Aerostack2: A software framework              2023. [Online]. Available: https://arxiv.org/abs/2306.04485
+     for developing multi-robot aerial systems,” 2024. [Online]. Available:   [22] J. L. Sanchez-Lopez, R. A. Suárez Fernández, H. Bavle, C. Sampedro,
+     https://arxiv.org/abs/2303.18237                                              M. Molina, J. Pestana, and P. Campoy, “Aerostack: An architecture
+[10] P. Foehn, E. Kaufmann, A. Romero, R. Penicka, S. Sun, L. Bauersfeld,          and open-source software framework for aerial robotics,” in 2016
+     T. Laengle, G. Cioffi, Y. Song, A. Loquercio, and D. Scaramuzza, “Ag-         International Conference on Unmanned Aircraft Systems (ICUAS),
+     ilicious: Open-source and open-hardware agile quadrotor for vision-           2016, pp. 332–341.
+     based flight,” Science Robotics, vol. 7, no. 67, p. eabl6259, 2022.      [23] J. Martin and S. Esteban, “Ros-based multi-domain swarm framework
+[11] J. A. Preiss, W. Honig, G. S. Sukhatme, and N. Ayanian, “Crazyswarm:          for fast prototyping,” Aerospace, vol. 12, no. 8, p. 702, 2025.
+     A large nano-quadcopter swarm,” in 2017 IEEE International Confer-       [24] E. Aljalbout, J. Xing, A. Romero, I. Akinola, C. R. Garrett, E. Heiden,
+     ence on Robotics and Automation (ICRA), 2017, pp. 3299–3304.                  A. Gupta, T. Hermans, Y. Narang, D. Fox, D. Scaramuzza, and
+[12] F. Real, A. Torres-González, P. R. Soria, J. Capitán, and A. Ollero,        F. Ramos, “The reality gap in robotics: Challenges, solutions, and
+     “Unmanned aerial vehicle abstraction layer: An abstraction layer to           best practices,” Annual Review of Control, Robotics, and Autonomous
+     operate unmanned aerial vehicles,” International Journal of Advanced          Systems, 2025.
+     Robotic Systems, vol. 17, no. 4, pp. 1–13, 2020.                         [25] S. Teetaert, W. Zhao, A. Loquercio, S. Zhou, L. Brunke, M. Schuck,
+[13] K. Mohta, M. Watterson, Y. Mulgaonkar, S. Liu, C. Qu, A. Makineni,            W. Hönig, J. Panerati, and A. P. Schoellig, “Advancing reproducibility,
+     K. Saulnier, K. Sun, A. Zhu, J. Delmerico, D. Thakur, K. Karydis,             benchmarks, and education with remote sim2real: Remote simulation
+     N. Atanasov, G. Loianno, D. Scaramuzza, K. Daniilidis, C. J. Taylor,          to real robot hardware,” IEEE Robotics & Automation Magazine,
+     and V. Kumar, “Fast, autonomous flight in gps-denied and cluttered            vol. 32, no. 1, 2025.
+     environments,” Journal of Field Robotics, vol. 35, no. 1, pp. 101–120,   [26] G. Shi, X. Shi, M. O’Connell, R. Yu, K. Azizzadenesheli, A. Anand-
+     2018.                                                                         kumar, Y. Yue, and S.-J. Chung, “Neural lander: Stable drone landing
+[14] T. Baca, M. Petrlik, M. Vrba, V. Spurny, R. Penicka, D. Hert, and             control using learned dynamics,” in 2019 International Conference on
+     M. Saska, “The mrs uav system: Pushing the frontiers of reproducible          Robotics and Automation (ICRA), 2019, pp. 9784–9790.
+     research, real-world deployment, and education with autonomous           [27] N. Wirth, “A plea for lean software,” Computer, vol. 28, no. 2, 1995.
+     unmanned aerial vehicles,” Journal of Intelligent & Robotic Systems,     [28] M. Sohan, T. Sai Ram, and C. V. Rami Reddy, “A review on yolov8
+     vol. 102, no. 1, p. 26, 2021.                                                 and its advancements,” in Data Intelligence and Cognitive Informatics,
+[15] K. Xiao, S. Tan, G. Wang, X. An, X. Wang, and X. Wang, “Xtdrone: A            I. J. Jacob, S. Piramuthu, and P. Falkowski-Gilski, Eds. Singapore:
+     customizable multi-rotor uavs simulation platform,” in 2020 4th Inter-        Springer Nature Singapore, 2024, pp. 529–545.
+     national Conference on Robotics and Automation Sciences (ICRAS),         [29] I. Vizzo, T. Guadagnino, B. Mersch, L. Wiesmann, J. Behley, and
+     2020, pp. 55–61.                                                              C. Stachniss, “Kiss-icp: In defense of point-to-point icp – simple,
+[16] S. Zhou, L. Brunke, A. Tao, A. W. Hall, F. P. Bejarano, J. Panerati,          accurate, and robust registration if done the right way,” IEEE Robotics
+     and A. P. Schoellig, “What is the impact of releasing code with               and Automation Letters, vol. 8, no. 2, pp. 1029–1036, 2023.
+     publications?: Statistics from the machine learning, robotics, and
+

@@ -1,0 +1,339 @@
+{
+  "query": {
+    "query": "OmniNxt Agilicious Aerostack2 MRS UAV System autonomous obstacle avoidance github dependencies",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "22067ca2b448fab7961e0600b76b872a",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/OmniNxt",
+        "title": "HKUST-Aerial-Robotics/OmniNxt: [IROS'24 Oral] A Fully Open-source ...",
+        "url": "https://github.com/HKUST-Aerial-Robotics/OmniNxt",
+        "publishedDate": "2024-08-15T00:00:00.000Z",
+        "highlights": [
+          "# HKUST-Aerial-Robotics\n...\n](https://github.com/D2SLAM-Fusion/oak_\n...\nc_4p\n...\n), which contains hardware information,\n...\ndriver and test tools.\n...\nib](https://github\n...\nWe open-source hardware designs at \ud83d\udd17[NXT-FC](https://github.com/HKUST-Aerial-Robotics/Nxt-FC). Nxt-FC supports [PX4](https://github.com/PX4/PX4-Autopilot) and [Ardupilot](https://github.com/ArduPilot/ardupilot) firmware.\n...\nFollow the **instructions for setting up the Nxt-FC** part to configure your flight controller.\n...\nThe PX4 parameter of OmniNxt can be downloaded from [Onedrive]([OmniNxt\n...\n3.params](https://hkustconnect\n...\npoint.com/:\n...\nOur Omni-VINS and Omni-Depth are developed from D2SLAM. Since building the Docker images on the local machine(Jetson Orin) usually takes a long time, we suggest you pull the images from the Docker Hub. If you want to build the Docker image on your local machine, follow the instructions [Build Docker Images On Local Machine](#Build Docker images in local machines).\n...\nWe highly suggest you refer to Fast-Lab's PX4 controller [PX4-Control](https://github.com/ZJU-FAST-Lab/Fast-Drone-250/tree/master/src/realflight_modules/px4ctrl)\n...\nWe also provide our yaw-rotation-free version of Fast-Lab's PX4 controller [PX4-Control](https://github.com/D2SLAM-Fusion/controller-PX4Control).\n...\nthe [ego-\n...\n](https://github\n...\ncom/ZJU-FAST-Lab/ego-\n...\n.git). Our version is here [ego-\n...\n](https://github.com/D2SLAM-Fusion/\n...\nPlanner) \n\nPlease cite\n...\n-Fast-Lab's\n...\n](https://github.com/\n...\n.git) if these modules are useful for your research and project."
+        ]
+      },
+      {
+        "id": "https://github.com/ctu-mrs/mrs_uav_system",
+        "title": "ctu-mrs/mrs_uav_system: The entry point to the MRS UAV system.",
+        "url": "https://github.com/ctu-mrs/mrs_uav_system",
+        "highlights": [
+          "built on the [Robot Operating System\n...\nJazzy,\n...\n| Main metapackages | Contents | Repository | Package |\n|-----------------------|------------------------|-----------------------------------------------------------------------|----------------------------------|\n| MRS UAV System | UAV Core & UAV Modules | [mrs_uav_system](https://github.com/ctu-mrs/mrs_uav_system/tree/ros2) | `ros-jazzy-mrs-uav-system` |\n| MRS UAV System - Full | All of the bellow | [mrs_uav_system](https://github.com/ctu-mrs/mrs_uav_system/tree/ros2) | `ros-jazzy-mrs-uav-system-full` |\n...\n& metapack\n...\n----------------------------------------------------------------------------------------------------------|----------------\n...\n----------|\n...\n](https://\n...\n.com/ctu-mrs/mrs_uav_core/tree/\n...\n) | `\n...\n-uav\n...\n` |\n| UAV Modules | [m\n...\n_uav_\n...\n](https://\n...\ncom/ctu-mrs/mrs_uav_modules/tree/ros2) | `ros-\n...\nzy-mrs-uav-modules` |\n...\n_planning](https://\n...\ncom/ctu-mrs/mrs\n...\nmapping_planning/tree/\n...\n) | `\n...\n](https://\n...\n/tree/\n...\nhttps://github.com/ctu-mrs/\n...\nrs_point_lio_core/tree/\n...\n) | `\n...\n-jazzy-m\n...\npoint-lio-core` |\n| Precise Landing | TODO | TODO |\n| ALOAM\n...\n| TODO (?, probably not) | TODO |\n| LIO-SAM Core | TODO (?, probably not) | TODO |\n| Hector Core | TODO (?, probably not) | TODO |\n...\nThe multiarch (AMD and ARM64) docker image contains the `ros-jazzy-mrs-uav-system-full` ROS package and, with that, all the MRS dependencies.\n...\ninstallation system.\n...\nAdditionally, the `mrs-uav-system` package generates a docker image with the full system."
+        ]
+      },
+      {
+        "id": "https://github.com/aerostack2/aerostack2",
+        "title": "aerostack2/aerostack2",
+        "url": "https://github.com/aerostack2/aerostack2",
+        "highlights": [
+          "# aerostack2/\n...\nostack2\n...\nAerostack2 is a ROS 2 framework developed to create autonomous multi-aerial-robots systems in an easy and powerful way.\n...\n- aerial-robotics\n- drones\n- robotics\n- ros2\n- swarm-robotics\n- uavs\n...\nAerostack2 is a ROS 2 framework developed to create autonomous multi-aerial-robots systems in an easy and powerful way.\n\nCurrently is currently developed and tested over ROS 2 humble (over Ubuntu 22.04) .\n\nVersions below 1.0.9 were also developed and tested over ROS 2 galactic (over Ubuntu 20.04), can be found in the branch `EOL/galactic`.\n...\nWe also have docker images with Aerostack2 preinstalled in ROS 2 Humble, check it out at [Aerostack2 Dockerhub](https://hub.docker.com/u/aerostack2).\n\nMost important features:\n...\n- Natively developed on ROS 2.\n- Complete modularity, allowing elements to be changed or interchanged without affecting the rest of the system.\n- Independence of the aerial platform. Easy Sim2Real deployment.\n- Project-oriented, allowing to install and use only the necessary packages for the application to be developed. \n- Swarming orientation.\n...\nPlease visit the [[Aerostack2 Documentation]](https://aerostack2.github.io) for a complete documentation.\n...\nInstallation instructions can be found [[here]](https://aerostack2.github.io/_00_getting_started/index.html#ubuntu-debian).\n\n \n\nhttps://user-images.githubusercontent.com/35956525/231999883-e491aa08-2835-47a9-9c68-5b2936e8594e.mp4\n\n \n\n# Credits"
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/agilicious",
+        "title": "GitHub - uzh-rpg/agilicious: Agile flight done right!",
+        "url": "https://github.com/uzh-rpg/agilicious",
+        "highlights": [
+          "**Agilicious** is a co-designed hardware and software framework tailored to autonomous, agile quadrotor flight, which has been developed and used since 2016 at the [Robotics and Perception Group (RPG)](http://rpg.ifi.uzh.ch/) of the University of Zurich. Agilicious is described in this [Science Robotics 2022 paper](https://rpg.ifi.uzh.ch/docs/ScienceRobotics22_Foehn.pdf).\n...\ncompletely open-source and open-hardware\n...\nand neural-network-\n...\nAlso, it provides high\n...\nto-weight and\n...\n, onboard vision sensors, GPU-accelerated compute hardware for\n...\nneural-network inference, a\n...\n-time flight controller,\n...\na versatile software stack.\n...\nAgilicious\n...\npapers at our lab, including trajectory tracking for drone racing scenarios at up to 5g and\n...\n/h ([SciRob2\n...\nFoehn](https://rpg.ifi\n...\nScienceRobotics2\n...\nhn.pdf\n...\n[Video](\n...\nbased acrobatic flight\n...\npg.ifi\n...\nsolely onboard perception\n...\nifi.uz\n...\n-loop simulation\n...\nAgilicious is split in two parts, *agilib* and *agiros*.\n...\n*agilib* contains base classes and module implementations providing the base functionality necessary for agile flight.\nIt contains controllers, estimators, and logic, but with minimal dependencies (mainly [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)).\nIt allows users to integrate Agilicious into their own infrastructure and can easily be extended with new modules.\n...\nMeanwhile, *agiros* provides bindings to common [ROS](https://www.ros.org) interfaces, which make it easy and quick to set up and get flying, both in simulation and real world."
+        ]
+      },
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/OmniNxt/blob/main/README.md",
+        "title": "README.md at main \u00b7 HKUST-Aerial-Robotics/OmniNxt",
+        "url": "https://github.com/HKUST-Aerial-Robotics/OmniNxt/blob/main/README.md",
+        "highlights": [
+          "- Repository: HKUST-Aerial-Robotics/OmniNxt | [IROS'24 Oral] A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception\n...\n7 stars\n- Branch: main\n...\n](https://github.com/D2\n...\n/oak_ffc_\n...\nros), which contains hardware information,\n...\ndriver and test tools.\n...\nWe open-source hardware designs at \ud83d\udd17[NXT-FC](https://github.com/HKUST-Aerial-Robotics/Nxt-FC).  Nxt-FC supports [PX4](https://github.com/PX4/PX4-Autopilot) and [Ardupilot](https://github.com/ArduPilot/ardupilot) firmware.\n...\nflight controller.\n...\nOur Omni-VINS and Omni-Depth are developed from D2SLAM. Since building the Docker images on the local machine(Jetson Orin) usually takes a long time, we suggest you pull the images from the Docker Hub. If you want to build the Docker image on your local machine, follow the instructions [Build Docker Images On Local Machine](#Build Docker images in local machines).\n...\nWe highly suggest you refer to Fast-Lab's PX4 controller [PX4-Control](https://github.com/ZJU-FAST-Lab/Fast-Drone-250/tree/master/src/realflight_modules/px4ctrl)\n...\nWe also provide our yaw-rotation-free version of Fast-Lab's PX4 controller [PX4-Control](https://github.com/D2SLAM-Fusion/controller-PX4Control).\n...\nWe modified some of\n...\nstrategies in the [ego-planner](https://github.com/ZJU-FAST-Lab/ego-\n...\n.git). Our version is here [ego-planner-omni-modify](https://github.com/D2SLAM-Fusion/planner-EgoPlanner) \n\nPlease cite ZJU-Fast-Lab's [ego-\n...\n](https://github.com/Z\n...\n-FAST-Lab/ego-planner.git) if these modules are useful for your research and project."
+        ]
+      },
+      {
+        "id": "https://agilicious.readthedocs.io/en/latest/index.html",
+        "title": "Agilicious: Open-Source and Open-Hardware Agile Quadrotor for Vision-Based Flight \u2014 agilicious 0.0.1 documentation",
+        "url": "https://agilicious.readthedocs.io/en/latest/index.html",
+        "highlights": [
+          "has been developed and used since 2016 at the Robotics and Perception Group (RPG) of the University of Zurich. Agilicious is described in this Science Robotics 2022 paper. It is completely open-source and open-hardware and supports both model-based and neural-network-based controllers. Also, it provides high thrust-to-weight and torque-to-inertia ratios for agility, onboard vision sensors, GPU-accelerated compute hardware for real-time perception and neural-network inference, a real-time flight controller, and a versatile software stack. In contrast to existing frameworks, Agilicious offers a unique combination of flexible software and high-performance hardware. Agilicious has been used in over 30 scientific papers at our lab, including trajectory tracking for drone racing scenarios at up to 5g and 70km/h (SciRob21_Foehn, Video), vision-based acrobatic flight (RSS20 Kaufmann, Video), obstacle avoidance in both structured and unstructured environments using solely onboard perception (SciRob21_Loquercio, Video), and hardware-in-the-loop simulation in virtual-reality environments. Thanks to its versatility, we believe that Agilicious supports the next generation of scientific and industrial quadrotor research. Agilicious allows to seamlessly develop, test, reproduce and benchmark control algorithms such as Non-linear Model Predictive Control (MPC), differential-flatness-based control (DFBC) and INDI (Incremental Non-linear Dynamic Inversion) (TRO 2022, Sun, Video). Agilicious also includes our state-of-the-art, high-fidelity simulator, which uses Blade Element Momentum (BEM)"
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/uzh-rpg/agilicious",
+        "title": "GitHub - uzh-rpg/agilicious: Agile flight done right! \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/uzh-rpg/agilicious",
+        "publishedDate": "2022-06-14T00:00:00.000Z",
+        "author": "uzh-rpg",
+        "highlights": [
+          "to autonomous, agile quadrotor flight, which has been developed and used since 2016 at the Robotics and Perception Group (RPG) of the University of Zurich. Agilicious is described in this Science Robotics 2022 paper. It is completely open-source and open-hardware and supports both model-based and neural-network-based controllers. Also, it provides high thrust-to-weight and torque-to-inertia ratios for agility, onboard vision sensors, GPU-accelerated compute hardware for real-time perception and neural-network inference, a real-time flight controller, and a versatile software stack. In contrast to existing frameworks, Agilicious offers a unique combination of flexible software and high-performance hardware. Agilicious has been used in over 30 scientific papers at our lab, including trajectory tracking for drone racing scenarios at up to 5g and 70km/h (SciRob21_Foehn, Video), vision-based acrobatic flight (RSS20 Kaufmann, Video), obstacle avoidance in both structured and unstructured environments using solely onboard perception (SciRob21_Loquercio, Video), and hardware-in-the-loop simulation in\n...\nagilib contains base classes and module implementations providing the base functionality necessary for agile flight. It contains controllers, estimators, and logic, but with minimal dependencies (mainly Eigen). It allows users to integrate Agilicious into their own infrastructure and can easily be extended with new modules. Meanwhile, agiros provides bindings to common ROS interfaces, which make it easy and quick to set up and get flying, both in simulation and real world."
+        ],
+        "image": "https://opengraph.githubassets.com/e294abb9aa4f9b5045e0700d341ae18cce76b03745b5a195a85955290d7a2f04/uzh-rpg/agilicious"
+      },
+      {
+        "id": "https://exa.ai/library/publication/k89gpk36hhf",
+        "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception",
+        "url": "https://doi.org/10.1109/iros58592.2024.10802134",
+        "publishedDate": "2024-10-14T00:00:00.000Z",
+        "author": "Peize Liu, Chen Feng, Yang Xu, Yan Ning, Hao Xu, Shaojie Shen",
+        "highlights": [
+          "Adopting omnidirectional Field of View (FoV) cameras in aerial robots vastly improves perception ability, significantly advancing aerial robotics\u2019s capabilities in inspection, reconstruction, and rescue tasks. However, such sensors also elevate system complexity, e.g., hardware design, and corresponding algorithm, which limits researchers from utilizing aerial robots with omnidirectional FoV in their research. To bridge this gap, we propose OmniNxt, a fully open-source aerial robotics platform with omnidirectional perception. We design a high-performance flight controller Nxt-FC and a multi-fisheye camera set for OmniNxt. Meanwhile, the compatible software is carefully devised, which empowers OmniNxt\n...\naccurate localization and real-time dense mapping with limited computation resource occupancy. We conducted extensive real\n...\nOmniNxt in practical applications\n...\nAll the hardware and software are open-access at3, and we provide docker images\n...\neach crucial module in the proposed system. Project page: https://hkust-aerial-robotics.github.io/OmniNxt.\n...\n- Tomas Baca, Matej Petrlik, Matous Vrba, Vojtech Spurny, Robert Penicka, Daniel Hert, et al. The MRS UAV System: Pushing the Frontiers of Reproducible Research, Real-world Deployment, and Education with Autonomous Unmanned Aerial Vehicles. Journal of Intelligent & Robotic Systems. 2021;102(1). doi:10.1007/s10846-021-01383-5.\n...\n, Robert P\n...\n\u010dka, Sihao\n...\net al. Agilicious: Open-source and open-hardware agile\n...\nfor vision-based flight.\n...\n. 202\n...\n. doi:10.\n...\n126/sc\n...\nbotics."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/k89gpk36hhf",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception",
+              "year": 2024,
+              "date": "2024-10-14",
+              "type": null,
+              "language": "en",
+              "citationCount": 15,
+              "authors": [
+                {
+                  "name": "Peize Liu",
+                  "id": null
+                },
+                {
+                  "name": "Chen Feng",
+                  "id": null
+                },
+                {
+                  "name": "Yang Xu",
+                  "id": null
+                },
+                {
+                  "name": "Yan Ning",
+                  "id": null
+                },
+                {
+                  "name": "Hao Xu",
+                  "id": null
+                },
+                {
+                  "name": "Shaojie Shen",
+                  "id": null
+                }
+              ],
+              "referenceCount": 29,
+              "abstract": "Adopting omnidirectional Field of View (FoV) cameras in aerial robots vastly improves perception ability, significantly advancing aerial robotics\u2019s capabilities in inspection, reconstruction, and rescue tasks. However, such sensors also elevate system complexity, e.g., hardware design, and corresponding algorithm, which limits researchers from utilizing aerial robots with omnidirectional FoV in their research. To bridge this gap, we propose OmniNxt, a fully open-source aerial robotics platform with omnidirectional perception. We design a high-performance flight controller Nxt-FC and a multi-fisheye camera set for OmniNxt. Meanwhile, the compatible software is carefully devised, which empowers OmniNxt to achieve accurate localization and real-time dense mapping with limited computation resource occupancy. We conducted extensive real-world experiments to validate the superior performance of OmniNxt in practical applications. All the hardware and software are open-access at3, and we provide docker images of each crucial module in the proposed system. Project page: https://hkust-aerial-robotics.github.io/OmniNxt.",
+              "doi": "10.1109/iros58592.2024.10802134"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/UAV-Swarm/tools-OmniNxtSimulator",
+        "title": "Search code, repositories, users, issues, pull requests...",
+        "url": "https://github.com/UAV-Swarm/tools-OmniNxtSimulator",
+        "publishedDate": "2024-07-15T00:00:00.000Z",
+        "author": "UAV-Swarm",
+        "highlights": [
+          "# UAV-Swarm/tools-OmniNxtSimulator\n...\nOmniNxt simulator based on Isaac Lab\n...\n[OmniNxt](https://hkust-aerial-robotics.github.io/OmniNxt/) simulator based on Isaac Lab\n...\n- Isaac Sim: 4.5.0\n- Isaac Lab: 2.0\n- ROS2: Humble\n...\ngit clone https://github.com/UAV-Swarm/tools-OmniNxtSimulator.git\ncd tools-OmniNxtSimulator\ngit lfs install\ngit config lfs.url \"https://public:Public123@repo.hkust-uav.org/artifactory/api/lfs/swarm-lfs\"\n...\n## ROS2 data interface\n...\n| Topic | Message Type | Description |\n| --- | --- | --- |\n| /robot_0/odom | nav_msgs/Odometry | Odometry of robot_0 |\n| /robot_0/control_cmd | std_msgs/Float32MultiArray | Control command of robot_0 |\n| /robot_0/debug_angular_velocity | nav_msgs/Odometry | Debug angular velocity of robot_0 |\n| /robot_0/prop_force | std_msgs/Float32MultiArray | Propeller force of robot_0 |\n| /robot_0/prop_torque | std_msgs/Float32MultiArray | Propeller torque of robot_0 |\n...\n## ROS2 <-> ROS1 communication bridge\n...\nThis bridge will automatically map the ROS2 topics to ROS1 topics. This is useful for the ROS1 packages that are not yet ported to ROS2.\n...\ncd ros_bridge\ndocker-compose up -d\n...\n| Script | Description | Visualization |\n| --- | --- | --- |\n| apps/00_single_uav.py | Single UAV simulation with position control and ROS2 interface | ![00_single_uav](https://wpcos-1300629776.cos.ap-chengdu.myqcloud.com/picgo/20250116-014615%402x.png) |\n| apps/01_multi_uav.py | Multi-UAV simulation with position control and ROS2 interface | ![01_multi_uav](https://wpcos-1300629776.cos.ap-chengdu.myqcloud.com/picgo/20250116-015052%402x.png)"
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2303.18237v2",
+        "title": "Aerostack2: A Software Framework for Developing Multi-robot Aerial ...",
+        "url": "https://arxiv.org/html/2303.18237v2",
+        "publishedDate": "2024-09-03T00:00:00.000Z",
+        "highlights": [
+          ". To address this gap, we introduce Aerostack2, a comprehensive, open-source ROS 2 based framework designed for creating versatile and robust multi-robot aerial systems. Aerostack2 features platform independence, a modular plugin architecture, and behavior-based mission control, enabling easy customization and integration across various platforms. In this paper, we detail the full architecture of Aerostack2, which has been tested with several platforms in both simulation and real flights.\n...\nAmong general purpose frameworks, we can find some solutions, such as Aerostack [3], a ROS-based framework that integrates various computational solutions such as computer vision and motion planning, developed through extensive use in our research lab. The MRS UAV system [13] is another ROS-based system designed for onboard use with PX4 and DJI compatible controllers, suitable for both indoor and outdoor applications, and designed for multi-robot experiments. The UAV Abstraction Layer (UAL) [15] further standardizes the interfaces of UAVs on different autopilots, simplifying higher-level algorithm development for both simulated and real platforms.\n...\nFor more specialized applications, Agilicious [8], is a framework optimized for agile quadrotor flight. It features onboard vision sensors, GPU-accelerated hardware, and a versatile software stack for real-time perception and control. Similarly, the KumarRobotics flight stack [12] focuses on autonomous navigation in cluttered, GPS-denied environments, performing all sensing and computation onboard without human intervention after launch."
+        ],
+        "image": "https://arxiv.org/html/2303.18237v2/extracted/5830364/figures/nodes_architecture.png"
+      },
+      {
+        "id": "https://arxiv.org/html/2403.20085v1",
+        "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot \n with Omnidirectional Visual Perception",
+        "url": "https://arxiv.org/html/2403.20085v1",
+        "highlights": [
+          "In recent years, remarkable advancements in open-source aerial robotics platforms have led to a surge in practical applications, e.g., exploration [1], reconstruction [2], and rescue [3]. However, it becomes evident that existing platforms, like FLA [4], MRS [5], and Agilicious [6], are challenging for effectively performing these tasks in increasingly complex and dynamic environments due to their limited FoV.\n...\nplatforms like FLA [4] and MRS [5] are designed for data collection and autonomous navigation in open areas. These platforms share a similar solution, utilizing a PX4 [19] based flight controller, a CPU-only onboard computer, mono or stereo cameras, and LiDAR. However, achieving compactness and lightweight in their design is challenging due to the introduction of LiDAR to obtain dense map. On the other hand, the platform, which is designed for aggressive planning and control, prioritizes maximizing the thrust weight ratio (TWR). One notable platform in this category is Agilicious [6]. Different from those platforms mentioned above, Agilicous [6] achieves compactness and lightweight by adopting a cramped hardware design, which allows the platform to have high TWR but makes it hard to integrate additional sensors. This limitation poses challenges in accessing a comprehensive surrounding environment, limiting its applicability to future tasks. Besides, commercial platforms like DJI MAVIC 3T [11] and SKYDIO X10 [12] are not open-source, hindering further development and algorithm validation. Their large dimensions and weight also limit the range of applications."
+        ],
+        "image": "http://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg"
+      },
+      {
+        "id": "https://exa.ai/library/publication/df8n9zkdjxt",
+        "title": "Aerostack2: A Software Framework for Developing Multi-robot Aerial Systems",
+        "url": "https://doi.org/10.48550/arxiv.2303.18237",
+        "publishedDate": "2023-03-31T00:00:00.000Z",
+        "author": "Miguel Fern\u00e1ndez-Cortizas, Mart\u00edn Molina, Pedro Arias\u2010Perez, Rafael P\u00e9rez-Segu\u00ed, David P\u00e9rez-Saura, Pascual Campoy",
+        "highlights": [
+          "and out door applications, and designed for multi-robot experiments. The UAV Abstraction Layer (UAL) [15] further standardizes the interfaces of UAVs on different autopilots, simplifying higher-level algorithm development for both simulated and real platforms. For more specialized applications, Agilicious [8], is a framework optimized for agile quadrotor flight. It features onboard vision sensors, GPU-accelerated hardware, and a versatile software stack for real-time perception and control. Similarly, the KumarRobotics flight stack [12] focuses on au tonomous navigation in cluttered, GPS-denied environments, performing all sensing and computation onboard without human intervention after launch. In the realm of simulation and experimentation, Crazy Choir [9] offers a ROS 2 toolbox for working with swarms of Crazyflie nano-quadrotors, enabling complex distributed tasks in both simulations and real-world experiments. Sim ilarly, Crazyswarm2 [10], is a toolbox designed for a large swarm of Crazyflies flying in dense indoor formations, obtaining accurate flights for up to 50 drones. XTDrone [16] provides a comprehensive simulation platform for various types of UAV, facilitating the transition from algorithm testing in simulations to deployment in real UAVs. RotorS [14] is another modular MAV simulation framework, de signed for quick research integration and easy transition from simulation to real MAV applications. Finally, the Generalized Autonomy Aviation System (GAAS) [11] presents a simulation platform aimed at fully autonomous VTOL and multirotors. It uses lidar, HD map"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/df8n9zkdjxt",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "Aerostack2: A Software Framework for Developing Multi-robot Aerial Systems",
+              "year": 2023,
+              "date": "2023-03-31",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 17,
+              "authors": [
+                {
+                  "name": "Miguel Fern\u00e1ndez-Cortizas",
+                  "id": null
+                },
+                {
+                  "name": "Mart\u00edn Molina",
+                  "id": null
+                },
+                {
+                  "name": "Pedro Arias\u2010Perez",
+                  "id": null
+                },
+                {
+                  "name": "Rafael P\u00e9rez-Segu\u00ed",
+                  "id": null
+                },
+                {
+                  "name": "David P\u00e9rez-Saura",
+                  "id": null
+                },
+                {
+                  "name": "Pascual Campoy",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "The development of autonomous aerial systems, particularly for multi-robot configurations, is a complex challenge requiring multidisciplinary expertise. Unlike ground robotics, aerial robotics has seen limited standardization, leading to fragmented development efforts. To address this gap, we introduce Aerostack2, a comprehensive, open-source ROS 2 based framework designed for creating versatile and robust multi-robot aerial systems. Aerostack2 features platform independence, a modular plugin architecture, and behavior-based mission control, enabling easy customization and integration across various platforms. In this paper, we detail the full architecture of Aerostack2, which has been tested with several platforms in both simulation and real flights. We demonstrate its effectiveness through multiple validation scenarios, highlighting its potential to accelerate innovation and enhance collaboration in the aerial robotics community.",
+              "doi": "10.48550/arxiv.2303.18237"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://hkust-aerial-robotics.github.io/OmniNxt/static/pdfs/OmniNxt.pdf",
+        "title": "[PDF] OmniNxt: A Fully Open-source and Compact Aerial Robot with ...",
+        "url": "https://hkust-aerial-robotics.github.io/OmniNxt/static/pdfs/OmniNxt.pdf",
+        "highlights": [
+          "In recent years, remarkable advancements in open-source aerial robotics platforms have led to a surge in practical ap plications, e.g., exploration [1], reconstruction [2], and rescue [3]. However, it becomes evident that existing platforms, like FLA [4], MRS [5], and Agilicious [6], are challenging for effectively performing these tasks in increasingly complex and dynamic environments due to their limited FoV. Contrary to platforms with limited FoV, the early de velopment of aerial robots with omnidirectional FoV by Gao et al. [7] demonstrates the potential of omnidirectional FoV in performing the above tasks more robustly and effi ciently. As proved by Zhang et al. [8] and Wang et al. [9], the omnidirectional FoV improves the localization accuracy in challenging environments. Additionally, omnidirectional FoV enables minimizing the indirect-controlled yaw rotation [10] during the flight [10], which enhances the energy efficiency of downstream tasks like autonomous navigation. However, the lack of open-source omnidirectional FoV platforms can be attributed to the following challenges. (1) Sensor configuration: The standard way to achieve omni directional FoV [7] is using the multi-fisheye camera set.\n...\n| Agilicious | ! [6] 330mm 775g High \u2248 | ! ! ! % ! Stereo camera 90\u25e6 \u2248 |\n...\n| Fast-250 | ! [14] 250mm 1000g Median \u2248 | ! ! ! % ! Stereo camera 90\u25e6 \u2248 |\n...\n, utilizing a PX4 [19] based flight controller, a CPU-only onboard computer, mono or stereo cameras, and LiDAR.\n...\nIEEE International Conference on Robotics and Automation (ICRA), 2016, pp. 801\u2013808."
+        ]
+      },
+      {
+        "id": "https://github.com/yfliu-eng/TeamB_mrsd_24",
+        "title": "yfliu-eng/TeamB_mrsd_24",
+        "url": "https://github.com/yfliu-eng/TeamB_mrsd_24",
+        "publishedDate": "2025-05-04T03:40:00.000Z",
+        "highlights": [
+          "# DTC-MRSD Unified Autonomy & Gimbal Control\n...\nThis repository contains the unified software stack for the Team Chiron MRS-D drone system. It consolidates flight autonomy, gimbal control, and vision-based geolocation.\n...\n| System | Hardware | Role | Key Components |\n| --- | --- | --- | --- |\n| **Onboard (Drone)** | NVIDIA Jetson Orin | Flight Autonomy & Gimbal Control | AirStack (ROS 2), MAVROS, Behavior Governor, RTSP Streamer |\n| **Ground Station** | x86_64 Laptop (Ubuntu) | Mission Control & Geolocator | VLM Geolocator, Foxglove Studio, QGroundControl, FVD Dashboard |\n...\n- **Hardware**: NVIDIA Jetson Orin (ARM64).\n- **Software**: Ubuntu\n...\n20.04/22.04, JetPack 5.x/6.x, Docker + NVIDIA Container Toolkit.\n- **Peripherals**: PX4\n...\nUSB), Gimbal Camera (RTSP/USB).\n...\n| Component |\n...\n| **3\n...\nLocal Receiver` | Web\n...\n| **4**\n...\ncasualty detection and GPS estimation. |\n...\ncd airstack/docker\n...\ndocker build -f Dockerfile.unified\n...\n:latest .\n...\nStart the unified container in background\n...\n```bash\n./airstack/docker/run_unified.sh\n```\n...\n- **MAVROS**: Communication with PX4.\n- **Behavior Governor**: Flight logic.\n- **Domain Bridge**: Links Domain 70 (Drone) to Domain 100 (Ground).\n...\n_control gimbal_\n...\n. Repository Structure\n...\n- `airstack/` \u2013 **Onboard Code**. ROS 2 workspace for flight autonomy (runs on Jetson).\n- `vlm_geolocator/` \u2013 **Ground Code**. Casualty detection and geolocation (runs on Laptop).\n- `operator/` \u2013 **Ground Tools**. Foxglove extensions.\n- `scripts/` \u2013 **Utilities**. Deployment scripts (e.g., `FVD.sh`)."
+        ]
+      },
+      {
+        "id": "https://github.com/aerostack2/aerostack2.github.io/blob/main/docs/index.rst",
+        "title": "aerostack2.github.io/docs/index.rst at main \u00b7 aerostack2/aerostack2 ...",
+        "url": "https://github.com/aerostack2/aerostack2.github.io/blob/main/docs/index.rst",
+        "highlights": [
+          "Aerostack2 is an open source software framework that helps developers design and build the control architecture of aerial robotic systems, integrating multiple heterogeneous computational solutions (e.g., computer vision algorithms, motion controllers, self-localization and mapping methods, motion planning algorithms, etc.), built for ROS 2 `Humble `_ and ROS 2 `Galactic `_.\n...\nAerostack2 is useful for building autonomous aerial systems in complex and dynamic environments and it is also a useful research tool for aerial robotics to test new algorithms and architectures.\n...\nIt was created to be available for communities of\n...\nand it is currently an active open-source project with periodic software releases. \n\nAerostack2 is versatile for building different system configurations with various degrees of autonomy. It's most important features are:\n...\ncan be used for teleoperation flights (with manual control) but it can also\n...\nused for building\n...\nrobot systems to perform aerial missions without operator assistance.\n...\n* Hardware independent. Aerostack2 runs on conventional laptops and it has also run on onboard computers like Nvidia Jetson NX. Aerostack2 has been used in different aerial platforms, including, but not limited to: DJI platforms (Matrice 210RTKv2, Matrice 300, Ryze Tello), Pixhawk autopilots and Crazyflie drones. The framework can operate in simulation and in a real environment in a similar way, what simplifies the Sim2Real development.\n...\nnecessary packages and configurations for the\n...\nto be developed."
+        ]
+      },
+      {
+        "id": "https://exa.ai/library/publication/lwzqmr1qkt6",
+        "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception",
+        "url": "https://doi.org/10.48550/arxiv.2403.20085",
+        "publishedDate": "2024-03-29T00:00:00.000Z",
+        "author": "Peize Liu, Chen Feng, Yang Xu, Ning Yan, Hao Xu, Shaojie Shen",
+        "highlights": [
+          "years, remarkable advancements in open-source aerial robotics platforms have led to a surge in practical applications, e.g., exploration [1] , reconstruction [2] , and rescue [3] . However, it becomes evident that existing platforms, like FLA [4] , MRS [5] , and Agilicious [6] , are challenging for effectively performing these tasks in increasingly complex and dynamic environments due to their limited\n...\nExisting platforms like FLA [4] and MRS [5] are designed for data collection and autonomous navigation in open areas. These platforms share a similar solution, utilizing a PX4 [19] based flight controller, a CPU-only onboard computer, mono or stereo cameras, and LiDAR. However, achieving compactness and lightweight in their design is challenging due to the introduction of LiDAR to obtain dense map. On the other hand, the platform, which is designed for aggressive planning and control, prioritizes maximizing the thrust weight ratio (TWR). One notable platform in this category is Agilicious [6] . Different from those platforms mentioned above, Agilicous [6] achieves compactness and lightweight by adopting a cramped hardware design, which allows the platform to have high TWR but makes it hard to integrate additional sensors. This limitation poses challenges in accessing a comprehensive surrounding environment, limiting its applicability to future tasks. Besides, commercial platforms like DJI MAVIC 3T [11] and SKYDIO X10 [12] are not open-source, hindering further development and algorithm validation. Their large dimensions and weight also limit the range of applications."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/lwzqmr1qkt6",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception",
+              "year": 2024,
+              "date": "2024-03-29",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Peize Liu",
+                  "id": null
+                },
+                {
+                  "name": "Chen Feng",
+                  "id": null
+                },
+                {
+                  "name": "Yang Xu",
+                  "id": null
+                },
+                {
+                  "name": "Ning Yan",
+                  "id": null
+                },
+                {
+                  "name": "Hao Xu",
+                  "id": null
+                },
+                {
+                  "name": "Shaojie Shen",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Adopting omnidirectional Field of View (FoV) cameras in aerial robots vastly improves perception ability, significantly advancing aerial robotics's capabilities in inspection, reconstruction, and rescue tasks. However, such sensors also elevate system complexity, e.g., hardware design, and corresponding algorithm, which limits researchers from utilizing aerial robots with omnidirectional FoV in their research. To bridge this gap, we propose OmniNxt, a fully open-source aerial robotics platform with omnidirectional perception. We design a high-performance flight controller NxtPX4 and a multi-fisheye camera set for OmniNxt. Meanwhile, the compatible software is carefully devised, which empowers OmniNxt to achieve accurate localization and real-time dense mapping with limited computation resource occupancy. We conducted extensive real-world experiments to validate the superior performance of OmniNxt in practical applications. All the hardware and software are open-access at https://github.com/HKUST-Aerial-Robotics/OmniNxt, and we provide docker images of each crucial module in the proposed system. Project page: https://hkust-aerial-robotics.github.io/OmniNxt.",
+              "doi": "10.48550/arxiv.2403.20085"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/JacopoPan/aerial-autonomy-stack",
+        "title": "JacopoPan/aerial-autonomy-stack",
+        "url": "https://github.com/JacopoPan/aerial-autonomy-stack",
+        "highlights": [
+          "1. **Develop** multi-drone autonomy\u2014with PX4, ArduPilot, and ROS2\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLO and 3D LiDAR\n3. **Deploy** in real drones\u2014with JetPack, DeepStream, and NVIDIA Orin\n...\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n...\n- **YOLO** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n...\n- 3D worlds for perception-based simulation\n...\n- [x] Host OS: [Ubuntu 2\n...\n.04/24.04/26.04 (LTS, ESM 4/2036)](https://ubuntu.com/about/release-cycle)\n...\n- [ ] Jetpack\n...\n. 1)\n...\n.4.4, Ubuntu 2\n...\n-based]](https://developer.nvidia.com/embedded/jetpack-archive)\n -\n...\nto JetPack\n...\n.2 [\n...\n39.2, Ubuntu 24-based]**\n...\n- [ ] [`nvidia-\n...\n-580`](https://developer.nvidia.com/datacenter-driver-archive)\n - **TODO: upgrade to `nvidia-driver-610` once all base images are Ubuntu 24-based**\n...\n`](https://catalog.\n...\nc.nvidia.com/orgs/nvidia/containers/cuda/tags)\n...\n:r36.4.0`](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-jetpack/tags)\n...\n] [DeepStream 7.1](https://docs.nvidia.com/metropolis/deepstream/dev-guide/text/DS_Installation.html#platform-and-os-compatibility)\n - **TODO: upgrade to DeepStream 9.1 on JetPack 7.2**\n...\n- [x] [PX4 1.17.0](https://github.com/PX4/PX4-Autopilot/releases)\n...\n- [ ] [ArduPilot 4.6.3](https://github.com/ArduPilot/ardupilot/releases)\n - **TODO: upgrade to 4.7.0**\n...\n- [ ] [ONNX Runtime 1.23.2](https://github.com/microsoft/onnxruntime/releases)\n - **TODO: upgrade to 1.28.0 with system Python 3.12 on Ubuntu 24**"
+        ]
+      },
+      {
+        "id": "https://ros-aerial.github.io/aerial_robotic_landscape/aerial_autonomy_stacks/",
+        "title": "Aerial Autonomy Stacks - Aerial Robotics Landscape",
+        "url": "https://ros-aerial.github.io/aerial_robotic_landscape/aerial_autonomy_stacks/",
+        "highlights": [
+          "> Fernandez-Cortizas, Miguel, et al. \"Aerostack2: A Software Framework for Developing Multi-robot Aerial Systems.\" arXiv preprint arXiv:2303.18237 (2023).\n...\n| Flight stack | Middleware | last update |\n| --- | --- | --- |\n| Aerostack(1) | ROS | 11/2021 |\n| Aerostack2 | ROS 2 | 05/2026 |\n| Aerial autonomy stack (AAS) | ROS 2 | 05/2026 |\n| Agilicious | ROS | 03/2023 |\n| KumarRobotics Autonomy Stack | ROS | 04/2026 |\n| CrazyChoir | ROS 2 | 06/2025 |\n| UAL | ROS | 12/2022 |\n| XTDrone | ROS | 08/2025 |\n| RotorS | ROS | 07/2021 |\n| GAAS | ROS | 10/2021 |\n| MRS AUV System | ROS / ROS 2 | 05/2026 |\n| Crazyswarm2 | ROS 2 | 03/2026 |\n| Crazyswarm(1) | ROS | 12/2022 |\n| Dynamic Swarms Crazyflies | ROS 2 | 12/2025 |"
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/aerostack2/project_as2_multirotor_simulator",
+        "title": "GitHub - aerostack2/project_as2_multirotor_simulator \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/aerostack2/project_as2_multirotor_simulator",
+        "publishedDate": "2023-05-23T00:00:00.000Z",
+        "author": "aerostack2",
+        "highlights": [
+          "GitHub - aerostack2/project_as2_multirotor_simulator \u00b7 GitHub\n...\n# Project AS2 Multirotor Simulator\n...\n- AS2\n...\nmission: You can\n...\nwith:\n...\nare structured in\n...\ndivided into the following directories:\n...\n- tmuxinator: Contains the tmuxinator launch file, which is used to launch all aerostack2 nodes. \n\n- aerostack2.yaml: Tmuxinator launch file for each drone. The list of nodes to be launched is defined here.\n- ground_station.yaml: Tmuxinator launch file for the ground station. The list of nodes to be launched is defined here.\n- config: Contains the configuration files for the launchers of the nodes in the drones.\n- config_ground_station: Contains the configuration files for the launchers of the nodes in the ground station.\n...\n- launch_as2.bash: Script to launch nodes defined in tmuxinator/aerostack2.yaml.\n- launch_ground_station.bash: Script to launch nodes defined in tmuxinator/ground_station.yaml.\n...\n- mission_*.py: Differents python mission files that can be executed.\n...\n- stop_tmuxinator_as2.bash: Script to stop all nodes launched by launch_as2.bash.\n- stop_tmuxinator_ground_station.bash: Script to stop all nodes launched by launch_ground_station.bash.\n...\nstop_tmuxinator.\n...\nstop all nodes launched by launch_as2.bash and launch_ground_station.bash.\n...\n- rosbag/record_rosbag.bash: Script to record a rosbag. Can be modified to record only the topics that are needed.\n...\n- trees*: Contains the behavior trees that can be executed. They can be selected in the aerostack2.yaml file.\n- utils: Contains utils scripts for launchers."
+        ],
+        "image": "https://opengraph.githubassets.com/9a395a68416f896df2d73df08741a351ab7c3be276451acb4c432b3e98aced27/aerostack2/project_as2_multirotor_simulator"
+      },
+      {
+        "id": "https://www.alphaxiv.org/abs/2403.20085",
+        "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception | alphaXiv",
+        "url": "https://www.alphaxiv.org/abs/2403.20085",
+        "publishedDate": "2024-03-29T00:00:00.000Z",
+        "author": "Shaojie Shen",
+        "highlights": [
+          "Adopting omnidirectional Field of View (FoV) cameras in aerial robots vastly improves perception ability, significantly advancing aerial robotics's capabilities in\n...\n, reconstruction, and rescue tasks\n...\nsensors also elevate system complexity, e.g., hardware design, and corresponding algorithm, which limits researchers from utilizing aerial robots with omnidirectional FoV in their research. To bridge this gap, we propose OmniNxt, a fully open-source aerial robotics platform with omnidirectional perception. We design a high-performance flight controller NxtPX4 and a multi-fisheye camera set for OmniNxt. Meanwhile, the compatible software is carefully devised, which empowers OmniNxt to achieve accurate localization and real-time dense mapping with limited computation resource occupancy. We conducted extensive real-world experiments to validate the superior performance of OmniNxt in practical applications. All the hardware and software are open-access at this https URL, and we provide docker images of each crucial module in the proposed system. Project page: this https URL.\n...\nAutonomous navigation tests in cluttered indoor environments validated the practical utility of omnidirectional perception. The system successfully executed complex flight paths while maintaining accurate localization and obstacle avoidance. A key insight was the ability to eliminate yaw angle trajectory optimization from the planner, directly benefiting from omnidirectional perception and improving overall planning efficiency.\n\n Figure\n...\n: Autonomous navigation demonstration"
+        ],
+        "image": "https://api.alphaxiv.org/open-graph/v1/paper/2403.20085.png"
+      }
+    ],
+    "searchTime": 859.4,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

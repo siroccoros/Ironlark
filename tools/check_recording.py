@@ -24,6 +24,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from sensing.frames import quaternion_inverse as inverse, rotate_vector as rotate  # noqa: E402
+
 WALL_X = 5.9  # the calibration wall's face (worlds/flight_foundation.wbt)
 WALL = {"x": (5.0, 7.0), "y": (-2.2, 2.2), "z": (0.05, 3.0)}
 LIMITS = {"distance_error_m": 0.05, "normal_error_deg": 2.0, "camera_agreement": 0.95, "background_red": 0.05}
@@ -145,23 +148,6 @@ def wall_problems(report):
     elif report["background_red"] > LIMITS["background_red"]:
         problems.append(f"{report['background_red']:.1%} of the ground in front of the wall looks red")
     return problems
-
-
-def q_mul(a, b):
-    ax, ay, az, aw = a
-    bx, by, bz, bw = b
-    return (aw * bx + ax * bw + ay * bz - az * by, aw * by - ax * bz + ay * bw + az * bx,
-            aw * bz + ax * by - ay * bx + az * bw, aw * bw - ax * bx - ay * by - az * bz)
-
-
-def rotate(q, v):
-    x, y, z, w = q
-    r = q_mul(q_mul(q, (*v, 0.0)), (-x, -y, -z, w))
-    return r[:3]
-
-
-def inverse(q):
-    return (-q[0], -q[1], -q[2], q[3])
 
 
 def add(a, b):

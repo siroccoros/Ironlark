@@ -1,0 +1,249 @@
+{
+  "query": {
+    "query": "open source drone depth stereo visual perception mapping voxblox octomap wavemap nvblox stella vslam Kimera",
+    "type": "auto",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    }
+  },
+  "response": {
+    "requestId": "845fe98d180b7f205d49dd82d6546526",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/nvidia-isaac/nvblox?tab=readme-ov-file",
+        "title": "nvidia-isaac/nvblox",
+        "url": "https://github.com/nvidia-isaac/nvblox?tab=readme-ov-file",
+        "highlights": [
+          "# nvidia-isaac/nvblox\n...\nA GPU-accelerated TSDF and ESDF library for robots equipped with RGB-D cameras.\n...\n# `nvblox`\n...\n`nvblox` is a library for real-time 3D reconstruction, designed for\nrobotic applications.\n\nWith `nvblox` you can build, manipulate, and query reconstructions\non the GPU. The library is highly optimized for runtime performance,\ntaking full advantage of `CUDA` and `NVIDIA` hardware.\n...\nDepending on your use-case, you may interact with `nvblox` through\neither\n...\n[Python](https://nvidia-isaac.github.io/nvblox),\n[C++](https://nvidia-isaac.github.io/nvblox), or\n[ROS2](https://nvidia-isaac-ros.github.io/concepts/scene_reconstruction/nvblox/index.html).\n...\nTo get started with `nvblox`, see our [documentation site](https://nvidia-isaac.github.io/nvblox"
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-asl/voxblox/",
+        "title": "ethz-asl/voxblox",
+        "url": "https://github.com/ethz-asl/voxblox/",
+        "highlights": [
+          "# ethz-asl/voxblox\n...\nA library for flexible voxel-based mapping, mainly focusing on truncated and Euclidean signed distance fields.\n...\n- mapping\n- robotics\n- voxblox\n...\nVoxblox is a volumetric mapping library based mainly on Truncated Signed Distance Fields (TSDFs). It varies from other SDF libraries in the following ways:\n * CPU-only, can be run single-threaded or multi-threaded for some integrators\n * Support for multiple different layer types (containing different types of voxels)\n * Serialization using protobufs\n * Different ways of handling weighting during merging\n * Different ways of inserting pose information about scans\n * Tight ROS integration (in voxblox_ros package)\n * Easily extensible with whatever integrators you want\n * Features an implementation of building Euclidean Signed Distance Fields (ESDFs, EDTs) directly from TSDFs.\n...\n**If you're looking for skeletonization/sparse topology or planning applications, please refer to the [mav_voxblox_planning](https://github.com/ethz-asl/mav_voxblox_planning) repo.**\n...\n**If you want to create ground truth maps from meshes or gazebo environments, please check out the [voxblox_ground_truth](https://github.com/ethz-asl/voxblox_ground_truth) pakage!**\n...\nA video of voxblox"
+        ]
+      },
+      {
+        "id": "https://github.com/nvidia-isaac-ros/isaac_ros_nvblox",
+        "title": "NVIDIA-ISAAC-ROS/isaac_ros_nvblox",
+        "url": "https://github.com/nvidia-isaac-ros/isaac_ros_nvblox",
+        "highlights": [
+          "NVIDIA-accelerated 3D scene reconstruction and Nav2 local costmap provider using nvblox\n...\nNvblox ROS 2 integration for local 3D scene reconstruction and mapping.\n\n \n\n##\n...\nIsaac ROS Nvblox contains ROS 2 packages for 3D reconstruction and cost\nmaps for navigation. `isaac_ros_nvblox` processes depth and pose to\nreconstruct a 3D scene in real-time and outputs a 2D costmap for\n[Nav2](https://github.com/ros-navigation/navigation2). The costmap is\nused in planning during navigation as a vision-based solution to avoid\nobstacles.\n...\n`isaac_ros_nvblox` is designed to work with depth-cameras and/or 3D LiDAR.\nThe package uses GPU acceleration to compute a 3D reconstruction and 2D costmaps using\n[nvblox](https://github.com/nvidia-isaac/nvblox), the underlying\nframework-independent C++ library.\n\n \n\nAbove is a typical graph that uses `isaac_ros_nvblox`.\n...\nNvblox takes a depth image, a color image, and a pose as input, with\nwhich it computes a 3D scene reconstruction on the GPU. In this graph\nthe pose is computed using `visual_slam`, or some other pose estimation\nnode. The reconstruction\nis sliced into an output cost map which is provided through a cost map plugin\ninto [Nav2](https://github.com/ros-navigation/navigation2).\n...\nThe graph above shows `isaac_ros_nvblox` operating in people reconstruction\nmode. The color image corresponding\n...\nthe depth image\n...\n-only part of the reconstruction\n...\nThe [Technical Details](https://nvidia-isaac-ros.github.io/"
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-asl/wavemap/",
+        "title": "ethz-asl/wavemap",
+        "url": "https://github.com/ethz-asl/wavemap/",
+        "highlights": [
+          "The framework is very flexible and supports several data structures, measurement integration methods, and sensor models out of the box. The ROS interface can, for example, easily be configured to fuse multiple sensor inputs, such as a LiDAR configured with a range of 20m and several depth cameras up to a resolution of 1cm, into a single multi-resolution occupancy grid map.\n...\nVolumetric maps are widely used in robotics due to their desirable properties in applications such as path planning, exploration, and manipulation. Constant advances in mapping technologies are needed to keep up with the improvements in sensor technology, generating increasingly vast amounts of precise measurements. Handling this data in a computationally and memory-efficient manner is paramount to representing the environment at the desired scales and resolutions. In this work, we express the desirable properties of a volumetric mapping framework through the lens of multi-resolution analysis. This shows that wavelets are a natural foundation for hierarchical and multi-resolution volumetric mapping. Based on this insight we design an efficient mapping system that uses wavelet decomposition. The efficiency of the system enables the use of uncertainty-aware sensor models, improving the quality of the maps. Experiments on both synthetic and real-world data provide mapping accuracy and runtime performance comparisons with state-of-the-art methods on both RGB-D and 3D LiDAR data. The framework is open-sourced to allow the robotics community at large to explore this approach.\n \n\nPlease cite this paper"
+        ]
+      },
+      {
+        "id": "https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_visual_slam",
+        "title": "NVIDIA-ISAAC-ROS/isaac_ros_visual_slam: Visual SLAM ...",
+        "url": "https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_visual_slam",
+        "publishedDate": "2021-10-13T23:07:14.000Z",
+        "highlights": [
+          "Visual SLAM\n...\nodometry package\n...\nNVIDIA-accelerated, simultaneous localization and mapping (SLAM) using stereo\nvisual inertial odometry (SVIO).\n...\nIsaac ROS Visual SLAM\nprovides a high-performance, best-in-class ROS 2 package\nfor VSLAM (visual simultaneous localization and mapping). This package\nuses one or more stereo cameras and optionally an IMU to estimate\nodometry as an input to navigation. It is GPU accelerated to provide\nreal-time, low-latency results in a robotics application. VSLAM\nprovides an additional odometry source for mobile robots\n(ground based) and can be the primary odometry source for drones.\n...\nsight to GPS satellites\n...\nuse multiple stereo camera frames and an IMU (inertial measurement\n...\nunit) as input. It\n...\nstereo image pairs to find matching key\n...\npoints. Using the baseline between the camera pairs, it can estimate\n...\nthe distance to the key point. Using consecutive images, VSLAM\n...\ncan track the motion of key points to estimate the 3D motion of the\n...\ncamera-which is then used to compute odometry as an output\n...\nto navigation. Compared to the classic approach to VSLAM\n...\nto find and match more key points in real\n...\ntuning to minimize overall reprojection error.\n...\nVSLAM provides a vision- and IMU-based solution to estimating odometry\nthat is different from the common practice of using LIDAR and wheel\nodometry. VSLAM can even be used to improve diversity, with multiple\nstereo cameras positioned in different directions to provide multiple,\nconcurrent visual estimates of odometry."
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2506.04359v2",
+        "title": "cuVSLAM: CUDA accelerated visual odometry and mapping",
+        "url": "https://arxiv.org/html/2506.04359v2",
+        "publishedDate": "2025-06-23T00:00:00.000Z",
+        "highlights": [
+          "Accurate and robust pose estimation is a key requirement for any autonomous robot. We present cuVSLAM, a state-of-the-art solution for visual simultaneous localization and mapping, which can operate with a variety of visual-inertial sensor suites, including multiple RGB and depth cameras, and inertial measurement units. cuVSLAM supports operation with as few as one RGB camera to as many as 32 cameras, in arbitrary geometric configurations, thus supporting a wide range of robotic setups. cuVSLAM is specifically optimized using CUDA to deploy in real-time applications with minimal computational overhead on edge-computing devices such as the NVIDIA Jetson. We present the design and implementation of cuVSLAM, example use cases, and empirical results on several state-of-the-art benchmarks demonstrating the best-in-class performance of cuVSLAM.\n...\nComputational Efficiency: The system maintains low computational overhead while delivering high-accuracy localization, enabling seamless integration into complex robotic stacks such as NVIDIA Isaac Perceptor33 3 https://developer.nvidia.com/isaac/perceptor, which incorporates NVBLOX Millane et al. 2023 for 3D reconstruction and Nav2 Macenski et al. 2020 for autonomous navigation.\n...\n- Millane et al. (2023) Alexander Millane, Helen Oleynikova, Emilie Wirbel, Raphael Steiner, Vaisakh Ramasamy, David Tingdahl, and Roland Siegwart. nvblox: GPU-accelerated incremental signed distance field mapping. arXiv preprint, 2023. URL https://arxiv.org/abs/2311.00626."
+        ],
+        "image": "https://arxiv.org/static/base/1.0.1/images/icons/smileybones-small.svg",
+        "favicon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-32x32.png"
+      },
+      {
+        "id": "https://github.com/mit-spark/kimera-semantics/",
+        "title": "MIT-SPARK/Kimera-Semantics",
+        "url": "https://github.com/mit-spark/kimera-semantics/",
+        "highlights": [
+          "- disparity-image\n...\n- rviz\n...\n**Dec 1st\n...\n019:** Kimera-Semantics got\n...\ncomplete revamp:\n...\n- Leaner code: no more code dedicated\n...\nmeshing, we fully re-use Voxblox/OpenChisel instead.\n...\nan order of magnitude\n...\n1s now\n...\nwith minimal accuracy\n...\nOur work is built using [Voxblox](https://github.com/ethz-asl/voxblox), an amazing framework to build your own 3D voxelized world:\n...\nA related work to ours is [Voxblox++](https://github.com/ethz-asl/voxblox-plusplus) which also\n...\nVoxblox for geometric and instance-aware segmentation,\n...\nour dense scene segmentation, check\n...\nas well!:\n...\ninkindr\n...\nrun Kimera-Semantics without Semantics?\n...\nWe are using Voxblox as our 3D reconstruction library, therefore, to run without semantics, simply do:\n    ```bash\n    roslaunch kimera_semantics_ros kimera_semantics.launch play_bag:=true metric_semantic_reconstruction:=false\n    ```\n\n - How to enable Dense Depth Stereo estimation\n...\nThis will run OpenCV's StereoBM algorithm, more info can be found [here](http://wiki.ros.org/stereo_image_proc) (also checkout this to [choose good parameters](http://wiki.ros.org/stereo_image_proc/Tutorials/ChoosingGoodStereoParameters)):\n...\nAlternatively, if you want\n...\nvisualize the depth image, since Rviz does not provide a plugin to\n...\nvisualize a [disparity image](http://docs.ros.org/api/stereo_msgs/html/msg/DisparityImage.html), we also run a [disparity_image_proc](https://github.com/ToniRV\n...\ndisparity_image_proc) nodelet that will publish the depth image to `/depth_image`."
+        ]
+      },
+      {
+        "id": "https://github.com/MIT-SPARK/Kimera-Semantics",
+        "title": "MIT-SPARK/Kimera-Semantics",
+        "url": "https://github.com/MIT-SPARK/Kimera-Semantics",
+        "highlights": [
+          "- 3d-reconstruction\n-\n...\n- depth-image\n...\n- disparity-image\n...\n- real-time\n...\n- rviz\n...\n- semantic-segmentation\n...\n- volumetric-reconstruction\n...\n- voxels\n...\n**Dec 1\n...\nKimera-Semantics got\n...\nno more code\n...\nOpenChisel instead\n...\nOur work is built using [Voxblox](https://github.com/ethz-asl/voxblox), an amazing framework to build your own 3D voxelized world:\n...\nA related work to ours is [Voxblox++](https://github.com/ethz-asl/voxblox-plusplus) which also uses Voxblox for geometric and instance-aware segmentation, differently from our dense scene segmentation, check it out as well!:\n...\ninkindr\n...\ninkindr\n...\npython/CAT\n...\nrun Kimera-Semantics without Semantics?\n...\nWe are using Voxblox as our 3D reconstruction library, therefore, to run without semantics, simply do:\n    ```bash\n    roslaunch kimera_semantics_ros kimera_semantics.launch play_bag:=true metric_semantic_reconstruction:=false\n    ```\n\n - How to enable Dense Depth Stereo estimation\n...\nThis will run OpenCV's StereoBM algorithm, more info can be found [here](http://wiki.ros.org/stereo_image_proc) (also checkout this to [choose good parameters](http://wiki.ros.org/stereo_image_proc/Tutorials/ChoosingGoodStereoParameters)):\n...\nAlternatively, if you want to visualize the depth image, since Rviz does not provide a plugin to\n...\nvisualize a [disparity image](http://docs.ros.org/api/stereo_msgs/html/msg/DisparityImage.html), we also run a [disparity_image_proc](https://github.com/ToniRV/disparity_image_proc) nodelet that will publish the depth image to `/depth_image`."
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-asl/nvblox_ros1/",
+        "title": "ethz-asl/nvblox_ros1",
+        "url": "https://github.com/ethz-asl/nvblox_ros1/",
+        "highlights": [
+          "ROS1 wrappers for GPU-acceleration volumetric mapping with nvblox.\n...\nIsaac ROS Nvblox contains ROS 1 packages for 3D reconstruction. The mapping pipeline is mainly designed to work with stereo cameras, which provide a depth image, and the corresponding pose uses GPU acceleration to compute 3D reconstruction and 2D costmaps using [nvblox](https://github.com/nvidia-isaac/nvblox). However, this ROS 1 wrapper also supports LiDAR point cloud input.\n...\nDF-based\n...\nPeople are common obstacles for mobile robots, and while part of a costmap, people should not be part of the 3D reconstruction. Planners that provide behavioral awareness by navigating differently depending on their proximity to people, benefit from a costmap for people. Person segmentation is computed using the color image, with the resulting mask applied to the depth image separating depth into scene depth and person depth images. The scene depth image is forwarded to TSDF mapping as explained above, the depth image for people is processed to an occupancy grid map.\n...\nch/~as\n...\nblox_msgs\n...\ntransmitting the output distance map slice and mesh over ROS\n...\n* **nvblox_ros**: The ROS 1 wrapper for\n...\nand the nv\n...\n* **nvblox_rviz\n...\ndisplaying nvblox's (custom\n...\nRVIZ.\n...\n\\[submodule\n...\nThe core (ROS independent) reconstruction library."
+        ]
+      },
+      {
+        "id": "https://arxiv.org/html/2311.00626",
+        "title": "nvblox: GPU-Accelerated Incremental Signed Distance Field Mapping",
+        "url": "https://arxiv.org/html/2311.00626",
+        "highlights": [
+          ". LSD-SLAM [10] and DVO-SLAM [11] build a map consisting of keyframe depth-maps. Kintinuous [12] and ElasticFusion [8] build reconstructions in the form of a deformable mesh and collection of surfels, respectively. More recently, Kimera [13] builds a semantic mesh of the environment.\n...\nVoxel-based methods build reconstructions that are well-suited to robot path-planning tasks. Voxels capture the reconstructed quantity (for example occupancy probability) over the volume of 3D space, and can therefore represent free-space, not only surfaces. The most common approach to volumetric reconstruction is occupancy grid mapping [18] and its efficient implementation in 3D, Octomap [5]. These approaches are widely used in robotic mapping and are the default in common robotics toolkits [19, 20].\n...\nAnother popular approach to volumetric mapping utilizes a voxelized TSDF. This approach was popularized by KinectFusion [7] which generates surface reconstructions using a consumer-grade depth camera. The original, fixed-grid-based approach was extended to use spatially hashed voxels by Niessner et. al. [21]. Voxblox [4] follows the approach of voxel-hashing but adds ESDF computation, a feature of particular importance for robotic path-planning. Voxblox has been used in many follow-up works which have used it for planning [22, 23], as well as extended its mapping capabilities, for example for global mapping [6] and semantic mapping [24]. Despite its success, voxblox is limited in the resolution of maps it builds due to the computational complexity of updating a high-resolution voxel grid."
+        ],
+        "image": "https://arxiv.org/html/2311.00626v2/extracted/5473944/figures/teaser_images/nvblox_teaser_image_v3.png",
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/830zynflv6z",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "nvblox: GPU-Accelerated Incremental Signed Distance Field Mapping",
+              "year": 2023,
+              "date": "2023-11-01",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 1,
+              "authors": [
+                {
+                  "name": "Alexander Millane",
+                  "id": null
+                },
+                {
+                  "name": "Helen Oleynikova",
+                  "id": null
+                },
+                {
+                  "name": "\u00c9milie Wirbel",
+                  "id": null
+                },
+                {
+                  "name": "Remo Steiner",
+                  "id": null
+                },
+                {
+                  "name": "Vikram Ramasamy",
+                  "id": null
+                },
+                {
+                  "name": "David Tingdahl",
+                  "id": null
+                },
+                {
+                  "name": "Roland Siegwart",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Dense, volumetric maps are essential to enable robot navigation and interaction with the environment. To achieve low latency, dense maps are typically computed onboard the robot, often on computationally constrained hardware. Previous works leave a gap between CPU-based systems for robotic mapping which, due to computation constraints, limit map resolution or scale, and GPU-based reconstruction systems which omit features that are critical to robotic path planning, such as computation of the Euclidean Signed Distance Field (ESDF). We introduce a library, nvblox, that aims to fill this gap, by GPU-accelerating robotic volumetric mapping. Nvblox delivers a significant performance improvement over the state of the art, achieving up to a 177x speed-up in surface reconstruction, and up to a 31x improvement in distance field computation, and is available open-source.",
+              "doi": "10.48550/arxiv.2311.00626"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://voxblox.readthedocs.io/en/latest/",
+        "title": "",
+        "url": "https://voxblox.readthedocs.io/en/latest/",
+        "highlights": [
+          "# Voxblox\n...\nVoxblox is a volumetric mapping library based mainly on Truncated Signed Distance Fields (TSDFs). It varies from other SDF libraries in the following ways:\n...\n- CPU-only, can be run single-threaded or multi-threaded for some integrators\n- Support for multiple different layer types (containing different types of voxels)\n- Serialization using protobufs\n- Different ways of handling weighting during merging\n- Different ways of inserting pose information about scans\n- Tight ROS integration (in voxblox_ros package)\n- Easily extensible with whatever integrators you want\n- Features an implementation of building Euclidean Signed Distance Fields (ESDFs, EDTs) directly from TSDFs.\n...\n- How Does ESDF Generation Work? Description of the algorithm How TSDF values are propagated to ESDF How the Raise Wavefront works How the Lower Wavefront works\n...\n- Installation\n- Contributing to Voxblox Code style Setting up the linter Modifying Voxblox Serialization\n- Performance Integrator Performance Runtime Comparison to Octomap\n- Running Voxblox\n- The Voxblox Node Table of Contents Published and Subscribed Topics Published Topics Subscribed Topics Services Parameters General Parameters TSDF Integrator Parameters Fast TSDF Integrator Specific Parameters ESDF Integrator Parameters ICP Refinement Parameters Input Transform Parameters Output Parameters\n...\nUsing Voxblox for Planning\n...\nA video showing sample output from voxblox can be seen here. A video of voxblox being used for online planning on-board a multicopter can be seen here."
+        ]
+      },
+      {
+        "id": "https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_nvblox/index.html",
+        "title": "Isaac ROS Nvblox",
+        "url": "https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_nvblox/index.html",
+        "highlights": [
+          "Nvblox ROS 2 integration for local 3D scene reconstruction and mapping.\n...\nIsaac ROS Nvblox contains ROS 2 packages for 3D reconstruction and cost maps for navigation. `isaac_ros_nvblox` processes depth and pose to reconstruct a 3D scene in real-time and outputs a 2D costmap for Nav2. The costmap is used in planning during navigation as a vision-based solution to avoid obstacles.\n...\n`isaac_ros_nvblox` is designed to work with depth-cameras and/or 3D LiDAR. The package uses GPU acceleration to compute a 3D reconstruction and 2D costmaps using nvblox, the underlying framework-independent C++ library.\n...\nAbove is a typical graph that uses `isaac_ros_nvblox`. Nvblox takes a depth image, a color image, and a pose as input, with which it computes a 3D scene reconstruction on the GPU. In this graph the pose is computed using `visual_slam`, or some other pose estimation node. The reconstruction is sliced into an output cost map which is provided through a cost map plugin into Nav2. An optional colorized 3D reconstruction is delivered into `rviz` using the mesh visualization plugin. Nvblox streams mesh updates to RViz to update the reconstruction in real-time as it is built.\n...\nisaac_\n...\n_nvblox`\n...\nmodes of operation are provided\n...\npeople, and dynamic reconstruction,\n...\n`isaac_ros_nvblox`\n...\n`unet`,\n...\nthe PeopleSemSegNet DNN\n...\nsegmentation mask for persons in the color image.\n...\nvblox uses\n...\nreconstructed persons into a\n...\npeople-only part of the reconstruction\n...\nof mapping."
+        ],
+        "image": "https://nvidia-isaac-ros.github.io/_static/nvidia-logo-horiz-rgb-blk-for-screen.svg"
+      },
+      {
+        "id": "https://github.com/open-navigation/opennav_visual_navigation/blob/main/using_isaac_perceptor.md",
+        "title": "using_isaac_perceptor.md at main \u00b7 open-navigation/opennav_visual_navigation",
+        "url": "https://github.com/open-navigation/opennav_visual_navigation/blob/main/using_isaac_perceptor.md",
+        "highlights": [
+          "NVIDIA provides a great 3D Reconstruction solution called [NvBlox](https://github.com/nvidia-isaac/nvblox).\n...\n`NvBlox` is a GPU accelerated signed-distance field library which can be used to generate environmental models using voxel grids.\n...\n[cuVSLAM](https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_visual_slam/index.html) is used for visual SLAM (VSLAM) to create and save a map of the environment from sensor data.\n...\nThis is a pure visual mapping solution that uses only stereo camera images and IMU data to map the environment using stereo feature matching.\n...\nNvBlox\n...\nThe demonstration is setup to utilize the front, left, and right stereo cameras for localization with VSLAM and 3D reconstruction using NvBlox using live use.\n...\nmap` -\n...\nVisual Global Localization database\n...\nwith the `\n...\nvslam_map` including Visual Bag Of\n...\ndata, etc\n...\nWe'll note that this lacks the typical fine detail we're used to seeing from a LIDAR-generated occupancy grid map. This is an artifact of image data being converted to depth data and highlights the importance of using the loop-closure techniques mentioned above when recording the visual data. Despite appearances, this map is quite sufficient for visual navigation around the space. The occupancy map is really only one layer in the whole localization stack used by the robot during visual navigation. Isaac ROS Perceptor will also use the cuvslam_map, cuvgl_map and live image data from the cameras on the robot for localization against features in the mapped space."
+        ]
+      },
+      {
+        "id": "https://nvidia-isaac-ros.github.io/concepts/scene_reconstruction/nvblox/technical_details.html",
+        "title": "Technical Details \u2014 Isaac ROS",
+        "url": "https://nvidia-isaac-ros.github.io/concepts/scene_reconstruction/nvblox/technical_details.html",
+        "highlights": [
+          "Nvblox supports different mapping modes.\n...\nin the form\n...\nis similar to 3\n...\napproaches in which occupancy probabilities are stored\n...\neach voxel. However, TSDF-based approaches like nvblox store the (\n...\nof this voxel\n...\nThe depth masker module uses the segmentation mask from the color image to separate the depth-map into people and non-people parts. While the non-people labeled part of the depth frame is still forwarded to TSDF mapping, the people labeled part is processed to an occupancy grid map.\n...\n## Using RealSense Camera Streams for both Nvblox and Visual SLAM#\n...\nIn the examples, we used the RealSense cameras\u2019s dual IR streams for Visual SLAM and depth and color streams for Nvblox. The setup is shown below.\n...\nImages (2 x IR images and 1 x Depth image) are published at 60Hz from the RealSense ROS 2 node.\n...\nThe RealSense D400 series uses an inbuilt optical projector to achieve active stereo vision for improved depth quality. However, the emitted pattern visible on the stereo IR images disrupts VSLAM performance. To achieve both, improved depth quality and reliable VSLAM tracking, we configure the emitter to toggle between interleaved frames (AKA `emitter_on_off` mode).\n...\n> RealSense splitter: The RealSense splitter node is part of `Isaac ROS Nvblox` and filters the incoming RealSense image streams depending on the emitter state at image capture. Only infra images with the emitter off are forwarded to VSLAM and only depth images with emitter on to `nvblox`.\n\n On this page"
+        ],
+        "image": "https://nvidia-isaac-ros.github.io/_static/nvidia-logo-horiz-rgb-blk-for-screen.svg"
+      },
+      {
+        "id": "https://gaas.gitbook.io/guide/software-realization-build-your-own-autonomous-drone/build-your-own-autonomous-drone-part-4-stereo-depth-estimation-octomap-and-path-planning",
+        "title": "Autonomous Drone Software E04: Depth Estimation, Octomap ...",
+        "url": "https://gaas.gitbook.io/guide/software-realization-build-your-own-autonomous-drone/build-your-own-autonomous-drone-part-4-stereo-depth-estimation-octomap-and-path-planning",
+        "publishedDate": "2020-03-12T00:00:00.000Z",
+        "highlights": [
+          "# Autonomous Drone Software E04: Depth Estimation, Octomap and Path Planning\n...\nIn the previous tutorials, we have talked about how to control your drone with python and enable your drone to fly in GPS denied environments, which is a big step towards autonomous drone. Now, we will talk about how to enable your drone to fly in an unknown environment from point A to point B, with the help of a pair of stereo camera only, in Gazebo simulator. This tutorial can be organized as follow:\n...\n1. Obstacle distance estimation with Stereo Camera;\n2. Octomap as a way to represent the environment;\n3. A* path finding in 3D space;\n4. Simple path pruning;\n...\nthat it is not possible to measure absolute scale with only one camera without the help of other sensors. RGBD cameras are prone to sunlight, noises and they are expensive\uff0cso we will be using stereo camera as the\n...\ndistance estimation (for mathematical background, check Reading Materials [1]).\n...\nA C++ based package, based on StereoBM and WLS disparity filter can be found in GAAS/software/Obstacle_Map. We will not go into details, but the workflow can be organized as:\n...\n1. disparity map generation with opencv provided StereoBM method;\n2. map disparity map to 3D points in camera frame;\n3. map 3D points in camera frame to drone body frame.\n...\nOctomap is a Octree based package to model the environment, and it can drastically decrees the number of points you need to save for memory efficiency and real time performance. We will use Octomap to represent the environment. For more information, check Reading Materials [2] and [3]."
+        ]
+      },
+      {
+        "id": "https://github.com/arplaboratory/nvblox",
+        "title": "arplaboratory/nvblox",
+        "url": "https://github.com/arplaboratory/nvblox",
+        "publishedDate": "2024-03-28T20:36:17.000Z",
+        "highlights": [
+          "Repo for the modified NvBlox package for mapping in ROS 2.\n...\nNvBlox package for ROS 2 Humble based online mapping for the Agile Robotics and Perception Lab.\n...\n**NOTE:** This package is designed to interface with the whole ARPL mapping pipeline (OpenVINS+disparity+PointCloud_Manager+NvBlox). As a result, all the config files and launch files for this package are located in arpl_autonomy_stack package.\n...\n4. Run RVIZ2 on your station and subscribe to the `$MAV_NAME/nvblox_node/static_occupancy` topic. Make sure the reference frame in RVIZ2 is world (or whatever you have set in the nvblox launch file, located in `arpl_autonomy/launch/race_platform/perception/mapping/mapping.launch.py`). NvBlox publishes the octomap as a PointCloud2 message, so for best viewing results, make sure the size of each point matches the size of the voxels set in the nvblox_base.yaml file (default is 0.05) and choose the Style as 'Boxes'. You can also set Color Transformer to Axis Colors.\n...\nMake sure that\n...\n2. Incorrect depth topic or bad depth image: NvBlox uses the depth map (usually generated by the RealSense depth module, but in our case, generated by the disparity nodelet) to create the 3D environment. Make sure NvBlox is receiving the depth maps and they are of the correct format. NvBlox requires that the depth maps be an image with the encoding CV_16UC1 (unsigned 16 bit, single channel) and the values inside range from 0 (indicating very close or invalid readings) to 65535 (the maximum possible distance). Make sure the images fed into NvBlox match these specifications."
+        ]
+      },
+      {
+        "id": "https://github.com/ethz-asl/voxblox-plusplus",
+        "title": "ethz-asl/voxblox-plusplus",
+        "url": "https://github.com/ethz-asl/voxblox-plusplus",
+        "highlights": [
+          "# ethz-asl/voxblox-plusplus\n...\nA volumetric object-level semantic mapping framework.\n...\n**Voxblox++** is a framework for incrementally building volumetric object-centric maps during online scanning with a localized RGB-D camera. Besides accurately describing the geometry of the reconstructed scene, the built maps contain information about the individual object instances observed in the scene. In particular, the proposed framework retrieves the dense shape and pose of recognized semantic objects, as well as of newly discovered, previously unobserved object-like instances.\n\n \n \n \n\n## Getting started\n...\n- [Installing on Ubuntu](https\n...\ngithub.com/ethz-asl/voxblox_gsm/wiki/\n...\n-Ubuntu)\n- [Sample Datasets](https://github.com/ethz-asl/voxblox-plusplus/wiki/Sample-Datasets)\n- [Basic usage](https://github\n...\ncom/ethz-asl/voxblox-plusplus/wiki/Basic-usage)\n- [The Voxblox++ node](https://github.com/ethz-asl/voxblox-plusplus/wiki/The-voxblox-plusplus-node)\n...\n- Margarita Grinvald, Fadri Furrer, Tonci Novkovic, Jen Jen Chung, Cesar Cadena, Roland Siegwart, and Juan Nieto, **Volumetric Instance-Aware Semantic Mapping and 3D Object Discovery**, in _IEEE Robotics and Automation Letters_, July 2019. [[PDF](https://arxiv\n...\norg/abs/1903.00268)] [[Video](https://www.youtube.com/watch?v=Jvl42VJmYxg)]\n...\nci Novkovic\n...\nMarius Fehr\n...\nel, Margarita Grinvald, Torsten\n...\nSiegwart, and\n...\nNieto, **\n...\n**, in _IEEE/RSJ International Conference on\n...\nRobots and Systems (IROS)_,\n...\n](https://ieeexplore.\n...\nee.org/stamp/stamp.jsp?tp=&arnumber=8\n...\n[[Video](https\n...\n/watch?"
+        ]
+      },
+      {
+        "id": "https://nvidia-isaac-ros.github.io/v/release-3.2/repositories_and_packages/isaac_ros_nvblox/index.html",
+        "title": "Isaac ROS Nvblox \u2014 isaac_ros_docs  documentation",
+        "url": "https://nvidia-isaac-ros.github.io/v/release-3.2/repositories_and_packages/isaac_ros_nvblox/index.html",
+        "highlights": [
+          "Nvblox ROS 2 integration for local 3D scene reconstruction and mapping.\n...\nIsaac ROS Nvblox contains ROS 2 packages for 3D reconstruction and cost maps for navigation.`isaac_ros_nvblox` processes depth and pose to reconstruct a 3D scene in real-time and outputs a 2D costmap for Nav2. The costmap is used in planning during navigation as a vision-based solution to avoid obstacles.\n...\n`isaac_ros_nvblox` is designed to work with depth-cameras and/or 3D LiDAR. The package uses GPU acceleration to compute a 3D reconstruction and 2D costmaps using nvblox, the underlying framework-independent C++ library.\n...\nAbove is a typical graph that uses`isaac_ros_nvblox`. Nvblox takes a depth image, a color image, and a pose as input, with which it computes a 3D scene reconstruction on the GPU. In this graph the pose is computed using`visual_slam`, or some other pose estimation node. The reconstruction is sliced into an output cost map which is provided through a cost map plugin into Nav2. An optional colorized 3D reconstruction is delivered into`rviz` using the mesh visualization plugin. Nvblox streams mesh updates to RViz to update the reconstruction in real-time as it is built.\n...\n, for mapping\n...\n`isaac_ros_nvblox`\n...\nthe PeopleSem\n...\nNet DNN model\n...\nsegmentation mask for persons in the color image\n...\nvblox uses this mask to\n...\na separate people-only part of the reconstruction"
+        ],
+        "image": "https://nvidia-isaac-ros.github.io/v/release-3.2/_static/isaac_ros_logo.png",
+        "favicon": "https://nvidia-isaac-ros.github.io/v/release-3.2/_static/isaac_ros_logo.png"
+      },
+      {
+        "id": "https://www.einfochips.com/blog/amr-navigation-using-isaac-ros-vslam-and-nvblox-with-intel-realsense-camera/",
+        "title": "AMR Navigation Using Isaac ROS VSLAM and Nvblox with ...",
+        "url": "https://www.einfochips.com/blog/amr-navigation-using-isaac-ros-vslam-and-nvblox-with-intel-realsense-camera/",
+        "publishedDate": "2023-05-25T00:00:00.000Z",
+        "author": "eInfochips PES",
+        "highlights": [
+          "NVIDIA Isaac ROS Nvblox is a ROS2 package used for real-time 3D reconstruction of the environment around AMR from camera images. The reconstruction is intended to be used by path planners to generate a safe navigation path. Nvblox makes use of NVIDIA CUDA to accelerate this process and enable real-time operation. This repository contains ROS2 integration for the Nvblox core library. The Nvblox algorithm is comprised of three key components: the truncated signed distance function (TSDF), the mesh, and the Euclidean signed distance function (ESDF). Nvblox uses an RGB image, a depth image, and a SLAM pose as input and outputs meshes for visualization, and a distance slice map for path planning. Nvblox generates a 2D distance map slice and a 3D mesh from a stream of RGB and depth images and the corresponding pose of the depth image. The RGB image stream, which is used to color the 3D reconstruction of the surrounding environment for visualization, is optional. The 2D distance map slice shows the distance between each point and the nearest reconstructed obstacle and a 3D mesh for RVIZ visualization. the 3D reconstruction of the surrounding environment for visualization, is optional. The 2D distance map slice displays the distance between each point and the nearest reconstructed obstacle, as well as a 3D mesh for RVIZ visualization.\n...\nfrom the Realsense camera and publishes RGB, depth, infra-1, and infra-2 images. Infra-1 and Infra-2 are infrared images. The infra-1 and infra-2 images are subscribed by the Isaac ROS V-SLAM block, and it publishes pose and tf. The Isaac ROS"
+        ],
+        "image": "https://www.einfochips.com/wp-content/uploads/2022/06/RPA-framework-featured.webp",
+        "favicon": "https://www.einfochips.com/wp-content/uploads/2025/09/cropped-cropped-cropped-eic-logo-favicon-32x32.png"
+      },
+      {
+        "id": "https://nvidia-isaac-ros.github.io/v/release-4.5/concepts/scene_reconstruction/nvblox/technical_details.html",
+        "title": "Technical Details \u2014 Isaac ROS",
+        "url": "https://nvidia-isaac-ros.github.io/v/release-4.5/concepts/scene_reconstruction/nvblox/technical_details.html",
+        "highlights": [
+          "Nvblox supports different mapping modes.\n...\nin the form\n...\nis similar to 3\n...\napproaches in which occupancy probabilities are stored\n...\neach voxel. However, TSDF-based approaches like nvblox store the (\n...\nof this voxel\n...\nThe depth masker module uses the segmentation mask from the color image to separate the depth-map into people and non-people parts. While the non-people labeled part of the depth frame is still forwarded to TSDF mapping, the people labeled part is processed to an occupancy grid map.\n...\n## Using RealSense Camera Streams for both Nvblox and Visual SLAM#\n...\nIn the examples, we used the RealSense cameras\u2019s dual IR streams for Visual SLAM and depth and color streams for Nvblox. The setup is shown below.\n...\nImages (2 x IR images and 1 x Depth image) are published at 60Hz from the RealSense ROS 2 node.\n...\nThe RealSense D400 series uses an inbuilt optical projector to achieve active stereo vision for improved depth quality. However, the emitted pattern visible on the stereo IR images disrupts VSLAM performance. To achieve both, improved depth quality and reliable VSLAM tracking, we configure the emitter to toggle between interleaved frames (AKA `emitter_on_off` mode).\n...\n> RealSense splitter: The RealSense splitter node is part of `Isaac ROS Nvblox` and filters the incoming RealSense image streams depending on the emitter state at image capture. Only infra images with the emitter off are forwarded to VSLAM and only depth images with emitter on to `nvblox`.\n\n On this page"
+        ],
+        "image": "https://nvidia-isaac-ros.github.io/v/release-4.5/_static/nvidia-logo-horiz-rgb-blk-for-screen.svg"
+      }
+    ],
+    "searchTime": 1387.8,
+    "costDollars": {
+      "total": 0.017,
+      "search": {
+        "neural": 0.017
+      }
+    }
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "query": {
+    "query": "Open source learned autonomous drone navigation obstacle avoidance real world flight released code Agile Autonomy AvoidBench Flightmare RL navigation",
+    "type": "deep",
+    "numResults": 20,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1600
+      }
+    },
+    "additionalQueries": [
+      "vision based drone navigation obstacle avoidance end to end open source real world experiments",
+      "2025 2026 released github quadrotor autonomous navigation foundation policy"
+    ]
+  },
+  "response": {
+    "requestId": "bb6a5c849b947dd082c7e3445585c64f",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/uzh-rpg/agile_autonomy/",
+        "title": "uzh-rpg/agile_autonomy",
+        "url": "https://github.com/uzh-rpg/agile_autonomy/",
+        "highlights": [
+          "# uzh-rpg\n...\nagile_autonomy\n...\nRepository Containing the Code associated with the Paper: \"Learning High-Speed Flight in the Wild\"\n...\n# Learning High-Speed Flight in the Wild\n...\nThis repo contains the code associated with the paper Learning Agile Flight in the Wild.\n...\nNow download the flightmare standalone available at [this link](https://zenodo.org/record/5517791/files/standalone.tar?download=1), extract it and put in the [flightrender](https://github.com/antonilo/flightmare_agile_autonomy/tree/main/flightrender) folder.\n...\nOnce you have installed the dependencies, you will be able to fly in simulation with our pre-trained checkpoint. You don't need necessarily need a GPU for execution. Note that if the network can't run at least at 15Hz, you won't be able to fly successfully.\n...\n_autonomy\n...\n`spawn_trees` or `spawn_objects\n...\nDoing both at the\n...\ntime is possible but\n...\n. Note that\n...\nckpt we\n...\nthe range `[1\n...\n10] m/s`. However, to reach the best performance at a specific speed, please consider finetuning the ckpt at the\n...\nspeed (see code below). \n\n## Train your own navigation policy\n...\ndataset that we pre\n...\n779\n...\nxz?download\n...\nadapt the file\n...\ntrain\\_settings.yaml](planner_\n...\n/config/train_settings.\n...\n) to point to the\n...\nand run:\n...\nnetwork you trained\n...\n[test\\_settings\n...\ntest_settings\n...\nto thank Yunlong Song and Sel\n...\nNaji for their help with\n...\nfor Aggressive"
+        ]
+      },
+      {
+        "id": "https://github.com/uzh-rpg/agile_autonomy/blob/main/README.md",
+        "title": "README.md",
+        "url": "https://github.com/uzh-rpg/agile_autonomy/blob/main/README.md",
+        "highlights": [
+          "# Learning High-Speed Flight in the Wild\n...\nThis repo contains the code associated with the paper Learning Agile Flight in the Wild.\n...\nNow download the flightmare standalone available at [this link](https://zenodo.org/record/5517791/files/standalone.tar?download=1), extract it and put in the [flightrender](https://github.com/antonilo/flightmare_agile_autonomy/tree/main/flightrender) folder.\n...\nOnce you have installed the dependencies, you will be able to fly in simulation with our pre-trained checkpoint. You don't need necessarily need a GPU for execution. Note that if the network can't run at least at 15Hz, you won't be able to fly successfully.\n...\n` to the\n...\n. Note that\n...\nckpt we\n...\nthe range `[\n...\n10] m/s`.\n...\n, to reach the best performance at a specific speed, please consider finetuning the ckpt at the desired speed (see code below). \n\n## Train your own navigation policy\n...\nto use a dataset that we pre-collected\n...\nThe dataset can be found at [this link](https://zenodo\n...\norg/record\n...\n5517791\n...\nagile_autonomy_dataset.tar.\n...\n?download=1). This dataset was used to train the model we provide and collected at an average speed of 7 m/s. To do this, adapt the file [train\\_settings.yaml](planner_learning/config/train_settings.yaml) to point to the train and test folder and run:\n...\nWe would like to thank Yunlong Song and Selim Naji for their help with the implementations of the simulation environment. The code\n...\nglobal planning is strongly\n...\nby the one of [Search-based Motion Planning for Aggressive Flight in SE(3)](https\n...\nmpl_ros)."
+        ]
+      },
+      {
+        "id": "https://github.com/tudelft/AvoidBench",
+        "title": "tudelft/AvoidBench",
+        "url": "https://github.com/tudelft/AvoidBench",
+        "highlights": [
+          "This work is based on [Flightmare](https://github.com/uzh-rpg/flightmare). In this project, we propose AvoidBench as a benchmarking suite for evaluating the performance of vision-based obstacle avoidance algorithms. We choose Flightmare as the basic backbone of AvoidBench, because it is lighter and can achieve higher simulation speed than Airsim. Based on Flightmare, we have for now built two simulation scenes for benchmarking: a forest environment and an indoor environment. It is easy to change the distribution of obstacles and complexity of map so that researchers can reveal the potential of drones using their algorithms. And we propose a complete set of metrics which contain the flight performance and environment complexity to evaluate the obstacle avoidance algorithms.\n\n \n \n \n\n \n \n \n\n# 2. Installation\n...\nWe provide a demo of benchmarking [Agile_autonomy](https://rpg.ifi.uzh.ch/AgileAutonomy.html) algorithm by AvoidBench. The benckmark version can be found [here](https://github.com/NPU-yuhang/agile_autonomy). Following these steps to build and run this demo:\n...\n-of-the-art obstacle avoidance algorithms, including: [Agile-Autonomy](https://github.com/uzh-rpg/agile_autonomy)(learning-based), [Ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner)(optimization-based), and [MBPlanner](https://github.com/ntnu-arl/mbplanner_ros)(motion-primitive-based, the original version is designed for explorationm, we changed the exploration gain to the distance of current point to the goal point so that the drone can always fly to a fixed goal). Here is the testing video:\n \n \n \n\n# 7."
+        ]
+      },
+      {
+        "id": "https://github.com/thu-uav/FlightBench",
+        "title": "Search code, repositories, users, issues, pull requests...",
+        "url": "https://github.com/thu-uav/FlightBench",
+        "publishedDate": "2024-05-29T12:58:20.000Z",
+        "author": "thu-uav",
+        "highlights": [
+          "FlightBench is an open-source comprehensive benchmark for planning methods on ego-vision-based navigation for quadrotors built on Flightmare. FlightBench provides cusomizable test scenarios (including three quantitative task difficulty metrics), representative planning algorithms, and comprehensive evaluation metrics. FlightBench also integrates the MAPPO algorithm, facilitating the training of RL-based planning methods.\n...\n[2025-03-01] \ud83d\ude81 We have added real-world experiments. For Experimental results and demonstrations, please refer to our website and video.\n...\nadded two more\n...\n. (See our website\n...\nThe source code is released under GPLv3 license.\n...\nAll third party libraries we used are listed bellow:\n...\n| repository | License |\n| --- | --- |\n| flightmare | MIT |\n| Fast-Planner | GPLv3 |\n| ego-planner | GPLv3 |\n| TGK-Planner | GPLv3 |\n| sb_min_time_quadrotor_planning | GPLv3 |\n| agile_autonomy | GPLv3 |"
+        ],
+        "image": "https://opengraph.githubassets.com/83a7c86177fb087f22ccb2f345af393accf0a198dceccf04ff86fb4367959878/thu-uav/FlightBench"
+      },
+      {
+        "id": "https://github.com/XuPeng23/AeroVLA",
+        "title": "XuPeng23/AeroVLA",
+        "url": "https://github.com/XuPeng23/AeroVLA",
+        "highlights": [
+          "Vision-Language Navigation (VLN) for Unmanned Aerial Vehicles (UAVs) demands complex visual interpretation and continuous control in dynamic 3D environments. Existing hierarchical approaches rely on dense oracle guidance or auxiliary object detectors, creating semantic gaps and limiting genuine autonomy. We propose AeroVLA, a minimalist end-to-end Vision-Language-Action framework mapping raw visual observations and fuzzy linguistic instructions directly to continuous physical control signals. First, we introduce a streamlined dual-view perception strategy that reduces visual redundancy while preserving essential cues for forward navigation and precise grounding, which additionally facilitates future simulation-to-reality transfer. To reclaim genuine autonomy, we deploy a fuzzy directional prompting mechanism derived solely from onboard sensors, completely eliminating the dependency on dense oracle guidance. Ultimately, we formulate a unified control space that integrates continuous 3-Degree-of-Freedom (3-DoF) kinematic commands with an intrinsic landing signal, freeing the agent from external object detectors for precision landing. Extensive experiments on the TravelUAV benchmark demonstrate that AeroVLA achieves state-of-the-art performance in seen environments. Furthermore, it exhibits superior generalization in unseen scenarios by achieving nearly three times the success rate of leading baselines, validating that a minimalist, autonomy-centric paradigm captures more robust visual-motor representations than complex modular systems."
+        ]
+      },
+      {
+        "id": "https://github.com/XuPeng23/AerialVLA",
+        "title": "XuPeng23/AeroVLA",
+        "url": "https://github.com/XuPeng23/AerialVLA",
+        "publishedDate": "2026-03-15T10:13:25.000Z",
+        "highlights": [
+          "Vision-Language Navigation (VLN) for Unmanned Aerial Vehicles (UAVs) demands complex visual interpretation and continuous control in dynamic 3D environments. Existing hierarchical approaches rely on dense oracle guidance or auxiliary object detectors, creating semantic gaps and limiting genuine autonomy. We propose AeroVLA, a minimalist end-to-end Vision-Language-Action framework mapping raw visual observations and fuzzy linguistic instructions directly to continuous physical control signals. First, we introduce a streamlined dual-view perception strategy that reduces visual redundancy while preserving essential cues for forward navigation and precise grounding, which additionally facilitates future simulation-to-reality transfer. To reclaim genuine autonomy, we deploy a fuzzy directional prompting mechanism derived solely from onboard sensors, completely eliminating the dependency on dense oracle guidance. Ultimately, we formulate a unified control space that integrates continuous 3-Degree-of-Freedom (3-DoF) kinematic commands with an intrinsic landing signal, freeing the agent from external object detectors for precision landing. Extensive experiments on the TravelUAV benchmark demonstrate that AeroVLA achieves state-of-the-art performance in seen environments. Furthermore, it exhibits superior generalization in unseen scenarios by achieving nearly three times the success rate of leading baselines, validating that a minimalist, autonomy-centric paradigm captures more robust visual-motor representations than complex modular systems."
+        ]
+      },
+      {
+        "id": "https://github.com/rl-tools/raptor",
+        "title": "rl-tools/raptor",
+        "url": "https://github.com/rl-tools/raptor",
+        "publishedDate": "2025-04-22T23:23:39.000Z",
+        "highlights": [
+          "A Foundation Policy for Quadrotor Control\n...\n- Stars: 208\n- Forks: 28\n- Watchers: 7\n- Open issues: 7\n- License: MIT License (MIT)\n- Topics: foundation-models, quadrotor, reinforcement-learning\n- Default branch: master\n- Homepage: https://raptor.rl.tools\n- Created: 2025-04-22T23:23:39Z\n- Last push: 2026-05-14T01:30:16Z\n- Contributors: 1 (top: jonas-eschmann)\n...\ninference executor:\n...\n` by just\n...\nFor deployment onto flight controllers please refer to the reference implementations for PX4, Betaflight, Crazyflie and M5StampFly which are tracked in the [embedded_platforms](https://github.com/rl-tools/rl-tools/tree/3dea1bc877a8593dcd8349f6fdc4e362f025a0ca/embedded_platforms) folder.\n...\ncom/rl-tools/px4/\n...\n/8350ec\n...\n9af043dc794361b778794446808b2\n...\n_modules/src/modules/rl_tools_policy/rl_\n...\n_adapter.cpp):\n...\nusing T = typename\n...\nSPEC::T;\n...\nstatic auto&\n...\nreturn r\n...\nmodule;\n...\nstatic constexpr TI ACTION\n...\nMake sure to configure the control interval properly. The `CONTROL_INTERVAL_NATIVE_NS` should always be $10$ ms because the foundation policy was trained at $100$ Hz. The policy can be run at higher frequencies, though (e.g. $400$ Hz) in which case the native state progression in the policy is only triggered every $4$ steps as signified by `FORCE_SYNC_NATIVE`."
+        ]
+      },
+      {
+        "id": "https://github.com/peDrontonio/VLNontheFly",
+        "title": "peDrontonio/VLNontheFly",
+        "url": "https://github.com/peDrontonio/VLNontheFly",
+        "highlights": [
+          "Vision-language models (VLMs) have unlocked open-vocabulary, instruction-following navigation on many robot embodiments, but aerial robots have mostly been left out, because limited onboard compute, hierarchical-integration complexity, and safety concerns get in the way. **VLN on the Fly** is a fully onboard, decoupled VLN stack for micro air vehicles:\n...\n- a **quantized VLM** grounds a natural-language instruction to a coarse image region,\n- a **fast B-spline planner** turns that region into a collision-aware 3D trajectory over an onboard occupancy map, and\n- a **pretrained cross-platform RL policy** tracks it directly to motor commands,\n...\nwith a lightweight **finite-state-machine safety layer** validating and gating every stage. The decoupled design keeps grounding, planning, and control observable and independently inspectable, so failures can be attributed to a single stage rather than hidden inside an end-to-end policy.\n...\nWe deploy the full stack on a real UAV across **15 open-volume flights** across three everyday referents, and validate obstacle avoidance in **6 additional cluttered-environment trials** with collision-free trajectory tracking and safe perception gating.\n...\n, the same stack (without changes) produced collision-free trajectories toward the referent, and the goal-validation interface degraded to a safe no-commit rather than an unsafe approach when grounding was uncertain. Full experimental setup, qualitative grounding/planning figures, ablations, and failure attribution are on the [project page](https://vln-on-the-fly.github.io/) and in the paper."
+        ]
+      },
+      {
+        "id": "https://github.com/anish-bhattacharya/ViT-for-quadrotor-obstacle-avoidance",
+        "title": "anish-bhattacharya/vitfly",
+        "url": "https://github.com/anish-bhattacharya/ViT-for-quadrotor-obstacle-avoidance",
+        "highlights": [
+          "\"Vision Transformers for End-to-End Vision-Based Quadrotor Obstacle Avoidance\" by Bhattacharya, et al. (2024) from GRASP, Penn.\n...\nThis is the official repository for the paper \"Vision Transformers for End-to-End Vision-Based Quadrotor Obstacle Avoidance\" by Bhattacharya, et al. (2024) from GRASP, Penn. Please note that you may find plenty of legacy and messy code in this research project's codebase.\n...\nWe demonstrate that vision transformers (ViTs) can be used for end-to-end perception-based obstacle avoidance for quadrotors equipped with a depth camera. We train policies that predict linear velocity commands from depth images to avoid obstacles via behavior cloning from a privileged expert in a simple simulation environment, and show that ViT models combined with recurrence layers (LSTMs) outperform baseline methods based on other popular learning architectures. Deployed on a real quadrotor, our method achieves zero-shot dodging behavior at speeds reaching 7m/s and on multi-obstacle environments.\n\n \n\n####\n...\nFlightmare simulator installation, additional details can be found on [this page](https://github.com/uzh-rpg\n...\nagile_flight),\n...\nwe also include a `requirements.txt` for your reference.\n...\nWe provide a simple ROS1 package for running the trained models on an incoming depth camera stream. This package, called `depthfly`, can be easily modified for your use-case. On a 12-core, 16GB RAM, cpu-only machine (similar to that used for hardware experiments) the most complex model ViT+LSTM should take around 25ms for a single inference.\n...\nICRA 2\n...\n_flight)."
+        ]
+      },
+      {
+        "id": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "title": "TJU-Aerial-Robotics/YOPO",
+        "url": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "publishedDate": "2023-12-14T00:00:00.000Z",
+        "highlights": [
+          "Improvements and Applications: [YOPOv2-Tracker: An End-to-End Agile Tracking and Navigation Framework from Perception to Action](https://arxiv.org/html/2505.06923v1)\n...\nWe propose **a learning-based planner for autonomous navigation in obstacle-dense environments** which integrates (i) perception and mapping, (ii) front-end path searching, and (iii) back-end optimization of classical methods into a single network. \n\n**Learning-based Planner:** Considering the multi-modal nature of the navigation problem and to avoid local minima around initial values, our approach adopts a set of motion primitives as anchor to cover the searching space, and predicts the offsets and scores of primitives for further improvement (like the one-stage object detector YOLO). \n\n**Training Strategy:** Compared to giving expert demonstrations as labels in imitation learning or exploring by trial-and-error in reinforcement learning\n...\nwe directly back-\n...\ne.g. from ESDF)\n...\nwhich is simple, straightforward, accurate, and\n...\nfree of online simulator interaction\n...\n/TJU\n...\n**[2\n...\nLeft: Random Forest (maze_type=5); Right: 3D Perlin (maze_type=1).\n \n \n \n\nYou can click the `2D Nav Goal` on RVIZ as the goal (the map is infinite so the goal is freely), just like the following GIF ( Flightmare Simulator).\n\n \n \n \n\n##\n...\nWe highly recommend using TensorRT for acceleration when flying in real world. It only takes 1ms (with ResNet-14 Backbone) to 5ms (with ResNet-18 Backbone) for inference on NVIDIA Orin NX."
+        ]
+      },
+      {
+        "id": "https://github.com/tudelft/mavrl",
+        "title": "tudelft/mavrl",
+        "url": "https://github.com/tudelft/mavrl",
+        "highlights": [
+          "MAVRL: Learn to Fly in Cluttered Environmants with Varying Speed\n...\n- drone\n- obstacle-avoidance\n- reinforcement-learning\n- vision-based-control-algorithm\n...\nMAVRL: Learn to Fly in Cluttered Environments with Varying Speed\n...\nMany existing obstacle avoidance algorithms overlook the crucial balance between safety and agility, especially in environments of varying complexity. In our study, we introduce an obstacle avoidance pipeline based on reinforcement learning. This pipeline enables drones to adapt their flying speed according to the environmental complexity. Moreover, to improve the obstacle avoidance performance in cluttered environments, we propose a novel latent space. The latent space in this representation is explicitly trained to retain memory of previous depth map observations. Our findings confirm that varying speed leads to a superior balance of success rate and agility in cluttered environments. Additionally, our memory-augmented latent representation outperforms the latent representation commonly used in reinforcement learning. Finally, after minimal fine-tuning, we successfully deployed our network on a real drone for enhanced obstacle avoidance.\n\n \n \n \n\n# 2. Installation\n...\n## 2.1 Install AvoidBench\n...\nOur pipeline comprises three main components: the VAE, LSTM, and PPO. The training process is as following:\n...\n## 4.2 Test on AvoidBench\n...\n: Learn to Fly in Cl\n...\n109\n...\n3522778}}\n...\n# 6. Real World Implementation (code for real drone coming soon)."
+        ]
+      },
+      {
+        "id": "https://github.laiyagushi.com/rahulsiiitm/vyoma",
+        "title": "GitHub - rahulsiiitm/vyoma: \ud83d\udee0\ufe0f A custom ROS 2 drone autopilot system utilizing YOLOv8 for edge-based semantic vision and context-aware navigation. Designed for NVIDIA Jetson Nano. \u00b7 GitHub",
+        "url": "https://github.laiyagushi.com/rahulsiiitm/vyoma",
+        "publishedDate": "2025-11-25T00:00:00.000Z",
+        "author": "rahulsiiitm",
+        "highlights": [
+          "GitHub - rahulsiiitm/vyoma: \ud83d\udee0\ufe0f A custom ROS 2 drone autopilot system utilizing YOLOv8 for edge-based semantic vision and context-aware navigation. Designed for NVIDIA Jetson Nano. \u00b7 GitHub\n...\n# Vyoma: Semantic Drone Autopilot\n\n \n\nA ground-up autopilot stack for semantically-aware, edge-deployed autonomous flight. Rather than treating navigation as pure geometric obstacle avoidance, this system fuses camera and LiDAR modalities through deep learning so the drone reasons about what it sees, not just where things are \u2014 distinguishing a person from a tree, a wire from open air, a rooftop from a hazard.\n...\nDesigned for real-world deployment on an NVIDIA Jetson Nano, the stack is built on ROS 2 Humble, Nav2, and PX4, targeting complex missions in dynamic, unmapped, and unstructured environments where classical waypoint-following autopilots fail.\n...\n: a wall, a pedestrian, and a mailbox all just occupy a costmap cell. This is unsafe and inefficient \u2014 a drone should keep a far wider berth from a person than from a bush, and should actively\n...\n- Semantic Nav2 Costmap: A custom Nav2 costmap plugin (`semantic_layer.cpp`) that ingests semantic-fused point clouds and applies per-class inflation radii and cost weighting \u2014 enabling behaviors like \"avoid humans by 5m, trees by 1m\" as a declarative policy rather than hardcoded logic.\n...\n- Topology & Terrain Mapping: Continuous terrain modeling from LiDAR + vision to support contour-following flight and autonomous identification of flat, obstruction-free landing candidates, ranked by slope, roughness, and semantic clearance."
+        ],
+        "image": "https://opengraph.githubassets.com/4e84b60734083bf28435f21faffed66c199e3582a4c77ec5334e414127b03d54/rahulsiiitm/vyoma"
+      },
+      {
+        "id": "https://github.com/Fanxing-LI/avoidance",
+        "title": "Fanxing-LI/avoidance",
+        "url": "https://github.com/Fanxing-LI/avoidance",
+        "highlights": [
+          "# Simple but Stable, Fast and Safe: Achieve End-to-end Control by High-Fidelity Differentiable Simulation\n...\nObstacle avoidance is a fundamental vision-based task essential for enabling quadrotors to perform advanced applications. When planning the trajectory, existing approaches both on optimization and learning typically regard quadrotor as a point-mass model, giving path or velocity commands then tracking the commands by outer-loop controller.\n...\nIn this paper, we propose a novel end-to-end policy that directly maps depth images to low-level bodyrate commands by reinforcement learning via differentiable simulation.\n...\nThe high-fidelity simulation in\n...\nAnalytical process by differentiable simulation provides accurate gradient to ensure efficiently training the low-level policy without expert guidance. \nThe policy employs a lightweight and the most simple inference pipeline that runs without explicit mapping, backbone networks, primitives, recurrent structures, or backend controllers, nor curriculum or privileged guidance. By inferring low-level command directly to the hardware controller, the method enables full flight envelope control and avoids the dynamic-infeasible issue.\n...\nExperimental results demonstrate that the proposed approach achieves the highest success rate and the lowest jerk among state-of-the-art baselines across multiple benchmarks. The policy also exhibits strong generalization, successfully deploying zero-shot in unseen, outdoor environments while reaching speeds of up to 7.5m/s as well as stably flying in the super-dense forest."
+        ]
+      },
+      {
+        "id": "https://link.springer.com/article/10.1007/s41315-025-00462-2",
+        "title": "Vision-based autonomous navigation for quadrotor UAVs in unknown and constrained environments | International Journal of Intelligent Robotics and Applications | Springer Nature Link",
+        "url": "https://link.springer.com/article/10.1007/s41315-025-00462-2",
+        "publishedDate": "2025-05-23T00:00:00.000Z",
+        "highlights": [
+          "The demand for autonomous UAV navigation in complex environments is growing rapidly. However, most existing studies focus on simulations, lacking real-world validation under challenging conditions. This study systematically evaluates a vision-based navigation framework combining VINS-Mono for localization and Ego-Planner for path planning in GPS-denied, low-light, high-obstacle-density environments. Unlike traditional approaches that struggle with UAV high-frequency motion and dynamic constraints, VINS-Mono provides accurate high-frequency positioning via visual-inertial fusion. At the same time, Ego-Planner enables smooth, dynamically feasible real-time trajectory generation. Real-world experiments on three randomly generated maps (minimum obstacle spacing: 0.8 m (twice UAV wheelbase); obstacle density: 0.72 obstacles/m2) achieved a minimum 70% success rate, with 87% of trajectories smoother than A* in simulations. Results demonstrate the framework\u2019s robustness, though challenges such as field-of-view constraints and sensor-induced localization errors affecting replanning remain. This study presents a real-world evaluation of vision-based UAV navigation in constrained environments, offering insights into its feasibility and limitations. The findings contribute to improving trajectory optimization and UAV autonomy in constrained GPS-denied scenarios.\n...\nin path smoothness. Specifically, compared to simulated paths generated by the A* algorithm, 87% of successful flight trajectories demonstrated superior smoothness. However, as the map's complexity increased, the"
+        ],
+        "image": "https://media.springernature.com/m685/springer-static/image/art%3A10.1007%2Fs41315-025-00462-2/MediaObjects/41315_2025_462_Fig1_HTML.jpg"
+      }
+    ],
+    "searchTime": 4197.2,
+    "costDollars": {
+      "total": 0.016
+    }
+  }
+}

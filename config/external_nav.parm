@@ -1,0 +1,27 @@
+# EKF3 Source Set 2 (GPS-denied interior): External Navigation for horizontal pose + yaw,
+# keeping the onboard barometer for altitude (consistent with SRC1, immune to LiDAR vertical FOV gaps).
+EK3_SRC2_POSXY 6
+EK3_SRC2_VELXY 0
+EK3_SRC2_POSZ 1
+EK3_SRC2_VELZ 0
+EK3_SRC2_YAW 6
+
+# MAVLink External Navigation (VISION_POSITION_ESTIMATE).
+# Poses carry the scan's stamp; ArduPilot's jitter correction (GCS_MAVLINK::correct_offboard_timestamp_
+# usec_to_ms) maps it to its clock at the promptest pose's transport lag. The delay left: the LiDAR
+# capture precedes its stamp by one period (odometry lags truth 0.100 s) plus that lag, ~5 ms. EKF3's
+# buffer spans only the GPS lag (u-blox M8: 0.12 s), so the odometry carries late poses forward to
+# stay inside it (mission.py VISION_LAG_ALLOWANCE_S); a larger delay here would be clamped, not fused.
+VISO_TYPE 1
+VISO_DELAY_MS 105
+VISO_POS_M_NSE 0.16
+VISO_YAW_M_NSE 0.20
+
+# GUIDED position+velocity+acceleration setpoints: the trajectory supplies the velocity and acceleration
+# feed-forward; these bound only the position controller's correction toward it (ModeGuided pva control).
+WP_SPD 1.3
+WP_SPD_UP 1.5
+WP_SPD_DN 1.2
+WP_ACC 0.9
+WP_JERK 1.5
+ATC_ANGLE_MAX 25

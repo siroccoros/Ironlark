@@ -1,0 +1,41 @@
+<div align="center">
+  <h1>AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation  </h1>
+    <strong>2026 IEEE International Conference on Robotics and Automation</strong>
+
+<a href="https://github.com/XinChen-stars" target="_black">Xin Chen</a>,
+<a href="https://github.com/RuiHuangNUS" target="_black">Rui Huang</a>,
+<a href="https://longbin.tech/" target="_black">Longbin Tang</a>,
+<a target="_black">Lin Zhao</a>
+
+<!-- <a href="https://ieeexplore.ieee.org/document/11339475"><img alt="arxiv" src="https://img.shields.io/badge/Paper-IEEE-blue"/></a> -->
+<a href="https://arxiv.org/pdf/2509.17340"><img alt="arxiv" src="https://img.shields.io/badge/Paper-arxiv-green"/></a>
+[![Conference](https://img.shields.io/badge/ICRA-2026-red.svg)](https://www.ieee-ras.org/conferences-workshops/fully-sponsored/icra)
+[![IsaacSim](https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg)](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html)
+[![IsaacLab](https://img.shields.io/badge/IsaacLab-2.3.2-silver.svg)](https://isaac-sim.github.io/IsaacLab)
+[![Python](https://img.shields.io/badge/python-3.11-blue.svg)](https://docs.python.org/3/whatsnew/3.11.html)
+</div>  
+
+## Overview
+
+**AERO-MPPI** is a **GPU-accelerated trajectory planner for quadrotors** based on the **Model Predictive Path Integral (MPPI)** framework.
+
+Key features:
+
+* 🛠️ **Native integration with Isaac Sim / Isaac Lab**
+* 🎯 **Anchor-guided trajectory ensembles** for escaping local minima
+* ⚡ **Warp-accelerated MPPI enabling thousands of trajectory rollouts across 1000+ parallel environments**
+
+<p align="middle">
+  <img src="assets/aero_mppi.gif" width = "1600" height = "900"/>
+  </p>
+
+
+<!-- ## Citation
+If you find this work useful in your research, please consider citing:
+```bibtex
+@inproceedings{chen2026aero,
+  title={AERO-MPPI: Anchor-Guided Ensemble Trajectory Optimization for Agile Mapless Drone Navigation},
+  author={Xin Chen, Rui Huang, Longbin Tang, Lin Zhao},
+  booktitle={2026 IEEE International Conference on Robotics and Automation (ICRA)},
+  year={2026}
+} -->

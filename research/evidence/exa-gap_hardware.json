@@ -1,0 +1,195 @@
+{
+  "query": {
+    "query": "open source autonomous drone obstacle avoidance hardware software Fast Drone 250 Fast Drone 500 EGO Swarm OmniNxt MAVISS Starling VOXL Navigator source code",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "60bbaa9d3d81512b60cf2a7b079612b5",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/ZJU-FAST-Lab/Fast-Drone-250",
+        "title": "ZJU-FAST-Lab/Fast-Drone-250",
+        "url": "https://github.com/ZJU-FAST-Lab/Fast-Drone-250",
+        "highlights": [
+          "# ZJU-\n...\n-Lab/\n...\n-Drone-250\n...\nhardware and software design of the 250mm autonomous drone\n...\n## README\n\n **\u4ece\u96f6\u5236\u4f5c\u81ea\u4e3b\u7a7a\u4e2d\u673a\u5668\u4eba**\n...\n\u6863\u662f\u89c6\u9891\u6559\u7a0b[\u4ece\u96f6\n...\n\u81ea\u4e3b\u7a7a\u4e2d\u673a\u5668\u4eba\n...\nhttps://www.bilibili.com/video/BV1WZ4y167me?p=1)\u7684\u914d\u5957\u6587\u6863,github\u94fe\u63a5\u4e3ahttps://github.com/ZJU-FAST-Lab/Fast-Drone-250\n\n \u5b89\u5168\n...\n\u662f\u4e00\u5957\u9762\u5411\u5bf9\n...\n\u3001\u7231\u597d\u8005\u3001\u76f8\u5173\u4ece\u4e1a\u4eba\u5458\n...\n\u5305\u542b\u4e86\u4ece\u786c\u4ef6\u7ec4\u88c5\u3001\u673a\u8f7d\u7535\u8111\u73af\u5883\u8bbe\u7f6e\u3001\u4ee3\u7801\u90e8\u7f72\u3001\u5b9e\u673a\u5b9e\u9a8c\u7b49\u5168\u5957\n...\n\u6d41\u7a0b\uff0c\u5e26\u4f60\u4ece0\u5f00\u59cb\uff0c\u7ec4\u88c5\u5c5e\u4e8e\u81ea\u5df1\u7684\u81ea\u4e3b\u65e0\u4eba\u673a\uff0c\u5e76\u8ba9\u5b83\u53ef\u4ee5\u5728\u672a\u77e5\u7684\u73af\u5883\u4e2d\u81ea\u7531\u907f\u969c\u7a7f\u884c\u3002\u672c\u6b21\u8bfe\u7a0b\u6240\u6d89\u53ca\u7684\u6240\u6709\u4ee3\u7801\u3001\u786c\u4ef6\u8bbe\u8ba1\u5168\u90e8\u5f00\u6e90\uff0c \u4e25\u7981\u5546\u7528\u4e0e\u8f6c\u8f7d\n...\n\u89e3\u91ca\u6743\u7531\u6d59\u6c5f\u5927\u5b66FASTLAB\u5b9e\u9a8c\u5ba4\u6240\u6709\u3002 \n \u672c\u6b21\n...\n\u843d\u5728\u81ea\u4e3b\u7a7a\u4e2d\u673a\u5668\n...\n\u4ee3\u7801\u90e8\u7f72\u53ca\u8c03\u8bd5\u4e0a\n...\n\u5173\u4e8e\u81ea\u4e3b\u7a7a\u4e2d\u673a\u5668\u4eba\u7684\u4e00\u4e9b\u7406\u8bba\u57fa\u7840\uff0c\u4f8b\u5982\u52a8\u529b\u5b66\u6a21\u578b\n...\n\u84dd\u5b66\u9662\u6709\u975e\u5e38\n...\nwww.shenlanxueyuan.com\n...\n85?\n...\n\u672c\u6b21\u8bfe\u7a0b\u5c31\u4e0d\u518d\u8d58\u8ff0\u3002\n...\n* \u4e0b\u8f7dego-planner\u6e90\u7801\u5e76\u7f16\u8bd1\n * `git clone https://github.com/ZJU-FAST-Lab/Fast-Drone-250`\n * `cd Fast-Drone-250`\n * `catkin_make`\n * `source devel/setup.bash`\n...\nego_planner single\n...\n_in_sim.launch\n...\nRviz\u5185\n...\n\u952e\u76d8G\u952e\uff0c\n...\n\u4ee5\u70b9\u9009\u65e0\u4eba\u673a\u76ee\u6807\u70b9\n...\n## \u7b2c\u4e5d\u7ae0\uff1aEgo-Planner\u4ee3\u7801\u6846\u67b6\u4e0e\u53c2\u6570\u4ecb\u7ecd"
+        ]
+      },
+      {
+        "id": "https://github.com/zju-fast-lab/ego-planner-swarm",
+        "title": "ZJU-FAST-Lab/ego-planner-swarm",
+        "url": "https://github.com/zju-fast-lab/ego-planner-swarm",
+        "highlights": [
+          "# ZJU-FAST-Lab/ego-planner-swarm\n...\nAn efficient single/multi-agent trajectory planner for multicopters.\n...\nEGO-Swarm: A Fully Autonomous and Decentralized Quadrotor Swarm System in Cluttered Environments\n...\n**EGO-Swarm** is a decentralized and asynchronous systematic solution for multi-robot autonomous navigation in unknown obstacle-rich scenes using merely onboard resources.\n\n \n \n \n \n \n \n\n**Video Links:** [YouTube](https://www.youtube.com/watch?v=K5WKg8meb94&ab_channel=FeiGao), [bilibili](https://www.bilibili.com/video/BV1Nt4y1e7KD) (for Mainland China)\n...\n## 5. Use\n...\nSimulation Considering Dynamics or Not\n...\nTypical simulations use a dynamic\n...\nHowever, it requires continuous iterations to solve a differential equation, which consumes quite a lot\n...\nof drones, this\n...\nburden may cause significant lag.\n...\nTherefore, for compatibility and scalability purposes, I use a \"[fake_drone](https://github.com/ZJU-FAST-Lab/ego-planner-swarm/tree/master/src/uav_simulator/fake_drone)\" package to convert commands to drone odometry directly by default.\n...\nIf you want to use a more realistic quadrotor model, you can un-comment the node `quadrotor_simulator_so3` and `so3_control/SO3ControlNodelet` in [simulator.xml](https://github.com/ZJU-FAST-Lab/ego-planner-swarm/blob/master/src/planner/plan_manage/launch/simulator.xml) to enable quadrotor simulation considering dynamics."
+        ]
+      },
+      {
+        "id": "https://github.com/HKUST-Aerial-Robotics/OmniNxt",
+        "title": "HKUST-Aerial-Robotics/OmniNxt",
+        "url": "https://github.com/HKUST-Aerial-Robotics/OmniNxt",
+        "highlights": [
+          "[IROS'24 Oral] A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception\n...\nNxt-FC |\n...\nNxt-FC\n...\nWe open-source hardware designs at \ud83d\udd17[NXT-FC](https://github.com/HKUST-Aerial-Robotics/Nxt-FC). Nxt-FC supports [PX4](https://github.com/PX4/PX4-Autopilot) and [Ardupilot](https://github.com/ArduPilot/ardupilot) firmware.\n...\nOur Omni-VINS and Omni-Depth are developed from D2SLAM. Since building the Docker images on the local machine(Jetson Orin) usually takes a long time, we suggest you pull the images from the Docker Hub. If you want to build the Docker image on your local machine, follow the instructions [Build Docker Images On Local Machine](#Build Docker images in local machines).\n...\nWe highly suggest you refer to Fast-Lab's PX4 controller [PX4-Control](https://github.com/ZJU-FAST-Lab/Fast-Drone-250/tree/master/src/realflight_modules/px4ctrl)\n...\nWe also provide our yaw-rotation-free version of Fast-Lab's PX4 controller [PX4-Control](https://github.com/D2SLAM-Fusion/controller-PX4Control).\n...\nWe modified some of the strategies in the [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner.git). Our version is here [ego-planner-omni-modify](https://github.com/D2SLAM-Fusion/planner-EgoPlanner) \n\nPlease cite ZJU-Fast-Lab's [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner.git) if these modules are useful for your research and project."
+        ]
+      },
+      {
+        "id": "https://github.com/ZJU-FAST-Lab/Fast-Drone-250/blob/master/readme_en.md",
+        "title": "Fast-Drone-250/readme_en.md at master",
+        "url": "https://github.com/ZJU-FAST-Lab/Fast-Drone-250/blob/master/readme_en.md",
+        "highlights": [
+          "- Repository: ZJU-FAST-Lab/Fast-Drone-250 | hardware and software design of the 250mm autonomous drone | 2K stars | C++\n- Branch: master\n...\n## Chapter 1: Course Introduction\n  This course is a set of free courses for students, enthusiasts, and related practitioners who are interested in autonomous aerial robots. It includes a complete set of detailed procedures from hardware assembly, airborne computer environment setting, code deployment, and real machine experiments. Assemble your own autonomous drone from, and make it explore autonomously and keep away from obstacles in an unknown environment. All code and hardware design involved in this course are all open source,<font color=\"#dd0000\">Commercial use and reprinting are strictly prohibited. The copyright and final interpretation rights are reserved by FAST-LAB, Zhejiang University.</font>\n  The focus of this course is mainly on the assembly, code deployment and debugging of autonomous aerial robots. Some theoretical foundations of autonomous aerial robots, such as dynamic model, path search, trajectory planning, mapping, etc., are taught by Fei Gao in Shenlan College [course] (https://www.shenlanxueyuan.com/course/385?source=1), which will not be repeated in this course.\n...\nego-planner\n...\n*\n...\nego_planner single"
+        ]
+      },
+      {
+        "id": "https://github.com/zjz0001/LIO-Drone-250",
+        "title": "zjz0001/LIO-Drone-250",
+        "url": "https://github.com/zjz0001/LIO-Drone-250",
+        "highlights": [
+          "# zjz0001/LIO-Drone-250\n...\nThis repository enables fully autonomous drone flight based on Mid360. It incorporates an odometry reference from Fast-LIO2 and a planning module reference from Ego-Planner.\n...\nThis repository enables fully autonomous drone flight based on Mid360. It incorporates an odometry reference from [Fast-LIO2](https://github.com/hku-mars/FAST_LIO) and a planning module reference from [Ego-Planner](https://github.com/ZJU-FAST-Lab/ego-planner-swarm). Also, this contribution is inspired by the [Fast-Drone-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) from the FAST-LAB laboratory.\n \n \n \n\n## 1. Prerequisites\n...\n```\n    cd ~/$A_ROS_DIR$\n    git clone https://github.com/zjz0001/LIO-Drone-250.git\n    catkin_make\n    source devel/setup.bash\n...\nsource the livox_ros_driver\n...\n**It is necessary to start the Ego_Planner after the controller is started and the drone has risen to the specified height, otherwise it will not be able to take off or hover at the specified height\uff01\uff01\uff01\uff01**\n...\n_node`:\n...\n```\n  roslaunch fast_lio mapping_mid360.launch\n  roslaunch geometric_controller takeoff_vr\n...\n**Start Ego-Planner**\n \n```\n    roslaunch realsense2_camera rs_camera.launch\n    roslaunch ego_planner single_run_in_exp_type1.launch\n```\n...\n```\n    cd ~/$L\n...\n_DIR$/shfiles\n    sudo chmod 777  *.sh\n    ./Odom.sh\n    ./Controller.sh\n    ./Planner.sh\n    ./pub.sh"
+        ]
+      },
+      {
+        "id": "https://github.com/zju-fast-lab/ego-planner",
+        "title": "ZJU-FAST-Lab/ego-planner",
+        "url": "https://github.com/zju-fast-lab/ego-planner",
+        "highlights": [
+          "Our recently developed planner [EGO-Swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm) is an evolution from EGO-Planner. \nIt is more robust and safe, and therefore, is more recommended to use.\n...\n` to `0` in EGO-Swarm's launch files.\n...\n- The framework of this repository is based on [Fast-Planner](https://github.com/HKUST-Aerial-Robotics/Fast-Planner) by Zhou Boyu who achieves impressive proformance on quadrotor local planning.\n\n- The L-BFGS solver we use is from [LBFGS-Lite](https://github.com/ZJU-FAST-Lab/LBFGS-Lite). \nIt is a C++ head-only single file, which is lightweight and easy to use.\n\n- The map generated in simulation is from [mockamap](https://github.com/HKUST-Aerial-Robotics/mockamap) by William Wu.\n...\n- The hardware architecture is based on an open source implemation from [Teach-Repeat-Replan](https://github.com/HKUST-Aerial-Robotics/Teach-Repeat-Replan).\n...\n# EGO-Planner \nEGO-Planner: An ESDF-free Gradient-based Local Planner for Quadrotors\n...\n**EGO-Planner** is a lightweight gradient-based local planner without ESDF construction, which significantly reduces computation time compared to some state-of-the-art methods. The total planning time is only **around 1ms** and don't need to compute ESDF.\n\n \n \n \n \n \n \n\n**Video Links:** [YouTube](https://youtu.be/UKoaGW7t7Dk), [bilibili](https://www.bilibili.com/video/BV1VC4y1t7F4/) (for Mainland China)"
+        ]
+      },
+      {
+        "id": "https://github.com/zju-fast-lab/ego-planner-v2",
+        "title": "ZJU-FAST-Lab/EGO-Planner-v2",
+        "url": "https://github.com/zju-fast-lab/ego-planner-v2",
+        "highlights": [
+          "# ZJU-FAST-Lab/EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \"Swarm of micro flying robots in the wild\"\n...\nDefault branch: main\n-\n...\n# EGO-Planner-v2\n...\nSwarm Playground, the codebase of the paper \"[Swarm of micro flying robots in the wild](https://www.science.org/doi/10.1126/scirobotics.abm5954)\".\n\n# Installation-Free Usage\n...\nPlease follow the [tutorial PDF file](swarm-playground/[README]_Brief_Documentation_for_Swarm_Playground.pdf) with corresponding videos ([1](swarm-playground/main_ws/WatchMe_main.mp4), [2](swarm-playground/formation_ws/WatchMe_formation.mp4), [3](swarm-playground/tracking_ws/WatchMe_tracking.mp4), [4](swarm-playground/interlaced_flight_ws/WatchMe_interlaced_flights.mp4)) to run the code.\n...\nThis work was born out of [MINCO](https://github.com/ZJU-FAST-Lab/GCOPTER)."
+        ]
+      },
+      {
+        "id": "https://github.com/hkust-aerial-robotics/omninxt/",
+        "title": "HKUST-Aerial-Robotics/OmniNxt",
+        "url": "https://github.com/hkust-aerial-robotics/omninxt/",
+        "highlights": [
+          "[IROS'24 Oral] A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception\n...\nWe open-source hardware designs at \ud83d\udd17[NXT-FC](https://github.com/HKUST-Aerial-Robotics/Nxt-FC). Nxt-FC supports [PX4](https://github.com/PX4/PX4-Autopilot) and [Ardupilot](https://github.com/ArduPilot/ardupilot) firmware.\n...\nOur Omni-VINS and Omni-Depth are developed from D2SLAM. Since building the Docker images on the local machine(Jetson Orin) usually takes a long time, we suggest you pull the images from the Docker Hub. If you want to build the Docker image on your local machine, follow the instructions [Build Docker Images On Local Machine](#Build Docker images in local machines).\n...\nWe highly suggest you refer to Fast-Lab's PX4 controller [PX4-Control](https://github.com/ZJU-FAST-Lab/Fast-Drone-250/tree/master/src/realflight_modules/px4ctrl)\n\nWe also provide our yaw-rotation-free version of Fast-Lab's PX4 controller [PX4-Control](https://github.com/D2SLAM-Fusion/controller-PX4Control).\n...\nWe modified some of the strategies in the [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner.git). Our version is here [ego-planner-omni-modify](https://github.com/D2SLAM-Fusion/planner-EgoPlanner) \n\nPlease cite ZJU-Fast-Lab's [ego-planner](https://github.com/ZJU-FAST-Lab/ego-planner.git) if these modules are useful for your research and project."
+        ]
+      },
+      {
+        "id": "https://docs.px4.io/v1.17/en/complete_vehicles_mc/modalai_starling",
+        "title": "ModalAI Starling (PX4 Autonomy Developer Kit) | PX4 Guide (v1.17)",
+        "url": "https://docs.px4.io/v1.17/en/complete_vehicles_mc/modalai_starling",
+        "highlights": [
+          "The Starlings are SLAM development drones supercharged by VOXL 2 and PX4 with SWAP-optimized sensors and payloads optimized for indoor and outdoor autonomous navigation. Powered by Blue UAS Framework autopilot, VOXL 2, the Starling weighs only 275g and boasts an impressive 30 minutes of autonomous indoor flight time.\n...\nThe ModalAI PX4 Autonomy Developer Kit is a Starling-based development drone. It houses a VOXL 2, which is a powerful companion computer and PX4 flight controller in one small package, image sensors, GPS, and connectivity modem, and is ready-to-fly out-of-the-box. The Starling features ModalAI's open SDK that has pre-configured autonomy models for computer vision assisted flight. This development drone is meant to help you get to market faster and accelerate your application development and prototyping.\n...\n| Component | Specification |\n| --- | --- |\n| Autopilot | VOXL2 |\n| Take-off Weight | 275g (172g without battery) |\n| Diagonal Size | 211mm |\n| Flight Time | >30 minutes |\n| Motors | 1504 |\n| Propellers | 120mm |\n| Frame | 3mm Carbon Fiber |\n| ESC | ModalAI VOXL 4-in-1 ESC V2 |\n| GPS | UBlox M10 |\n| RC Receiver | 915mhz ELRS |\n| Power Module | ModalAI Power Module v3 - 5V/6A |\n| Battery | Sony VTC6 3000mah 2S, or any 2S 18650 battery with XT30 connector |\n| Height | 83mm |\n| Width | 187mm (Props folded) |\n| Length | 142mm (Props folded) |"
+        ],
+        "image": "https://docs.px4.io/v1.17/px4-logo.svg"
+      },
+      {
+        "id": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "title": "GaryLee1210/UAV-Navigation-System",
+        "url": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "publishedDate": "2026-02-10T11:39:01.000Z",
+        "highlights": [
+          "Autonomous 250mm quadrotor: Livox Mid-360 + FAST-LIO2 / DLIO LiDAR-inertial localization + EGO-Planner navigation, on Jetson Orin NX & PX4 (EN / \u4e2d\u6587)\n...\nController** | **Holybro Pixhawk 4** | 32-bit, running PX4/ArduPilot |\n| **LiDAR** | **Livox Mid-360** | Omnidirectional 3D LiDAR |\n| **Depth Camera** | **Intel RealSense D435** | For VIO and depth sensing |\n| **Frame** | **Custom Carbon Fiber (250mm)** | \"Taobao\" Custom Cut |\n| **Motors** | **Koofly 2207 V2 (1960KV)** | 4S Power System |\n| **ESC** | **EMAX BLHeli32 (45A)** | 4-in-1 ESC supported |\n| **Battery** | **Gens Ace 4S 4000mAh** |\n...\n| **EGO-Planner** (`Drone/planner/ego_planner`, from [Fast-Drone-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) `8ff6427`) | launch/config | \u2460 Odometry source switched from VINS-Fusion (`/vins_fusion/imu_propagate`) to LIO (`/Odometry`). \u2461 `grid_map` is built directly from the LiDAR registered cloud (`cloud_registered`) instead of the depth camera. \u2462 `max_acc` lowered 6.0 \u2192 2.0 for safe indoor flight. Full diff in `patches/`. |\n...\n| **px4ctrl** (`Drone/control/px4ctrl`, from [Fast-Drone-250](https://github.com/ZJU-FAST-Lab/Fast-Drone-250) `8ff6427`) | launch/config | Position-control bridge to PX4. Driven by `/Odometry_highrate`; `run_ctrl.launch` + `ctrl_param_fpv.yaml` tuned for the 250mm platform. Shipped with its deps `uav_utils`, `quadrotor_msgs`, `cmake_utils`. |"
+        ]
+      },
+      {
+        "id": "https://docs.px4.io/main/en/complete_vehicles_mc/modalai_starling",
+        "title": "ModalAI Starling 2 | PX4 Guide (main)",
+        "url": "https://docs.px4.io/main/en/complete_vehicles_mc/modalai_starling",
+        "highlights": [
+          "The Starlings are NDAA-compliant SLAM development drones based on the VOXL 2 and PX4 with SWAP-optimized sensors and payloads optimized for indoor and outdoor autonomous navigation.\n...\nStarling drones house VOXL 2, which is a powerful companion computer, a PX4 flight controller, image sensors, GPS, and connectivity modem, in one small package. The Starlings feature ModalAI's open source VOXL SDK that has pre-configured autonomy models for computer vision assisted flight.\n...\nThe Starling 2 is an NDAA-compliant development drone supercharged by the VOXL SDK and equipped with a new image sensor suite for precise, indoor visual navigation and SLAM. Powered by the Blue UAS Framework autopilot, VOXL 2, the Starling 2 weighs 280g and boasts an impressive 40 minutes of autonomous flight time.\n...\nThe Starling 2 Max is VOXL 2-powered, NDAA-compliant development drone supercharged by VOXL SDK specifically designed for computer vision-based, long-range dead reckoning with a 500g payload capacity. Powered by the Blue UAS Framework autopilot, VOXL 2, the Starling 2 Max weighs 500g and boasts an impressive 55 minutes of autonomous flight time."
+        ],
+        "image": "https://docs.px4.io/main/og-image.png"
+      },
+      {
+        "id": "https://gitlab.com/voxl-public/support/documentation/blob/master/docs/00-voxl-developer-bootcamp/02-hardware-quickstart/19-starling-2.md",
+        "title": "docs/00-voxl-developer-bootcamp/02-hardware-quickstart/19-starling-2.md \u00b7 master \u00b7 voxl / Support / documentation \u00b7 GitLab",
+        "url": "https://gitlab.com/voxl-public/support/documentation/blob/master/docs/00-voxl-developer-bootcamp/02-hardware-quickstart/19-starling-2.md",
+        "highlights": [
+          "The Starling 2 and Starling 2 Max share the same VOXL 2-based compute stack and the same software experience \u2014 everything in the rest of this bootcamp applies identically to both. The differences are the airframe and the power system:\n...\n| | Starling 2 | Starling 2 Max |\n| --- | --- | --- |\n| Battery | one 2S 18650 pack (e.g. Sony VTC6 3000mAh) with XT30 connector | two 2S 18650 packs, connected in series for an effective 4S (16.8V max), XT30 connectors |\n| Airframe | 285g take-off weight, 220mm class | 500g take-off weight, 322mm carbon fiber airframe, 180mm folding props, 500g payload capacity |\n| Power module | \u2014 | integrated in the ModalAI 4-in-1 Mini ESC |\n| RC receiver | 915MHz ELRS or 2.4GHz Ghost Atto | 915MHz ELRS or 2.4GHz Ghost Atto |\n...\n\u2014 the two packs power the\n...\nin series. Never\n...\n1. Inspect the airframe and propellers for damage from shipping.\n2. Install the battery (Starling 2) or both batteries (Starling 2 Max) and connect the XT30 connector(s).\n3. The drone boots automatically when battery power is applied. Startup takes roughly 30 seconds; the ESC will play its startup tone.\n...\nFor full specifications, kit contents, and component part numbers, see the Starling 2 datasheet and Starling 2 Max datasheet.\n...\nContinue with Setting Up ADB to connect to the drone \u2014 from here on, the bootcamp steps are identical for both models."
+        ],
+        "image": "https://gitlab.com/assets/twitter_card-570ddb06edf56a2312253c5872489847a0f385112ddbcd71ccfa1570febab5d2.jpg"
+      },
+      {
+        "id": "https://exa.ai/library/publication/lwzqmr1qkt6",
+        "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception",
+        "url": "https://doi.org/10.48550/arxiv.2403.20085",
+        "publishedDate": "2024-03-29T00:00:00.000Z",
+        "author": "Peize Liu, Chen Feng, Yang Xu, Ning Yan, Hao Xu, Shaojie Shen",
+        "highlights": [
+          ": Multi-fisheye camera set (camera), Nxt-FC (flight controller and IMU), and Nvidia Jeston Orin NX (onboard computation). The software framework consists of two critical components: Omni-VINS (Sec. III-D) and Omni-Depth (Sec. III-E). Abstract-Adopting omnidirectional Field of View (FoV) cameras in aerial robots vastly improves perception ability, significantly advancing aerial robotics's capabilities in inspection, reconstruction, and rescue tasks. However, such sensors also elevate system complexity, e.g., hardware design, and corresponding algorithm, which limits researchers from utilizing aerial robots with omnidirectional FoV in their research. To bridge this gap, we propose OmniNxt, a fully\n...\nTABLE I : Platforms | Compact HW | SW | Open-source HW SW | Visual Info | Perceptive Geometry Info | Sensor Type | FoV | Extendable HW SW DJI MAVIC 3T [11] | 380mm 920g | - | Multi-fisheye camera set | 360 \u2022 Skydio X10 [12] | \u2248380mm 2110g | - | Multi-fisheye camera set | 360 \u2022 FLA [4] | 450mm \u22482500g | Low | Camera & 2D-LiDAR | \u224890 \u2022 MRS [5] | 450mm \u22481500g | Low | Camera & 3D-LiDAR | \u224890 \u2022 LIO Racing Drone | [13] | 330mm \u22481300g | Median | 3D-LiDAR | \u224870 \u2022 Agilicious [6] | 330mm \u2248775g | High | Stereo camera | \u224890 \u2022 Fast-250 [14] | 250mm \u22481000g | Median | Stereo camera | \u224890 \u2022 OmniNxt(Ours) | 88.92mm 660g | High | Multi-fisheye camera set | 360 \u2022"
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/publication/lwzqmr1qkt6",
+            "type": "publication",
+            "version": 1,
+            "properties": {
+              "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot with Omnidirectional Visual Perception",
+              "year": 2024,
+              "date": "2024-03-29",
+              "type": "preprint",
+              "language": "en",
+              "citationCount": 0,
+              "authors": [
+                {
+                  "name": "Peize Liu",
+                  "id": null
+                },
+                {
+                  "name": "Chen Feng",
+                  "id": null
+                },
+                {
+                  "name": "Yang Xu",
+                  "id": null
+                },
+                {
+                  "name": "Ning Yan",
+                  "id": null
+                },
+                {
+                  "name": "Hao Xu",
+                  "id": null
+                },
+                {
+                  "name": "Shaojie Shen",
+                  "id": null
+                }
+              ],
+              "referenceCount": null,
+              "abstract": "Adopting omnidirectional Field of View (FoV) cameras in aerial robots vastly improves perception ability, significantly advancing aerial robotics's capabilities in inspection, reconstruction, and rescue tasks. However, such sensors also elevate system complexity, e.g., hardware design, and corresponding algorithm, which limits researchers from utilizing aerial robots with omnidirectional FoV in their research. To bridge this gap, we propose OmniNxt, a fully open-source aerial robotics platform with omnidirectional perception. We design a high-performance flight controller NxtPX4 and a multi-fisheye camera set for OmniNxt. Meanwhile, the compatible software is carefully devised, which empowers OmniNxt to achieve accurate localization and real-time dense mapping with limited computation resource occupancy. We conducted extensive real-world experiments to validate the superior performance of OmniNxt in practical applications. All the hardware and software are open-access at https://github.com/HKUST-Aerial-Robotics/OmniNxt, and we provide docker images of each crucial module in the proposed system. Project page: https://hkust-aerial-robotics.github.io/OmniNxt.",
+              "doi": "10.48550/arxiv.2403.20085"
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://hkust-aerial-robotics.github.io/OmniNxt/static/pdfs/OmniNxt.pdf",
+        "title": "OmniNxt: A Fully Open-source and Compact Aerial Robot ...",
+        "url": "https://hkust-aerial-robotics.github.io/OmniNxt/static/pdfs/OmniNxt.pdf",
+        "highlights": [
+          "A. System Overview OmniNxt is designed to be a general open-source aerial robotics platform. Therefore, we strictly follow the COPE criteria in hardware and software design. As shown in Fig. 1, OmniNxt consists of three key components in hardware: First, We use Nvidia Jetson Orin NX for the onboard computer, which has an 8-core CPU running at 2.0 GHz and a GPU with 1024 CUDA cores. CPU and GPU share the unified 16G RAM. Second, we adopt a multi-fisheye camera set to capture the omnidirectional image at 20 Hz. All four cameras are synchronized by one camera triggering the other three. Last, to further enhance the robustness of OmniNxt, we develop a low-noise flight controller, which provides 500 Hz low-noise IMU data. Besides, the software framework of OmniNxt can be divided into the following four parts, each serving a specific function:\n...\n. (Sec. III-F) The perception modules (Omni-VINS, Omni-Depth, and related hardware drivers) in OminNxt occupy 27% CPU and 40% GPU onboard resources, sparing sufficient resources for the downstream tasks. B. Nxt-FC The lack of open-source hardware options in most avail able flight controllers presents a significant challenge in fur ther development and adaptation on various platforms. To ad dress this issue, we design and open-source a flight controller named Nxt-FC with compact dimensions of 27mm\u00d7 33mm. Our flight controller is based on"
+        ]
+      },
+      {
+        "id": "https://px4.gitbook.io/px4-user-guide/drone_parts/complete_vehicles/modalai_starling",
+        "title": "",
+        "url": "https://px4.gitbook.io/px4-user-guide/drone_parts/complete_vehicles/modalai_starling",
+        "highlights": [
+          "The Starling is a SLAM development drone supercharged by VOXL 2 and PX4 with SWAP-optimized sensors and payloads optimized for indoor and outdoor autonomous navigation. Powered by Blue UAS Framework autopilot, VOXL 2, the Starling weighs only 275g and boasts an impressive 30 minutes of autonomous indoor flight time.\n...\nThe VOXL 2 Starling is a PX4 development drone that houses a VOXL 2 companion computer and PX4 flight controller, image sensors, GPS, and connectivity modem and is ready-to-fly out-of-the-box. The Starling features ModalAI\u2019s open SDK that has pre-configured autonomy models for computer vision assisted flight. This development drone is meant to help you get to market faster and accelerate your application development and prototyping.\n...\nA-M0041-5-B-T |\n| L | 4726FM Propellor | M10000302 |\n| M | Motor 1504 | |\n| N | XT30\n...\n| Component | Specification |\n| --- | --- |\n| Autopilot | VOXL2 |\n| Take-off Weight | 275g (172g without battery) |\n| Diagonal Size | 211mm |\n| Flight Time | >30 minutes |\n| Motors | 1504 |\n| Propellers | 120mm |\n| Frame | 3mm Carbon Fiber |\n| ESC | ModalAI VOXL 4-in-1 ESC V2 |\n| GPS | UBlox M10 |\n| RC Receiver | 915mhz ELRS |\n| Power Module | ModalAI Power Module v3 - 5V/6A |\n| Battery | Sony VTC6 3000mah 2S, or any 2S 18650 battery with XT30 connector |\n| Height | 83mm |\n| Width | 187mm (Props folded) |\n| Length | 142mm (Props folded) |"
+        ]
+      }
+    ],
+    "searchTime": 1812.3,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}

@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ironlark, read line by line</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ff7a2f'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23ff7a2f' stroke-opacity='.4' stroke-width='2'/%3E%3C/svg%3E">
+<script type="module" src="/src/main.js"></script>
+</head>
+<body>
+<div id="loader"><div class="loader-ring"></div><p>placing 680,615 LiDAR returns</p></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="progress" aria-hidden="true"><div></div></div>
+<nav id="rail" aria-label="Chapters"></nav>
+<div id="dock">
+  <button id="index-toggle" aria-label="Open the chapter index">
+    <span class="ix-num">00</span><span class="ix-name">Cover</span><kbd>G</kbd>
+  </button>
+  <button class="dock-btn" data-plain-toggle aria-pressed="false" title="Every note in plain words (P)">
+    <i class="sw"></i><span>plain words</span><kbd>P</kbd>
+  </button>
+  <button class="dock-btn" data-terms title="Every term, explained (/)"><span>terms</span><kbd>/</kbd></button>
+  <button class="dock-btn keys-btn" data-keys aria-label="Keys" title="Keys (?)"><kbd>?</kbd></button>
+</div>
+<div id="whisper" hidden role="note">
+  <p>New to the vocabulary? <kbd>P</kbd> rewrites every note in plain words, in place. Underlined words open an explanation;
+    <kbd>/</kbd> lists them all.</p>
+  <button aria-label="Dismiss">×</button>
+</div>
+<div id="keys" hidden>
+  <dl>
+    <div><dt><kbd>J</kbd><kbd>K</kbd></dt><dd>next, previous chapter</dd></div>
+    <div><dt><kbd>G</kbd></dt><dd>chapter index</dd></div>
+    <div><dt><kbd>P</kbd></dt><dd>plain words on and off, keeping your place</dd></div>
+    <div><dt><kbd>/</kbd></dt><dd>search every term</dd></div>
+    <div><dt><span class="u">term</span></dt><dd>click an underlined word to explain it</dd></div>
+    <div><dt><span class="ln-k">L72</span></dt><dd>hover a code line: what it literally does</dd></div>
+    <div><dt><kbd>Esc</kbd></dt><dd>close</dd></div>
+  </dl>
+</div>
+<aside id="lexicon" hidden aria-label="Terms"></aside>
+<div id="index-overlay" hidden></div>
+
+<main>
+
+<!-- ───────────────────────────── COVER ───────────────────────────── -->
+<section class="chapter cover" id="cover" data-chapter="Cover" data-t="17 Oct 2026 · 17:54">
+  <canvas id="hero-canvas"></canvas>
+  <div class="cover-veil"></div>
+  <div class="cover-text">
+    <p class="eyebrow"><span class="dot orange"></span>Ironlark · a reading of the flight stack</p>
+    <h1>One flight,<br><em>read line by line</em></h1>
+    <p class="lede">At 17:54 on 17 October 2026, <code>./ironlark check --world forest --record</code> flew the drone over the pine
+      forest on today's <code>main</code>: armed at 42.0&nbsp;s of simulated time, rose to 3.15&nbsp;m, held, and landed
+      having drifted at most 6.4&nbsp;cm sideways. The chapters below follow that run through every file that made it happen,
+      in the order the code ran.</p>
+    <p class="lede pl">On 17 October 2026 at 17:54, one command (<code>./ironlark check --world forest --record</code>) ran a complete simulated flight over the pine forest and recorded it. The drone armed its motors 42 seconds into the simulation, climbed to 3.15&nbsp;m, hovered, and landed no more than 6.4&nbsp;cm sideways from where it started. Each chapter below follows that one flight through the code that made it happen, in the order things ran.</p>
+    <dl class="cover-stats">
+      <div><dt>physics step</dt><dd>2 ms</dd></div>
+      <div><dt>sensor messages</dt><dd>63,236</dd></div>
+      <div><dt>dropped</dt><dd>0</dd></div>
+      <div><dt>peak height</dt><dd>3.149 m</dd></div>
+    </dl>
+    <p class="cover-hint">Scroll, or use <kbd>J</kbd>/<kbd>K</kbd> between chapters and <kbd>G</kbd> for the index. Code panels follow the notes beside them.
+      New to the terms? <kbd>P</kbd> switches every note to plain words, and underlined words explain themselves.</p>
+  </div>
+  <p class="cover-caption">The point cloud is the run's own: all 613 LiDAR scans, each placed by the ground-truth pose of its instant, on a 20&nbsp;cm grid. Orange is the drone's path.</p>
+    <p class="cover-caption pl">The image is built from this flight's own laser scans: all 613, each placed where the drone truly was when it took it, shown on a 20&nbsp;cm grid. Orange is the drone's path.</p>
+</section>
+
+<!-- ───────────────────────────── 01 MACHINE ───────────────────────────── -->
+<section class="chapter" id="machine" data-chapter="The machine" data-index="01" data-t="before T+0">
+  <header class="chapter-head">
+    <p class="eyebrow">Architecture · what talks to what</p>
+    <h2>Four programs that share no memory</h2>
+    <p class="lede">The run starts four programs: the launcher and Webots on the host, ArduPilot's SITL in one Docker container,
+      ROS&nbsp;2 in another. Everything one knows about another crosses a channel below. Both containers run with
+      <code>--network host</code>, so <code>127.0.0.1</code> is the same machine for all four.</p>
+    <p class="lede pl">A flight is four separate programs running at once: the launcher (Ironlark's own script) and the Webots simulator directly on the computer, ArduPilot's autopilot in one container, and ROS&nbsp;2 in another. They share no memory, so anything one needs from another must cross one of the channels drawn below: a network connection or a file. Both containers use the computer's own network, so the address <code>127.0.0.1</code> reaches all four. Click a box or a channel to see what it carries.</p>
+  </header>
+  <div class="widget wide" data-widget="system"></div>
+  <div class="legend">
+    <span><i style="--c:var(--gold)"></i>launcher and run folder</span>
+    <span><i style="--c:var(--moss)"></i>Webots: physics, rendering, controllers</span>
+    <span><i style="--c:var(--sky)"></i>ArduPilot: flight control</span>
+    <span><i style="--c:var(--violet)"></i>ROS 2: topics and recording</span>
+  </div>
+  <div class="prose two">
+    <p><strong>Two Webots controllers, two roles.</strong> The world file declares two robots. The drone runs
+      <code>flight_bridge</code>, a plain <code>Robot</code> that can read its own devices and drive its own motors. A second,
+      bodiless robot named <em>flight evaluator</em> runs <code>flight_observer</code> as a <code>Supervisor</code>: it can read any
+      node's true position, and it never commands anything.</p>
+    <p class="pl"><strong>Two controllers, two roles.</strong> Webots runs two small programs of its own, called controllers. The drone's, <code>flight_bridge</code>, can read only the drone's own sensors and set only its own motors, like the computer on a real drone. The second belongs to an invisible robot named <em>flight evaluator</em> with special access (a supervisor): <code>flight_observer</code> can read the exact position of anything in the world. It only watches and writes down; it never steers.</p>
+    <p><strong>The run folder is a channel too.</strong> Processes that only need to signal each other use files in
+      <code>runs/&lt;stamp&gt;/</code>: <code>world-ready</code> and <code>sensing-end</code> by existing, <code>flight-state.json</code> and
+      <code>sensing.json</code> written to a temporary name and renamed into place so a reader never sees half of one. Beside them
+      the evidence: <code>ground_truth.jsonl</code>, <code>telemetry.jsonl</code>, <code>result.json</code>.</p>
+    <p class="pl"><strong>The run folder is a channel too.</strong> Programs also signal each other with files in <code>runs/&lt;stamp&gt;/</code>. Some files mean something just by existing: <code>world-ready</code> says "the world has loaded", <code>sensing-end</code> says "stop sensing". Others are written under a temporary name and then renamed, because a rename happens all at once and a reader never sees half a file. The same folder collects the evidence: the true path, the autopilot's reports, the result.</p>
+  </div>
+  <div class="codecard" data-code="world-robots"></div>
+</section>
+
+<!-- ───────────────────────────── 02 LAUNCH ───────────────────────────── -->
+<section class="chapter" id="launch" data-chapter="Launch" data-index="02" data-t="before T+0">
+  <header class="chapter-head">
+    <p class="eyebrow">ironlark · flight() · lines 406–684</p>
+    <h2>What the launcher does before anything moves</h2>
+    <p class="lede"><code>ironlark</code> is one Python file run by the system interpreter. Its <code>flight()</code> refuses unsafe starts,
+      rebuilds what is stale, writes down exactly what is about to run, starts the processes in an order that matters, and
+      tears all of them down however the run ends.</p>
+    <p class="lede pl"><code>ironlark</code> is the one command you run. Its <code>flight()</code> function, the code beside the notes below, does five things in order: refuses to start if something is wrong, rebuilds anything out of date, writes down exactly what is about to run, starts the programs in the right order, and afterwards stops every one of them, whether the flight passed, failed or crashed.</p>
+  </header>
+  <section class="reading" data-code="launcher">
+    <article class="note" data-lines="407-416"><h4>Refuse before creating anything</h4>
+      <p>The renderer is picked first: the forest needs the patched Webots in <code>.cache/webots-renderer/</code>. Then
+      <code>world_problems</code> compares the forest's receipt (sha256 of every pipeline file, package versions, every output)
+      with today's code. A mismatch stops here, before a run folder exists.</p>
+      <div class="pl"><p>These lines first choose which Webots to use; the forest needs the project's own patched build. Then <code>world_problems</code> checks that the forest on disk was built by today's code, by comparing its receipt (a fingerprint of every file that went into the build) with today's files. Any difference stops the launch with an error, before a run folder exists, so a refused start leaves nothing behind.</p></div></article>
+    <article class="note" data-lines="423-424"><h4>One flight at a time, free ports</h4>
+      <p><code>exclusive()</code> takes <code>fcntl.flock(LOCK_EX | LOCK_NB)</code> on <code>.cache/flight.lock</code>: a second flight or a
+      world build fails immediately instead of replacing files a running flight has loaded. <code>check_ports()</code> then
+      binds TCP 5760 and UDP 9002–9003 to prove nobody holds them.</p>
+      <div class="pl"><p><code>with exclusive()</code> takes a lock on a file, so only one flight or world build can run at a time; a second one stops at once with a message instead of replacing files the first is using. <code>check_ports()</code> then claims the network ports the flight needs (5760, 9002, 9003) for a moment, to prove no other program holds them.</p></div></article>
+    <article class="note" data-lines="425-428"><h4>Rebuild what is stale, compile the loop</h4>
+      <p>The drone is rebuilt if any input or output differs from <code>protos/drone/receipt.json</code>.
+      <code>build_lockstep()</code> compiles <code>lockstep.c</code> with <code>cc -O2 -shared -fPIC … -lController</code> (about 73 ms), for every run.</p>
+      <div class="pl"><p>If any of the drone's model files changed since its last build, the drone is rebuilt. Then <code>build_lockstep()</code> compiles <code>lockstep.c</code>, the small C program at the heart of the flight (chapter 03). It does this for every flight; it takes about 73 ms.</p></div></article>
+    <article class="note" data-lines="429-465"><h4>The run folder and its manifest</h4>
+      <p>The compiled library's bytes go into the run folder and its sha256 into <code>manifest.json</code>, with the ArduPilot commit,
+      the renderer's patch series and hashes, the SITL image id and the clock patch's hash. A run carries the loop it flew:
+      this one flew <code>"language": "C"</code>, library <code>9d8fd3bf…</code>.</p>
+      <div class="pl"><p>A new folder is made for this run, named by date, time and process number. The compiled loop is saved into it, and <code>manifest.json</code> records what is about to fly: the ArduPilot version, the Webots patches, the ArduPilot container's id, a fingerprint of the clock patch, and which version of the loop flies. For this run: the C one, fingerprint <code>9d8fd3bf…</code>. Months later you can still say exactly what produced a result.</p></div></article>
+    <article class="note" data-lines="467-482"><h4>Configuration travels as environment</h4>
+      <p>Every controller learns where to write from <code>IRONLARK_RUN_DIR</code>. <code>IRONLARK_LOCKSTEP</code> points the bridge at the
+      compiled loop. Recording sets <code>IRONLARK_SENSING=1</code>; otherwise <code>IRONLARK_FAST_START=1</code> lets the observer run the
+      pre-arm wait as fast as the machine can.</p>
+      <div class="pl"><p>The launcher cannot call the controllers itself; Webots starts them. So it passes settings as environment variables, which every program inherits from the one that started it: where the run folder is, where the compiled loop is, whether to record sensors. When not recording it also sets <code>IRONLARK_FAST_START</code>, which lets the long wait before take-off run faster than real time (chapter 05).</p></div></article>
+    <article class="note" data-lines="485-488"><h4>Stage the world</h4>
+      <p>Webots saves GUI perspectives next to a world file. The world is copied into the run folder (its 1.4&nbsp;GB of meshes
+      linked, not copied) so watching a flight never rewrites versioned files.</p>
+      <div class="pl"><p>Webots saves window layouts next to the world file it opens. So that watching a flight never changes the project's files, the world is copied into the run folder and opened from there. Its 1.4 GB of meshes are linked, not copied.</p></div></article>
+    <article class="note" data-lines="520-534"><h4>ROS starts first</h4>
+      <p>When recording, the bridge and <code>ros2 bag record</code> start before Webots, so the controller's stream finds them
+      waiting. Topics are named rather than <code>-a</code>, so the recorder subscribes before the first message. The shell
+      <code>trap</code> turns SIGINT into an orderly bag close.</p>
+      <div class="pl"><p>When recording, the ROS side starts first: the bridge that turns the simulator's data into ROS messages, and the recorder (<code>ros2 bag record</code>). They are already waiting when the drone's controller starts sending. The recorder gets the exact list of topics, so it is listening before the first message. Line 529 makes Ctrl+C (SIGINT) close the recording cleanly instead of cutting it off.</p></div></article>
+    <article class="note" data-lines="542-581"><h4>ArduPilot SITL, exactly configured</h4>
+      <p><code>--model webots-python</code> selects the backend that talks UDP to Webots. <code>--wipe</code> erases stored parameters, so
+      every run starts from the same files. <code>--home 31.9500,35.9300,750,0</code> is latitude, longitude, altitude in metres and
+      heading. <code>--defaults</code> loads three parameter files in order, later ones winning: Copter defaults, the Iris example,
+      then <code>config/flight.parm</code>. MAVLink is served on <code>tcp:5760</code>.</p>
+      <div class="pl"><p>This starts ArduPilot inside its container, every option spelled out. <code>--model webots-python</code>: talk to Webots. <code>--wipe</code>: forget settings saved by earlier runs, so every run starts the same. <code>--home</code>: the take-off spot's latitude, longitude, altitude in metres and heading. <code>--defaults</code>: three settings files loaded in order, the last, Ironlark's <code>flight.parm</code>, overriding the others. Ground stations connect on TCP port 5760.</p></div></article>
+    <article class="note" data-lines="605-614"><h4>Wait for the world, not a guess</h4>
+      <p>The forest takes a while to load. The observer touches <code>world-ready</code> once its controller starts, which only
+      happens after loading (<code>flight_observer.py:29</code>); the launcher polls for it for up to 600&nbsp;s.</p>
+      <div class="pl"><p>Loading the forest can take minutes. Instead of guessing how long, the launcher waits for a signal: the observer creates the file <code>world-ready</code> as soon as it starts, and Webots starts controllers only once the world has loaded. The launcher looks for that file every 0.2 s, for up to 600 s.</p></div></article>
+    <article class="note" data-lines="615-626"><h4>The mission runs inside the SITL container</h4>
+      <p><code>docker exec</code> starts <code>tests/flight_smoke.py</code> in the same container as ArduPilot, using the image's pinned
+      pymavlink. The script is the flight's ground station.</p>
+      <div class="pl"><p>Now the mission starts: <code>tests/flight_smoke.py</code>, run inside ArduPilot's container (<code>docker exec</code>) so it uses the exact MAVLink library pinned there. This script plays the ground station, the pilot giving commands.</p></div></article>
+    <article class="note" data-lines="627-641"><h4>A backstop, not a timer</h4>
+      <p>900&nbsp;s of wall clock is a last resort. The mission's own timeouts run on simulated time (chapter&nbsp;05). A process that
+      exits, or a sensor stream that reports a loss, fails the run at once.</p>
+      <div class="pl"><p>While the mission runs, the launcher checks five times a second that nothing has died. A simulator exiting, or the sensor stream reporting a lost message, fails the run at once. 900 s of real time is only a last-resort limit; the mission's own time limits count simulated seconds (chapter 05).</p></div></article>
+    <article class="note" data-lines="645-654"><h4>Account for every message</h4>
+      <p>With <code>--record</code>, <code>end_sensing()</code> tells the stream to stop and waits until the bridge has acknowledged every
+      message; any loss fails the run. Peak RAM, CPU time and GPU memory of every process join <code>result.json</code>.</p>
+      <div class="pl"><p>After a recorded flight, <code>end_sensing()</code> tells the sensor stream to stop and waits for the ROS bridge to say how many messages it received. If that differs from what was sent, the run fails. The peak memory, processor time and graphics memory of every program are added to <code>result.json</code>.</p></div></article>
+    <article class="note" data-lines="667-684"><h4>Teardown in a fixed order</h4>
+      <p>Whatever happened, <code>finally</code> runs: ROS gets SIGINT first so rosbag2 closes the bag, then the mission, the SITL
+      container (<code>docker stop --time 3</code>) and Webots' whole process group (<code>killpg</code>; SIGKILL after 5&nbsp;s, because headless
+      Webots ignores SIGTERM).</p>
+      <div class="pl"><p><code>finally:</code> runs however the flight ended: pass, fail or crash. It stops everything in a fixed order. ROS first gets Ctrl+C (SIGINT), so the recorder can finish writing the bag; then the mission; then ArduPilot's container; then Webots. Webots without a window ignores the polite stop signal, so after 5 s it is killed outright (SIGKILL).</p></div></article>
+  </section>
+</section>
+
+<!-- ───────────────────────────── 03 LOCKSTEP ───────────────────────────── -->
+<section class="chapter" id="lockstep" data-chapter="Lockstep" data-index="03" data-t="every 2 ms">
+  <header class="chapter-head">
+    <p class="eyebrow">controllers/flight_bridge · lockstep.c · webots-clock.patch</p>
+    <h2>Every 2 milliseconds, one packet each way</h2>
+    <p class="lede">Webots computes the physics; ArduPilot computes the motor commands. Neither may run ahead of the other. The
+      world sets the physics step to 2&nbsp;ms, and the bridge turns every step into a handshake: one sensor packet out, one
+      motor packet back, one step.</p>
+    <p class="lede pl">Two programs share the job of flying. Webots works out the physics: where the drone goes when the motors push. ArduPilot works out the motor commands from what the drone senses. If either ran ahead, the drone would fly on stale information. So they take turns, every 2&nbsp;ms of simulated time: Webots sends what the drone senses, waits for ArduPilot's motor command, applies it, and moves the world forward exactly 2&nbsp;ms. That is lockstep.</p>
+  </header>
+  <div class="split">
+    <div class="prose">
+      <p><code>basicTimeStep 2</code> makes physics run at 500&nbsp;Hz. <code>flight.parm</code> sets
+        <code>SCHED_LOOP_RATE 250</code>: the autopilot's main loop at half the sensor rate, which Copter&nbsp;4.7 requires
+        for its IMU sampling. <code>randomSeed 7</code> fixes Webots' own noise.</p>
+    <p class="pl">The world file (right) sets the step: <code>basicTimeStep 2</code> means physics advances 2&nbsp;ms at a time, 500 times per simulated second. <code>flight.parm</code> sets ArduPilot's own main loop to 250 times a second, half that, which Copter&nbsp;4.7 needs for the way it samples the IMU. <code>randomSeed 7</code> makes Webots' random effects identical on every run.</p>
+      <p>The two packets are plain C structs sent over UDP. ArduPilot's side declares them in
+        <code>SIM_Webots_Python.h</code>: <code>fdm_packet</code> of 16 doubles and <code>servo_packet</code> of 16 floats.
+        Hover a cell to see where it comes from. The values are from this flight at 48.0&nbsp;s.</p>
+    <p class="pl">Each turn is two small packets. The sensor packet holds 16 numbers of 8 bytes (doubles) describing the drone's true motion; the motor packet holds 16 numbers of 4 bytes (floats), one per possible motor. Both programs agree on the order of the numbers in advance; ArduPilot declares it in <code>SIM_Webots_Python.h</code>. Below are the real values from this flight at 48.0&nbsp;s. Hover a cell to see what it is.</p>
+    </div>
+    <div class="codecard" data-code="world"></div>
+  </div>
+  <div class="widget wide" data-widget="packets"></div>
+
+  <div class="subhead"><span>3.1</span><h3>Why "keep the newest" matters</h3></div>
+  <div class="prose two">
+    <p>ArduPilot's backend resends its last motor packet every 100&nbsp;ms while it waits for sensor data
+      (<code>recv_fdm</code>, the <code>100</code> in <code>socket_sitl.recv(&amp;pkt, sizeof(pkt), 100)</code>). Webots blocks while it
+      renders a frame. Upstream's loop steps physics once per motor packet it receives. When a frame takes longer than
+      100&nbsp;ms, resends pile up in the socket, and each one advances physics a step on the same, stale command.</p>
+    <p class="pl">Here is the problem the bridge solves. While ArduPilot waits for sensor data, it resends its last motor command every 100&nbsp;ms, in case the first was lost. Meanwhile Webots sometimes takes longer than 100&nbsp;ms to draw one frame of the forest. During that frame, several copies of the same old command pile up in the socket, waiting to be read. ArduPilot's own example bridge (upstream) moved the physics one step for every motor packet it read, so each stale copy pushed the world forward on an old command.</p>
+    <p>The docstring of <code>IrisBridge._handle_sitl</code> records the effect: <em>"dynamics ran ahead of the autopilot and slow
+      rendering destabilised flight."</em> Ironlark's loop drains the socket and keeps only the newest packet, so a step always
+      consumes exactly one decision. Drag the stall below and compare the two rules.</p>
+    <p class="pl">The upstream loop's failure is written down in the code itself: <em>"dynamics ran ahead of the autopilot and slow rendering destabilised flight."</em> Ironlark's loop reads every waiting packet and keeps only the newest, so each physics step uses exactly one fresh decision. The widget below lets you stall rendering and watch both rules.</p>
+  </div>
+  <div class="widget wide" data-widget="stall"></div>
+
+  <div class="subhead"><span>3.2</span><h3>The loop itself, in C</h3></div>
+  <section class="reading" data-code="lockstep">
+    <article class="note" data-lines="21-36"><h4>Sixteen doubles of truth</h4>
+      <p><code>fdm()</code> fills the sensor packet: Webots time, then gyro, accelerometer, roll-pitch-yaw, GPS velocity and GPS
+      position, three numbers each. These are the Iris's noiseless devices: the physical state from which ArduPilot's SITL
+      synthesizes its own GPS, compass and barometer.</p>
+      <div class="pl"><p><code>fdm()</code> fills the 16-number sensor packet. Number 0 is the simulation time. Then five readings of three numbers each: rotation rate (gyro), acceleration (accelerometer), tilt and heading (roll, pitch, yaw), velocity and position. They come from perfect, noiseless sensors: ArduPilot's SITL takes this true state and invents its own realistic GPS, compass and barometer readings from it.</p></div></article>
+    <article class="note" data-lines="31-35"><h4>Two signs per vector</h4>
+      <p>For every vector, x is kept and y and z are negated: a 180° turn about x, from Webots' FLU/ENU conventions to
+      ArduPilot's FRD/NED. Chapter 04 shows what this choice implies for "north".</p>
+      <div class="pl"><p>For every reading, the first number is copied and the next two have their sign flipped. That turns Webots' axes (x forward, y left, z up) into ArduPilot's (x forward, y right, z down): the same as rotating the axes 180° about x. Chapter 04 shows what this means for which way is north.</p></div></article>
+    <article class="note" data-lines="54-61"><h4>Called once, from Python, with device tags</h4>
+      <p>The Python controller (<code>flight_bridge.py:84–97</code>) loads the compiled library with <code>ctypes</code>, passes the
+      socket's file descriptor, the motor and sensor device tags, and a <code>CFUNCTYPE</code> callback for sensing. Port&nbsp;9002
+      is Webots' listening port; the sensor packets go to <code>port + 1</code>, 9003.</p>
+      <div class="pl"><p>This function is the loop itself. Python starts it: <code>flight_bridge.py</code> loads the compiled file and calls it once, handing over the network socket, the device tags of the four motors and the sensors, and a Python function to call after each step, for sensor recording. Lines 56–60 set ArduPilot's address: this same computer, port 9003.</p></div></article>
+    <article class="note" data-lines="62-70"><h4>Send, then wait</h4>
+      <p>Each iteration sends this step's state, then waits up to a second for a reply. If none comes, the sensor packet is
+      sent again: UDP can lose a datagram, and a lost one would leave both sides waiting on each other forever.</p>
+      <div class="pl"><p>Each pass of the loop sends this step's sensor packet, then waits up to a second for a reply. If none comes, it sends the sensor packet again. UDP can lose a packet; without the resend, one lost packet would leave both programs waiting for each other forever.</p></div></article>
+    <article class="note" data-lines="71-79"><h4>Drain the socket, keep the newest</h4>
+      <p>Once anything is readable, every queued datagram is read; each full one overwrites <code>command</code>. Older packets
+      are ArduPilot's resends and are discarded. This is the line that the stall widget above is about.</p>
+      <div class="pl"><p>Once a reply is waiting, the loop reads <em>every</em> waiting packet, not just the first. Each complete one overwrites <code>command</code>, so only the newest survives. The older ones were ArduPilot's resends. This is the fix the stall widget above shows.</p></div></article>
+    <article class="note" data-lines="81-87"><h4>From throttle to rotor speed</h4>
+      <p>Negative values (ArduPilot's encoding of a disabled output) become zero; the rest are square-rooted and scaled by the
+      motor's <code>maxVelocity</code>, 100&nbsp;rad/s. Chapter 06 shows why the square root makes thrust linear.</p>
+      <div class="pl"><p>For each motor: a negative value (ArduPilot's way of saying "this output is off") becomes 0. The rest are square-rooted and multiplied by the motor's top speed, 100 rad/s. The square root is there because a propeller's thrust grows with the square of its speed; chapter 06 shows how the two cancel.</p></div></article>
+    <article class="note" data-lines="88-91"><h4>Exactly one step, then sensing</h4>
+      <p><code>wb_robot_step(2)</code> advances physics 2&nbsp;ms and returns when Webots is ready, however long rendering took.
+      Then the Python sensing callback samples this step. <code>-1</code> means Webots is quitting.</p>
+      <div class="pl"><p><code>wb_robot_step(2)</code> tells Webots to move the world forward 2 ms. It returns when Webots is done, however long drawing took. Then the sensor-recording function runs for this step. If Webots answers −1, it is shutting down and the loop ends.</p></div></article>
+  </section>
+
+  <div class="subhead"><span>3.3</span><h3>The same loop in Python, and upstream's</h3></div>
+  <section class="reading compact" data-code="bridge">
+    <article class="note" data-lines="33-37"><h4>Disabled is not reverse</h4>
+      <p>ArduPilot sends <code>(pwm − 1000) / 1000</code>, so an output with no PWM (0) arrives as −1.0. Upstream's generic
+      bridge treats that as full reverse. The Iris's motors spin one way only, so the bridge clamps to 0.</p>
+      <div class="pl"><p>ArduPilot sends each motor's value as <code>(pwm − 1000) / 1000</code>, so an output that is not driven at all (PWM 0) arrives as −1.0. ArduPilot's example bridge reads −1 as full speed backwards. The Iris's motors spin one way only, so Ironlark turns any negative value into 0: off means stopped, including before arming and after landing.</p></div></article>
+    <article class="note" data-lines="39-46"><h4>The reason, written down</h4>
+      <p>The docstring states the failure this loop fixes, in the terms you saw in the stall widget.</p>
+      <div class="pl"><p>The text in triple quotes (a docstring) records why this loop exists: in the original, each queued resend moved the physics another step, so the physics ran ahead of the autopilot and slow rendering made the flight unstable.</p></div></article>
+    <article class="note" data-lines="51-60"><h4>Before SITL connects</h4>
+      <p>Until the first packet arrives, Webots keeps stepping and sensing, so loading and sensing work before the autopilot
+      is up. Then, if the launcher compiled the C loop, control passes to it and never returns until Webots quits.</p>
+      <div class="pl"><p>Until ArduPilot's first packet arrives, Webots keeps stepping and the sensors keep sampling, so the world can load and settle before the autopilot is up. When ArduPilot connects, and the launcher compiled the C loop, the controller hands over to it (line 59) and stays there until Webots quits.</p></div></article>
+    <article class="note" data-lines="61-78"><h4>The Python twin</h4>
+      <p>Line for line the same rules as <code>lockstep.c</code>. It flies when no C compiler is found, and the manifest records
+      which one flew.</p>
+      <div class="pl"><p>The same loop in Python: send, wait up to 1 s, resend if nothing came, read every waiting packet and keep the newest, apply, step. It flies only when no C compiler is installed; the manifest records which one flew.</p></div></article>
+    <article class="note" data-lines="177-200" data-code="up-sitl"><h4>Upstream, for comparison</h4>
+      <p>ArduPilot's example sends a sensor packet whenever the socket is writable and steps once for every control packet
+      it reads. Nothing discards a stale resend.</p>
+      <div class="pl"><p>ArduPilot's own example, for comparison. It sends a sensor packet whenever it can, and moves the physics one step for every motor packet it reads, fresh or stale. Nothing throws away old resends.</p></div></article>
+  </section>
+
+  <div class="subhead"><span>3.4</span><h3>A one-line clock bug in ArduPilot, patched at build time</h3></div>
+  <section class="reading compact" data-code="ap-fdm">
+    <article class="note" data-lines="83-93"><h4>The wait, with resends</h4>
+      <p>ArduPilot's side waits 100&nbsp;ms per try for a sensor packet, resending servos each time. The original code also
+      reset <code>last_timestamp</code> to 0 if the wall clock had moved more than <code>WEBOTS_TIMEOUT_US</code> (5&nbsp;s) past a
+      wall-clock stamp, meant to catch a Webots restart.</p>
+      <div class="pl"><p>This is ArduPilot's side. It waits 100 ms at a time for a sensor packet, resending its motor packet each time it gives up. The original code did one more thing while waiting: if more than 5 real seconds had passed since a wall-clock stamp, it reset its record of the last simulation time to 0, assuming Webots had restarted.</p></div></article>
+    <article class="note" data-lines="95-99"><h4>Time comes from the packet</h4>
+      <p>SITL's clock advances by <code>deltat</code>, the difference between this packet's Webots time and the last one. With
+      <code>last_timestamp</code> reset to 0, the next <code>deltat</code> is the whole simulated time so far, added to the autopilot's
+      clock a second time.</p>
+      <div class="pl"><p>ArduPilot moves its own clock forward by <code>deltat</code>: this packet's simulation time minus the previous one's, normally 0.002 s. After the reset to 0, <code>deltat</code> is the whole simulation time so far, say 45 s, so ArduPilot's clock jumps ahead by that much a second time. Any real-time pause longer than 5 s could trigger it.</p></div></article>
+    <article class="note" data-lines="1-21" data-code="clock-patch"><h4>Ironlark's patch</h4>
+      <p><code>docker/webots-clock.patch</code> removes the wall-clock reset: rendering and pausing delay packets without
+      advancing simulated time. When Webots time goes backwards (a real reset), it rebases instead of dropping packets. The
+      Dockerfile applies it with <code>git apply --check</code> first, so a changed upstream fails the build.</p>
+      <div class="pl"><p>Ironlark's patch (lines starting with <code>-</code> are removed, <code>+</code> added) deletes the reset: a delay in real time no longer touches simulation time. If simulation time really goes backwards (Webots was reset), ArduPilot now counts on from the new time instead of discarding packets. The container's build checks the patch still fits first (<code>git apply --check</code>), so a change upstream fails the build loudly.</p></div></article>
+    <article class="note" data-lines="118-131"><h4>Position, read as-is</h4>
+      <p>Note what is <em>not</em> here: no axis conversion. The numbers the bridge sends are used directly as north, east and
+      down. That is the subject of the next chapter.</p>
+      <div class="pl"><p>Notice what is missing: no conversion between axis conventions. The three position numbers from the bridge are used directly as north, east and down. The next chapter is about what that implies.</p></div></article>
+  </section>
+</section>
+
+<!-- ───────────────────────────── 04 FRAMES ───────────────────────────── -->
+<section class="chapter" id="frames" data-chapter="Frames" data-index="04" data-t="every packet">
+  <header class="chapter-head">
+    <p class="eyebrow">sensing/frames.py · lockstep.c:31–35 · SIM_Webots_Python.cpp:118</p>
+    <h2>Which way is north?</h2>
+    <p class="lede">Webots and ROS describe the world as ENU (x east, y north, z up) and bodies as FLU (forward, left, up).
+      ArduPilot uses NED and FRD. The project converts between them in two places, and the two places do not agree.</p>
+    <p class="lede pl">To say where something is, everyone must agree which direction is x, y and z. Webots and ROS use x east, y north, z up for the world (ENU), and forward, left, up for the drone itself (FLU). ArduPilot uses north, east, down (NED) and forward, right, down (FRD). The project converts between them in two places, and those two places disagree about which way is north.</p>
+  </header>
+  <div class="split wide-left">
+    <div class="widget" data-widget="frames"></div>
+    <div class="prose">
+      <p><strong>The bridge</strong> sends every vector as <code>(x, −y, −z)</code>, and ArduPilot reads it directly as north, east,
+        down. So in ArduPilot's world <em>north is Webots' +x</em>, east is −y, down is −z. It is a proper rotation and
+        everything ArduPilot simulates (GPS, compass, attitude) is generated from it, so the autopilot is self-consistent.</p>
+    <p class="pl"><strong>The bridge</strong> flips the sign of y and z and sends <code>(x, −y, −z)</code>. ArduPilot takes those three numbers as north, east, down. So for ArduPilot, <em>north is Webots' +x</em>. That is a consistent choice, and ArduPilot makes its GPS and compass from it, so the autopilot never notices anything odd.</p>
+      <p><strong><code>sensing/frames.py</code></strong>, "the one place that defines Ironlark's frames", converts ENU to NED as
+        <code>(y, x, −z)</code>: <em>north is Webots' +y</em>.</p>
+    <p class="pl"><strong><code>sensing/frames.py</code></strong>, written to be the project's one definition of these conventions, converts the textbook way, <code>(y, x, −z)</code>: <em>north is Webots' +y</em>.</p>
+      <p>The two differ by 90° of heading. Today nothing calls <code>enu_to_ned</code> or <code>attitude_enu_flu_to_ned_frd</code>
+        except <code>tests/test_sensing.py</code>, so no flight is affected. The first external-navigation message in phase two
+        (a pose sent to ArduPilot's EKF) has to be expressed in the frame the EKF already believes, the bridge's, or the
+        estimator will see GPS and odometry disagree by a quarter turn.</p>
+    <p class="pl">The two disagree by a quarter turn. Today nothing but a test uses <code>frames.py</code>, so no flight is affected. But in phase two, when the drone's own position estimate is sent to ArduPilot's EKF in place of GPS, it must use the north ArduPilot already believes, the bridge's. Otherwise the estimator would see GPS and the new estimate 90° apart.</p>
+      <p class="aside">Turn the drone with the slider and compare the three headings.</p>
+    </div>
+  </div>
+  <section class="reading compact" data-code="frames">
+    <article class="note" data-lines="12-20"><h4>The textbook conversions</h4>
+      <p>ENU → NED swaps x and y and negates z; FLU → FRD negates y and z. Correct as REP-103 and ArduPilot define them,
+      and different from the convention the bridge gives the autopilot.</p>
+      <div class="pl"><p><code>enu_to_ned</code> swaps x and y and flips z; <code>flu_to_frd</code> flips y and z. Both are right by the textbook (ROS's REP-103 and ArduPilot's definitions), and both differ from what the bridge gives the autopilot, which keeps x as north.</p></div></article>
+    <article class="note" data-lines="31-36"><h4>Webots rotations as quaternions</h4>
+      <p>Sensor poses in <code>config/sensors.json</code> are Webots axis–angle. The ROS bridge uses this to publish
+      <code>/tf_static</code>.</p>
+      <div class="pl"><p>Webots writes a rotation as an axis and an angle; this turns it into a quaternion, the four-number form ROS uses. The ROS bridge uses it to publish where each sensor sits on the drone (<code>/tf_static</code>).</p></div></article>
+    <article class="note" data-lines="39-40"><h4>The camera's optical frame</h4>
+      <p>Images use x right, y down, z forward. This quaternion turns <code>camera_link</code> (FLU, looking along +x) into it.</p>
+      <div class="pl"><p>Camera images count pixels right and down, so camera software expects x right, y down, z forward. This fixed rotation turns the camera's FLU frame into that optical frame.</p></div></article>
+    <article class="note" data-lines="42-48"><h4>Attitude between conventions</h4>
+      <p><code>q_ned_frd = ENU_TO_NED · q_enu_flu · FLU_TO_FRD</code>: rotate the world frame on the left, the body frame on the right.</p>
+      <div class="pl"><p>Converting a whole orientation from ENU/FLU to NED/FRD: rotate the world's axes on one side and the body's axes on the other, by multiplying quaternions.</p></div></article>
+  </section>
+</section>
+
+<!-- ───────────────────────────── 05 WAITING ───────────────────────────── -->
+<section class="chapter" id="waiting" data-chapter="The wait" data-index="05" data-t="T+0 → 42.0 s">
+  <header class="chapter-head">
+    <p class="eyebrow">tests/flight_smoke.py · config/flight.parm</p>
+    <h2>Forty-two seconds on the pad</h2>
+    <p class="lede"><code>flight_smoke.py</code> is the ground station. It connects over MAVLink, insists on the real estimator, and
+      waits until the autopilot reports an absolute position before it asks for anything. In this run that took until
+      41.1&nbsp;s of simulated time. Below is the autopilot's own telemetry from the run.</p>
+    <p class="lede pl"><code>flight_smoke.py</code> plays the ground station. It connects to ArduPilot over MAVLink, makes sure ArduPilot is using its real estimator, then waits until ArduPilot is confident of its position before asking it to do anything. In this run that took 41.1&nbsp;s of simulated time. The chart below is ArduPilot's own status reports from this flight.</p>
+  </header>
+  <div class="widget wide" data-widget="timeline"></div>
+  <div class="prose two">
+    <p><strong>What the wait is.</strong> GPS had a fix at 9.5&nbsp;s and the EKF set its origin at 19.6&nbsp;s, but EKF3 only
+      reported <em>"is using GPS"</em> at 41.0&nbsp;s. The roadmap records the measurement behind it: faster GPS detection
+      (<code>GPS_DRV_OPTIONS 4</code>) made the GPS ready sooner, but arming waits on EKF3 learning the gyro biases, about
+      41&nbsp;s of simulated time, so takeoff came no earlier.</p>
+    <p class="pl"><strong>What the drone waits for.</strong> GPS had a position at 9.5&nbsp;s and the estimator (EKF3) set its starting point at 19.6&nbsp;s, but only at 41.0&nbsp;s did it report that it was using GPS. The project measured why (ROADMAP.md): making GPS ready sooner did not help, because before it trusts its position EKF3 learns the gyros' small constant errors (their biases), and that takes about 41&nbsp;s of simulated time.</p>
+    <p><strong>Why a normal check is faster.</strong> Without <code>--record</code>, the observer switches Webots to
+      <code>SIMULATION_MODE_FAST</code> while the flight state is <code>CONNECTING</code> or <code>WAITING_FOR_POSITION</code>, and back
+      to real time at <code>ARMING</code>. Simulated time is unchanged; only the wall-clock wait shrinks. Recorded runs stay in
+      real time so sensing's measured cost means what it says.</p>
+    <p class="pl"><strong>Why an unrecorded check finishes sooner.</strong> Without <code>--record</code>, the observer tells Webots to run as fast as the computer can during the wait, and returns to real time at arming. The simulated wait is still 41&nbsp;s; it just takes less wall-clock time. Recorded runs stay in real time so the measured cost of sensing means what it says.</p>
+  </div>
+  <section class="reading" data-code="flight-parm">
+    <article class="note" data-lines="1-9"><h4>The real estimator, not the simulator's truth</h4>
+      <p>The upstream Iris example sets <code>AHRS_EKF_TYPE 10</code>: attitude and position taken straight from the simulator.
+      Ironlark sets <code>3</code>, EKF3, fusing the simulated IMU, barometer, compass and GPS. Source set 1: GPS (3) for horizontal
+      position and for velocity in all three axes, barometer (1) for height, compass (1) for yaw.</p>
+      <div class="pl"><p>ArduPilot's Iris example sets <code>AHRS_EKF_TYPE 10</code>, which makes the autopilot read its position and orientation straight from the simulator: perfect, and useless as a test. Ironlark sets <code>3</code>: EKF3, ArduPilot's real estimator, working from simulated sensors. The <code>EK3_SRC1</code> lines say which sensor it trusts for what: GPS (3) for horizontal position and all velocity, barometer (1) for height, compass (1) for heading.</p></div></article>
+    <article class="note" data-lines="11-14"><h4>Keep the pre-arm checks honest</h4>
+      <p>The Iris example lowers angle gains to 0.5; Acro levelling is lowered to match, so the ordinary pre-arm consistency
+      check passes without being disabled.</p>
+      <div class="pl"><p>The Iris example softens the attitude controller's gains to 0.5. Two Acro-mode settings are softened to match, so a pre-arm consistency check still passes honestly rather than being switched off.</p></div></article>
+    <article class="note" data-lines="16-20"><h4>Copter 4.7 at 500 Hz physics</h4>
+      <p>4.7 refuses zero integral gains on roll and pitch. The main loop runs at 250&nbsp;Hz, half the physics rate.</p>
+      <div class="pl"><p>Copter 4.7 refuses zero integral gains on roll and pitch, so they are set to 0.05. <code>SCHED_LOOP_RATE 250</code> runs ArduPilot's main loop 250 times a second, half the physics rate.</p></div></article>
+    <article class="note" data-lines="22-25"><h4>GPS, for now</h4>
+      <p>The comment is the project's boundary: external odometry and GPS-loss transitions come only after sensor-derived
+      localization works.</p>
+      <div class="pl"><p>The comment marks the project's boundary: GPS stays on until the drone can locate itself from its own sensors. Only then come position from the drone's own odometry, and flights that lose GPS.</p></div></article>
+    <article class="note" data-lines="27-30"><h4>No radio, no ground control station failsafe</h4>
+      <p>Nothing physical is attached, so throttle and GCS failsafes are off; logging while disarmed is on.</p>
+      <div class="pl"><p>No radio is connected, so the failsafes that react to a silent radio or ground station are off. <code>LOG_DISARMED 1</code> keeps ArduPilot's log running even before arming.</p></div></article>
+  </section>
+  <section class="reading" data-code="smoke-connect">
+    <article class="note" data-lines="128-139"><h4>Connect with retries</h4>
+      <p>SITL may not be listening yet. The script retries <code>tcp:127.0.0.1:5760</code> for 45&nbsp;s, as system 255, the
+      conventional ground-station id.</p>
+      <div class="pl"><p>ArduPilot may not be listening yet, so the script tries to connect to <code>127.0.0.1:5760</code> every half second for up to 45 s. It calls itself system 255, the number ground stations conventionally use.</p></div></article>
+    <article class="note" data-lines="140-145"><h4>Find the autopilot, ask for telemetry</h4>
+      <p>The first <code>HEARTBEAT</code> names the target system and component. Then every data stream is requested at 10&nbsp;Hz:
+      that is the 10&nbsp;Hz <code>telemetry.jsonl</code> the charts here are drawn from.</p>
+      <div class="pl"><p>It waits for ArduPilot's first heartbeat, which says which system and component to talk to. Then it asks for every status stream, 10 times a second. Those reports become <code>telemetry.jsonl</code>, which the chart above is drawn from.</p></div></article>
+    <article class="note" data-lines="146-151"><h4>Refuse a truth-driven autopilot</h4>
+      <p>The script reads <code>AHRS_EKF_TYPE</code> back from the autopilot and fails unless it is 3. A configuration mistake
+      cannot silently turn the check into a test of the simulator's own truth.</p>
+      <div class="pl"><p>It asks ArduPilot for the value of <code>AHRS_EKF_TYPE</code> and stops with an error unless it is 3. A settings mistake cannot quietly turn this into a test of the simulator flying itself.</p></div></article>
+    <article class="note" data-lines="74-89" data-code="smoke-wait"><h4>Poll: heartbeat out, one message in</h4>
+      <p>Once a second the script sends its own heartbeat, identifying itself as a ground station (<code>MAV_TYPE_GCS</code>).
+      Each message received is kept by type and logged, and its <code>time_boot_ms</code> becomes the script's notion of
+      simulated time.</p>
+      <div class="pl"><p><code>poll()</code> runs over and over. Once a second it sends the script's own heartbeat, as a ground station. Then it waits up to 0.2 s for one message from ArduPilot, keeps the latest of each type, writes it to the log, and, if it carries <code>time_boot_ms</code> (milliseconds since ArduPilot started), takes that as the current simulated time.</p></div></article>
+    <article class="note" data-lines="91-106" data-code="smoke-wait"><h4>Timeouts in simulated seconds</h4>
+      <p><code>expired()</code> compares <em>autopilot</em> time, so a slow renderer cannot fail a correct flight. A wall-clock
+      backstop of four times the timeout (at least 60&nbsp;s) still catches a stalled simulator.</p>
+      <div class="pl"><p><code>expired()</code> decides whether a wait has run out. It compares ArduPilot's time, not the real clock, so a slow renderer cannot fail a correct flight. As a safety net it also gives up after four times the limit in real time (at least 60 s), in case the simulator froze. <code>wait()</code> polls until a message meets the condition, or time runs out.</p></div></article>
+    <article class="note" data-lines="153-160" data-code="smoke-execute"><h4>Three conditions before flying</h4>
+      <p>A 3D GPS fix; an EKF report with flag 16 (absolute horizontal position) and without flag 128 (constant-position mode,
+      the EKF's "I don't know where I am" state); and a <code>LOCAL_POSITION_NED</code> message. In this run the flags went
+      1024 → 0 → 167 → 831; 831 is the first value that passes.</p>
+      <div class="pl"><p>Three things must be true before flying: GPS has a 3D fix; the estimator's status has bit 16 set ("I know my absolute position") and bit 128 clear ("I don't know where I am"); and ArduPilot is reporting its local position. The status went 1024 → 0 → 167 → 831; 831 is the first value that passes.</p></div></article>
+  </section>
+</section>
+
+<!-- ───────────────────────────── 06 FLIGHT ───────────────────────────── -->
+<section class="chapter" id="flight" data-chapter="Flight" data-index="06" data-t="41.1 → 60.3 s">
+  <header class="chapter-head">
+    <p class="eyebrow">tests/flight_smoke.py · execute() · command()</p>
+    <h2>Arm, climb to three metres, hold, land</h2>
+    <p class="lede">Four MAVLink commands fly the mission: set GUIDED mode, arm, take off to 3&nbsp;m, set LAND mode. Each waits for
+      the autopilot's <code>COMMAND_ACK</code>, then for telemetry that shows the result.</p>
+    <p class="lede pl">Four commands fly the whole mission: switch to GUIDED mode, arm the motors, take off to 3&nbsp;m, switch to LAND mode. After each, the script waits for ArduPilot's acknowledgement (<code>COMMAND_ACK</code>), and then for telemetry showing it actually happened.</p>
+  </header>
+  <section class="reading" data-code="smoke-execute">
+    <article class="note" data-lines="161-165"><h4>GUIDED, then arm</h4>
+      <p>Mode 4 is GUIDED, where the autopilot takes position targets from a ground station. Arming is
+      <code>MAV_CMD_COMPONENT_ARM_DISARM</code> (400) with param 1, confirmed by the armed bit in a later <code>HEARTBEAT</code>.
+      This run: acknowledged at 41.14&nbsp;s, armed at 42.04&nbsp;s.</p>
+      <div class="pl"><p><code>self.mode(4)</code> sets GUIDED, the mode in which ArduPilot flies to targets a ground station sends. Command 400 with parameter 1 means "arm". The script then waits for a heartbeat with the armed bit set. This run: acknowledged at 41.14 s, armed at 42.04 s.</p></div></article>
+    <article class="note" data-lines="166-169"><h4>Take off to 3 m</h4>
+      <p><code>MAV_CMD_NAV_TAKEOFF</code> (22) with altitude in param 7. The script waits until the autopilot's
+      <code>relative_alt</code> (millimetres above home) is between 2.7 and 3.4&nbsp;m: reached at 47.04&nbsp;s.</p>
+      <div class="pl"><p>Command 22 is take-off; its 7th parameter is the height, 3 m. The script waits until ArduPilot reports a height above home between 2.7 and 3.4 m (<code>relative_alt</code>, in millimetres). Reached at 47.04 s.</p></div></article>
+    <article class="note" data-lines="170-189"><h4>Hold five seconds by the autopilot's altimeter</h4>
+      <p>A hover is five seconds of autopilot time with altitude inside 2.5–3.5&nbsp;m; leaving the band restarts the count.
+      This decides only <em>when to land</em>. Whether the drone really hovered is judged later, on Webots' trajectory.</p>
+      <div class="pl"><p>Then it counts five seconds of ArduPilot's time with the height inside 2.5–3.5 m; leaving the band starts the count over. This only decides <em>when to land</em>. Whether the drone really hovered is judged afterwards, from Webots' true record (chapter 07).</p></div></article>
+    <article class="note" data-lines="190-193"><h4>LAND, then wait for disarm</h4>
+      <p>Mode 9 is LAND: descend at the configured rate and disarm on touchdown. Commanded at 52.14&nbsp;s; touchdown at
+      58.5&nbsp;s; disarmed at 60.34&nbsp;s.</p>
+      <div class="pl"><p>Mode 9 is LAND: descend, and switch the motors off on touchdown. Commanded at 52.14 s; touchdown at 58.5 s; disarmed at 60.34 s.</p></div></article>
+    <article class="note" data-lines="108-121" data-code="smoke-command"><h4>A command is not done until acknowledged</h4>
+      <p><code>COMMAND_LONG</code> carries seven float params. A rejection is turned into an error with the autopilot's reason: the
+      explanatory <code>STATUSTEXT</code> can arrive just after the <code>ACK</code>, so the script listens half a second more.</p>
+      <div class="pl"><p><code>command()</code> sends a <code>COMMAND_LONG</code>: a command number plus seven parameters, unused ones zero. It waits up to 10 s for the matching acknowledgement. If ArduPilot rejects the command, the reason usually arrives as a text message just after, so the script listens half a second longer and puts that reason in the error.</p></div></article>
+    <article class="note" data-lines="123-126" data-code="smoke-command"><h4>Modes are confirmed by heartbeat</h4>
+      <p><code>DO_SET_MODE</code> (176) is acknowledged first; the mode counts only once a heartbeat reports the new
+      <code>custom_mode</code>.</p>
+      <div class="pl"><p>Changing mode is command 176. Acceptance is not enough: the mode counts only once a heartbeat reports it.</p></div></article>
+  </section>
+
+  <div class="subhead"><span>6.1</span><h3>From a PWM number to lift</h3></div>
+  <div class="prose two">
+    <p>ArduPilot computes each motor's output as a PWM width in microseconds; the SITL backend sends
+      <code>(pwm − 1000) / 1000</code>. Webots' propellers produce thrust <code>T = k·|ω|·ω</code>, quadratic in rotor speed, while ArduPilot
+      with <code>MOT_THST_EXPO 0</code> assumes thrust linear in its output. Setting <code>ω = √u · ω<sub>max</sub></code> makes
+      <code>T = k·ω<sub>max</sub>²·u</code>: linear again.</p>
+    <p class="pl">Each motor's command from ArduPilot is a pulse width (PWM) between 1000 and 2000 microseconds, sent to Webots as <code>(pwm − 1000) / 1000</code>, a number from 0 to 1. ArduPilot assumes thrust grows in proportion to that number. But a propeller's thrust grows with the square of its speed, <code>T = k·|ω|·ω</code>. Setting the speed to the square root of the command, <code>ω = √u · ω<sub>max</sub></code>, cancels the square: <code>T = k·ω<sub>max</sub>²·u</code>, proportional again.</p>
+    <p>That gives a check you can do by hand. With <code>k = 0.0012</code> and <code>ω<sub>max</sub> = 100</code> rad/s from the drone's
+      proto, four motors give <code>48·u</code> newtons. Hovering (48–52&nbsp;s), this run's motors averaged 1305&nbsp;µs, so
+      <code>u ≈ 0.305</code> and thrust ≈ 14.6&nbsp;N, within half a percent of the weight of the proto's <code>mass 1.5</code>&nbsp;kg (14.7&nbsp;N).</p>
+    <p class="pl">You can check it by hand. With <code>k = 0.0012</code> and <code>ω<sub>max</sub> = 100</code> rad/s, four motors give <code>48·u</code> newtons. The drone's mass is 1.5&nbsp;kg, so it weighs 14.7&nbsp;N, and hovering needs <code>48·u = 14.7</code>: u ≈ 0.307, a pulse of about 1307&nbsp;µs. While hovering (48–52&nbsp;s), this run's motors averaged 1305&nbsp;µs. The physics and the code agree.</p>
+  </div>
+  <div class="widget wide" data-widget="motor"></div>
+
+  <div class="subhead"><span>6.2</span><h3>Ride along</h3></div>
+  <p class="prose narrow">Scroll through the flight as the drone's front camera recorded it: 640×480 at 20&nbsp;Hz, every second
+    frame shown, timed by the bag's stamps. The instruments are this run's own telemetry and ground truth at each frame.</p>
+    <p class="prose narrow pl">Scroll to fly the flight through the drone's front camera: every second frame of its 20 a second. The numbers around it are this flight's own records at that moment.</p>
+  <div class="ride" data-widget="ride">
+    <div class="ride-sticky">
+      <canvas class="ride-frame"></canvas>
+      <div class="ride-hud"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────── 07 JUDGEMENT ───────────────────────────── -->
+<section class="chapter" id="judgement" data-chapter="Judgement" data-index="07" data-t="after disarm">
+  <header class="chapter-head">
+    <p class="eyebrow">controllers/flight_observer · judge()</p>
+    <h2>The autopilot's word is not accepted</h2>
+    <p class="lede">The mission lands on the autopilot's altimeter, but it passes or fails on a trajectory the autopilot never
+      sees. A Webots supervisor writes the drone's true position every 100&nbsp;ms of simulated time, and
+      <code>judge()</code> reads that file only after the drone has disarmed.</p>
+    <p class="lede pl">ArduPilot decides when to land from its own height estimate. But whether the flight passes is decided from a record ArduPilot never sees: the observer, a supervisor, writes the drone's true position every 100&nbsp;ms of simulated time, and <code>judge()</code> reads that file only after the motors have stopped.</p>
+  </header>
+  <section class="reading" data-code="observer">
+    <article class="note" data-lines="16-20"><h4>A supervisor, looking at a DEF</h4>
+      <p><code>getFromDef("IRONLARK_DRONE")</code> gives the evaluator the drone's node directly, the physics state itself rather than any
+      sensor. Without a run folder it refuses to start.</p>
+      <div class="pl"><p><code>Supervisor()</code> gives this controller access to the whole world; <code>getFromDef</code> finds the drone by its DEF name. Its positions come straight from the physics, not from any sensor. Without a run folder to write to, it refuses to start.</p></div></article>
+    <article class="note" data-lines="28-29"><h4>The loading signal</h4>
+      <p>Controllers start only after the world loads, so touching <code>world-ready</code> here tells the launcher the forest is in.</p>
+      <div class="pl"><p>Webots starts controllers only once the world has loaded, so creating the empty file <code>world-ready</code> here tells the launcher the forest is in.</p></div></article>
+    <article class="note" data-lines="31-49"><h4>Fast start, and its end</h4>
+      <p>In unrecorded runs, the wait on the pad runs at maximum speed with the view at 10&nbsp;fps. The observer reads
+      <code>flight-state.json</code> (written by the mission) and restores real time and the world's frame rate once the state is past
+      <code>WAITING_FOR_POSITION</code>. Information flows one way: the mission writes its state, the observer reads it, and nothing
+      writes back to the mission.</p>
+      <div class="pl"><p>In unrecorded runs, the wait before take-off runs as fast as the computer allows, with the display at 10 frames a second. The observer reads <code>flight-state.json</code>, which the mission writes, and once the state is past waiting for position it restores real time and the normal frame rate. The mission writes, the observer reads, and nothing writes back to the mission.</p></div></article>
+    <article class="note" data-lines="42-52"><h4>Ten samples a second, line-buffered</h4>
+      <p><code>robot.step(100)</code> wakes the supervisor every 100&nbsp;ms of simulated time; each wake writes time, position and velocity.
+      <code>buffering=1</code> makes every line reach the file as it is written.</p>
+      <div class="pl"><p><code>robot.step(100)</code> wakes the observer every 100 ms of simulated time. Each time it writes one line: the time, the drone's true position and its velocity. <code>buffering=1</code> makes every line reach the file immediately.</p></div></article>
+  </section>
+  <section class="reading" data-code="judge">
+    <article class="note" data-lines="17-24"><h4>No gaps</h4>
+      <p>The trajectory must start within 0.2&nbsp;s and have no gap longer than one 100&nbsp;ms sample. A judge with missing evidence fails;
+      it never passes by default.</p>
+      <div class="pl"><p>First: is the record complete? It must start within 0.2 s and have no gap longer than one 100 ms sample. Missing evidence fails the flight; it is never assumed fine.</p></div></article>
+    <article class="note" data-lines="25-29"><h4>Two clocks must agree</h4>
+      <p>The autopilot's last <code>SYSTEM_TIME</code> and the trajectory's last stamp must be within 1&nbsp;s. This catches the kind of clock
+      jump the SITL patch fixed. This run: 0.063&nbsp;s.</p>
+      <div class="pl"><p>ArduPilot's last reported time and the record's last time must be within 1 s of each other. That would catch a clock jump like the one the ArduPilot patch fixed. This run: 0.063 s apart.</p></div></article>
+    <article class="note" data-lines="30-38"><h4>The longest stay in the band</h4>
+      <p>Not "was it ever in the band", but the longest continuous stretch between 2.5 and 3.5&nbsp;m, measured on Webots' clock.
+      This run: 6.6&nbsp;s.</p>
+      <div class="pl"><p>It finds the longest unbroken stretch with the height between 2.5 and 3.5 m, timed by Webots' clock. Not "was it ever in the band", but how long it stayed. This run: 6.6 s.</p></div></article>
+    <article class="note" data-lines="39-49"><h4>Four physical verdicts</h4>
+      <p>Peak 2.5–4&nbsp;m, hover ≥ 5&nbsp;s, final height within ±0.2&nbsp;m, horizontal drift from the start ≤ 1.5&nbsp;m. Each failure says
+      what it measured.</p>
+      <div class="pl"><p>Four physical tests: the highest point between 2.5 and 4 m; a hover of at least 5 s; final height within 0.2 m of the ground; never more than 1.5 m sideways from the start. Each failure message says what it measured.</p></div></article>
+  </section>
+  <div class="widget wide" data-widget="judge"></div>
+</section>
+
+<!-- ───────────────────────────── 08 SENSES ───────────────────────────── -->
+<section class="chapter" id="senses" data-chapter="Senses" data-index="08" data-t="every step">
+  <header class="chapter-head">
+    <p class="eyebrow">sensor_stream.py · sensing/protocol.py · ros/ironlark_bridge.py</p>
+    <h2>63,236 messages, none dropped</h2>
+    <p class="lede">With <code>--record</code>, the drone also carries the sensors phase two will use: a Livox Mid-360-class LiDAR, an
+      IMU and a front camera. After every physics step the bridge samples whatever is due, stamps it with Webots time and
+      streams it over TCP to a ROS&nbsp;2 node, which publishes it and lets rosbag2 record it.</p>
+    <p class="lede pl">With <code>--record</code>, the drone also carries the sensors phase two will rely on: a laser scanner (LiDAR), an IMU and a front camera. After every physics step the bridge reads whichever sensors are due, stamps each reading with the simulation's time and sends it over TCP to a ROS&nbsp;2 program, which publishes it and lets the recorder (rosbag2) store it.</p>
+  </header>
+  <div class="widget wide" data-widget="schedule"></div>
+  <section class="reading" data-code="stream-step">
+    <article class="note" data-lines="131-141"><h4>Called from C after every step</h4>
+      <p><code>after_step</code> runs inside the C loop's callback. C cannot see a Python exception, so everything is caught here and
+      turned into a recorded failure. Every 100&nbsp;ms it checks for <code>sensing-end</code>, the launcher's signal to stop.</p>
+      <div class="pl"><p><code>after_step</code> is the function the C loop calls after every step. An error in Python cannot travel into C, so every error is caught here and recorded as a failure of the stream. Every 100 ms it also looks for the file <code>sensing-end</code>, the launcher's signal to stop.</p></div></article>
+    <article class="note" data-lines="147-153"><h4>Webots time, in nanoseconds</h4>
+      <p>The stamp is the step's simulated time; wall time never enters the data. Every step emits a CLOCK message, which
+      becomes <code>/clock</code>: ROS nodes using simulated time advance with it.</p>
+      <div class="pl"><p>The timestamp is the step's simulated time in nanoseconds; real time never enters the data. Every step sends a CLOCK message, which becomes the ROS topic <code>/clock</code>, so ROS programs can follow the simulation's time.</p></div></article>
+    <article class="note" data-lines="154-161"><h4>IMU and truth together</h4>
+      <p>Every 4&nbsp;ms: orientation, gyro plus seeded Gaussian noise (σ 0.002&nbsp;rad/s), accelerometer plus noise (σ 0.03&nbsp;m/s²).
+      Beside it, ground truth from the Iris's noiseless GPS and inertial unit, on its own message type.</p>
+      <div class="pl"><p>Every 4 ms: orientation, rotation rate plus random noise (σ 0.002 rad/s) and acceleration plus noise (σ 0.03 m/s²), the noise drawn from a fixed seed. Beside it, the true position, orientation and velocity, as a separate message type kept for scoring.</p></div></article>
+    <article class="note" data-lines="162-170"><h4>The point cloud, by pointer</h4>
+      <p>Webots renders 56 layers; the first 32 in memory are the configured ones. <code>ctypes.string_at</code> copies the C array in one
+      call: 28,800 points × 20 bytes.</p>
+      <div class="pl"><p>Every 100 ms, the LiDAR scan. Webots renders 56 layers, but the 32 configured ones come first in memory, so the code keeps only those. <code>ctypes.string_at</code> copies the whole array out of Webots' memory in one go: 28,800 points of 20 bytes.</p></div></article>
+    <article class="note" data-lines="171-174"><h4>The image, raw</h4>
+      <p>640×480 BGRA, 1.2&nbsp;MB a frame, twenty times a second.</p>
+      <div class="pl"><p>Every 50 ms, the camera image: 640×480 pixels at 4 bytes each, 1.2 MB, sent raw.</p></div></article>
+    <article class="note" data-lines="47-51" data-code="stream-init"><h4>Rates must divide the step</h4>
+      <p>A sensor rate is accepted only if its period is a whole number of 2&nbsp;ms steps; 250, 20 and 10&nbsp;Hz give 4, 50 and 100&nbsp;ms.
+      A rate like 300&nbsp;Hz is refused at startup rather than sampled unevenly.</p>
+      <div class="pl"><p>A sensor rate is accepted only if its period is a whole number of 2 ms steps: 250, 20 and 10 per second give 4, 50 and 100 ms. A rate like 300 per second (3.33 ms) is refused at startup rather than sampled unevenly.</p></div></article>
+    <article class="note" data-lines="53-57" data-code="stream-init"><h4>Repeatable noise</h4>
+      <p>The noise comes from <code>random.Random(seed)</code>, so the same flight produces the same sensor data.</p>
+      <div class="pl"><p>The noise comes from a random generator started from a fixed seed, so the same flight gives exactly the same sensor data.</p></div></article>
+    <article class="note" data-lines="79-87" data-code="stream-put"><h4>Never stall physics</h4>
+      <p>The queue holds 64 messages. If the sender falls that far behind, <code>put_nowait</code> fails and the message is counted as
+      dropped. Physics never waits for the network, and a single drop fails the run.</p>
+      <div class="pl"><p>Messages wait in a queue of at most 64 for the thread that sends them. If the queue is full, the message is counted as dropped instead of making physics wait. A single drop fails the run.</p></div></article>
+  </section>
+  <div class="widget wide" data-widget="protocol"></div>
+  <section class="reading compact" data-code="ros-serve">
+    <article class="note" data-lines="152-165"><h4>One connection, read to the end</h4>
+      <p>The ROS node accepts the controller, then reads and publishes messages one after another, counting them.</p>
+      <div class="pl"><p>The ROS program opens a TCP port, accepts the controller's connection, then reads and publishes messages one after another, counting them.</p></div></article>
+    <article class="note" data-lines="169-175"><h4>The acknowledgement</h4>
+      <p>When the controller shuts its side (<code>protocol.finish</code>), the reader hits end-of-stream and answers with the count it
+      read as a <code>uint64</code>. The controller compares it with what it sent: 63,236 = 63,236 in this run.</p>
+      <div class="pl"><p>When the controller closes its sending side, the reader reaches the end of the stream and replies with how many messages it read. The controller compares that with what it sent: 63,236 and 63,236 in this run.</p></div></article>
+    <article class="note" data-lines="43-56" data-code="ros-qos"><h4>Reliable, and deep</h4>
+      <p>Every publisher is <code>RELIABLE</code> with a deep queue (20,000 for <code>/clock</code>, 200 for images), so a recorder that falls
+      behind catches up rather than losing messages. <code>/tf_static</code> is <code>TRANSIENT_LOCAL</code>: late subscribers still receive it.</p>
+      <div class="pl"><p>Every topic is RELIABLE with a long waiting line (20,000 messages for <code>/clock</code>, 200 for images), so a recorder that falls behind catches up instead of losing data. <code>/tf_static</code> is TRANSIENT_LOCAL: a program that subscribes later still receives it.</p></div></article>
+    <article class="note" data-lines="108-119" data-code="ros-message"><h4>PointCloud2, copied once</h4>
+      <p>The bytes go in unchanged as fields x, y, z, ring, time. <code>array('B')</code> matters: assigning <code>bytes</code> makes rclpy check
+      every byte in Python. The roadmap measured 320 messages/s before and about 840/s after.</p>
+      <div class="pl"><p>The LiDAR's bytes go into the ROS point-cloud message unchanged, as fields x, y, z, ring and time. Wrapping them as <code>array('B')</code> matters for speed: given plain bytes, ROS's Python library checks every byte one at a time. The roadmap measured 320 messages a second before and about 840 after.</p></div></article>
+    <article class="note" data-lines="120-137" data-code="ros-message"><h4>Camera intrinsics from the field of view</h4>
+      <p>A pinhole with no distortion: focal length <code>320 / tan(45°) = 320</code>&nbsp;px, principal point at the centre.</p>
+      <div class="pl"><p>The camera's description for vision software: an ideal pinhole camera with no lens distortion. Its focal length in pixels comes from the field of view, <code>320 / tan(45°) = 320</code>; the principal point is the image's centre.</p></div></article>
+  </section>
+  <div class="split wide-left">
+    <div class="widget" data-widget="scan"></div>
+    <div class="prose">
+      <p><strong>One scan at hover.</strong> 47.4&nbsp;s, 2.91&nbsp;m above the pad: 20,522 of 28,800 rays returned within 40&nbsp;m.
+        Colours are the 32 rings, from +52.3° at the top to −6.7°.</p>
+    <p class="pl"><strong>One scan while hovering,</strong> at 47.4&nbsp;s, 2.91&nbsp;m up: 20,522 of 28,800 laser rays hit something within 40&nbsp;m. The colours are the 32 rings, from 52.3° above level down to 6.7° below.</p>
+      <p><strong>Why 56 layers.</strong> Webots builds a 360° LiDAR from several cameras and misplaces returns when
+        <code>tiltAngle</code> is set: the merge ignores it (rays span ±29.5° but are labelled −7°…+52°). The rig renders 56 layers
+        over a symmetric ±52.3° and the stream keeps the top 32.</p>
+    <p class="pl"><strong>Why 56 layers.</strong> Webots builds a 360° LiDAR out of several cameras, and when the LiDAR is tilted it puts the points in the wrong place, because the merge ignores the tilt. So instead of tilting, the rig renders 56 layers spread evenly from 52.3° up to 52.3° down, and the stream keeps the top 32.</p>
+      <p><strong>The per-point <code>time</code> field.</strong> The LiDAR is <code>type "fixed"</code>, rendered as one snapshot, yet
+        its points carry times spread over 0.1&nbsp;s across the 900 columns (52.002 → 52.102&nbsp;s in the scan stamped 52.200&nbsp;s).
+        An odometry that de-skews by these stamps would correct for motion that never happened. The roadmap's next item for
+        sensing is exactly this: per-return timing, modelled, never faked.</p>
+    <p class="pl"><strong>The per-point time.</strong> A real spinning LiDAR takes 0.1&nbsp;s per scan, so each point has its own time, and odometry uses those times to undo the drone's motion during the scan (de-skew). Webots' LiDAR takes the whole scan in one instant, yet its points still carry times spread over 0.1&nbsp;s. Software that trusted them would correct for motion that never happened. The roadmap's next sensing item is to model this properly.</p>
+    </div>
+  </div>
+  <div class="codecard" data-code="sensors-json"></div>
+</section>
+
+<!-- ───────────────────────────── 09 PROOF ───────────────────────────── -->
+<section class="chapter" id="proof" data-chapter="Proof" data-index="09" data-t="after landing">
+  <header class="chapter-head">
+    <p class="eyebrow">tools/check_recording.py · tools/check_replay.py</p>
+    <h2>How a recording is shown to be correct</h2>
+    <p class="lede">A bag that plays is not yet evidence. Three checks run on the recording afterwards: is every message there,
+      do the sensors agree with a known object and with each other, and does replay reproduce the recording byte for byte.</p>
+    <p class="lede pl">A recording that plays back is not yet proof that it is right. Three checks run afterwards: is every message there; do the sensors agree with an object whose position is known exactly, and with each other; and does playing the recording back reproduce it exactly.</p>
+  </header>
+  <section class="reading" data-code="completeness">
+    <article class="note" data-lines="52-54"><h4>Every topic present</h4>
+      <p>All eight topics must have messages.</p>
+      <div class="pl"><p>All eight topics must contain messages.</p></div></article>
+    <article class="note" data-lines="56-64"><h4>Exactly one period apart</h4>
+      <p>Each periodic topic's stamps must step by exactly its period in nanoseconds (2&nbsp;ms for <code>/clock</code>, 4 for IMU and truth,
+      50 camera, 100 LiDAR). A larger step counts missing messages; a smaller one counts repeats.</p>
+      <div class="pl"><p>On each regular topic, consecutive timestamps must be exactly one period apart: 2 ms for <code>/clock</code>, 4 ms for IMU and truth, 50 ms for the camera, 100 ms for the LiDAR. A bigger step means missing messages; a smaller one, repeats or disorder.</p></div></article>
+    <article class="note" data-lines="65-67"><h4>The whole flight</h4>
+      <p>Each topic must start and end within one period of the clock. A recorder that lost the end of a topic fails here.</p>
+      <div class="pl"><p>Each topic must start and end within one period of the clock. A recorder that lost the end of a topic fails here, which is what happened to two of today's three recordings (the finding below).</p></div></article>
+    <article class="note" data-lines="68-70"><h4>A flight is in it</h4>
+      <p>The ground truth must start on the ground, pass 2.5&nbsp;m, and end on the ground.</p>
+      <div class="pl"><p>The true height must start on the ground, pass 2.5 m and end on the ground: the whole flight is in the recording.</p></div></article>
+  </section>
+  <div class="split wide-left">
+    <div class="widget" data-widget="wall"></div>
+    <div class="prose">
+      <p><strong>The calibration wall.</strong> The empty world has a red box whose face stands at x&nbsp;=&nbsp;5.9&nbsp;m. From 20 scans
+        taken while hovering, every return is placed in the world by ground-truth pose and the static transforms, the
+        wall's returns are fitted with a plane by least squares, and each one is projected into the camera frame taken at
+        the same instant.</p>
+    <p class="pl"><strong>The calibration wall.</strong> The empty test world has a red box whose face stands at exactly x&nbsp;=&nbsp;5.9&nbsp;m. Twenty laser scans taken while hovering are placed in the world using the drone's true position and the sensors' mounting positions (the static transforms). The points that hit the wall get a best-fit flat plane (least squares), and each one is also projected into the camera image taken at the same instant, to see whether it lands on red.</p>
+      <div class="metrics" data-metrics="wall"></div>
+      <p class="aside">Points and numbers from <code>runs/20261009-160306-33522</code>, the last empty-world recording whose check
+        passed.</p>
+    </div>
+  </div>
+  <section class="reading compact" data-code="fit-wall">
+    <article class="note" data-lines="114-122"><h4>A plane in closed form</h4>
+      <p>The wall is fitted as <code>x = a + b·y + c·z</code>: three normal equations solved by Cramer's rule. The normal's angle from −x
+      is <code>acos(1/√(1 + b² + c²))</code>.</p>
+      <div class="pl"><p>The wall is written as <code>x = a + b·y + c·z</code> (it faces along x). The best a, b and c come from three equations in three unknowns, solved exactly (Cramer's rule). From b and c comes the angle between the fitted wall's normal and the true one.</p></div></article>
+    <article class="note" data-lines="123-126"><h4>Distance and scatter</h4>
+      <p>Distance is the plane's x at the returns' centroid; the residual is their RMS distance from it, which must be 0.5–1.5×
+      the configured 2&nbsp;cm range noise. Too little scatter would mean the noise model is not applied.</p>
+      <div class="pl"><p>The distance is the plane's x at the middle of the points. The residual is how far the points sit from the plane on average (RMS). It must be 0.5–1.5× the configured 2 cm noise; much less would mean the noise is not applied at all.</p></div></article>
+    <article class="note" data-lines="25-37" data-code="replay-digests"><h4>Replay, compared by digest</h4>
+      <p><code>check-replay</code> plays the bag while recording it again, then compares every topic as a sequence of sha256 digests of
+      the serialized messages: same count, same bytes, same order. Digests rather than messages, because a forest flight's
+      images are gigabytes decompressed.</p>
+      <div class="pl"><p><code>check-replay</code> plays the recording back while recording it again, then compares the two topic by topic. Rather than the messages themselves (the forest's images alone are gigabytes), it compares a fingerprint (sha256) of each: same number, same fingerprints, same order.</p></div></article>
+    <article class="note" data-lines="289-300" data-code="losses"><h4>The stream's own accounting</h4>
+      <p>Before any of this, the launcher refuses a run whose stream reported a failure, a drop, an unsent message or an
+      acknowledgement that differs from what was sent.</p>
+      <div class="pl"><p>Before any of these checks, the launcher already refuses a run whose stream reported an error, a drop, a message queued but never sent, or an acknowledgement count that differs from what was sent.</p></div></article>
+  </section>
+  <div class="finding" data-widget="tail"></div>
+</section>
+
+<!-- ───────────────────────────── 10 WORLD ───────────────────────────── -->
+<section class="chapter" id="world" data-chapter="The world" data-index="10" data-t="phase one">
+  <header class="chapter-head">
+    <p class="eyebrow">tools/ · native/patches/ · 22 Webots patches</p>
+    <h2>The forest it flies over</h2>
+    <p class="lede">Phase one built the place: the Poly Haven pine-forest Blender scene exported stage by stage into a Webots world,
+      and a patched Webots able to draw it. Every image here was rendered today by <code>tools/render_forest.py</code> from the
+      current build.</p>
+    <p class="lede pl">Phase one built the place: a pine-forest scene from Poly Haven, made in Blender, converted step by step into a Webots world, and a modified Webots able to draw it. Every image here was rendered today from the current build by <code>tools/render_forest.py</code>.</p>
+  </header>
+  <div class="gallery" data-widget="gallery">
+    <figure class="g-a"><img src="./img/forest.webp" alt="" loading="lazy"><figcaption>forest · river bed under the pines</figcaption></figure>
+    <figure class="g-b"><img src="./img/valley.webp" alt="" loading="lazy"><figcaption>high · the valley, lake and village past the hill</figcaption></figure>
+    <figure class="g-c"><img src="./img/close.webp" alt="" loading="lazy"><figcaption>the drone on its pad</figcaption></figure>
+    <figure class="g-d"><img src="./img/backlit.webp" alt="" loading="lazy"><figcaption>backlit · fog shafts through the canopy</figcaption></figure>
+    <figure class="g-e"><img src="./img/overview.webp" alt="" loading="lazy"><figcaption>overview · the region from 55 m</figcaption></figure>
+  </div>
+  <div class="prose two">
+    <p><strong>A build that knows what it was built from.</strong> <code>./ironlark build-world</code> downloads Blender 4.2.9 and the
+      source scene by checksum and runs each export and bake as its own bounded process. Each stage's result is stored under
+      the sha256 of its code, inputs and toolchain (<code>tools/stage_cache.py</code>) and cloned back by btrfs reflink when
+      nothing changed. The finished world carries a receipt (<code>tools/receipts.py</code>), and flights refuse a world whose
+      receipt does not match today's code. A cold build takes 34&nbsp;min, an edit about 20&nbsp;s, peaking at 1.8&nbsp;GiB.</p>
+    <p class="pl"><strong>A build that knows what it was built from.</strong> <code>./ironlark build-world</code> downloads Blender and the forest scene, checking their fingerprints, then runs each conversion step as its own separate program. Each step's output is stored under a fingerprint of its code, inputs and tools, so when nothing changed it is reused instantly. The finished world gets a receipt, and flights refuse a world whose receipt does not match today's code. From scratch it takes 34&nbsp;min; after a small edit about 20&nbsp;s; it never needs more than 1.8&nbsp;GiB of memory.</p>
+    <p><strong>Fix the engine, not the assets.</strong> Webots R2025a could not draw this scene: alpha-masked needles, hundreds of
+      thousands of instances, fog, water. Rather than degrade the trees, Ironlark keeps a series of
+      <code>git format-patch</code> commits against Webots <code>c6793d8</code>, one feature each, applied and compiled by
+      <code>./ironlark build-renderer</code>. Each patch's message says what it changes, why, and what it measured.</p>
+    <p class="pl"><strong>Fix the engine, not the assets.</strong> Out of the box, Webots R2025a could not draw this scene: pine needles cut out by transparency, hundreds of thousands of plants, fog, water. Rather than simplify the trees, the project changes Webots itself: a series of patches against Webots <code>c6793d8</code>, each adding one feature, applied and compiled by <code>./ironlark build-renderer</code>. Each patch's description says what it changes, why, and what it measured.</p>
+  </div>
+  <div class="widget wide" data-widget="patches"></div>
+  <p class="prose narrow aside">Why this matters for autonomy: the robot's camera and LiDAR are rendered by the same engine. Patch
+    0013 makes range sensors draw instanced foliage, so the LiDAR returns off trunks, crowns and cover, and the camera sees
+    the same fog the viewer sees.</p>
+    <p class="prose narrow aside pl">Why this matters for autonomy: the drone's camera and LiDAR are drawn by the same engine. Patch 0013 makes the laser sensors see the instanced plants, so the LiDAR hits trunks, crowns and undergrowth, and the camera sees the same fog you do.</p>
+</section>
+
+<!-- ───────────────────────────── 11 NEXT ───────────────────────────── -->
+<section class="chapter" id="next" data-chapter="Phase two" data-index="11" data-t="next">
+  <header class="chapter-head">
+    <p class="eyebrow">ROADMAP.md · Next: autonomy</p>
+    <h2>What phase two inherits</h2>
+    <p class="lede">The autonomy software is not written yet. What exists is the bench it will run on. These are the interfaces it
+      will read, the rules the project has already set for it, and the open questions this reading turned up.</p>
+    <p class="lede pl">The autonomy software is not written yet. What exists is the test bench it will run on. Below: the data it will read, the rules the project has already set for it, and the open questions this reading turned up.</p>
+  </header>
+  <div class="widget wide" data-widget="future"></div>
+  <div class="cards three">
+    <article class="card"><p class="card-k">Interfaces, today</p>
+      <ul class="plain">
+        <li><code>/imu/data</code> 250&nbsp;Hz, with covariances from the configured noise</li>
+        <li><code>/lidar/points</code> 10&nbsp;Hz, x y z ring time, frame <code>lidar_link</code></li>
+        <li><code>/camera/image_raw</code> 20&nbsp;Hz bgra8 + <code>/camera/camera_info</code></li>
+        <li><code>/tf_static</code> base_link → imu, lidar, camera, optical</li>
+        <li><code>/clock</code> Webots time, every 2&nbsp;ms</li>
+        <li><code>/ground_truth/*</code> for scoring only</li>
+      </ul>
+      <ul class="plain pl">
+        <li><code>/imu/data</code>: rotation and acceleration, 250 a second, with how noisy each is (covariance)</li>
+        <li><code>/lidar/points</code>: one laser scan, 10 a second, every point with its ring and time</li>
+        <li><code>/camera/image_raw</code>: camera frames, 20 a second, and <code>/camera/camera_info</code>, the camera's intrinsics</li>
+        <li><code>/tf_static</code>: where each sensor is mounted on the drone</li>
+        <li><code>/clock</code>: the simulation's time, every 2&nbsp;ms</li>
+        <li><code>/ground_truth/*</code>: the true position, for scoring only</li>
+      </ul></article>
+    <article class="card"><p class="card-k">Rules already written down</p>
+      <ul class="plain">
+        <li>Localization is EKF3 on measurements; feeding the evaluator's pose in as odometry is not localization.</li>
+        <li>GPS denial is cut at the measurement layer, never by removing physical state.</li>
+        <li>World geometry is never an autonomy map; unknown areas stay unknown.</li>
+        <li>GPS loss is a simulated rule, not a side effect of a roof.</li>
+        <li>Ground truth is read only after a mission, never to command the vehicle.</li>
+      </ul>
+      <ul class="plain pl">
+        <li>Position must come from EKF3 working on measurements; feeding in the simulator's true position is not localization.</li>
+        <li>GPS is taken away by cutting its measurements, never by removing anything physical.</li>
+        <li>The world's 3D model is never handed to the autonomy as a map; what it has not seen stays unknown.</li>
+        <li>Losing GPS is a deliberate, simulated rule, not an accident of flying under a roof.</li>
+        <li>Ground truth is read only after a mission, never used to fly.</li>
+      </ul></article>
+    <article class="card warn"><p class="card-k">Open questions found in this reading</p>
+      <ul class="plain">
+        <li><strong>North.</strong> The bridge gives ArduPilot north = Webots +x; <code>frames.py</code> says +y (chapter 04).</li>
+        <li><strong>LiDAR time.</strong> Per-point stamps span 0.1&nbsp;s on a snapshot scan (chapter 08).</li>
+        <li><strong>First IMU message.</strong> At 0.004&nbsp;s every field is NaN; consumers must skip non-finite samples.</li>
+        <li><strong>Recording tail.</strong> Two of today's three recordings lost their last 0.5–0.8&nbsp;s in the bag (chapter 09).</li>
+      </ul>
+      <ul class="plain pl">
+        <li><strong>North.</strong> The bridge tells ArduPilot north is Webots' +x; <code>frames.py</code> says +y. A 90° disagreement waiting for phase two (chapter 04).</li>
+        <li><strong>LiDAR time.</strong> Each point's time is spread over 0.1&nbsp;s, but the scan is taken in one instant (chapter 08).</li>
+        <li><strong>First IMU message.</strong> At 0.004&nbsp;s every value is NaN; software reading it must skip it.</li>
+        <li><strong>Recording tail.</strong> Two of today's three recordings lost their last 0.5–0.8&nbsp;s (chapter 09).</li>
+      </ul></article>
+  </div>
+</section>
+
+<!-- ───────────────────────────── 12 DRILL ───────────────────────────── -->
+<section class="chapter" id="drill" data-chapter="Drill" data-index="12" data-t="the defence">
+  <header class="chapter-head">
+    <p class="eyebrow">Questions a committee is likely to ask</p>
+    <h2>Answer first, then check</h2>
+    <p class="lede">Say your answer out loud, then reveal. Every answer points to the line that proves it.</p>
+    <p class="lede pl">Read a question, say your answer out loud, then click to reveal. In plain words, each card first explains the idea, then gives the answer as you would say it, and the follow-up a committee member is likely to ask next.</p>
+  </header>
+  <div class="drill" data-widget="drill"></div>
+  <footer class="colophon">
+    <p>Built from <code>runs/20261017-175412-220691</code> (forest flight, recorded), <code>runs/20261009-160306-33522</code> (wall check)
+      and the repository at <code>2f55939</code>. Code excerpts are read from the files at build time; their line numbers are the files' own.</p>
+    <p><code>presentation/scripts/</code>: <code>extract_bag.py</code> (in the ROS container), <code>build_data.py</code>, <code>code.mjs</code>.</p>
+  </footer>
+</section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,34 @@
+[
+  [
+    "castacks/AirStack",
+    "a6dad8caf54722e5eba3481367e914ce213e6135 2026-09-04T17:39:15-07:00"
+  ],
+  [
+    "ZJU-FAST-Lab/Fast-Drone-250",
+    "8ff64274b161bb829653faf5946656658e7e2c9f 2022-11-09T16:02:20+08:00"
+  ],
+  [
+    "mit-acl/mighty",
+    "163940216d056ef3e86c8d69e42adebb9a82db0f 2026-08-03T15:28:43-04:00"
+  ],
+  [
+    "mit-acl/sando",
+    "93b2eed6bb7e300d212372fe20fc8231508162e0 2026-04-10T13:47:31-04:00"
+  ],
+  [
+    "mzahana/px4_fast_planner",
+    "c3d958e4204af22cd51487492f15ebe6dfef7901 2020-08-01T04:47:06+04:00"
+  ],
+  [
+    "Zhefan-Xu/trajectory_planner",
+    "a84b491456e4f97d400627e1e2cd07392ac91333 2023-12-30T20:44:38-05:00"
+  ],
+  [
+    "Zhefan-Xu/map_manager",
+    "d8112b85f6ad4e2519b0f34740ff0f6c466bca24 2024-10-01T21:24:28-04:00"
+  ],
+  [
+    "Zhefan-Xu/onboard_detector",
+    "4b4be99ea0697c0c617dd9c256507e94d83a307d 2025-04-02T10:55:22-04:00"
+  ]
+]

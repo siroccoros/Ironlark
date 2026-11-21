@@ -1,0 +1,210 @@
+{
+  "query": {
+    "query": "site:github.com awesome aerial robotics autonomous navigation learning exploration software open source",
+    "type": "auto",
+    "numResults": 15,
+    "contents": {
+      "highlights": {
+        "maxCharacters": 1400
+      }
+    }
+  },
+  "response": {
+    "requestId": "94e2701f24e8c14d22d8772527a84443",
+    "resolvedSearchType": "",
+    "results": [
+      {
+        "id": "https://github.com/KumarRobotics/HALO",
+        "title": "KumarRobotics/HALO",
+        "url": "https://github.com/KumarRobotics/HALO",
+        "publishedDate": "2026-04-24T18:58:16.000Z",
+        "highlights": [
+          "# Repository: KumarRobotics/HALO\n...\n[RA-L 2026] HALO: Language-Conditioned Overhead Monocular Aerial Exploration and Navigation\n...\n- Stars: 18\n- Forks: 1\n- Watchers: 0\n- Open issues: 0\n- Primary language: Python\n- Languages: Python (95.2%), Shell (2.6%), Dockerfile (1.7%), CMake (0.5%)\n- Default branch: master\n...\n- Homepage: https://tyuezhan.github.io/halo/\n...\n- Created: 2026-04-24T18:58:16Z\n...\n- Last push: 2026-04-24T19:05:49\n...\nContributors: 1 (top\n...\n# HALO: Language-Conditioned Overhead Monocular\n...\nExploration and Navigation\n...\nHALO is a language-conditioned autonomous aerial exploration and navigation system designed for overhead monocular UAV operation. The system enables a robot to explore unknown environments, build semantic maps, and search for user-specified targets using natural language prompts.\n...\nThis repository provides the official release, including simulation tools, ROS integration, configuration files, and deployment utilities.\n...\n- Source code\n- ROS launch files\n- Configuration files\n- Utility scripts\n- tmux session scripts for simulation and robot deployment\n- Dockerfiles\n- Unity simulation binaries\n...\n- Zenoh router\n- Unity simulator\n- Planner node\n- Geometric mapper node\n- Semantic mapper node\n- Simulation tracker node\n...\nthe authors of the\n...\nrepositories for their open-source code:\n...\n.com/RayFronts\n...\nhttps://github.\n...\n](https://"
+        ]
+      },
+      {
+        "id": "https://github.com/crazy-robotics/aerial-autonomy-stack",
+        "title": "crazy-robotics/aerial-autonomy-stack",
+        "url": "https://github.com/crazy-robotics/aerial-autonomy-stack",
+        "highlights": [
+          "Multi-drone PX4/ArduPilot ROS2 control of quads and VTOLs, with YOLO, LiDAR, Dockerized Gym simulation, and JetPack deployment\n...\n*Aerial autonomy stack* (AAS) is the all-in-one software stack to:\n...\n1. **Develop** multi-drone autonomy\u2014with ROS2, PX4, and ArduPilot\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLOv8 and 3D LiDAR \n3. **Deploy** in real drones\u2014with JetPack and NVIDIA Orin\n\n \n Feature list (click to expand) \n\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors and VTOLs**)\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n- **YOLOv8** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n- 3D worlds for perception-based simulation\n...\n- **Steppable** [Gymnasium environment](https://gymnasium.farama.org/index.html) and **faster-than-real-time**, **multi-instance** simulation\n- Gazebo's wind effects plugin\n...\n- **Dockerized simulation** based on [`nvcr.io/nvidia/cuda:12.8.1-cudnn-runtime-ubuntu22.04`](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags)\n- **Dockerized deployment** based on [`nvcr.io/nvidia/l4t-jetpack:r36.4.0`](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-jetpack/tags)\n...\n- **Windows 11** compatibility *\n...\n* WSLg\n...\nsetpoint_"
+        ]
+      },
+      {
+        "id": "https://github.com/zhefan-xu/cerlab-uav-autonomy",
+        "title": "Zhefan-Xu/CERLAB-UAV-Autonomy",
+        "url": "https://github.com/zhefan-xu/cerlab-uav-autonomy",
+        "highlights": [
+          "Welcome to the **CERLAB UAV Autonomy Framework**, a versatile and modular framework for autonomous unmanned aerial vehicles (UAVs). This framework comprises distinct components (simulator, perception, mapping, planning, and control) to achieve autonomous navigation, unknown exploration, and target inspection.\n...\n. [details](https://github.com/Zhefan-Xu/global_planner)\n - ```map_manager```: The 3D mapping library for autonomous robots. [details](https://github.com/Zhefan-Xu/map_manager)\n - ```onboard_detector```: The dynamic obstacle detection and tracking algorithm for autonomous robots. [details](https://github.com/Zhefan-Xu/onboard_detector)\n - ```remote_control```: The Rviz configuration and launch files for easy visualization. [details](https://github.com/Zhefan-Xu/remote_control)\n - ```time_optimizer```: The optimal trajectory time allocation library for autonomous robots. [details](https://github.com/Zhefan-Xu/time_optimizer)\n - ```tracking_controller```: The trajectory tracking controller for autonomous robots. [details](https://github.com/Zhefan-Xu/tracking_controller)\n - ```trajectory_planner```: The trajectory olanning library for autonomous robots. [details](https://github.com/Zhefan-Xu/trajectory_planner)\n - ```uav_simulator```: The lightweight Gazebo/ROS-based simulator for unmanned aerial vehicles. [details](https://github.com/Zhefan-Xu/uav_simulator)\n \n\n## II."
+        ]
+      },
+      {
+        "id": "https://github.com/px4/PX4-Autopilot",
+        "title": "PX4/PX4-Autopilot",
+        "url": "https://github.com/px4/PX4-Autopilot",
+        "highlights": [
+          "PX4 is an open-source autopilot stack for drones and unmanned vehicles. It supports multirotors, fixed-wing, VTOL, rovers, and many more experimental platforms from racing quads to industrial survey aircraft. It runs on [NuttX](https://nuttx.apache.org/), Linux, and macOS. Licensed under [BSD 3-Clause](LICENSE).\n...\nORB](\n...\n.io/main\n...\nen/middleware/uorb.html), a [DDS](\n...\npx4.io/main/en/middleware/uxrce_dds.html)-compatible publish/subscribe middleware. Modules are fully parallelized and thread safe.\n...\ncan build custom\n...\nwhat you don't need.\n...\n**Wide hardware support.** PX4 runs on a wide range of [autopilot boards](https://docs.px4.io/main/en/flight_controller/) and supports an extensive set of sensors, telemetry radios, and actuators through the [Pixhawk](https://pixhawk.org/) ecosystem.\n...\n**Developer friendly.** First-class support for [MAVLink](https://mavlink.io/) and [DDS / ROS 2](https://docs.px4.io/main/en/ros2/) integration. Comprehensive [SITL simulation](https://docs.px4.io/main/en/simulation/), hardware-in-the-loop testing, and [log analysis](https://docs.px4.io/main/en/log/flight_log_analysis.html) tools. An active developer community on [Discord](https://discord.gg/dronecode) and the [weekly dev call](https://docs.px4.io/main/en/contribute/).\n...\n```bash\ngit clone https://github.com/PX4/PX4-Autopilot.git --recursive\ncd PX4-Autopilot\nmake px4_sitl"
+        ]
+      },
+      {
+        "id": "https://github.com/OmerMersin/LIONav",
+        "title": "OmerMersin/LIONav",
+        "url": "https://github.com/OmerMersin/LIONav",
+        "highlights": [
+          "Solo-authored, full-stack drone autonomy system: LiDAR-inertial SLAM, GPU mapping, 6-level planning hierarchy, Smart RTL, MAVLink flight control, custom UDP binary protocol, and a Qt6 cross-platform GCS. Designed for GPS-denied, comms-degraded real-world operations.\n...\n### End-to-End Autonomous Drone Navigation Stack\n...\nLIONav is a **production-grade, end-to-end autonomous drone flight stack** built for GPS-denied environments where off-the-shelf autopilots fail. It is not a research prototype or a stitched-together demo \u2014 it is a complete autonomy system engineered around failure modes, constrained edge hardware, degraded communications, and real-world repeat operations.\n...\ntargeting Linux,\n...\n| Layer | Technology |\n...\n|---|---|\n| **Middleware** | ROS 2 Humble, `ament_cmake`, `colcon` |\n| **Languages** | C++17 \u2014 core, GCS, bridges \u00b7 Python 3 \u2014 launch\n...\ntooling |\n...\n**Localization**\n...\nFAST-LIO \u2014 LiDAR-inertial odometry\n...\nGPU Mapping** | NVIDIA nvblox\n...\nCUDA TSDF\n...\nESDF |\n...\n| **SLAM Backend\n...\nGTSAM iSAM2\n...\n6-level\n...\nweighted A* RTL |\n...\nFlight Integration** | MAVLink\n...\nArduPilot |\n...\nMultimedia, OpenGL\n...\n++17 \u00b7 OpenGL |\n...\n| **Web\n...\n** | WebSocket \u00b7 WebGPU \u00b7 WebGL2 |\n...\n| **Transport**\n...\nCustom `LION` UDP binary protocol \u00b7 WebSocket binary |\n...\ncolcon` \u00b7\n...\nament` \u00b7 `CMake` |"
+        ]
+      },
+      {
+        "id": "https://github.com/castacks/RAVEN",
+        "title": "castacks/RAVEN",
+        "url": "https://github.com/castacks/RAVEN",
+        "publishedDate": "2025-10-01T00:00:00.000Z",
+        "highlights": [
+          "[ICRA 2026] RAVEN: Resilient Aerial Navigation via Open-Set Semantic Memory and Behavior Adaptation\n...\n- Stars: 68\n- Forks: 3\n- Watchers: 68\n- Open issues: 2\n- License: BSD 3-Clause \"New\" or \"Revised\" License\n- Homepage: https://raven-semantic.github.io\n- Default branch: main\n- Created: 2025-10-01T13:31:27Z\n...\n## README\n\n \n RAVEN: Resilient\n...\nNavigation via Open-Set Semantic Memory and Behavior Adaptation\n...\nIEEE International Conference on Robotics and Automation\n...\nRayFronts serves as a perception and representation backbone of RAVEN. \n\nAirStack serves as an aerial robot autonomy stack, which supports interface for Isaac Sim, and handles sensors, global & local planning, collision avoidance. \n\n +-------------+ Interface +-------------------+ Sensor Topics +-------------------+\n | Isaac Sim | -----------> | AirStack | ------------------> | RayFronts |\n | Simulation | | Autonomy Stack | | Perception & Map |\n +-------------+ |-------------------| |-------------------|\n | - Sim interface | | - 3D Mapping |\n | - Sensor drivers | | - Representation |\n | - Global planner | <-------------------| - Semantic logic |\n | - Local planner | Global Waypoints | - Behavior Tree |\n | - Collision avoid | | |\n +-------------------+ +-------------------+ \n\n##\n...\ntruth bounding boxes to\n...\n_all`\n...\nRViz |\n...\n) | Only"
+        ]
+      },
+      {
+        "id": "https://github.com/XDEI-Group/AerialClaw",
+        "title": "XDEI-Group/AerialClaw",
+        "url": "https://github.com/XDEI-Group/AerialClaw",
+        "highlights": [
+          "AerialClaw: Towards General Intelligence for Autonomous Aerial Agents\n...\n**AerialClaw** is a personal AI agent framework for general autonomous aerial systems. The system provides a standardized library of atomic action skills (takeoff, navigation, perception, etc.), with an LLM performing real-time environmental perception, decision planning, and skill composition during task execution \u2014 eliminating the need to pre-script complete flight procedures for each mission, while endowing each drone with its own identity, task memory, and skill evolution capability.\n...\nCurrent drone systems mostly rely on pre-programmed scripts, lacking adaptability to unknown environments. AerialClaw explores endowing drones with **autonomous environmental understanding and real-time decision-making** through LLMs:\n...\nCurrently verified in **AirSim +\n...\nFly** simulation environment\n...\nscene):\n...\nurban scene \u2014 AI\n...\nThis README gives two entry levels: a lightweight mock path for quick UI/API checks, and the full PX4 + Gazebo research-demo path for showcasing autonomous aerial operation with simulator sensors and LLM-driven flight. The simulator path includes a guided script plus a dedicated setup guide because it depends on host OS packages, graphics drivers, PX4 SITL, and Gazebo."
+        ]
+      },
+      {
+        "id": "https://github.com/FC-Family/FlyCo",
+        "title": "FC-Family/FlyCo",
+        "url": "https://github.com/FC-Family/FlyCo",
+        "highlights": [
+          "Foundation-Model-Empowered and Prompt-Driven System for Open-World Aerial 3D Structure Scanning\n...\nThis repository maintains the implementation of \"**F**ly**C**o: Foundation Model-Empowered Drones for Autonomous 3D Structure Scanning in Open-World Environments\", owned by [Chen Feng](https://chen-albert-feng.github.io/AlbertFeng.github.io/) and [Guiyong Zheng](https://gy920.github.io/).\n\n \n \u00a0\u00a0\u00a0\u00a0\n \n \n\n**F**ly**C**o is a novel and principled system architecture that synergizes foundation models scene knowledge with drone flight skills for open-world aerial 3D structure scanning. Driven solely by simple human prompts, it achieves fully autonomous, safe, and efficient scanning without the laborious manual intervention required by existing methods, filling critical gaps in open-world practicality.\n\n \n \u00a0\u00a0\u00a0\u00a0\n \n \n\n \n \u00a0\u00a0\u00a0\u00a0\n \n \n\nPlease cite our paper if you use this project in your research:\n...\nWe aim to develop intelligent active perception flight to realize ***F***ast and reliable ***C***overage / s***C***anning / re***C***onstruction / inspe***C***tion etc.\n...\n* [FC\n...\n](https://github.\n...\n-Planner)\n...\nRA20\n...\n* [SOAR](https://\n...\n.com/SYSU-STAR/SOAR) (IROS2024): Heterogenous Multi-UAV Planner for Aerial Reconstruction.\n...\n* [FlyCo](https://github.com/FC-Family/FlyCo): Complete and Prompt-Driven System for Open-World Aerial 3D Structure Scanning."
+        ]
+      },
+      {
+        "id": "https://github.com/kalesha681/ARES-Autonomous-Surveyor",
+        "title": "kalesha681/ARES-Autonomous-Surveyor",
+        "url": "https://github.com/kalesha681/ARES-Autonomous-Surveyor",
+        "highlights": [
+          "A split-compute autonomous UAV system for GPS-denied terrain surveying, boustrophedon coverage, visual landmark detection, and edge-AI inference using Jetson, MAVLink, GStreamer, OpenCV, and TensorRT.\n...\n- **Fully Autonomous:** Takes off, maps boundaries, sweeps interiors, and precision lands with zero human intervention.\n- **GPS-Denied Navigation:** Relies entirely on visual boundary tracing, optical flow, and AprilTags.\n- **Edge AI:** Custom Surface Feature Recognition (SFR) pipeline running at 30+ FPS on a Jetson Orin Nano Super.\n- **Split-Compute Architecture:** Scout drone handles flight logic; Base Station (Lander) handles heavy AI and video decoding.\n- **Autonomous Charging:** Integrated CC-CV Battery Management System via Arduino Mega.\n...\nUAVs operating in extraterrestrial or extreme remote environments completely lack access to global positioning satellites. Designed for autonomous surface surveying, ARES solves this by relying entirely on vision and optical flow to map unknown terrain and identify critical\n...\nThe system uses a split-compute architecture, mimicking the relationship between a lightweight scout drone and a heavy-compute surface lander. The aerial vehicle handles real-time flight logic and video encoding to conserve mass and power, while the companion base station handles the expensive Surface Feature Recognition (SFR) AI and Ground Control Station UI."
+        ]
+      },
+      {
+        "id": "https://github.com/KumarRobotics/kr_autonomous_flight",
+        "title": "KumarRobotics/kr_autonomous_flight",
+        "url": "https://github.com/KumarRobotics/kr_autonomous_flight",
+        "publishedDate": "2020-11-17T16:52:31.000Z",
+        "highlights": [
+          "KR (KumarRobotics) autonomous flight system for GPS-denied quadrotors\n...\n- Stars: 771\n- Forks: 136\n- Watchers: 24\n- Open issues: 16\n- Primary language: C++\n- Languages: C++ (85.7%), Python (7.3%), CMake (4.6%), Shell (1.4%), Dockerfile (0.8%), C (0.2%)\n- License: Other (NOASSERTION)\n...\n- Topics: autonomous-flight, autonomous-navigation, autonomous-quadcoptor, autonomous-uav, ros, uav\n- Default branch: master\n...\n- Created: 2020-11-17T16:52:31Z\n...\n- Last push: 2026-04-18T16:07:08Z\n...\nContributors: 20 (top: XuRobotics\n...\nfcladera, ljarin, orlando21lara, falconkumarlab, tyuezhan, versatran01, ankitVP77, gnardari,\n...\nThis is the autonomous flight code stack used at KumarRobotics, providing a complete solution for GPS-denied quadcopter autonomy. It has been tested extensively in challenging urban and rural (under forest canopy) environments.\n...\nAn experimental ROS2 Jazzy Jalisco (Ubuntu\n...\n) port of this stack lives on the [`ros2_dev`](https\n...\nKumarRobotics/kr_autonomous_flight\n...\nis built on top of\n...\n3d_planner_default`](https://\n...\ncom/KumarRobotics/kr_autonomous_flight/\n...\n3d_planner_default), which adds two capabilities beyond\n...\na **3D\n...\n-based planner\n...\nplanner), and\n...\nIO** and **LIDAR-only** autonomous flight modalities (the stack can now fly without a visual-inertial frontend when lighting / texture conditions make VIO unreliable)."
+        ],
+        "entities": [
+          {
+            "id": "https://exa.ai/library/organization/7zyg9hf64sx",
+            "type": "company",
+            "version": 1,
+            "properties": {
+              "name": "Vijay Kumar Lab",
+              "foundedYear": null,
+              "description": null,
+              "workforce": {
+                "total": 1
+              },
+              "headquarters": {
+                "address": "220 S 33rd St, Philadelphia, Pennsylvania 19104, US",
+                "city": "Philadelphia",
+                "postalCode": null,
+                "country": "United States"
+              },
+              "financials": null,
+              "webTraffic": {
+                "visitsMonthly": 10675,
+                "countryRank": 148367,
+                "avgDurationSeconds": 214,
+                "history": [
+                  {
+                    "value": 6322,
+                    "dateFrom": "2026-02",
+                    "dateTo": "2026-02"
+                  },
+                  {
+                    "value": 4991,
+                    "dateFrom": "2026-03",
+                    "dateTo": "2026-03"
+                  },
+                  {
+                    "value": 4794,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 4794,
+                    "dateFrom": "2026-04",
+                    "dateTo": "2026-04"
+                  },
+                  {
+                    "value": 4405,
+                    "dateFrom": "2026-05",
+                    "dateTo": "2026-05"
+                  },
+                  {
+                    "value": 10675,
+                    "dateFrom": "2026-06",
+                    "dateTo": "2026-06"
+                  }
+                ]
+              },
+              "research": null
+            }
+          }
+        ]
+      },
+      {
+        "id": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "title": "TJU-Aerial-Robotics/YOPO",
+        "url": "https://github.com/TJU-Aerial-Robotics/YOPO",
+        "publishedDate": "2023-12-14T00:00:00.000Z",
+        "highlights": [
+          "# TJU-Aerial-Robotics/YOPO\n...\nYou Only Plan Once: A Learning Based Quadrotor Planner\n...\n- Stars: 1151\n- Forks: 144\n- Watchers: 1151\n- Open issues: 36\n- License: Other\n...\n- Default branch: YOPO-Simple\n- Created: 2023-12-14T08:08:08Z\n...\nWe propose **a learning-based planner for autonomous navigation in obstacle-dense environments** which integrates (i) perception and mapping, (ii) front-end path searching, and (iii) back-end optimization of classical methods into a single network. \n\n**Learning-based Planner:** Considering the multi-modal nature of the navigation problem and to avoid local minima around initial values, our approach adopts a set of motion primitives as anchor to cover the searching space, and predicts the offsets and scores of primitives for further improvement (like the one-stage object detector YOLO). \n\n**Training Strategy:** Compared to giving expert demonstrations as labels in imitation learning or exploring by trial-and-error in reinforcement learning, we directly back-propagate the gradients of trajectory costs (e.g. from ESDF) to the weights of network, which is simple, straightforward, accurate, and sequence-independent (free of online simulator interaction or rendering).\n\n \n \n \n \n \n \n \n primitive anchors \n predicted traj and scores \n learning method \n \n \n\n###"
+        ]
+      },
+      {
+        "id": "https://github.com/XuPeng23/AeroVLA",
+        "title": "XuPeng23/AeroVLA",
+        "url": "https://github.com/XuPeng23/AeroVLA",
+        "highlights": [
+          "(VLN) for Unmanned Aerial Vehicles (UAVs) demands complex visual interpretation and continuous control in dynamic 3D environments. Existing hierarchical approaches rely on dense oracle guidance or auxiliary object detectors, creating semantic gaps and limiting genuine autonomy. We propose AeroVLA, a minimalist end-to-end Vision-Language-Action framework mapping raw visual observations and fuzzy linguistic instructions directly to continuous physical control signals. First, we introduce a streamlined dual-view perception strategy that reduces visual redundancy while preserving essential cues for forward navigation and precise grounding, which additionally facilitates future simulation-to-reality transfer. To reclaim genuine autonomy, we deploy a fuzzy directional prompting mechanism derived solely from onboard sensors, completely eliminating the dependency on dense oracle guidance. Ultimately, we formulate a unified control space that integrates continuous 3-Degree-of-Freedom (3-DoF) kinematic commands with an intrinsic landing signal, freeing the agent from external object detectors for precision landing. Extensive experiments on the TravelUAV benchmark demonstrate that AeroVLA achieves state-of-the-art performance in seen environments. Furthermore, it exhibits superior generalization in unseen scenarios by achieving nearly three times the success rate of leading baselines,"
+        ]
+      },
+      {
+        "id": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "title": "GaryLee1210/UAV-Navigation-System",
+        "url": "https://github.com/GaryLee1210/UAV-Navigation-System",
+        "publishedDate": "2026-02-10T11:39:01.000Z",
+        "highlights": [
+          "Autonomous 250mm quadrotor: Livox Mid-360 + FAST-LIO2 / DLIO LiDAR-inertial localization + EGO-Planner navigation, on Jetson Orin NX & PX4 (EN / \u4e2d\u6587)\n...\nThis repository documents the iterative development of a custom **250mm wheelbase quadrotor** designed for advanced autonomous navigation and control research.\n...\nThe goal is to build a robust hardware and software foundation, starting from classical SLAM and planning algorithms, and gradually migrating towards **end-to-end / learning-based** perception and control systems.\n...\n- **Planner** (`Drone/planner/`) \u2014\n...\nego_planner`\n...\npoint-to-point / waypoint navigation\n...\nFUEL` (frontier-based autonomous exploration).\n...\n_dlio\n...\n| **FUEL** (`Drone/planner/FUEL`) | [HKUST-Aerial-Robotics/FUEL](https://github.com/HKUST-Aerial-Robotics/FUEL) `662dd23` | Frontier-based autonomous exploration reproduced on the real platform: takes the Mid-360 LiDAR cloud + LIO odometry as input and drives exploration through `exploration_real.launch`. Reproduced and verified in a real indoor corridor (see demo). |\n...\nreproduced on the\n...\nIO odometry\n...\ndemo GIF above.\n...\n**end-to-end navigation policy** (learning-based perception \u2192 action) onboard the Jetson.\n...\n- **Sim-to-\n...\nthe navigation policy.\n...\nneural perception modules with the\n...\nLiDAR-inert"
+        ]
+      },
+      {
+        "id": "https://github.com/jacopopan/aerial-autonomy-stack/",
+        "title": "JacopoPan/aerial-autonomy-stack",
+        "url": "https://github.com/jacopopan/aerial-autonomy-stack/",
+        "highlights": [
+          "An open framework to simulate and deploy perception-based PX4/ArduPilot drone swarms with ROS2, YOLO, LiDAR, NVIDIA Jetson\n...\n*Aerial autonomy stack* (AAS) is a \"batteries included\", flight-proven, open software and the simplest/fastest way to:\n\n1. **Develop** multi-drone autonomy\u2014with PX4, ArduPilot, and ROS2\n2. **Simulate** faster-than-real-time perception and control\u2014with YOLO and 3D LiDAR\n3. **Deploy** in real drones\u2014with JetPack, DeepStream, and NVIDIA Orin\n...\nhttps://github.com/user-attachments/assets/57e5bc91-8bee-4bae-8f81-a9aacef471e7\n\n \n Features (click to expand) \n\n- **PX4 and ArduPilot multi-vehicle** simulation (**quadrotors, quadplane VTOLs, and tailsitters**)\n- ROS2 action-based autopilot interface (*via* XRCE-DDS or MAVROS)\n- **YOLO** (with ONNX GPU Runtimes) and **LiDAR** Odometry (with [KISS-ICP](https://github.com/PRBonn/kiss-icp))\n- 3D worlds for perception-based simulation\n...\n- **Steppable** [Gymnasium environment](https://gymnasium.farama.org/index.html) and **faster-than-real-time**, **multi-instance** simulation\n...\n- Gazebo's wind effects and [waves\n...\nainwaring/\n...\nthe-loop\n...\nARM-based on-board compute\n...\n\u2502\u00a0\u00a0 \u2502\u00a0\u00a0     \u251c\u2500\u2500 autopilot_interface                   # Ardupilot/PX4 high-level actions (Takeoff, Orbit, Offboard, Land)\n...\nPilot VTOL\n...\nar                          # LiDAR"
+        ]
+      },
+      {
+        "id": "https://github.com/brandonhimpfen/awesome-uav-autonomy/",
+        "title": "brandonhimpfen/awesome-uav-autonomy",
+        "url": "https://github.com/brandonhimpfen/awesome-uav-autonomy/",
+        "highlights": [
+          "A curated list of frameworks, algorithms, research, simulators, datasets, flight controllers, onboard software, path-planning tools, and autonomy stacks for UAV autonomy.\n...\n> A curated list of frameworks, algorithms, research, simulators, datasets, flight controllers, onboard software, path-planning tools, and autonomy stacks for **UAV autonomy**, including perception, planning, SLAM, control, swarm intelligence, and safety systems.\n...\n& ROS 2](https://www.ros.org/) \u2013 Robotics\n...\n- [RRT*, RRT, RRT-Connect Implementations](https://github.com/ompl/ompl) \u2013 Sampling-based planners.\n- [OMPL (Open Motion Planning Library)](https://ompl.kavrakilab.org/) \u2013 Widely used motion-planning toolkit.\n- [PX4 Mission Planning Tools](https://docs.px4.io/main/en/flying/missions.html)\n- [MAVROS Offboard Control](https://github.com/mavlink/mavros)\n- [MoveIt (ROS)](https://moveit.ros.org/) \u2013 Motion planning for robotics.\n...\n- [TEB Local Planner](https://github.com/rst-tu-dortmund/teb_local_planner) \u2013 Efficient local trajectory optimization.\n...\n.com/ethz-asl/mav_multiagent_ws)\n- [OpenSwarm Projects](https://github.com/OpenSwarm)\n- [Multi-Agent\n...\n/maddpg)\n...\n- [Awesome Computer\n...\n](https://github.com/awes\n...\nistsio/\n...\n- [Awesome Reinforcement Learning](https://github.com/\n...\nesomelistsio/awesome-reinforcement-learning)\n...\n](https://github.com/\n...\nesomelistsio/\n...\n-systems)"
+        ]
+      }
+    ],
+    "searchTime": 1043.3,
+    "costDollars": {
+      "total": 0.012,
+      "search": {
+        "neural": 0.012
+      }
+    }
+  }
+}
