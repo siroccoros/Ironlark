@@ -153,6 +153,19 @@ class PerceptionNode(Node):
                 self.trail.append([round(float(p[0]), 2), round(float(p[1]), 2)])
                 if len(self.trail) > 400:
                     self.trail = self.trail[-400:]
+            if not healthy and self.pilot.ekf_source == 1 and self.pilot.gps_fix >= 3:
+                # Outdoors on solid 3D GPS: re-seed LIO's prior back onto the GPS-anchored EKF pose
+                # in LIO's frame so any transient scan gap recovers ICP lock on the very next scan.
+                ekf_cap = None
+                if self.pilot._clock_offsets:
+                    clk_off = sorted(self.pilot._clock_offsets)[len(self.pilot._clock_offsets) // 2]
+                    ekf_cap = self.pilot.ekf_position_at(stamp - LIDAR_CAPTURE_LEAD_S + clk_off)
+                if ekf_cap is None:
+                    ekf_cap = self.pilot.ekf_local_webots
+                if ekf_cap is not None:
+                    self.lio.p = np.asarray(ekf_cap, dtype=np.float64) - np.asarray(self.pilot.frame_offset, dtype=np.float64)
+                    if self.pilot.ekf_vel_webots is not None:
+                        self.lio.v = np.asarray(self.pilot.ekf_vel_webots, dtype=np.float64)
         if healthy:
             # ArduPilot's jitter correction maps the stamp to its clock at the promptest pose's lag,
             # and VISO_DELAY_MS takes it back to the capture. A pose processed late goes out carried
@@ -465,6 +478,9 @@ class MissionExecutive:
         view, view_scans = None, -1
         last_plan = last_retime = last_log = -999.0
         blocked_since = diverged_since = unhealthy_since = None
+        best_dist = float("inf")
+        best_dist_t = self.streamer.now()
+        leg_brakes = 0
         stall_count = 0
         source = self.pilot.ekf_source
         sim_start = self.streamer.now()
@@ -485,6 +501,16 @@ class MissionExecutive:
             if now - sim_start > sim_timeout or time.monotonic() - wall_start > max(4.0 * sim_timeout, 120.0):
                 self._brake(max_speed)
                 return "failed"
+
+            if abort_if_blocked:
+                d_goal = math.hypot(pos[0] - goal[0], pos[1] - goal[1])
+                if d_goal < best_dist - 0.6:
+                    best_dist, best_dist_t = d_goal, now
+                elif now - best_dist_t >= 5.5:
+                    # No net progress toward an optional frontier (e.g., shadowed behind a crate/wall):
+                    # abort decisively instead of pacing back and forth until sim_timeout.
+                    self._brake(max_speed)
+                    return "failed"
 
             if traj is not None:
                 if through:
@@ -515,8 +541,10 @@ class MissionExecutive:
 
             # Anti-pinning: the autopilot cannot follow the reference (pressed against something).
             ekf = self.pilot.ekf_local_webots
+            ekf_vel = self.pilot.ekf_vel_webots
             ref = self.streamer.at(now).sample(now)[0]
-            if ekf is not None and math.hypot(ekf[0] - ref[0], ekf[1] - ref[1]) > 0.9:
+            ekf_speed = math.hypot(ekf_vel[0], ekf_vel[1]) if ekf_vel is not None else 0.0
+            if ekf is not None and math.hypot(ekf[0] - ref[0], ekf[1] - ref[1]) > 0.9 and ekf_speed < 0.65:
                 diverged_since = diverged_since if diverged_since is not None else now
                 if now - diverged_since >= 1.5:
                     stall_count += 1
@@ -550,7 +578,7 @@ class MissionExecutive:
                 used_relaxed = False
                 path = plan_path(plan_view.map, start[0], goal, z_bounds=PLAN_Z, allow_unknown=allow_unknown,
                                  max_expansions=4500 if not allow_unknown else 7500)
-                if path is None and not allow_unknown:
+                if path is None and not allow_unknown and not abort_if_blocked:
                     path = plan_path(plan_view.map, start[0], goal, z_bounds=PLAN_Z, allow_unknown=True,
                                      max_expansions=4500)
                 if path is None and not abort_if_blocked:
@@ -560,22 +588,46 @@ class MissionExecutive:
                                      max_expansions=7500)
                     used_relaxed = path is not None
                 cand = None
+                brk_prefix = None
                 if path is not None:
                     path = _exact_goal(plan_view, path, goal, allow_unknown)
                     # Homotopy commitment: keep a clear trajectory unless the new route saves > 1.5 m.
                     if traj is None or blocked or _path_length(path) + 1.5 < traj.remaining_length(t_r):
                         cand = tj.build(path, start, plan_view, lim, t_r, allow_unknown, goal=path[-1])
+                        if cand is None and float(np.linalg.norm(start[1][:2])) > 0.15:
+                            # Moving away from the new route (e.g., >90 deg turnaround out of a room):
+                            # pre-stitch a brake to rest plus the turnaround starting seamlessly at t_stop
+                            # so the drone never hesitates or re-brakes in a retry loop.
+                            cur_t = self.streamer.at(t_r)
+                            if cur_t is not None and t_r < cur_t.t_motion_end:
+                                brk_cand = tj.brake(cur_t, t_r, lim)
+                                t_stop = brk_cand.t_motion_end
+                                if t_stop <= self.streamer.now() + 3.0:
+                                    stop_st = brk_cand.sample(t_stop)
+                                    path2 = plan_path(plan_view.map, stop_st[0], goal, z_bounds=PLAN_Z,
+                                                      allow_unknown=allow_unknown,
+                                                      max_expansions=4500 if not allow_unknown else 7500)
+                                    if path2 is not None:
+                                        path2 = _exact_goal(plan_view, path2, goal, allow_unknown)
+                                        cand = tj.build(path2, stop_st, plan_view, lim, t_stop, allow_unknown,
+                                                        goal=path2[-1])
+                                        if cand is not None:
+                                            brk_prefix = brk_cand
                 self._note_plan_time(time.monotonic() - t_wall)
-                if cand is not None and self.streamer.now() > t_r - 0.02 and float(np.linalg.norm(start[1])) < 0.05:
+                if (cand is not None and brk_prefix is None and self.streamer.now() > t_r - 0.02
+                        and float(np.linalg.norm(start[1])) < 0.05):
                     # Starting from rest: shifting t0 forward stays C2-continuous with rest() and avoids a retry loop.
                     cand.t0 = self.streamer.now() + 0.06
-                if cand is not None and self.streamer.now() <= cand.t0 - 0.02:
+                commit_t0 = brk_prefix.t0 if brk_prefix is not None else (cand.t0 if cand is not None else -1.0)
+                if cand is not None and self.streamer.now() <= commit_t0 - 0.02:
                     last_plan = now
                     self.nav_stats["plans"] += 1
                     if blocked:
                         self.nav_stats["replan_blocked"] += 1
                     elif periodic:
                         self.nav_stats["replan_shorter"] += 1
+                    if brk_prefix is not None:
+                        self.streamer.commit(brk_prefix)
                     self.streamer.commit(cand)
                     traj, traj_relaxed, last_retime, blocked_since = cand, used_relaxed, now, None
                     self._show(cand)
@@ -584,12 +636,13 @@ class MissionExecutive:
                     last_plan = now
                 elif traj is None or blocked:
                     last_plan = now
+                    leg_brakes += 1
                     self.nav_stats["no_path" if path is None else "brake"] += 1
                     self._brake(max_speed)
                     traj = None
                     self.active_path = []
                     blocked_since = blocked_since if blocked_since is not None else now
-                    if abort_if_blocked and now - blocked_since > 2.5:
+                    if abort_if_blocked and (now - blocked_since > 2.0 or leg_brakes >= 3):
                         return "failed"
                 else:
                     last_plan = now
@@ -631,12 +684,10 @@ class MissionExecutive:
             cands = snap.frontiers(bounds, pos, visited=visited, min_sep=3.2)
             self.active_frontiers = list(cands)
             target = None
-            for cand in cands[:4]:
+            for cand in cands[:8]:
                 if plan_path(snap, pos, cand, z_bounds=PLAN_Z, allow_unknown=False, max_expansions=3000) is not None:
                     target = cand
                     break
-            if target is None and cands:
-                target = cands[0]
             if target is None:
                 break
             self.set_phase("EXPLORE_FRONTIER", f"({target[0]:.1f}, {target[1]:.1f}, {target[2]:.1f})")

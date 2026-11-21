@@ -27,7 +27,7 @@ class MavlinkPilot:
         self.endpoint = endpoint
         self.pad_z = pad_z
         self.state_path = Path(state_path) if state_path else None
-        self.log = Path(telemetry_path).open("w", buffering=1) if telemetry_path else None
+        self.log = Path(telemetry_path).open("w") if telemetry_path else None
         self._send_lock = threading.Lock()
         self._event_lock = threading.Lock()
         self.conn = None
@@ -42,6 +42,7 @@ class MavlinkPilot:
         self.gps_fix = 0
         self.ekf_flags = 0
         self.ekf_local_webots = None
+        self.ekf_vel_webots = None
         self.frame_offset = [0.0, 0.0, 0.0]  # EKF(GPS) - LIO offset tracked outdoors, frozen when GPS-denied
         self.ekf_source = 1  # 1 = GPS (SRC1), 2 = ExternalNav/LIO (SRC2)
         self.source_switches = []
@@ -104,10 +105,24 @@ class MavlinkPilot:
                 continue
             if not msg or msg.get_type() == "BAD_DATA":
                 continue
-            self._handle(msg)
+            # Drain any immediately queued MAVLink packets before notifying SetpointStreamer so
+            # sim_time is always the freshest on the wire (never waking on a stale TCP backlog).
+            batch = [msg]
+            for _ in range(64):
+                try:
+                    nxt = self.conn.recv_match(blocking=False)
+                except Exception:
+                    break
+                if not nxt:
+                    break
+                if nxt.get_type() != "BAD_DATA":
+                    batch.append(nxt)
+            for m in batch:
+                self._handle(m)
             with self._msg_cond:
-                self._seq += 1
-                self._recent.append((self._seq, msg))
+                for m in batch:
+                    self._seq += 1
+                    self._recent.append((self._seq, m))
                 self._msg_cond.notify_all()
 
     def _handle(self, msg):
@@ -115,7 +130,9 @@ class MavlinkPilot:
         self.messages[kind] = msg
         boot = getattr(msg, "time_boot_ms", None)
         if boot is not None:
-            self.sim_time = boot / 1000.0
+            t = boot / 1000.0
+            if self.sim_time is None or t > self.sim_time:
+                self.sim_time = t
         if self.log:
             self.log.write(json.dumps(msg.to_dict()) + "\n")
         if kind == "HEARTBEAT":
@@ -133,6 +150,7 @@ class MavlinkPilot:
         elif kind == "LOCAL_POSITION_NED":
             wx, wy, wz = sitl_ned_to_webots((msg.x, msg.y, msg.z))
             self.ekf_local_webots = (wx, wy, wz + self.pad_z)
+            self.ekf_vel_webots = sitl_ned_to_webots((msg.vx, msg.vy, msg.vz))
             self._ekf_track.append((msg.time_boot_ms / 1000.0, self.ekf_local_webots))
         elif kind == "STATUSTEXT":
             print(f"  ArduPilot: {msg.text}", flush=True)

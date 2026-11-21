@@ -530,6 +530,10 @@ fps = world_info.getField("FPS")
 world_fps = frame_fps = fps.getSFFloat()
 pacer = RealTimePacer(step_ms / 1000.0)
 fast_start = os.environ.get("IRONLARK_FAST_START") == "1"
+movie_path = os.environ.get("IRONLARK_MOVIE")
+movie_state = "idle" if movie_path else "off"  # idle -> recording -> finalizing -> done
+movie_stop_at = None
+saw_landing = False
 flight_state = run / "flight-state.json"
 robot.simulationSetMode(Supervisor.SIMULATION_MODE_FAST)  # paced by RealTimePacer, see there
 if fast_start:
@@ -547,20 +551,39 @@ with (run / "ground_truth.jsonl").open("w", buffering=1) as stream:
         position = [pose[3], pose[7], pose[11]]
         camera.update(position, math.atan2(pose[4], pose[0]))
         now_ms = round(now * 1000)
-        if now_ms % 1000 == 0 and not fast_start:
+        if now_ms % 1000 == 0 and not fast_start and movie_state != "recording":
             if (wanted := round(pacer.update(world_fps))) != frame_fps:
                 frame_fps = wanted
                 fps.setSFFloat(float(frame_fps))
         if now_ms % 100 == 0:
-            if fast_start and flight_state.exists():
+            state = None
+            if (fast_start or movie_state != "off") and flight_state.exists():
                 try:
                     state = json.loads(flight_state.read_text()).get("state")
                 except (OSError, ValueError):
                     state = None
-                if state and state not in ("CONNECTING", "WAITING_FOR_POSITION"):
-                    fps.setSFFloat(float(frame_fps))
-                    pacer.start(now)
-                    fast_start = False
+            if fast_start and state and state not in ("CONNECTING", "WAITING_FOR_POSITION"):
+                fps.setSFFloat(30.0 if movie_path else float(frame_fps))
+                pacer.start(now)
+                fast_start = False
+            if movie_state == "idle" and state in ("ARMING", "TAKING_OFF"):
+                fps.setSFFloat(30.0)
+                robot.movieStartRecording(movie_path, 1920, 1080, 0, 80, 1, False)
+                movie_state = "recording"
+            elif movie_state == "recording":
+                if state == "LANDING":
+                    saw_landing = True
+                if saw_landing and movie_stop_at is None and (
+                    state in ("COMPLETED", "STANDBY") or (run / "autonomy_report.json").exists()
+                ):
+                    movie_stop_at = now + 2.0
+                if movie_stop_at is not None and now >= movie_stop_at:
+                    robot.movieStopRecording()
+                    movie_state = "finalizing"
+            elif movie_state == "finalizing":
+                if robot.movieIsReady() or robot.movieFailed():
+                    (run / "movie-done").write_text("failed\n" if robot.movieFailed() else "ok\n")
+                    movie_state = "done"
             denied = any(in_box(position, box) for box in gps_denied_boxes)
             if gps_denied_boxes and denied != last_denied:
                 tmp = run / "gps-denied.json.tmp"

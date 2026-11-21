@@ -115,6 +115,9 @@ def shortcut_path(occ_map, waypoints, allow_unknown=True):
             for k in range(1, len(pts) - 1):
                 mid = 0.5 * (pts[k - 1] + pts[k + 1])
                 cand = 0.5 * pts[k] + 0.5 * mid
+                checks += 2
+                if checks % 16 == 0:
+                    time.sleep(0.001)
                 if (line_is_clear(occ_map, pts[k - 1], cand, allow_unknown)
                         and line_is_clear(occ_map, cand, pts[k + 1], allow_unknown)):
                     if float(np.linalg.norm(cand - pts[k])) > 0.02:
