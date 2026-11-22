@@ -9,7 +9,6 @@ upstream plus one commit per patch. A new patch is a new commit there (message: 
 what it measured); an edit to an existing patch is folded into its commit. The series is then the
 branch's `git format-patch`, and the branch is reset to the commits the builder makes from it.
 """
-import re
 import shutil
 import subprocess
 import sys
@@ -60,11 +59,6 @@ def main():
     git("reset", "-q", "--soft", tip)
     (SOURCE / ".ironlark-patches").write_text(tip + "\n")
     print(f"Saved {len(patches)} patches to {PATCHES.relative_to(ROOT)}")
-    rows = set(re.findall(r"^\| \*\*(\d{4}-[^*]+)\*\* \|", (ROOT / "README.md").read_text(), re.M))
-    for name in sorted({p.stem for p in patches} - rows):
-        print(f"README.md: no row for {name}")
-    for name in sorted(rows - {p.stem for p in patches}):
-        print(f"README.md: a row for {name}, which is not a patch")
 
 
 if __name__ == "__main__":
